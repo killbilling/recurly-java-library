@@ -31,14 +31,15 @@ public class Plans extends RecurlyObject {
     @XmlTransient
     public static final String PLANS_RESOURCE = "/plans";
     
-    @XmlElement(name = "plan", type = SimplePlan.class)
-    private List<SimplePlan> plans;
+    @XmlElementWrapper(name = "plans")
+    @XmlElement(name = "plan")
+    private List<Plan> plans;
 
-    public List<SimplePlan> getPlans() {
+    public List<Plan> getPlans() {
         return this.plans;
     }
 
-    public void setPlans(final List<SimplePlan> plans) {
+    public void setPlans(final List<Plan> plans) {
         this.plans = plans;
     }
 
@@ -47,7 +48,7 @@ public class Plans extends RecurlyObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("Plans [");
         sb.append(getPlans().toString());
-        for (SimplePlan p : getPlans()) {
+        for (Plan p : getPlans()) {
              sb.append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
              if (null != p) {
                  sb.append(p.toString());
@@ -60,7 +61,7 @@ public class Plans extends RecurlyObject {
     }
     
     @JsonIgnoreProperties(ignoreUnknown = true)
-    protected static class SimplePlan {
+    public static class SimplePlan {
 
         public SimplePlan() {
         }
