@@ -24,6 +24,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.BillingInfo;
 
@@ -114,6 +115,14 @@ public class TestRecurlyClient {
         System.err.println("Plan ::");
         System.err.println(plan.toString());
         System.err.println("********************************");
+
+        // Fetch all plans....
+        final Plans plans = recurlyClient.getPlans();
+        System.err.println("********************************");
+        System.err.println("Plans ::");
+        System.err.println(plans.toString());
+        System.err.println("********************************");        
+
     }
 
 }

@@ -19,6 +19,7 @@ package com.ning.billing.recurly;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
+import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
@@ -27,6 +28,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.RecurlyObject;
@@ -202,6 +204,17 @@ public class RecurlyClient {
     public Plan getPlan(final String planCode) {
         return doGET(Plan.PLANS_RESOURCE + "/" + planCode, Plan.class);
     }
+
+    /**
+     * Return all the plans
+     * <p/>
+     * 
+     * @return the plan object as identified by the passed in ID
+     */
+    public Plans getPlans() {
+        return doGET(Plans.PLANS_RESOURCE, Plans.class);
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////
 
