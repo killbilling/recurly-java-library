@@ -26,6 +26,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.RecurlyObject;
@@ -177,6 +178,33 @@ public class RecurlyClient {
     public void clearBillingInfo(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE);
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Create a Plan's info
+     * <p/>
+     * 
+     * @param plan The plan to create on recurly
+     * @return the plan object as identified by the passed in ID
+     */
+    public Plan createPlan(final Plan plan) {
+        return doPOST(Plan.PLANS_RESOURCE, plan, Plan.class);
+    }
+
+    /**
+     * Get a Plan's details
+     * <p/>
+     * 
+     * @param planCode recurly id of plan
+     * @return the plan object as identified by the passed in ID
+     */
+    public Plan getPlan(final String planCode) {
+        return doGET(Plan.PLANS_RESOURCE + "/" + planCode, Plan.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
 
     private <T> T doGET(final String resource, final Class<T> clazz) {
         return callRecurlySafe(client.prepareGet(baseUrl + resource), clazz);

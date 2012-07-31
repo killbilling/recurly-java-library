@@ -27,8 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject {
-
-    public String stringOrNull(@Nullable final Object object) {
+    public static String stringOrNull(@Nullable final Object object) {
         if (object == null) {
             return null;
         }
@@ -46,7 +45,7 @@ public abstract class RecurlyObject {
         return object.toString();
     }
 
-    public Integer integerOrNull(@Nullable final Object object) {
+    public static Integer integerOrNull(@Nullable final Object object) {
         if (object == null) {
             return null;
         }

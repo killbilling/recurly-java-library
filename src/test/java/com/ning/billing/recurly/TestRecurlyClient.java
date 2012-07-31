@@ -23,6 +23,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.BillingInfo;
 
@@ -96,4 +97,23 @@ public class TestRecurlyClient {
         final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
         Assert.assertEquals(retrievedBillingInfo, billingInfo);
     }
+
+    @Test(groups = "integration")
+    public void testCreatePlan() throws Exception {
+        // Create a plan
+        //final Plan plan = new Plan();
+        //plan.setPlanCode(randomString());
+        //plan.setName(randomString());
+        //plan.
+        // Can we fetch it and does it match what we created.
+        // Do fetch of all plans.
+        
+        final String planCode = "10Duke";
+        final Plan plan = recurlyClient.getPlan(planCode);
+        System.err.println("********************************");
+        System.err.println("Plan ::");
+        System.err.println(plan.toString());
+        System.err.println("********************************");
+    }
+
 }
