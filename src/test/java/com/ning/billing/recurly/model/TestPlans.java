@@ -68,7 +68,7 @@ public class TestPlans extends TestModelBase {
         Assert.assertEquals(plan.getPlanIntervalUnit(), "months");
         Assert.assertEquals((int) plan.getTrialIntervalLength(), 0);
         Assert.assertEquals(plan.getTrialIntervalUnit(), "days");
-        Assert.assertFalse(plan.getDisplayDonationAmmounts());
+        Assert.assertFalse(plan.getDisplayDonationAmounts());
         Assert.assertFalse(plan.getDisplayQuantityType());
         Assert.assertEquals(plan.getCreatedAt(), new DateTime("2011-04-19T07:00:00Z"));
         Assert.assertNull(plan.getDescription());

@@ -55,8 +55,8 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "cancel_url")
     private String cancelLink;
 
-    @XmlElement(name = "display_donation_ammounts")
-    private boolean displayDonationAmmounts;
+    @XmlElement(name = "display_donation_amounts")
+    private boolean displayDonationAmounts;
 
     @XmlElement(name = "display_quantity_type")
     private boolean displayQuantityType;
@@ -138,12 +138,12 @@ public class Plan extends RecurlyObject {
         this.cancelLink = stringOrNull(link);
     }
 
-    public boolean getDisplayDonationAmmounts() {
-        return displayDonationAmmounts;
+    public boolean getDisplayDonationAmounts() {
+        return displayDonationAmounts;
     }
 
-    public void setDisplayDonationAmmounts(boolean displayAmmounts) {
-        this.displayDonationAmmounts = displayAmmounts;
+    public void setDisplayDonationAmounts(boolean displayAmounts) {
+        this.displayDonationAmounts = displayAmounts;
     }
 
     public boolean getDisplayQuantityType() {
@@ -262,7 +262,7 @@ public class Plan extends RecurlyObject {
         sb.append(", description='").append(description).append('\'');
         sb.append(", successLink='").append(successLink).append('\'');
         sb.append(", cancelLink='").append(cancelLink).append('\'');
-        sb.append(", displayDonationAmmounts='").append(displayDonationAmmounts).append('\'');
+        sb.append(", displayDonationAmounts='").append(displayDonationAmounts).append('\'');
         sb.append(", displayQuantityType='").append(displayQuantityType).append('\'');
         // sb.append(", displayPhoneNumber='").append(displayPhoneNumber).append('\'');
         // sb.append(", bypassHostedConfirmation='").append(bypassHostedConfirmation).append('\'');
