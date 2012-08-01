@@ -119,5 +119,13 @@ public class TestRecurlyClient {
 
         final Plan retrievedPlan = recurlyClient.getPlan(plan.getPlanCode());
         Assert.assertEquals(retrievedPlan, plan);
+        
+        // Display the plans....
+        for (Plan p : recurlyClient.getPlans()) {
+            System.out.println("***************************");
+            System.out.println(p.toString());
+        }
+
     }
+
 }
