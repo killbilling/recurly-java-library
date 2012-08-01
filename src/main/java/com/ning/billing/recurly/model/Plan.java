@@ -113,7 +113,7 @@ public class Plan extends RecurlyObject {
     }
 
     public String getDescription() {
-        return name;
+        return description;
     }
 
     public void setDescription(final Object description) {
