@@ -314,7 +314,7 @@ public class Plan extends RecurlyObject {
     //
     //@XmlRootElement(name = "unit_amount_in_cents")
     @JsonIgnoreProperties(ignoreUnknown = true)
-    protected static class RecurlyUnitCurrency {
+    public static class RecurlyUnitCurrency {
         @XmlElement(name = "EUR")
         @XmlValue
         private Integer unitAmountEUR;

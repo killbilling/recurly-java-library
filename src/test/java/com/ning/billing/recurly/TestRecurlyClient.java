@@ -27,7 +27,7 @@ import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.Plans;
+import com.ning.billing.recurly.model.Plan.RecurlyUnitCurrency;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
 
@@ -106,27 +106,18 @@ public class TestRecurlyClient {
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
         // Create a plan
-        //final Plan plan = new Plan();
-        //plan.setPlanCode(randomString());
-        //plan.setName(randomString());
-        //plan.
-        // Can we fetch it and does it match what we created.
-        // Do fetch of all plans.
-        
-        final String planCode = "10Duke";
-        final Plan plan = recurlyClient.getPlan(planCode);
-        System.err.println("********************************");
-        System.err.println("Plan ::");
-        System.err.println(plan.toString());
-        System.err.println("********************************");
+        final Plan plan = new Plan();
+        plan.setPlanCode(randomString());
+        plan.setName(randomString());
+        final RecurlyUnitCurrency unitCurrency = new RecurlyUnitCurrency();
+        unitCurrency.setUnitAmountEUR(12);
+        plan.setSetupFeeInCents(unitCurrency);
+        plan.setUnitAmountInCents(unitCurrency);
+        recurlyClient.createPlan(plan);
 
-        // Fetch all plans....
-        final Plans plans = recurlyClient.getPlans();
-        System.err.println("********************************");
-        System.err.println("Plans ::");
-        System.err.println(plans.toString());
-        System.err.println("********************************");        
+        Assert.assertTrue(recurlyClient.getPlans().size() > 0);
 
+        final Plan retrievedPlan = recurlyClient.getPlan(plan.getPlanCode());
+        Assert.assertEquals(retrievedPlan, plan);
     }
-
 }
