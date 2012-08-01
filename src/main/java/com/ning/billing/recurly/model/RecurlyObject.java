@@ -28,6 +28,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject {
 
+    public static Boolean booleanOrNull(@Nullable final Object object) {
+        if (object == null) {
+            return null;
+        }
+
+        // Booleans are represented as objects (e.g. <display_quantity type="boolean">false</display_quantity>), which Jackson
+        // will interpret as an Object (Map), not Booleans.
+        if (object instanceof Map) {
+            final Map map = (Map) object;
+            if (map.keySet().size() == 1 && "boolean".equals(map.get("type"))) {
+                return Boolean.valueOf((String) map.get(""));
+            }
+        }
+
+        return Boolean.valueOf(object.toString());
+    }
+
     public static String stringOrNull(@Nullable final Object object) {
         if (object == null) {
             return null;

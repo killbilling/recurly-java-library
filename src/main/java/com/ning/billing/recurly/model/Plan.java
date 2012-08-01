@@ -55,10 +55,10 @@ public class Plan extends RecurlyObject {
     private String cancelLink;
 
     @XmlElement(name = "display_donation_amounts")
-    private boolean displayDonationAmounts;
+    private Boolean displayDonationAmounts;
 
     @XmlElement(name = "display_quantity")
-    private boolean displayQuantity;
+    private Boolean displayQuantity;
 
     // For some reason these don't work...
     // @XmlElement(name = "display_phone_number")
@@ -137,20 +137,20 @@ public class Plan extends RecurlyObject {
         this.cancelLink = stringOrNull(link);
     }
 
-    public boolean getDisplayDonationAmounts() {
+    public Boolean getDisplayDonationAmounts() {
         return displayDonationAmounts;
     }
 
-    public void setDisplayDonationAmounts(boolean displayAmounts) {
-        this.displayDonationAmounts = displayAmounts;
+    public void setDisplayDonationAmounts(final Object displayAmounts) {
+        this.displayDonationAmounts = booleanOrNull(displayAmounts);
     }
 
-    public boolean getDisplayQuantity() {
+    public Boolean getDisplayQuantity() {
         return displayQuantity;
     }
 
-    public void setDisplayQuantity(boolean displayQuantity) {
-        this.displayQuantity = displayQuantity;
+    public void setDisplayQuantity(final Object displayQuantity) {
+        this.displayQuantity = booleanOrNull(displayQuantity);
     }
 
     // public boolean getDisplayPhoneNumber() {
