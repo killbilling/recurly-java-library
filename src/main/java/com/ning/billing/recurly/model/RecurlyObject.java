@@ -27,6 +27,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject {
+
     public static String stringOrNull(@Nullable final Object object) {
         if (object == null) {
             return null;
@@ -60,6 +61,23 @@ public abstract class RecurlyObject {
         }
 
         return Integer.valueOf(object.toString());
+    }
+
+    public static DateTime dateTimeOrNull(@Nullable final Object object) {
+        if (object == null) {
+            return null;
+        }
+
+        // DateTimes are represented as objects (e.g. <created_at type="datetime">2011-04-19T07:00:00Z</created_at>), which Jackson
+        // will interpret as an Object (Map), not DateTimes.
+        if (object instanceof Map) {
+            final Map map = (Map) object;
+            if (map.keySet().size() == 2 && "datetime".equals(map.get("type"))) {
+                return new DateTime(map.get(""));
+            }
+        }
+
+        return new DateTime(object.toString());
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)

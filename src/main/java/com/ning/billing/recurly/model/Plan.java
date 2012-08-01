@@ -26,6 +26,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.List;
 
+import org.joda.time.DateTime;
+
 @XmlRootElement(name = "plan")
 public class Plan extends RecurlyObject {
     @XmlTransient
@@ -85,7 +87,7 @@ public class Plan extends RecurlyObject {
     private String accountingCode;
 
     @XmlElement(name = "created_at")
-    private RecurlyDateTime createdAt;
+    private DateTime createdAt;
 
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
@@ -216,12 +218,12 @@ public class Plan extends RecurlyObject {
         this.accountingCode = stringOrNull(accountingCode);
     }
 
-    public RecurlyDateTime getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final RecurlyDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
     }
 
     public RecurlyUnitCurrency getUnitAmountInCents() {
