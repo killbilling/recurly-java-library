@@ -20,7 +20,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -58,8 +57,8 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "display_donation_amounts")
     private boolean displayDonationAmounts;
 
-    @XmlElement(name = "display_quantity_type")
-    private boolean displayQuantityType;
+    @XmlElement(name = "display_quantity")
+    private boolean displayQuantity;
 
     // For some reason these don't work...
     // @XmlElement(name = "display_phone_number")
@@ -146,12 +145,12 @@ public class Plan extends RecurlyObject {
         this.displayDonationAmounts = displayAmounts;
     }
 
-    public boolean getDisplayQuantityType() {
-        return displayQuantityType;
+    public boolean getDisplayQuantity() {
+        return displayQuantity;
     }
 
-    public void setDisplayQuantityType(boolean displayQuantityType) {
-        this.displayQuantityType = displayQuantityType;
+    public void setDisplayQuantity(boolean displayQuantity) {
+        this.displayQuantity = displayQuantity;
     }
 
     // public boolean getDisplayPhoneNumber() {
@@ -263,7 +262,7 @@ public class Plan extends RecurlyObject {
         sb.append(", successLink='").append(successLink).append('\'');
         sb.append(", cancelLink='").append(cancelLink).append('\'');
         sb.append(", displayDonationAmounts='").append(displayDonationAmounts).append('\'');
-        sb.append(", displayQuantityType='").append(displayQuantityType).append('\'');
+        sb.append(", displayQuantity='").append(displayQuantity).append('\'');
         // sb.append(", displayPhoneNumber='").append(displayPhoneNumber).append('\'');
         // sb.append(", bypassHostedConfirmation='").append(bypassHostedConfirmation).append('\'');
         sb.append(", unitName='").append(unitName).append('\'');
