@@ -20,8 +20,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @XmlRootElement(name = "plans")
-public class Plans extends RecurlyObjects<Plan> {
+public class Accounts extends RecurlyObjects<Account> {
 
     @XmlTransient
-    public static final String PLANS_RESOURCE = "/plans";
+    public static final String ACCOUNTS_RESOURCE = "/accounts";
 }

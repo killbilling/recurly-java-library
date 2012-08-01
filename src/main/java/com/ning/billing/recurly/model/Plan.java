@@ -20,11 +20,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import java.util.List;
+
+import org.joda.time.DateTime;
 
 @XmlRootElement(name = "plan")
 public class Plan extends RecurlyObject {
@@ -53,11 +54,11 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "cancel_url")
     private String cancelLink;
 
-    @XmlElement(name = "display_donation_ammounts")
-    private boolean displayDonationAmmounts;
+    @XmlElement(name = "display_donation_amounts")
+    private Boolean displayDonationAmounts;
 
-    @XmlElement(name = "display_quantity_type")
-    private boolean displayQuantityType;
+    @XmlElement(name = "display_quantity")
+    private Boolean displayQuantity;
 
     // For some reason these don't work...
     // @XmlElement(name = "display_phone_number")
@@ -85,7 +86,7 @@ public class Plan extends RecurlyObject {
     private String accountingCode;
 
     @XmlElement(name = "created_at")
-    private RecurlyDateTime createdAt;
+    private DateTime createdAt;
 
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
@@ -113,7 +114,7 @@ public class Plan extends RecurlyObject {
     }
 
     public String getDescription() {
-        return name;
+        return description;
     }
 
     public void setDescription(final Object description) {
@@ -136,20 +137,20 @@ public class Plan extends RecurlyObject {
         this.cancelLink = stringOrNull(link);
     }
 
-    public boolean getDisplayDonationAmmounts() {
-        return displayDonationAmmounts;
+    public Boolean getDisplayDonationAmounts() {
+        return displayDonationAmounts;
     }
 
-    public void setDisplayDonationAmmounts(boolean displayAmmounts) {
-        this.displayDonationAmmounts = displayAmmounts;
+    public void setDisplayDonationAmounts(final Object displayAmounts) {
+        this.displayDonationAmounts = booleanOrNull(displayAmounts);
     }
 
-    public boolean getDisplayQuantityType() {
-        return displayQuantityType;
+    public Boolean getDisplayQuantity() {
+        return displayQuantity;
     }
 
-    public void setDisplayQuantityType(boolean displayQuantityType) {
-        this.displayQuantityType = displayQuantityType;
+    public void setDisplayQuantity(final Object displayQuantity) {
+        this.displayQuantity = booleanOrNull(displayQuantity);
     }
 
     // public boolean getDisplayPhoneNumber() {
@@ -216,12 +217,12 @@ public class Plan extends RecurlyObject {
         this.accountingCode = stringOrNull(accountingCode);
     }
 
-    public RecurlyDateTime getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final RecurlyDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
     }
 
     public RecurlyUnitCurrency getUnitAmountInCents() {
@@ -260,8 +261,8 @@ public class Plan extends RecurlyObject {
         sb.append(", description='").append(description).append('\'');
         sb.append(", successLink='").append(successLink).append('\'');
         sb.append(", cancelLink='").append(cancelLink).append('\'');
-        sb.append(", displayDonationAmmounts='").append(displayDonationAmmounts).append('\'');
-        sb.append(", displayQuantityType='").append(displayQuantityType).append('\'');
+        sb.append(", displayDonationAmounts='").append(displayDonationAmounts).append('\'');
+        sb.append(", displayQuantity='").append(displayQuantity).append('\'');
         // sb.append(", displayPhoneNumber='").append(displayPhoneNumber).append('\'');
         // sb.append(", bypassHostedConfirmation='").append(bypassHostedConfirmation).append('\'');
         sb.append(", unitName='").append(unitName).append('\'');
@@ -313,7 +314,7 @@ public class Plan extends RecurlyObject {
     //
     //@XmlRootElement(name = "unit_amount_in_cents")
     @JsonIgnoreProperties(ignoreUnknown = true)
-    protected static class RecurlyUnitCurrency {
+    public static class RecurlyUnitCurrency {
         @XmlElement(name = "EUR")
         @XmlValue
         private Integer unitAmountEUR;

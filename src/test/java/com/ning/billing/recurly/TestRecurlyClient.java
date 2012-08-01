@@ -23,10 +23,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Plan.RecurlyUnitCurrency;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
 
@@ -52,76 +53,78 @@ public class TestRecurlyClient {
         recurlyClient.close();
     }
 
-    // @Test(groups = "integration")
-    // public void testCreateAccount() throws Exception {
-    //     final Account accountData = new Account();
-    //     accountData.setAccountCode(randomString());
-    //     accountData.setEmail(randomString() + "@laposte.net");
-    //     accountData.setFirstName(randomString());
-    //     accountData.setLastName(randomString());
-    //     accountData.setUsername(randomString());
-    //     accountData.setAcceptLanguage("en_US");
-    //     accountData.setCompanyName(randomString());
+    @Test(groups = "integration")
+    public void testCreateAccount() throws Exception {
+        final Account accountData = new Account();
+        accountData.setAccountCode(randomString());
+        accountData.setEmail(randomString() + "@laposte.net");
+        accountData.setFirstName(randomString());
+        accountData.setLastName(randomString());
+        accountData.setUsername(randomString());
+        accountData.setAcceptLanguage("en_US");
+        accountData.setCompanyName(randomString());
 
-    //     final Account account = recurlyClient.createAccount(accountData);
-    //     Assert.assertNotNull(account);
-    //     Assert.assertEquals(accountData.getAccountCode(), account.getAccountCode());
-    //     Assert.assertEquals(accountData.getEmail(), account.getEmail());
-    //     Assert.assertEquals(accountData.getFirstName(), account.getFirstName());
-    //     Assert.assertEquals(accountData.getLastName(), account.getLastName());
-    //     Assert.assertEquals(accountData.getUsername(), account.getUsername());
-    //     Assert.assertEquals(accountData.getAcceptLanguage(), account.getAcceptLanguage());
-    //     Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
-    //     log.info("Created account: {}", account.getAccountCode());
+        final Account account = recurlyClient.createAccount(accountData);
+        Assert.assertNotNull(account);
+        Assert.assertEquals(accountData.getAccountCode(), account.getAccountCode());
+        Assert.assertEquals(accountData.getEmail(), account.getEmail());
+        Assert.assertEquals(accountData.getFirstName(), account.getFirstName());
+        Assert.assertEquals(accountData.getLastName(), account.getLastName());
+        Assert.assertEquals(accountData.getUsername(), account.getUsername());
+        Assert.assertEquals(accountData.getAcceptLanguage(), account.getAcceptLanguage());
+        Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
+        log.info("Created account: {}", account.getAccountCode());
 
-    //     final Account retrievedAccount = recurlyClient.getAccount(account.getAccountCode());
-    //     Assert.assertEquals(retrievedAccount, account);
+        final Accounts retrievedAccounts = recurlyClient.getAccounts();
+        Assert.assertTrue(retrievedAccounts.size() > 0);
 
-    //     final BillingInfo billingInfoData = new BillingInfo();
-    //     billingInfoData.setFirstName(randomString());
-    //     billingInfoData.setLastName(randomString());
-    //     billingInfoData.setNumber("4111-1111-1111-1111");
-    //     billingInfoData.setVerificationValue(123);
-    //     billingInfoData.setMonth(11);
-    //     billingInfoData.setYear(2015);
-    //     billingInfoData.setAccount(account);
+        final Account retrievedAccount = recurlyClient.getAccount(account.getAccountCode());
+        Assert.assertEquals(retrievedAccount, account);
 
-    //     final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
-    //     Assert.assertNotNull(billingInfo);
-    //     Assert.assertEquals(billingInfoData.getFirstName(), billingInfo.getFirstName());
-    //     Assert.assertEquals(billingInfoData.getLastName(), billingInfo.getLastName());
-    //     Assert.assertEquals(billingInfoData.getMonth(), billingInfo.getMonth());
-    //     Assert.assertEquals(billingInfoData.getYear(), billingInfo.getYear());
-    //     Assert.assertEquals(billingInfo.getCardType(), "Visa");
-    //     log.info("Added billing info: {}", billingInfo.getCardType());
+        final BillingInfo billingInfoData = new BillingInfo();
+        billingInfoData.setFirstName(randomString());
+        billingInfoData.setLastName(randomString());
+        billingInfoData.setNumber("4111-1111-1111-1111");
+        billingInfoData.setVerificationValue(123);
+        billingInfoData.setMonth(11);
+        billingInfoData.setYear(2015);
+        billingInfoData.setAccount(account);
 
-    //     final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
-    //     Assert.assertEquals(retrievedBillingInfo, billingInfo);
-    // }
+        final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+        Assert.assertNotNull(billingInfo);
+        Assert.assertEquals(billingInfoData.getFirstName(), billingInfo.getFirstName());
+        Assert.assertEquals(billingInfoData.getLastName(), billingInfo.getLastName());
+        Assert.assertEquals(billingInfoData.getMonth(), billingInfo.getMonth());
+        Assert.assertEquals(billingInfoData.getYear(), billingInfo.getYear());
+        Assert.assertEquals(billingInfo.getCardType(), "Visa");
+        log.info("Added billing info: {}", billingInfo.getCardType());
+
+        final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+        Assert.assertEquals(retrievedBillingInfo, billingInfo);
+    }
 
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
         // Create a plan
-        //final Plan plan = new Plan();
-        //plan.setPlanCode(randomString());
-        //plan.setName(randomString());
-        //plan.
-        // Can we fetch it and does it match what we created.
-        // Do fetch of all plans.
-        
-        final String planCode = "10Duke";
-        final Plan plan = recurlyClient.getPlan(planCode);
-        System.err.println("********************************");
-        System.err.println("Plan ::");
-        System.err.println(plan.toString());
-        System.err.println("********************************");
+        final Plan plan = new Plan();
+        plan.setPlanCode(randomString());
+        plan.setName(randomString());
+        final RecurlyUnitCurrency unitCurrency = new RecurlyUnitCurrency();
+        unitCurrency.setUnitAmountEUR(12);
+        plan.setSetupFeeInCents(unitCurrency);
+        plan.setUnitAmountInCents(unitCurrency);
+        recurlyClient.createPlan(plan);
 
-        // Fetch all plans....
-        final Plans plans = recurlyClient.getPlans();
-        System.err.println("********************************");
-        System.err.println("Plans ::");
-        System.err.println(plans.toString());
-        System.err.println("********************************");        
+        Assert.assertTrue(recurlyClient.getPlans().size() > 0);
+
+        final Plan retrievedPlan = recurlyClient.getPlan(plan.getPlanCode());
+        Assert.assertEquals(retrievedPlan, plan);
+        
+        // Display the plans....
+        for (Plan p : recurlyClient.getPlans()) {
+            System.out.println("***************************");
+            System.out.println(p.toString());
+        }
 
     }
 
