@@ -23,6 +23,8 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.joda.time.DateTime;
+
 @XmlRootElement(name = "account")
 public class Account extends RecurlyObject {
 
@@ -73,7 +75,7 @@ public class Account extends RecurlyObject {
     private String hostedLoginToken;
 
     @XmlElement(name = "created_at")
-    private RecurlyDateTime createdAt;
+    private DateTime createdAt;
 
     public List<Adjustment> getAdjustments() {
         return adjustments;
@@ -179,12 +181,12 @@ public class Account extends RecurlyObject {
         this.hostedLoginToken = stringOrNull(hostedLoginToken);
     }
 
-    public RecurlyDateTime getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final RecurlyDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
     }
 
     @Override
