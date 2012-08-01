@@ -16,12 +16,14 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import java.util.ArrayList;
 
-@XmlRootElement(name = "plans")
-public class Plans extends RecurlyObjects<Plan> {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-    @XmlTransient
-    public static final String PLANS_RESOURCE = "/plans";
+/**
+ * Container for a collection of objects (e.g. accounts, coupons, plans, ...)
+ */
+@JsonIgnoreProperties(ignoreUnknown = true)
+public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<T> {
+
 }
