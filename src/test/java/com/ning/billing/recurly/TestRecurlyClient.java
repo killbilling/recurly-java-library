@@ -23,10 +23,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.BillingInfo;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
 
@@ -73,6 +74,9 @@ public class TestRecurlyClient {
         Assert.assertEquals(accountData.getAcceptLanguage(), account.getAcceptLanguage());
         Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
         log.info("Created account: {}", account.getAccountCode());
+
+        final Accounts retrievedAccounts = recurlyClient.getAccounts();
+        Assert.assertTrue(retrievedAccounts.size() > 0);
 
         final Account retrievedAccount = recurlyClient.getAccount(account.getAccountCode());
         Assert.assertEquals(retrievedAccount, account);

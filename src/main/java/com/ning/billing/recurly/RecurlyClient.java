@@ -27,6 +27,7 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Account;
@@ -96,6 +97,17 @@ public class RecurlyClient {
      */
     public Account createAccount(final Account account) {
         return doPOST(Account.ACCOUNT_RESOURCE, account, Account.class);
+    }
+
+    /**
+     * Get Accounts
+     * <p/>
+     * Returns information about all accounts.
+     *
+     * @return account object on success, null otherwise
+     */
+    public Accounts getAccounts() {
+        return doGET(Accounts.ACCOUNTS_RESOURCE, Accounts.class);
     }
 
     /**
