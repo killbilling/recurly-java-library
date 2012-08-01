@@ -19,6 +19,8 @@ package com.ning.billing.recurly.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import javax.xml.bind.annotation.XmlValue;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -27,11 +29,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @XmlRootElement(name = "plans")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Plans extends RecurlyObject {
     @XmlTransient
     public static final String PLANS_RESOURCE = "/plans";
     
-    @XmlElementWrapper(name = "plans")
     @XmlElement(name = "plan")
     private List<Plan> plans;
 

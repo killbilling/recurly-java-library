@@ -148,8 +148,8 @@ public class RecurlyClient {
      * Recurly recommends requiring CVV from your customers when collecting new or updated billing information.
      *
      * @param billingInfo billing info object to create or update
-     * @return the newly created or update billing info object on success, null otherwise
-     */
+     * @return the newly created or update billing info object on success, null otherwise 
+    */
     public BillingInfo createOrUpdateBillingInfo(final BillingInfo billingInfo) {
         final String accountCode = billingInfo.getAccount().getAccountCode();
         // Unset it to avoid confusing Recurly
@@ -284,12 +284,24 @@ public class RecurlyClient {
 
                               final InputStream in = response.getResponseBodyAsStream();
                               try {
-                                  return xmlMapper.readValue(in, clazz);
+                                  String payload = convertStreamToString(in);
+                                  System.out.println("**** MESSAGE ****");
+                                  System.out.println(payload);
+                                  T obj = xmlMapper.readValue(payload, clazz);
+                                  return obj;
                               } finally {
                                   closeStream(in);
                               }
                           }
                       }).get();
+    }
+
+    private String convertStreamToString(java.io.InputStream is) {
+        try {
+            return new java.util.Scanner(is).useDelimiter("\\A").next();
+        } catch (java.util.NoSuchElementException e) {
+            return "";
+        }
     }
 
     private void closeStream(final InputStream in) {
