@@ -24,6 +24,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Plan;
@@ -51,6 +53,24 @@ public class TestRecurlyClient {
     @AfterMethod(groups = "integration")
     public void tearDown() throws Exception {
         recurlyClient.close();
+    }
+
+    @Test(groups = "integration")
+    public void testGetPageSize() throws Exception {
+        System.setProperty("recurly.page.size", "");
+        Assert.assertEquals(new Integer("20"), RecurlyClient.getPageSize());
+
+        System.setProperty("recurly.page.size", "350");
+        Assert.assertEquals(new Integer("350"), RecurlyClient.getPageSize());
+    }
+
+    @Test(groups = "integration")
+    public void testGetPageSizeGetParam() throws Exception {
+        System.setProperty("recurly.page.size", "");
+        Assert.assertEquals("per_page=20", RecurlyClient.getPageSizeGetParam());
+
+        System.setProperty("recurly.page.size", "350");
+        Assert.assertEquals("per_page=350", RecurlyClient.getPageSizeGetParam());
     }
 
     @Test(groups = "integration")
@@ -125,7 +145,63 @@ public class TestRecurlyClient {
             System.out.println("***************************");
             System.out.println(p.toString());
         }
-
     }
 
+    @Test(groups = "integration")
+    public void testCreateSubscriptions() throws Exception {
+        // // Create a user
+        // final Account accountData = new Account();
+        // accountData.setAccountCode(randomString());
+        // accountData.setEmail(randomString() + "@laposte.net");
+        // accountData.setFirstName(randomString());
+        // accountData.setLastName(randomString());
+        // accountData.setUsername(randomString());
+        // accountData.setAcceptLanguage("en_US");
+
+        // final Account account = recurlyClient.createAccount(accountData);
+
+        // final BillingInfo billingInfoData = new BillingInfo();
+        // billingInfoData.setFirstName(randomString());
+        // billingInfoData.setLastName(randomString());
+        // billingInfoData.setNumber("4111-1111-1111-1111");
+        // billingInfoData.setVerificationValue(123);
+        // billingInfoData.setMonth(11);
+        // billingInfoData.setYear(2015);
+        // billingInfoData.setAccount(account);
+
+        // final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+
+        // final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+
+        // accountData.setBillingInfo(billingInfo);
+
+        // // Create a plan
+        // final Plan plan = new Plan();
+        // plan.setPlanCode(randomString());
+        // plan.setName(randomString());
+        // final RecurlyUnitCurrency unitCurrency = new RecurlyUnitCurrency();
+        // unitCurrency.setUnitAmountEUR(12);
+        // plan.setSetupFeeInCents(unitCurrency);
+        // plan.setUnitAmountInCents(unitCurrency);
+        // recurlyClient.createPlan(plan);
+
+        // // Subscribe the user to the plan
+        // Subscription subscriptionData = new Subscription();
+        // subscriptionData.setPlanCode(plan.getPlanCode());
+        // subscriptionData.setAccount(account);
+        // subscriptionData.setCurrency("EUR");
+        // final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+
+        // // Query the subscriptions for the user and check that
+        // // returned values make sense
+
+        // Get subscriptions for me...
+        final String name = "1234";
+        Subscriptions subs = recurlyClient.getAccountSubscriptions(name);
+
+        System.out.println("Subs for me.....");
+        for (Subscription s : subs ) {
+            System.out.println(s.toString());
+        }
+    }
 }

@@ -31,6 +31,9 @@ public class Subscription extends RecurlyObject {
     @XmlElement(name = "plan")
     private Plan plan;
 
+    @XmlElement(name = "plan_code")
+    private String planCode;
+
     @XmlElement(name = "uuid")
     private String uuid;
 
@@ -85,6 +88,14 @@ public class Subscription extends RecurlyObject {
 
     public void setPlan(final Plan plan) {
         this.plan = plan;
+    }
+
+    public String getPlanCode() {
+        return planCode;
+    }
+
+    public void setPlanCode(final String planCode) {
+        this.planCode = stringOrNull(planCode);
     }
 
     public String getUuid() {

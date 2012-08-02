@@ -77,6 +77,10 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "billing_info")
+    private BillingInfo billingInfo;
+    
+
     public List<Adjustment> getAdjustments() {
         return adjustments;
     }
@@ -187,6 +191,14 @@ public class Account extends RecurlyObject {
 
     public void setCreatedAt(final Object createdAt) {
         this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public BillingInfo getBillingInfo() {
+        return billingInfo;
+    }
+
+    public void setBillingInfo(final BillingInfo billingInfo) {
+        this.billingInfo = billingInfo;
     }
 
     @Override

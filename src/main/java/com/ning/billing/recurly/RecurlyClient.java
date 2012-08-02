@@ -28,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.Subscriptions;
+import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Account;
@@ -48,6 +50,40 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 public class RecurlyClient {
 
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
+
+
+    public static final String  RECURLY_DEBUG_KEY     = "recurly.debug";
+    public static final String  RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
+
+    private static final Integer DEFAULT_PAGE_SIZE     = new Integer(20);
+    private static final String  PER_PAGE              = "per_page=";
+
+    /**
+     * Checks a system property to see if debugging output is
+     * required. Used internally by the client to decide whether to
+     * generate debug output
+     */
+    private static final boolean debug() {
+        return Boolean.getBoolean(RECURLY_DEBUG_KEY);
+    }
+
+    /**
+     * Returns the page Size to use when querying. The page size
+     * is set as System.property: recurly.page.size
+     */
+    public static final Integer getPageSize() {
+        Integer pageSize;
+        try {
+            pageSize = new Integer(System.getProperty(RECURLY_PAGE_SIZE_KEY));
+        } catch (NumberFormatException nfex) {
+            pageSize = DEFAULT_PAGE_SIZE;
+        }
+        return pageSize;
+    }
+
+    public static final String getPageSizeGetParam() {
+        return PER_PAGE + getPageSize().toString();
+    }
 
     private final XmlMapper xmlMapper = new XmlMapper();
 
@@ -133,6 +169,34 @@ public class RecurlyClient {
      */
     public Account updateAccount(final String accountCode, final Account account) {
         return doPUT(Account.ACCOUNT_RESOURCE + "/" + accountCode, account, Account.class);
+    }
+
+    /**
+     * Create a subscription
+     * <p/>
+     * Creates a subscription for an account.
+     *
+     * @param subscription Subscription object
+     * @return the newly created Subscription object on success, null otherwise
+     */
+    public Subscription createSubscription(final Subscription subscription) {
+        return doPOST(Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                      subscription, Subscription.class);
+    }
+
+    /**
+     * Get the subscriptions for an acocunt.
+     * <p/>
+     * Returns information about a single account.
+     *
+     * @param accountCode recurly account id
+     * @return Subscriptions for the specified user
+     */
+    public Subscriptions getAccountSubscriptions(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE
+                     + "/" + accountCode
+                     + Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                     Subscriptions.class);
     }
 
     /**
@@ -232,13 +296,23 @@ public class RecurlyClient {
 
 
     private <T> T doGET(final String resource, final Class<T> clazz) {
-        return callRecurlySafe(client.prepareGet(baseUrl + resource), clazz);
+        return callRecurlySafe(client.prepareGet(baseUrl 
+                                                 + resource 
+                                                 + "?"
+                                                 + getPageSizeGetParam()),
+                               clazz);
     }
 
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {
         final String xmlPayload;
         try {
             xmlPayload = xmlMapper.writeValueAsString(payload);
+            if (debug()) {
+                System.out.println("*******************************");
+                System.out.println("*** Message to Recurly API ***");
+                System.out.println(xmlPayload);
+                System.out.println("*******************************");
+            }
         } catch (IOException e) {
             log.warn("Unable to serialize {} object as XML: {}", clazz.getName(), payload.toString());
             return null;
@@ -297,8 +371,12 @@ public class RecurlyClient {
                               final InputStream in = response.getResponseBodyAsStream();
                               try {
                                   String payload = convertStreamToString(in);
-                                  System.out.println("**** MESSAGE ****");
-                                  System.out.println(payload);
+                                  if (debug()) {
+                                      System.out.println("*******************************");
+                                      System.out.println("**** MESSAGE from Recuely API ****");
+                                      System.out.println(payload);
+                                      System.out.println("*******************************");
+                                  }
                                   T obj = xmlMapper.readValue(payload, clazz);
                                   return obj;
                               } finally {

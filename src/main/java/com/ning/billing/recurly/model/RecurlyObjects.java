@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 /**
  * Container for a collection of objects (e.g. accounts, coupons, plans, ...)
  */
-@JsonIgnoreProperties(ignoreUnknown = true)
+ @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<T> {
 
 }
