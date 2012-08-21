@@ -28,8 +28,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject {
 
+    public static final String NIL_STR = "nil";
+
     public static Boolean booleanOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
         }
 
@@ -46,25 +48,15 @@ public abstract class RecurlyObject {
     }
 
     public static String stringOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
-        }
-
-        // Hack to work around Recurly output for nil values: the response will contain
-        // an element with a nil attribute (e.g. <city nil="nil"></city>) which Jackson will
-        // interpret as an Object (Map), not a String.
-        if (object instanceof Map) {
-            final Map map = (Map) object;
-            if (map.keySet().size() == 1 && "nil".equals(map.get("nil"))) {
-                return null;
-            }
         }
 
         return object.toString();
     }
 
     public static Integer integerOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
         }
 
@@ -81,7 +73,7 @@ public abstract class RecurlyObject {
     }
 
     public static DateTime dateTimeOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
         }
 
@@ -95,5 +87,23 @@ public abstract class RecurlyObject {
         }
 
         return new DateTime(object.toString());
+    }
+
+    public static boolean isNull(Object object) {
+        if (object == null) {
+            return true;
+        }
+
+        // Hack to work around Recurly output for nil values: the response will contain
+        // an element with a nil attribute (e.g. <city nil="nil"></city>) which Jackson will
+        // interpret as an Object (Map), not a String.
+        if (object instanceof Map) {
+            final Map map = (Map) object;
+            if (map.keySet().size() == 1 && NIL_STR.equals(map.get(NIL_STR))) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
