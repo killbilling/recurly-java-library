@@ -169,24 +169,24 @@ public class Adjustment extends RecurlyObject {
         return startDate;
     }
 
-    public void setStartDate(final DateTime startDate) {
-        this.startDate = startDate;
+    public void setStartDate(final Object startDate) {
+        this.startDate = dateTimeOrNull(startDate);
     }
 
     public DateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(final DateTime endDate) {
-        this.endDate = endDate;
+    public void setEndDate(final Object endDate) {
+        this.endDate = dateTimeOrNull(endDate);
     }
 
     public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final DateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
     }
 
     @Override

@@ -28,11 +28,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.RecurlyObject;
+import com.ning.billing.recurly.model.Subscription;
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
@@ -48,6 +50,8 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 public class RecurlyClient {
 
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
+
+    public static final String FETCH_RESOURCE = "/recurly_js/result";
 
     private final XmlMapper xmlMapper = new XmlMapper();
 
@@ -225,6 +229,48 @@ public class RecurlyClient {
      */
     public Plans getPlans() {
         return doGET(Plans.PLANS_RESOURCE, Plans.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Fetch Subscription
+     * <p/>
+     * Returns subscription from a recurly.js token.
+     *
+     * @param recurlyToken token given by recurly.js
+     * @return subscription object on success, null otherwise
+     */
+    public Subscription fetchSubscription(final String recurlyToken) {
+        return fetch(recurlyToken, Subscription.class);
+    }
+
+    /**
+     * Fetch BillingInfo
+     * <p/>
+     * Returns billing info from a recurly.js token.
+     *
+     * @param recurlyToken token given by recurly.js
+     * @return billing info object on success, null otherwise
+     */
+    public BillingInfo fetchBillingInfo(final String recurlyToken) {
+        return fetch(recurlyToken, BillingInfo.class);
+    }
+
+    /**
+     * Fetch Invoice
+     * <p/>
+     * Returns invoice from a recurly.js token.
+     *
+     * @param recurlyToken token given by recurly.js
+     * @return invoice object on success, null otherwise
+     */
+    public Invoice fetchInvoice(final String recurlyToken) {
+        return fetch(recurlyToken, Invoice.class);
+    }
+
+    private <T> T fetch(final String recurlyToken, final Class<T> clazz) {
+        return doGET(FETCH_RESOURCE + "/" + recurlyToken, clazz);
     }
 
 

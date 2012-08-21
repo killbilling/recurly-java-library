@@ -174,8 +174,8 @@ public class Transaction extends RecurlyObject {
         return createdAt;
     }
 
-    public void setCreatedAt(final DateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
     }
 
     @Override
