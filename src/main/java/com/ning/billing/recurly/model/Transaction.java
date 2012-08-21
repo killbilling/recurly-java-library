@@ -19,6 +19,8 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.joda.time.DateTime;
+
 @XmlRootElement(name = "transaction")
 public class Transaction extends RecurlyObject {
 
@@ -62,7 +64,7 @@ public class Transaction extends RecurlyObject {
     private Boolean refundable;
 
     @XmlElement(name = "created_at")
-    private RecurlyDateTime createdAt;
+    private DateTime createdAt;
 
     public Account getAccount() {
         return account;
@@ -168,11 +170,11 @@ public class Transaction extends RecurlyObject {
         this.refundable = refundable;
     }
 
-    public RecurlyDateTime getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final RecurlyDateTime createdAt) {
+    public void setCreatedAt(final DateTime createdAt) {
         this.createdAt = createdAt;
     }
 

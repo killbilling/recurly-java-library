@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.joda.time.DateTime;
+
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
 
@@ -56,7 +58,7 @@ public class Invoice extends RecurlyObject {
     private String currency;
 
     @XmlElement(name = "created_at")
-    private RecurlyDateTime createdAt;
+    private DateTime createdAt;
 
     @XmlElementWrapper(name = "line_items")
     @XmlElement(name = "line_item")
@@ -146,11 +148,11 @@ public class Invoice extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
-    public RecurlyDateTime getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final RecurlyDateTime createdAt) {
+    public void setCreatedAt(final DateTime createdAt) {
         this.createdAt = createdAt;
     }
 
