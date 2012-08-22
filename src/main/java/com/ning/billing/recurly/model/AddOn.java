@@ -21,6 +21,8 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.joda.time.DateTime;
+
 @XmlRootElement(name = "add_on")
 public class AddOn extends RecurlyObject {
 
@@ -43,7 +45,7 @@ public class AddOn extends RecurlyObject {
     private Map<String, Integer> unitAmountInCents;
 
     @XmlElement(name = "createdAt")
-    private RecurlyDateTime createdAt;
+    private DateTime createdAt;
 
     public Plan getPlan() {
         return plan;
@@ -93,12 +95,12 @@ public class AddOn extends RecurlyObject {
         this.unitAmountInCents = unitAmountInCents;
     }
 
-    public RecurlyDateTime getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final RecurlyDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
     }
 
     @Override

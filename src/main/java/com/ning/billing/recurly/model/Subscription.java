@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.joda.time.DateTime;
+
 @XmlRootElement(name = "subscription")
 public class Subscription extends RecurlyObject {
 
@@ -50,25 +52,25 @@ public class Subscription extends RecurlyObject {
     private Integer quantity;
 
     @XmlElement(name = "activated_at")
-    private RecurlyDateTime activatedAt;
+    private DateTime activatedAt;
 
     @XmlElement(name = "canceled_at")
-    private RecurlyDateTime canceledAt;
+    private DateTime canceledAt;
 
     @XmlElement(name = "expires_at")
-    private RecurlyDateTime expiresAt;
+    private DateTime expiresAt;
 
     @XmlElement(name = "current_period_started_at")
-    private RecurlyDateTime currentPeriodStartedAt;
+    private DateTime currentPeriodStartedAt;
 
     @XmlElement(name = "current_period_ends_at")
-    private RecurlyDateTime currentPeriodEndsAt;
+    private DateTime currentPeriodEndsAt;
 
     @XmlElement(name = "trial_started_at")
-    private RecurlyDateTime trialStartedAt;
+    private DateTime trialStartedAt;
 
     @XmlElement(name = "trial_ends_at")
-    private RecurlyDateTime trialEndsAt;
+    private DateTime trialEndsAt;
 
     @XmlElementWrapper(name = "subscription_add_ons")
     @XmlElement(name = "subscription_add_on")
@@ -138,60 +140,60 @@ public class Subscription extends RecurlyObject {
         this.quantity = integerOrNull(quantity);
     }
 
-    public RecurlyDateTime getActivatedAt() {
+    public DateTime getActivatedAt() {
         return activatedAt;
     }
 
-    public void setActivatedAt(final RecurlyDateTime activatedAt) {
-        this.activatedAt = activatedAt;
+    public void setActivatedAt(final Object activatedAt) {
+        this.activatedAt = dateTimeOrNull(activatedAt);
     }
 
-    public RecurlyDateTime getCanceledAt() {
+    public DateTime getCanceledAt() {
         return canceledAt;
     }
 
-    public void setCanceledAt(final RecurlyDateTime canceledAt) {
-        this.canceledAt = canceledAt;
+    public void setCanceledAt(final Object canceledAt) {
+        this.canceledAt = dateTimeOrNull(canceledAt);
     }
 
-    public RecurlyDateTime getExpiresAt() {
+    public DateTime getExpiresAt() {
         return expiresAt;
     }
 
-    public void setExpiresAt(final RecurlyDateTime expiresAt) {
-        this.expiresAt = expiresAt;
+    public void setExpiresAt(final Object expiresAt) {
+        this.expiresAt = dateTimeOrNull(expiresAt);
     }
 
-    public RecurlyDateTime getCurrentPeriodStartedAt() {
+    public DateTime getCurrentPeriodStartedAt() {
         return currentPeriodStartedAt;
     }
 
-    public void setCurrentPeriodStartedAt(final RecurlyDateTime currentPeriodStartedAt) {
-        this.currentPeriodStartedAt = currentPeriodStartedAt;
+    public void setCurrentPeriodStartedAt(final Object currentPeriodStartedAt) {
+        this.currentPeriodStartedAt = dateTimeOrNull(currentPeriodStartedAt);
     }
 
-    public RecurlyDateTime getCurrentPeriodEndsAt() {
+    public DateTime getCurrentPeriodEndsAt() {
         return currentPeriodEndsAt;
     }
 
-    public void setCurrentPeriodEndsAt(final RecurlyDateTime currentPeriodEndsAt) {
-        this.currentPeriodEndsAt = currentPeriodEndsAt;
+    public void setCurrentPeriodEndsAt(final Object currentPeriodEndsAt) {
+        this.currentPeriodEndsAt = dateTimeOrNull(currentPeriodEndsAt);
     }
 
-    public RecurlyDateTime getTrialStartedAt() {
+    public DateTime getTrialStartedAt() {
         return trialStartedAt;
     }
 
-    public void setTrialStartedAt(final RecurlyDateTime trialStartedAt) {
-        this.trialStartedAt = trialStartedAt;
+    public void setTrialStartedAt(final Object trialStartedAt) {
+        this.trialStartedAt = dateTimeOrNull(trialStartedAt);
     }
 
-    public RecurlyDateTime getTrialEndsAt() {
+    public DateTime getTrialEndsAt() {
         return trialEndsAt;
     }
 
-    public void setTrialEndsAt(final RecurlyDateTime trialEndsAt) {
-        this.trialEndsAt = trialEndsAt;
+    public void setTrialEndsAt(final Object trialEndsAt) {
+        this.trialEndsAt = dateTimeOrNull(trialEndsAt);
     }
 
     public List<AddOn> getAddOns() {

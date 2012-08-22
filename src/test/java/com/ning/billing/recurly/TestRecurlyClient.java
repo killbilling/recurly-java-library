@@ -16,6 +16,9 @@
 
 package com.ning.billing.recurly;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Minutes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -84,6 +87,7 @@ public class TestRecurlyClient {
         accountData.setAcceptLanguage("en_US");
         accountData.setCompanyName(randomString());
 
+        final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
         final Account account = recurlyClient.createAccount(accountData);
         Assert.assertNotNull(account);
         Assert.assertEquals(accountData.getAccountCode(), account.getAccountCode());
@@ -93,6 +97,8 @@ public class TestRecurlyClient {
         Assert.assertEquals(accountData.getUsername(), account.getUsername());
         Assert.assertEquals(accountData.getAcceptLanguage(), account.getAcceptLanguage());
         Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
+        // Verify we can serialize date times
+        Assert.assertEquals(Minutes.minutesBetween(account.getCreatedAt(), creationDateTime).getMinutes(), 0);
         log.info("Created account: {}", account.getAccountCode());
 
         final Accounts retrievedAccounts = recurlyClient.getAccounts();
@@ -133,18 +139,17 @@ public class TestRecurlyClient {
         unitCurrency.setUnitAmountEUR(12);
         plan.setSetupFeeInCents(unitCurrency);
         plan.setUnitAmountInCents(unitCurrency);
+
+        final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
         recurlyClient.createPlan(plan);
 
         Assert.assertTrue(recurlyClient.getPlans().size() > 0);
 
         final Plan retrievedPlan = recurlyClient.getPlan(plan.getPlanCode());
         Assert.assertEquals(retrievedPlan, plan);
-        
-        // Display the plans....
-        for (Plan p : recurlyClient.getPlans()) {
-            System.out.println("***************************");
-            System.out.println(p.toString());
-        }
+
+        // Verify we can serialize date times
+        Assert.assertEquals(Minutes.minutesBetween(retrievedPlan.getCreatedAt(), creationDateTime).getMinutes(), 0);
     }
 
     @Test(groups = "integration")

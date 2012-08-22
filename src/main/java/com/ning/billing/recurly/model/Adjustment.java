@@ -19,6 +19,8 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.joda.time.DateTime;
+
 @XmlRootElement(name = "adjustment")
 public class Adjustment extends RecurlyObject {
 
@@ -59,13 +61,13 @@ public class Adjustment extends RecurlyObject {
     private Boolean taxable;
 
     @XmlElement(name = "start_date")
-    private RecurlyDateTime startDate;
+    private DateTime startDate;
 
     @XmlElement(name = "end_date")
-    private RecurlyDateTime endDate;
+    private DateTime endDate;
 
     @XmlElement(name = "created_at")
-    private RecurlyDateTime createdAt;
+    private DateTime createdAt;
 
     public Account getAccount() {
         return account;
@@ -163,28 +165,28 @@ public class Adjustment extends RecurlyObject {
         this.taxable = taxable;
     }
 
-    public RecurlyDateTime getStartDate() {
+    public DateTime getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(final RecurlyDateTime startDate) {
-        this.startDate = startDate;
+    public void setStartDate(final Object startDate) {
+        this.startDate = dateTimeOrNull(startDate);
     }
 
-    public RecurlyDateTime getEndDate() {
+    public DateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(final RecurlyDateTime endDate) {
-        this.endDate = endDate;
+    public void setEndDate(final Object endDate) {
+        this.endDate = dateTimeOrNull(endDate);
     }
 
-    public RecurlyDateTime getCreatedAt() {
+    public DateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(final RecurlyDateTime createdAt) {
-        this.createdAt = createdAt;
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
     }
 
     @Override

@@ -28,8 +28,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject {
 
+    public static final String NIL_STR = "nil";
+
     public static Boolean booleanOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
         }
 
@@ -46,25 +48,15 @@ public abstract class RecurlyObject {
     }
 
     public static String stringOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
-        }
-
-        // Hack to work around Recurly output for nil values: the response will contain
-        // an element with a nil attribute (e.g. <city nil="nil"></city>) which Jackson will
-        // interpret as an Object (Map), not a String.
-        if (object instanceof Map) {
-            final Map map = (Map) object;
-            if (map.keySet().size() == 1 && "nil".equals(map.get("nil"))) {
-                return null;
-            }
         }
 
         return object.toString();
     }
 
     public static Integer integerOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
         }
 
@@ -81,7 +73,7 @@ public abstract class RecurlyObject {
     }
 
     public static DateTime dateTimeOrNull(@Nullable final Object object) {
-        if (object == null) {
+        if (isNull(object)) {
             return null;
         }
 
@@ -97,50 +89,21 @@ public abstract class RecurlyObject {
         return new DateTime(object.toString());
     }
 
-    @JsonIgnoreProperties(ignoreUnknown = true)
-    protected static class RecurlyDateTime {
-
-        @XmlValue
-        private DateTime dateTime;
-
-        public DateTime getDateTime() {
-            return dateTime;
-        }
-
-        public void setDateTime(final DateTime dateTime) {
-            this.dateTime = dateTime;
-        }
-
-        @Override
-        public String toString() {
-            final StringBuilder sb = new StringBuilder();
-            sb.append("RecurlyDateTime");
-            sb.append("{dateTime=").append(dateTime);
-            sb.append('}');
-            return sb.toString();
-        }
-
-        @Override
-        public boolean equals(final Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-
-            final RecurlyDateTime that = (RecurlyDateTime) o;
-
-            if (dateTime != null ? !dateTime.equals(that.dateTime) : that.dateTime != null) {
-                return false;
-            }
-
+    public static boolean isNull(Object object) {
+        if (object == null) {
             return true;
         }
 
-        @Override
-        public int hashCode() {
-            return dateTime != null ? dateTime.hashCode() : 0;
+        // Hack to work around Recurly output for nil values: the response will contain
+        // an element with a nil attribute (e.g. <city nil="nil"></city>) which Jackson will
+        // interpret as an Object (Map), not a String.
+        if (object instanceof Map) {
+            final Map map = (Map) object;
+            if (map.keySet().size() == 1 && NIL_STR.equals(map.get(NIL_STR))) {
+                return true;
+            }
         }
+
+        return false;
     }
 }
