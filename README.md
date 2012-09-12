@@ -19,3 +19,5 @@ Build
 To build the project, use maven:
 
     mvn clean install
+
+Official builds are available in [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.ning.billing%22%20AND%20a%3A%22recurly-java-library%22).
