@@ -19,7 +19,6 @@ package com.ning.billing.recurly;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.concurrent.ExecutionException;
-import java.util.List;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
@@ -27,14 +26,15 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
@@ -124,6 +124,30 @@ public class RecurlyClient {
      */
     public Account getAccount(final String accountCode) {
         return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode, Account.class);
+    }
+
+    /**
+     * Get account subscriptions
+     * <p/>
+     * Returns subscription information about a single account.
+     *
+     * @param accountCode recurly account id
+     * @return a list of subscription objects on success, null otherwise
+     */
+    public Subscriptions getAccountSubscriptions(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + "/" + Subscriptions.SUBSCRIPTION_RESOURCE, Subscriptions.class);
+    }
+
+    /**
+     * Get subscription by UUID
+     * <p/>
+     * Returns subscription information for a single subscription.
+     *
+     * @param subscriptionUUID recurly subscription unique id
+     * @return account object on success, null otherwise
+     */
+    public Subscription getSubscription(final String subscriptionUUID) {
+        return doGET(Subscriptions.SUBSCRIPTION_RESOURCE + "/" + subscriptionUUID , Subscription.class);
     }
 
     /**
