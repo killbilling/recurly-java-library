@@ -8,3 +8,7 @@ target
 *.ear
 pom.xml.releaseBackup
 release.properties
+test-output/*
+.settings/*
+.project
+.classpath
