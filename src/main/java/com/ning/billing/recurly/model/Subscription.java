@@ -21,11 +21,16 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "subscription")
 public class Subscription extends RecurlyObject {
+
+    @XmlTransient
+    public static final String SUBSCRIPTION_RESOURCE
+            = "/subscriptions";
 
     @XmlElement(name = "account")
     private Account account;
@@ -39,7 +44,7 @@ public class Subscription extends RecurlyObject {
     @XmlElement(name = "uuid")
     private String uuid;
 
-    @XmlElement(name = "state")
+    @XmlElement(name = "state", required=false)
     private String state;
 
     @XmlElement(name = "unit_amount_in_cents")

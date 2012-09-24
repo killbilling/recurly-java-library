@@ -16,6 +16,7 @@
 
 package com.ning.billing.recurly;
 
+import com.ning.billing.recurly.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -26,12 +27,6 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.Subscriptions;
-import com.ning.billing.recurly.model.Accounts;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plan.RecurlyUnitCurrency;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
@@ -154,59 +149,86 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testCreateSubscriptions() throws Exception {
-        // // Create a user
-        // final Account accountData = new Account();
-        // accountData.setAccountCode(randomString());
-        // accountData.setEmail(randomString() + "@laposte.net");
-        // accountData.setFirstName(randomString());
-        // accountData.setLastName(randomString());
-        // accountData.setUsername(randomString());
-        // accountData.setAcceptLanguage("en_US");
+        // Create a user
+        final Account accountData = new Account();
+        accountData.setAccountCode(randomString());
+        accountData.setEmail(randomString() + "@laposte.net");
+        accountData.setFirstName(randomString());
+        accountData.setLastName(randomString());
+        accountData.setUsername(randomString());
+        accountData.setAcceptLanguage("en_US");
 
-        // final Account account = recurlyClient.createAccount(accountData);
+        final Account account = recurlyClient.createAccount(accountData);
 
-        // final BillingInfo billingInfoData = new BillingInfo();
-        // billingInfoData.setFirstName(randomString());
-        // billingInfoData.setLastName(randomString());
-        // billingInfoData.setNumber("4111-1111-1111-1111");
-        // billingInfoData.setVerificationValue(123);
-        // billingInfoData.setMonth(11);
-        // billingInfoData.setYear(2015);
-        // billingInfoData.setAccount(account);
+        final BillingInfo billingInfoData = new BillingInfo();
+        billingInfoData.setFirstName(randomString());
+        billingInfoData.setLastName(randomString());
+        billingInfoData.setNumber("4111-1111-1111-1111");
+        billingInfoData.setVerificationValue(123);
+        billingInfoData.setMonth(11);
+        billingInfoData.setYear(2015);
+        billingInfoData.setAccount(account);
 
-        // final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+        final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+        final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
 
-        // final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
-
-        // accountData.setBillingInfo(billingInfo);
+        accountData.setBillingInfo(billingInfo);
 
         // // Create a plan
-        // final Plan plan = new Plan();
-        // plan.setPlanCode(randomString());
-        // plan.setName(randomString());
-        // final RecurlyUnitCurrency unitCurrency = new RecurlyUnitCurrency();
-        // unitCurrency.setUnitAmountEUR(12);
-        // plan.setSetupFeeInCents(unitCurrency);
-        // plan.setUnitAmountInCents(unitCurrency);
-        // recurlyClient.createPlan(plan);
+        final Plan plan = new Plan();
+        plan.setPlanCode(randomString());
+        plan.setName(randomString());
+        final RecurlyUnitCurrency unitCurrency = new RecurlyUnitCurrency();
+        unitCurrency.setUnitAmountEUR(12);
+        plan.setSetupFeeInCents(unitCurrency);
+        plan.setUnitAmountInCents(unitCurrency);
+        recurlyClient.createPlan(plan);
 
+
+        /**
+         * NOTE: can't test this as I can't create transactions due to an issue with the XML.
+         * The subscription object needs a State field for containing info about the state of subscriptions
+         * being returned from the reucrly api. But, when we want to create a new subscription that State
+         * field gets added to the XML sent to the api - and State is an illegal field in tsi instance. The API
+         * rejects the call. So we either have to have 2 objects (inbound subscription and outbound) __or__ we
+         * some-how filter the fields on their way to serialisation through the JacksonXML XMLMapper.
+         *
+         * This is currently not yet implemented - and I have no idea how to implement it (yet) :)
+         */
         // // Subscribe the user to the plan
-        // Subscription subscriptionData = new Subscription();
-        // subscriptionData.setPlanCode(plan.getPlanCode());
-        // subscriptionData.setAccount(account);
-        // subscriptionData.setCurrency("EUR");
-        // final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+        //Subscription subscriptionData = new Subscription();
+        //subscriptionData.setPlanCode(plan.getPlanCode());
+        //subscriptionData.setAccount(account);
+        //subscriptionData.setCurrency("EUR");
+        //subscriptionData.setState(null);
+        //final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
         // // Query the subscriptions for the user and check that
         // // returned values make sense
 
-        // Get subscriptions for me...
-        final String name = "1234";
-        Subscriptions subs = recurlyClient.getAccountSubscriptions(name);
-
-        System.out.println("Subs for me.....");
-        for (Subscription s : subs ) {
-            System.out.println(s.toString());
-        }
+        //// Get subscriptions for me...
+        //final String name = "1234";
+        //Subscriptions subs = recurlyClient.getAccountSubscriptions(name);
+        //
+        //System.out.println("Subs for me.....");
+        //for (Subscription s : subs ) {
+        //    System.out.println(s.toString());
+        //}
     }
+
+    @Test(groups = "integration")
+    public void testQueryTransactions() throws Exception {
+        // Not sure... this unit test depends on being able to create transactions, so until
+        // I can figure out how to do that I can't write this.
+        // Temp fix - search for my transactions.
+        String accountCode = "1234";
+        final Transactions trans = recurlyClient.getAccountTransactions(accountCode);
+        for (Transaction t : trans) {
+            System.out.println("Transaction:: " + trans.toString());
+        }
+
+
+
+    }
+
 }

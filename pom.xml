@@ -21,7 +21,8 @@
         <version>5</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ning.billing</groupId>
+    <!-- groupId>com.ning.billing</groupId -->
+    <groupId>com.tenduke</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
     <version>0.1.2-SNAPSHOT</version>

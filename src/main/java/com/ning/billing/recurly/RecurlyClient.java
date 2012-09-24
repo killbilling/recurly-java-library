@@ -24,18 +24,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 
+import com.ning.billing.recurly.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ning.billing.recurly.model.Accounts;
-import com.ning.billing.recurly.model.Subscriptions;
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.Invoice;
-import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.Plans;
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
@@ -184,12 +176,12 @@ public class RecurlyClient {
      * @return the newly created Subscription object on success, null otherwise
      */
     public Subscription createSubscription(final Subscription subscription) {
-        return doPOST(Subscriptions.SUBSCRIPTIONS_RESOURCE,
+        return doPOST(Subscription.SUBSCRIPTION_RESOURCE,
                       subscription, Subscription.class);
     }
 
     /**
-     * Get the subscriptions for an acocunt.
+     * Get the subscriptions for an account.
      * <p/>
      * Returns information about a single account.
      *
@@ -201,6 +193,24 @@ public class RecurlyClient {
                      + "/" + accountCode
                      + Subscriptions.SUBSCRIPTIONS_RESOURCE,
                      Subscriptions.class);
+    }
+
+    /**
+     * Get the subscriptions for an account.
+     * <p/>
+     * Returns information about a single account.
+     *
+     * @param accountCode recurly account id
+     * @param status Only accounts in this status will be returned
+     * @return Subscriptions for the specified user
+     */
+    public Subscriptions getAccountSubscriptions(final String accountCode, final String status) {
+        return doGET(Account.ACCOUNT_RESOURCE
+                + "/" + accountCode
+                + Subscriptions.SUBSCRIPTIONS_RESOURCE
+                + "?state="
+                + status,
+                Subscriptions.class);
     }
 
     /**
@@ -260,6 +270,25 @@ public class RecurlyClient {
     public void clearBillingInfo(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE);
     }
+
+
+    ///////////////////////////////////////////////////////////////////////////
+    // User transactions
+
+    /**
+     * Lookup an account's transactions history
+     * <p/>
+     * Returns the account's transaction history
+     *
+     * @param accountCode recurly account id
+     * @return the transaction history associated with this account on success, null otherwise
+     */
+    public Transactions getAccountTransactions(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Transactions.TRANSACTIONS_RESOURCE,
+                        Transactions.class);
+    }
+
+
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -342,11 +371,22 @@ public class RecurlyClient {
 
 
     private <T> T doGET(final String resource, final Class<T> clazz) {
-        return callRecurlySafe(client.prepareGet(baseUrl 
-                                                 + resource 
-                                                 + "?"
-                                                 + getPageSizeGetParam()),
-                               clazz);
+        StringBuffer url = new StringBuffer(baseUrl);
+        url.append(resource);
+        if (resource != null && !resource.contains("?")) {
+            url.append("?");
+        } else {
+            url.append("&");
+        }
+        url.append(getPageSizeGetParam());
+
+        if (debug()) {
+            System.out.println("*******************************");
+            System.out.println("*** GET URL to Recurly API ***");
+            System.out.println(url);
+            System.out.println("*******************************");
+        }
+        return callRecurlySafe(client.prepareGet(url.toString()), clazz);
     }
 
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {
@@ -398,7 +438,8 @@ public class RecurlyClient {
         }
     }
 
-    private <T> T callRecurly(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) throws IOException, ExecutionException, InterruptedException {
+    private <T> T callRecurly(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
+            throws IOException, ExecutionException, InterruptedException {
         return builder.addHeader("Authorization", "Basic " + key)
                       .addHeader("Accept", "application/xml")
                       .addHeader("Content-Type", "application/xml; charset=utf-8")
