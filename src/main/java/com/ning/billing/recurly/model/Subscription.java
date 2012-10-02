@@ -273,9 +273,11 @@ public class Subscription extends RecurlyObject {
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
             return false;
         }
+
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
+
         if (trialEndsAt != null ? !trialEndsAt.equals(that.trialEndsAt) : that.trialEndsAt != null) {
             return false;
         }
@@ -297,7 +299,7 @@ public class Subscription extends RecurlyObject {
         int result = account != null ? account.hashCode() : 0;
         result = 31 * result + (plan != null ? plan.hashCode() : 0);
         result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        //result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);

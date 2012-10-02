@@ -33,15 +33,20 @@ import static com.ning.billing.recurly.TestUtils.randomString;
 
 public class TestRecurlyClient {
 
+    public static final String RECURLY_PAGE_SIZE = "recurly.page.size";
+    public static final String KILLBILL_PAYMENT_RECURLY_API_KEY = "killbill.payment.recurly.apiKey";
+
     private static final Logger log = LoggerFactory.getLogger(TestRecurlyClient.class);
 
     private RecurlyClient recurlyClient;
 
     @BeforeMethod(groups = "integration")
     public void setUp() throws Exception {
-        final String apiKey = System.getProperty("killbill.payment.recurly.apiKey");
+        //
+        final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
         if (apiKey == null) {
-            Assert.fail("You need to set your Recurly api key to run integration tests: -Dkillbill.payment.recurly.apiKey=...");
+            Assert.fail("You need to set your Recurly api key to run integration tests:" +
+                    " -Dkillbill.payment.recurly.apiKey=...");
         }
 
         recurlyClient = new RecurlyClient(apiKey);
@@ -50,185 +55,241 @@ public class TestRecurlyClient {
 
     @AfterMethod(groups = "integration")
     public void tearDown() throws Exception {
+        //
         recurlyClient.close();
     }
 
     @Test(groups = "integration")
     public void testGetPageSize() throws Exception {
-        System.setProperty("recurly.page.size", "");
+        //
+        System.setProperty(RECURLY_PAGE_SIZE, "");
         Assert.assertEquals(new Integer("20"), RecurlyClient.getPageSize());
-
-        System.setProperty("recurly.page.size", "350");
+        System.setProperty(RECURLY_PAGE_SIZE, "350");
         Assert.assertEquals(new Integer("350"), RecurlyClient.getPageSize());
     }
 
     @Test(groups = "integration")
     public void testGetPageSizeGetParam() throws Exception {
-        System.setProperty("recurly.page.size", "");
+        //
+        System.setProperty(RECURLY_PAGE_SIZE, "");
         Assert.assertEquals("per_page=20", RecurlyClient.getPageSizeGetParam());
-
-        System.setProperty("recurly.page.size", "350");
+        System.setProperty(RECURLY_PAGE_SIZE, "350");
         Assert.assertEquals("per_page=350", RecurlyClient.getPageSizeGetParam());
     }
 
     @Test(groups = "integration")
     public void testCreateAccount() throws Exception {
-        final Account accountData = new Account();
-        accountData.setAccountCode(randomString());
-        accountData.setEmail(randomString() + "@laposte.net");
-        accountData.setFirstName(randomString());
-        accountData.setLastName(randomString());
-        accountData.setUsername(randomString());
-        accountData.setAcceptLanguage("en_US");
-        accountData.setCompanyName(randomString());
+        //
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
 
-        final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
-        final Account account = recurlyClient.createAccount(accountData);
-        Assert.assertNotNull(account);
-        Assert.assertEquals(accountData.getAccountCode(), account.getAccountCode());
-        Assert.assertEquals(accountData.getEmail(), account.getEmail());
-        Assert.assertEquals(accountData.getFirstName(), account.getFirstName());
-        Assert.assertEquals(accountData.getLastName(), account.getLastName());
-        Assert.assertEquals(accountData.getUsername(), account.getUsername());
-        Assert.assertEquals(accountData.getAcceptLanguage(), account.getAcceptLanguage());
-        Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
-        // Verify we can serialize date times
-        Assert.assertEquals(Minutes.minutesBetween(account.getCreatedAt(), creationDateTime).getMinutes(), 0);
-        log.info("Created account: {}", account.getAccountCode());
+        try {
+            //
+            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
+            final Account account = recurlyClient.createAccount(accountData);
 
-        final Accounts retrievedAccounts = recurlyClient.getAccounts();
-        Assert.assertTrue(retrievedAccounts.size() > 0);
+            // Test account creation
+            Assert.assertNotNull(account);
+            Assert.assertEquals(accountData.getAccountCode(), account.getAccountCode());
+            Assert.assertEquals(accountData.getEmail(), account.getEmail());
+            Assert.assertEquals(accountData.getFirstName(), account.getFirstName());
+            Assert.assertEquals(accountData.getLastName(), account.getLastName());
+            Assert.assertEquals(accountData.getUsername(), account.getUsername());
+            Assert.assertEquals(accountData.getAcceptLanguage(), account.getAcceptLanguage());
+            Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
+            // Verify we can serialize date times
+            Assert.assertEquals(Minutes.minutesBetween(account.getCreatedAt(), creationDateTime).getMinutes(), 0);
+            log.info("Created account: {}", account.getAccountCode());
 
-        final Account retrievedAccount = recurlyClient.getAccount(account.getAccountCode());
-        Assert.assertEquals(retrievedAccount, account);
+            // Test getting all
+            final Accounts retrievedAccounts = recurlyClient.getAccounts();
+            Assert.assertTrue(retrievedAccounts.size() > 0);
 
-        final BillingInfo billingInfoData = new BillingInfo();
-        billingInfoData.setFirstName(randomString());
-        billingInfoData.setLastName(randomString());
-        billingInfoData.setNumber("4111-1111-1111-1111");
-        billingInfoData.setVerificationValue(123);
-        billingInfoData.setMonth(11);
-        billingInfoData.setYear(2015);
-        billingInfoData.setAccount(account);
+            // Test an account lookup
+            final Account retrievedAccount = recurlyClient.getAccount(account.getAccountCode());
+            Assert.assertEquals(retrievedAccount, account);
 
-        final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
-        Assert.assertNotNull(billingInfo);
-        Assert.assertEquals(billingInfoData.getFirstName(), billingInfo.getFirstName());
-        Assert.assertEquals(billingInfoData.getLastName(), billingInfo.getLastName());
-        Assert.assertEquals(billingInfoData.getMonth(), billingInfo.getMonth());
-        Assert.assertEquals(billingInfoData.getYear(), billingInfo.getYear());
-        Assert.assertEquals(billingInfo.getCardType(), "Visa");
-        log.info("Added billing info: {}", billingInfo.getCardType());
+            // Create a BillingInfo
+            billingInfoData.setAccount(account);
 
-        final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
-        Assert.assertEquals(retrievedBillingInfo, billingInfo);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+
+            // Test BillingInfo creation
+            Assert.assertNotNull(billingInfo);
+            Assert.assertEquals(billingInfoData.getFirstName(), billingInfo.getFirstName());
+            Assert.assertEquals(billingInfoData.getLastName(), billingInfo.getLastName());
+            Assert.assertEquals(billingInfoData.getMonth(), billingInfo.getMonth());
+            Assert.assertEquals(billingInfoData.getYear(), billingInfo.getYear());
+            Assert.assertEquals(billingInfo.getCardType(), "Visa");
+            log.info("Added billing info: {}", billingInfo.getCardType());
+
+            // Test BillingInfo lookup
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertEquals(retrievedBillingInfo, billingInfo);
+
+        } finally {
+            // Clean up
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
     }
 
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
-        // Create a plan
-        final Plan plan = new Plan();
-        plan.setPlanCode(randomString());
-        plan.setName(randomString());
-        final RecurlyUnitCurrency unitCurrency = new RecurlyUnitCurrency();
-        unitCurrency.setUnitAmountEUR(12);
-        plan.setSetupFeeInCents(unitCurrency);
-        plan.setUnitAmountInCents(unitCurrency);
+        //
+        final Plan planData = TestUtils.createRandomPlan();
+        try {
+            // Create a plan
+            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Plan retPlan = recurlyClient.getPlan(plan.getPlanCode());
 
-        final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
-        recurlyClient.createPlan(plan);
+            // test creation of plan
+            Assert.assertNotNull(plan);
+            Assert.assertEquals(retPlan, plan);
+            // Verify we can serialize date times
+            Assert.assertEquals(Minutes.minutesBetween(plan.getCreatedAt(), creationDateTime).getMinutes(), 0);
+            // Check that getting all the plans makes sense
+            Assert.assertTrue(recurlyClient.getPlans().size() > 0);
 
-        Assert.assertTrue(recurlyClient.getPlans().size() > 0);
-
-        final Plan retrievedPlan = recurlyClient.getPlan(plan.getPlanCode());
-        Assert.assertEquals(retrievedPlan, plan);
-
-        // Verify we can serialize date times
-        Assert.assertEquals(Minutes.minutesBetween(retrievedPlan.getCreatedAt(), creationDateTime).getMinutes(), 0);
+        } finally {
+            // Delete the plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+            // Check that we deleted it
+            final Plan retrievedPlan2 = recurlyClient.getPlan(planData.getPlanCode());
+            if (null != retrievedPlan2) {
+                Assert.fail("Failed to delete the Plan");
+            }
+        }
     }
 
     @Test(groups = "integration")
     public void testCreateSubscriptions() throws Exception {
-        // Create a user
-        final Account accountData = new Account();
-        accountData.setAccountCode(randomString());
-        accountData.setEmail(randomString() + "@laposte.net");
-        accountData.setFirstName(randomString());
-        accountData.setLastName(randomString());
-        accountData.setUsername(randomString());
-        accountData.setAcceptLanguage("en_US");
-
-        final Account account = recurlyClient.createAccount(accountData);
-
-        final BillingInfo billingInfoData = new BillingInfo();
-        billingInfoData.setFirstName(randomString());
-        billingInfoData.setLastName(randomString());
-        billingInfoData.setNumber("4111-1111-1111-1111");
-        billingInfoData.setVerificationValue(123);
-        billingInfoData.setMonth(11);
-        billingInfoData.setYear(2015);
-        billingInfoData.setAccount(account);
-
-        final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
-        final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
-
-        accountData.setBillingInfo(billingInfo);
-
-        // // Create a plan
-        final Plan plan = new Plan();
-        plan.setPlanCode(randomString());
-        plan.setName(randomString());
-        final RecurlyUnitCurrency unitCurrency = new RecurlyUnitCurrency();
-        unitCurrency.setUnitAmountEUR(12);
-        plan.setSetupFeeInCents(unitCurrency);
-        plan.setUnitAmountInCents(unitCurrency);
-        recurlyClient.createPlan(plan);
-
-
-        /**
-         * NOTE: can't test this as I can't create transactions due to an issue with the XML.
-         * The subscription object needs a State field for containing info about the state of subscriptions
-         * being returned from the reucrly api. But, when we want to create a new subscription that State
-         * field gets added to the XML sent to the api - and State is an illegal field in tsi instance. The API
-         * rejects the call. So we either have to have 2 objects (inbound subscription and outbound) __or__ we
-         * some-how filter the fields on their way to serialisation through the JacksonXML XMLMapper.
-         *
-         * This is currently not yet implemented - and I have no idea how to implement it (yet) :)
-         */
-        // // Subscribe the user to the plan
-        //Subscription subscriptionData = new Subscription();
-        //subscriptionData.setPlanCode(plan.getPlanCode());
-        //subscriptionData.setAccount(account);
-        //subscriptionData.setCurrency("EUR");
-        //subscriptionData.setState(null);
-        //final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
-
-        // // Query the subscriptions for the user and check that
-        // // returned values make sense
-
-        //// Get subscriptions for me...
-        //final String name = "1234";
-        //Subscriptions subs = recurlyClient.getAccountSubscriptions(name);
         //
-        //System.out.println("Subs for me.....");
-        //for (Subscription s : subs ) {
-        //    System.out.println(s.toString());
-        //}
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Subscribe the user to the plan
+            Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency("EUR");
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+
+            // Test subscription creation
+            Assert.assertNotNull(subscription);
+            //Assert.assertEquals(subscription.getAccount().getAccountCode(), subscriptionData);
+
+            // Test lookup for subscription
+            Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertNotNull(sub1);
+            Assert.assertEquals(sub1, subscription);
+            // Do a lookup for subs for given account
+            Subscriptions subs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
+            // Check that the newly created sub is in the list
+            boolean found = false;
+            for (Subscription s : subs) {
+                if (s.getUuid().toString().equals(subscription.getUuid().toString())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                Assert.fail("Could not locate the subscription in the subscriptions associated with the account");
+            }
+
+        } finally {
+            // Clear up the BillingInfo
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
     }
 
-    @Test(groups = "integration")
+    //@Test(groups = "integration")
     public void testQueryTransactions() throws Exception {
         // Not sure... this unit test depends on being able to create transactions, so until
         // I can figure out how to do that I can't write this.
         // Temp fix - search for my transactions.
         String accountCode = "1234";
         final Transactions trans = recurlyClient.getAccountTransactions(accountCode);
+        /*
         for (Transaction t : trans) {
             System.out.println("Transaction:: " + trans.toString());
         }
-
-
-
+        */
     }
 
+    @Test(groups="integration")
+    public void testAddons() throws Exception {
+
+        // Create a Plan
+        Plan planData = TestUtils.createRandomPlan();
+        AddOn addOn = TestUtils.createRandomAddOn();
+
+        try {
+            // Create an AddOn
+            Plan plan = recurlyClient.createPlan(planData);
+            AddOn addOnRecurly = recurlyClient.createPlanAddOn(plan.getPlanCode(), addOn);
+
+            // Test the creation
+            Assert.assertNotNull(addOnRecurly);
+            Assert.assertEquals(addOnRecurly.getAddOnCode(), addOn.getAddOnCode());
+            Assert.assertEquals(addOnRecurly.getName(), addOn.getName());
+            Assert.assertEquals(addOnRecurly.getUnitAmountInCents(), addOn.getUnitAmountInCents());
+
+            // Query for an AddOn
+            addOnRecurly = recurlyClient.getAddOn(plan.getPlanCode(), addOn.getAddOnCode());
+
+            // Check the 2 are the same
+            Assert.assertEquals(addOnRecurly.getAddOnCode(), addOn.getAddOnCode());
+            Assert.assertEquals(addOnRecurly.getName(), addOn.getName());
+            //Assert.assertEquals(addOnRecurly.getDefaultQuantity(), addOn.getDefaultQuantity());
+            //Assert.assertEquals(addOnRecurly.getDisplayQuantityOnHostedPage(), addOn.getDisplayQuantityOnHostedPage());
+            Assert.assertEquals(addOnRecurly.getUnitAmountInCents(), addOn.getUnitAmountInCents());
+        } finally {
+            // Delete an AddOn
+            recurlyClient.deleteAddOn(planData.getPlanCode(), addOn.getAddOnCode());
+            // Delete the plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    // todo: uncomment when the coupon code is fixed
+    //@Test(groups="integration")
+    public void testCreateCoupon() throws Exception {
+        // Create the coupon
+        Coupon c = new Coupon();
+        c.setName(randomString());
+        c.setCouponCode(randomString());
+        c.setDiscountType("percent");
+        c.setDiscountPercent("10");
+        // Save the coupon
+        Coupon coupon = recurlyClient.createCoupon(c);
+
+        if (null == coupon) {
+            Assert.fail("Returned coupon from Recurly was null");
+        }
+
+        // Tests
+        Assert.assertEquals(coupon.getName(), c.getName());
+        Assert.assertEquals(coupon.getCouponCode(), c.getCouponCode());
+        Assert.assertEquals(coupon.getDiscountType(), c.getDiscountType());
+        Assert.assertEquals(coupon.getDiscountPercent(), c.getDiscountPercent());
+    }
 }
