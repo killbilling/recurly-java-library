@@ -309,6 +309,16 @@ public class RecurlyClient {
                         Transactions.class);
     }
 
+    /**
+     * CReates a {@link Transaction} throgh the Recurly API.
+     *
+     * @param trans The {@link Transaction} to create
+     * @return The created {@link Transaction} object
+     */
+    public Transaction createTransaction(final Transaction trans) {
+        return doPOST(Transactions.TRANSACTIONS_RESOURCE, trans, Transaction.class);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
 
     /**

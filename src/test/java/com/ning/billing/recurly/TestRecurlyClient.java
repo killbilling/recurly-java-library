@@ -29,6 +29,8 @@ import org.testng.annotations.Test;
 
 import com.ning.billing.recurly.model.Plan.RecurlyUnitCurrency;
 
+import javax.accessibility.AccessibleStateSet;
+
 import static com.ning.billing.recurly.TestUtils.randomString;
 
 public class TestRecurlyClient {
@@ -187,11 +189,21 @@ public class TestRecurlyClient {
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency("EUR");
+            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
             // Test subscription creation
             Assert.assertNotNull(subscription);
-            //Assert.assertEquals(subscription.getAccount().getAccountCode(), subscriptionData);
+            Assert.assertEquals(subscription.getCurrency(), subscriptionData.getCurrency());
+            if (null == subscriptionData.getQuantity()) {
+                Assert.assertEquals(subscription.getQuantity(), new Integer(1));
+            } else {
+                Assert.assertEquals(subscription.getQuantity(), subscriptionData.getQuantity());
+            }
+            // Verify we can serialize date times
+            Assert.assertEquals(Minutes.minutesBetween(subscription.getActivatedAt(), creationDateTime).getMinutes(),
+                    0);
+            log.info("Created subscription: {}", subscription.getUuid());
 
             // Test lookup for subscription
             Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());
@@ -221,18 +233,68 @@ public class TestRecurlyClient {
         }
     }
 
-    //@Test(groups = "integration")
-    public void testQueryTransactions() throws Exception {
-        // Not sure... this unit test depends on being able to create transactions, so until
-        // I can figure out how to do that I can't write this.
-        // Temp fix - search for my transactions.
-        String accountCode = "1234";
-        final Transactions trans = recurlyClient.getAccountTransactions(accountCode);
-        /*
-        for (Transaction t : trans) {
-            System.out.println("Transaction:: " + trans.toString());
+    @Test(groups = "integration")
+    public void testCreateAndQueryTransactions() throws Exception {
+        //
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Subscribe the user to the plan
+            Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency("EUR");
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+
+            // Create a subscription
+            Transaction t = new Transaction();
+            accountData.setBillingInfo(billingInfoData);
+            t.setAccount(accountData);
+            t.setAmountInCents(10);
+            t.setCurrency("EUR");
+            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
+            Transaction createdT = recurlyClient.createTransaction(t);
+
+            // Test that the transaction created correctly
+            Assert.assertNotNull(createdT);
+            // Can't test for account equality yet as the account is only a ref and doesn't get mapped.
+            Assert.assertEquals(createdT.getAmountInCents(), t.getAmountInCents());
+            Assert.assertEquals(createdT.getCurrency(), t.getCurrency());
+            log.info("Created transaction: {}", createdT.getUuid());
+
+            // Test lookup on the transaction via the users account
+            Transactions trans = recurlyClient.getAccountTransactions(account.getAccountCode());
+            boolean found = false;
+            for (Transaction _t : trans) {
+                if (_t.getUuid().equals(createdT.getUuid())) {
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                Assert.fail("Failed to locate the newly created transaction");
+            }
+        } finally {
+            // Clear up the BillingInfo
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
         }
-        */
     }
 
     @Test(groups="integration")
