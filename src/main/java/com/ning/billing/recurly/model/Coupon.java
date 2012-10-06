@@ -45,6 +45,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Gets the name of the {@link Coupon}
+     *
      * @return The {@link Coupon} name
      */
     public String getName() {
@@ -53,6 +54,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Sets the name of the {@link Coupon}
+     *
      * @param name The Name that is to be given to the {@link Coupon}
      */
     public void setName(final String name) {
@@ -61,6 +63,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Gets the coupon code for a {@link Coupon}
+     *
      * @return The coupon code for the {@link Coupon}
      */
     public String getCouponCode() {
@@ -69,6 +72,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Sets the coupon code for the {@link Coupon}
+     *
      * @param couponCode
      */
     public void setCouponCode(final String couponCode) {
@@ -77,6 +81,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Sets the discount type for a {@link Coupon}
+     *
      * @param discountType A String of: 'percent'; 'dollars';
      */
     public void setDiscountType(final String discountType) {
@@ -85,6 +90,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Gets the discount type associated with the {@link Coupon}
+     *
      * @return A String defining the discount type: 'percent' or 'dollars'.
      */
     public String getDiscountType() {
@@ -93,6 +99,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Gets the percentage discount for a coupon
+     *
      * @return The percentage
      */
     public String getDiscountPercent() {

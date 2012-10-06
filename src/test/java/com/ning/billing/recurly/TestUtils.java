@@ -16,12 +16,18 @@
 
 package com.ning.billing.recurly;
 
-import com.ning.billing.recurly.model.*;
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+
+import org.joda.time.DateTime;
+
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.Transaction;
 
 public class TestUtils {
 
@@ -37,6 +43,7 @@ public class TestUtils {
     /**
      * Generates a String comprised of random alpha-numeric
      * chars upto the length as defined by the input param.
+     *
      * @param n The length, in number of chars, of the returned
      *          String
      * @return A random alpah-numeric String
@@ -56,6 +63,7 @@ public class TestUtils {
     /**
      * Generates a String comprised of random numeric
      * chars upto the length as defined by the input param.
+     *
      * @param n The length, in number of chars, of the returned
      *          String
      * @return A random numeric String
@@ -72,7 +80,7 @@ public class TestUtils {
      * @return The random integer - from within the range 0 to upperRange
      */
     public final static Integer randomInteger(int upperRange) {
-        return new Integer(( int)(Math.random() * upperRange));
+        return new Integer((int) (Math.random() * upperRange));
     }
 
     public static final String createTestCCNumber() {

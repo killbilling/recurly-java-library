@@ -16,7 +16,6 @@
 
 package com.ning.billing.recurly;
 
-import com.ning.billing.recurly.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -27,9 +26,16 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.ning.billing.recurly.model.Plan.RecurlyUnitCurrency;
-
-import javax.accessibility.AccessibleStateSet;
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.Subscriptions;
+import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.Transactions;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
 
@@ -48,7 +54,7 @@ public class TestRecurlyClient {
         final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
         if (apiKey == null) {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
-                    " -Dkillbill.payment.recurly.apiKey=...");
+                        " -Dkillbill.payment.recurly.apiKey=...");
         }
 
         recurlyClient = new RecurlyClient(apiKey);
@@ -202,7 +208,7 @@ public class TestRecurlyClient {
             }
             // Verify we can serialize date times
             Assert.assertEquals(Minutes.minutesBetween(subscription.getActivatedAt(), creationDateTime).getMinutes(),
-                    0);
+                                0);
             log.info("Created subscription: {}", subscription.getUuid());
 
             // Test lookup for subscription
@@ -297,7 +303,7 @@ public class TestRecurlyClient {
         }
     }
 
-    @Test(groups="integration")
+    @Test(groups = "integration")
     public void testAddons() throws Exception {
 
         // Create a Plan

@@ -44,7 +44,7 @@ public class Subscription extends RecurlyObject {
     @XmlElement(name = "uuid")
     private String uuid;
 
-    @XmlElement(name = "state", required=false)
+    @XmlElement(name = "state", required = false)
     private String state;
 
     @XmlElement(name = "unit_amount_in_cents")

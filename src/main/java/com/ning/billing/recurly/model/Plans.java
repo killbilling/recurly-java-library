@@ -14,7 +14,7 @@
  * under the License.
  */
 
-package  com.ning.billing.recurly.model;
+package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;

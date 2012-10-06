@@ -26,26 +26,26 @@ public class TestAccounts extends TestModelBase {
     public void testDeserialization() throws Exception {
         // See http://docs.recurly.com/api/accounts
         final String accountsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<accounts type=\"array\">\n" +
-                "  <account href=\"https://api.recurly.com/v2/accounts/1\">\n" +
-                "    <adjustments href=\"https://api.recurly.com/v2/accounts/1/adjustments\"/>\n" +
-                "    <billing_info href=\"https://api.recurly.com/v2/accounts/1/billing_info\"/>\n" +
-                "    <invoices href=\"https://api.recurly.com/v2/accounts/1/invoices\"/>\n" +
-                "    <redemption href=\"https://api.recurly.com/v2/accounts/1/redemption\"/>\n" +
-                "    <subscriptions href=\"https://api.recurly.com/v2/accounts/1/subscriptions\"/>\n" +
-                "    <transactions href=\"https://api.recurly.com/v2/accounts/1/transactions\"/>\n" +
-                "    <account_code>1</account_code>\n" +
-                "    <state>active</state>\n" +
-                "    <username nil=\"nil\"></username>\n" +
-                "    <email>verena@example.com</email>\n" +
-                "    <first_name>Verena</first_name>\n" +
-                "    <last_name>Example</last_name>\n" +
-                "    <accept_language nil=\"nil\"></accept_language>\n" +
-                "    <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
-                "    <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
-                "  </account>\n" +
-                "  <!-- Continued... -->\n" +
-                "</accounts>";
+                                    "<accounts type=\"array\">\n" +
+                                    "  <account href=\"https://api.recurly.com/v2/accounts/1\">\n" +
+                                    "    <adjustments href=\"https://api.recurly.com/v2/accounts/1/adjustments\"/>\n" +
+                                    "    <billing_info href=\"https://api.recurly.com/v2/accounts/1/billing_info\"/>\n" +
+                                    "    <invoices href=\"https://api.recurly.com/v2/accounts/1/invoices\"/>\n" +
+                                    "    <redemption href=\"https://api.recurly.com/v2/accounts/1/redemption\"/>\n" +
+                                    "    <subscriptions href=\"https://api.recurly.com/v2/accounts/1/subscriptions\"/>\n" +
+                                    "    <transactions href=\"https://api.recurly.com/v2/accounts/1/transactions\"/>\n" +
+                                    "    <account_code>1</account_code>\n" +
+                                    "    <state>active</state>\n" +
+                                    "    <username nil=\"nil\"></username>\n" +
+                                    "    <email>verena@example.com</email>\n" +
+                                    "    <first_name>Verena</first_name>\n" +
+                                    "    <last_name>Example</last_name>\n" +
+                                    "    <accept_language nil=\"nil\"></accept_language>\n" +
+                                    "    <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
+                                    "    <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
+                                    "  </account>\n" +
+                                    "  <!-- Continued... -->\n" +
+                                    "</accounts>";
 
         final Accounts accounts = xmlMapper.readValue(accountsData, Accounts.class);
         Assert.assertEquals(accounts.size(), 1);

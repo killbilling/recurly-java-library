@@ -79,7 +79,6 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
-    
 
     public List<Adjustment> getAdjustments() {
         return adjustments;

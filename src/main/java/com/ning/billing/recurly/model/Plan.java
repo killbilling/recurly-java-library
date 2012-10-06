@@ -16,19 +16,21 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.xml.bind.annotation.XmlValue;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import java.util.List;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @XmlRootElement(name = "plan")
 public class Plan extends RecurlyObject {
+
     @XmlTransient
     public static final String PLANS_RESOURCE = "/plans";
 
@@ -120,7 +122,7 @@ public class Plan extends RecurlyObject {
     public void setDescription(final Object description) {
         this.description = stringOrNull(description);
     }
-    
+
     public String getSuccessLink() {
         return successLink;
     }
@@ -315,6 +317,7 @@ public class Plan extends RecurlyObject {
     //@XmlRootElement(name = "unit_amount_in_cents")
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RecurlyUnitCurrency {
+
         @XmlElement(name = "EUR")
         @XmlValue
         private Integer unitAmountEUR;
@@ -387,19 +390,19 @@ public class Plan extends RecurlyObject {
             final RecurlyUnitCurrency currency = (RecurlyUnitCurrency) o;
 
             if (unitAmountEUR != null ? !unitAmountEUR.equals(currency.unitAmountEUR) :
-                    currency.unitAmountEUR != null) {
+                currency.unitAmountEUR != null) {
                 return false;
             }
             if (unitAmountGBP != null ? !unitAmountGBP.equals(currency.unitAmountGBP) :
-                    currency.unitAmountGBP != null) {
+                currency.unitAmountGBP != null) {
                 return false;
             }
             if (unitAmountUSD != null ? !unitAmountUSD.equals(currency.unitAmountUSD) :
-                    currency.unitAmountUSD != null) {
+                currency.unitAmountUSD != null) {
                 return false;
             }
             if (unitAmountSEK != null ? !unitAmountSEK.equals(currency.unitAmountSEK) :
-                    currency.unitAmountSEK != null) {
+                currency.unitAmountSEK != null) {
                 return false;
             }
 

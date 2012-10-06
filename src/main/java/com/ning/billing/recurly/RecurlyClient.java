@@ -55,11 +55,11 @@ public class RecurlyClient {
 
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
-    public static final String  RECURLY_DEBUG_KEY     = "recurly.debug";
-    public static final String  RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
+    public static final String RECURLY_DEBUG_KEY = "recurly.debug";
+    public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
 
-    private static final Integer DEFAULT_PAGE_SIZE     = new Integer(20);
-    private static final String  PER_PAGE              = "per_page=";
+    private static final Integer DEFAULT_PAGE_SIZE = new Integer(20);
+    private static final String PER_PAGE = "per_page=";
 
     public static final String FETCH_RESOURCE = "/recurly_js/result";
 
@@ -89,7 +89,6 @@ public class RecurlyClient {
     public static final String getPageSizeGetParam() {
         return PER_PAGE + getPageSize().toString();
     }
-
 
     private final XmlMapper xmlMapper = new XmlMapper();
 
@@ -214,8 +213,8 @@ public class RecurlyClient {
      */
     public Subscription getSubscription(final String uuid) {
         return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE
-                + "/" + uuid,
-                Subscription.class);
+                     + "/" + uuid,
+                     Subscription.class);
     }
 
     /**
@@ -239,16 +238,16 @@ public class RecurlyClient {
      * Returns information about a single account.
      *
      * @param accountCode recurly account id
-     * @param status Only accounts in this status will be returned
+     * @param status      Only accounts in this status will be returned
      * @return Subscriptions for the specified user
      */
     public Subscriptions getAccountSubscriptions(final String accountCode, final String status) {
         return doGET(Account.ACCOUNT_RESOURCE
-                + "/" + accountCode
-                + Subscriptions.SUBSCRIPTIONS_RESOURCE
-                + "?state="
-                + status,
-                Subscriptions.class);
+                     + "/" + accountCode
+                     + Subscriptions.SUBSCRIPTIONS_RESOURCE
+                     + "?state="
+                     + status,
+                     Subscriptions.class);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -267,14 +266,14 @@ public class RecurlyClient {
      * Recurly recommends requiring CVV from your customers when collecting new or updated billing information.
      *
      * @param billingInfo billing info object to create or update
-     * @return the newly created or update billing info object on success, null otherwise 
-    */
+     * @return the newly created or update billing info object on success, null otherwise
+     */
     public BillingInfo createOrUpdateBillingInfo(final BillingInfo billingInfo) {
         final String accountCode = billingInfo.getAccount().getAccountCode();
         // Unset it to avoid confusing Recurly
         billingInfo.setAccount(null);
         return doPUT(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE,
-                billingInfo, BillingInfo.class);
+                     billingInfo, BillingInfo.class);
     }
 
     /**
@@ -287,7 +286,7 @@ public class RecurlyClient {
      */
     public BillingInfo getBillingInfo(final String accountCode) {
         return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE,
-                BillingInfo.class);
+                     BillingInfo.class);
     }
 
     /**
@@ -302,7 +301,6 @@ public class RecurlyClient {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE);
     }
 
-
     ///////////////////////////////////////////////////////////////////////////
     // User transactions
 
@@ -316,7 +314,7 @@ public class RecurlyClient {
      */
     public Transactions getAccountTransactions(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Transactions.TRANSACTIONS_RESOURCE,
-                        Transactions.class);
+                     Transactions.class);
     }
 
     /**
@@ -371,8 +369,8 @@ public class RecurlyClient {
      */
     public void deletePlan(final String planCode) {
         doDELETE(Plan.PLANS_RESOURCE +
-                "/" +
-                planCode);
+                 "/" +
+                 planCode);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -382,15 +380,15 @@ public class RecurlyClient {
      * <p/>
      *
      * @param planCode The planCode of the {@link Plan } to create within recurly
-     * @param addOn The {@link AddOn} to create within recurly
+     * @param addOn    The {@link AddOn} to create within recurly
      * @return the {@link AddOn} object as identified by the passed in object
      */
     public AddOn createPlanAddOn(final String planCode, final AddOn addOn) {
         return doPOST(Plan.PLANS_RESOURCE +
-                "/" +
-                planCode +
-                AddOn.ADDONS_RESOURCE,
-                addOn, AddOn.class);
+                      "/" +
+                      planCode +
+                      AddOn.ADDONS_RESOURCE,
+                      addOn, AddOn.class);
     }
 
     /**
@@ -398,16 +396,16 @@ public class RecurlyClient {
      * <p/>
      *
      * @param addOnCode recurly id of {@link AddOn}
-     * @param planCode recurly id of {@link Plan}
+     * @param planCode  recurly id of {@link Plan}
      * @return the {@link AddOn} object as identified by the passed in plan and add-on IDs
      */
     public AddOn getAddOn(final String planCode, final String addOnCode) {
         return doGET(Plan.PLANS_RESOURCE +
-                "/" +
-                planCode +
-                AddOn.ADDONS_RESOURCE +
-                "/" +
-                addOnCode, AddOn.class);
+                     "/" +
+                     planCode +
+                     AddOn.ADDONS_RESOURCE +
+                     "/" +
+                     addOnCode, AddOn.class);
     }
 
     /**
@@ -418,28 +416,29 @@ public class RecurlyClient {
      */
     public AddOn getAddOns(final String planCode) {
         return doGET(Plan.PLANS_RESOURCE +
-                "/" +
-                planCode +
-                AddOn.ADDONS_RESOURCE, AddOn.class);
+                     "/" +
+                     planCode +
+                     AddOn.ADDONS_RESOURCE, AddOn.class);
     }
 
     /**
      * Deletes a {@link AddOn} for a Plan
      * <p/>
      *
-     * @param planCode The {@link Plan} object.
+     * @param planCode  The {@link Plan} object.
      * @param addOnCode The {@link AddOn} object to delete.
      */
     public void deleteAddOn(final String planCode, final String addOnCode) {
         doDELETE(Plan.PLANS_RESOURCE +
-                "/" +
-                planCode +
-                AddOn.ADDONS_RESOURCE +
-                "/" +
-                addOnCode);
+                 "/" +
+                 planCode +
+                 AddOn.ADDONS_RESOURCE +
+                 "/" +
+                 addOnCode);
     }
 
     ///////////////////////////////////////////////////////////////////////////
+
     /**
      * Create a {@link Coupon}
      * <p/>
@@ -508,9 +507,7 @@ public class RecurlyClient {
         return doGET(FETCH_RESOURCE + "/" + recurlyToken, clazz);
     }
 
-
     ///////////////////////////////////////////////////////////////////////////
-
 
     private <T> T doGET(final String resource, final Class<T> clazz) {
         StringBuffer url = new StringBuffer(baseUrl);
