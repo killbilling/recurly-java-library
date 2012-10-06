@@ -90,10 +90,11 @@ public class BillingInfo extends RecurlyObject {
     private Integer verificationValue;
 
     /**
-     * NOTE:: This does not return the associated account for a BillingInfo
-     * object that has been fetched from Recurly. Deserialization of the dependent objects
+     * Account object associated to this BillingInfo
+     * <p/>
+     * Note: when fetching a BillingInfo object from Recurly, the account object is not guaranteed to be populated.
      *
-     * @return
+     * @return account object
      */
     public Account getAccount() {
         return account;
