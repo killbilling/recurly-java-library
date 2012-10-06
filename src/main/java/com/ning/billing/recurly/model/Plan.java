@@ -34,9 +34,6 @@ public class Plan extends RecurlyObject {
     @XmlTransient
     public static final String PLANS_RESOURCE = "/plans";
 
-    /////////////////////////////////////////////////////
-    // Attributes...
-
     @XmlElementWrapper(name = "add_ons")
     @XmlElement(name = "add_on")
     private List<AddOn> addOns;
@@ -62,12 +59,11 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "display_quantity")
     private Boolean displayQuantity;
 
-    // For some reason these don't work...
-    // @XmlElement(name = "display_phone_number")
-    // private boolean displayPhoneNumber;
+    @XmlElement(name = "display_phone_number")
+    private Boolean displayPhoneNumber;
 
-    // @XmlElement(name = "bypass_hosted_confirmation")
-    // private boolean bypassHostedConfirmation;
+    @XmlElement(name = "bypass_hosted_confirmation")
+    private Boolean bypassHostedConfirmation;
 
     @XmlElement(name = "unit_name")
     private String unitName;
@@ -95,9 +91,6 @@ public class Plan extends RecurlyObject {
 
     @XmlElement(name = "setup_fee_in_cents")
     private RecurlyUnitCurrency setupFeeInCents;
-
-    /////////////////////////////////////////////////////
-    // Getters & Setters
 
     public String getPlanCode() {
         return planCode;
@@ -155,21 +148,21 @@ public class Plan extends RecurlyObject {
         this.displayQuantity = booleanOrNull(displayQuantity);
     }
 
-    // public boolean getDisplayPhoneNumber() {
-    //     return displayPhoneNumber;
-    // }
+    public Boolean getDisplayPhoneNumber() {
+        return displayPhoneNumber;
+    }
 
-    // public void setDisplayPhoneNumber(boolean displayPhoneNumber) {
-    //     this.displayPhoneNumber = displayPhoneNumber;
-    // }
+    public void setDisplayPhoneNumber(final Object displayPhoneNumber) {
+        this.displayPhoneNumber = booleanOrNull(displayPhoneNumber);
+    }
 
-    // public boolean getBypassHostedConfirmation() {
-    //     return bypassHostedConfirmation;
-    // }
+    public Boolean getBypassHostedConfirmation() {
+        return bypassHostedConfirmation;
+    }
 
-    // public void setBypassHostedConfirmation(boolean bypassHostedConfirmation) {
-    //     this.bypassHostedConfirmation = bypassHostedConfirmation;
-    // }
+    public void setBypassHostedConfirmation(final Object bypassHostedConfirmation) {
+        this.bypassHostedConfirmation = booleanOrNull(bypassHostedConfirmation);
+    }
 
     public String getUnitName() {
         return unitName;
@@ -251,32 +244,29 @@ public class Plan extends RecurlyObject {
         this.addOns = addOns;
     }
 
-    /////////////////////////////////////////////////////
-    // Other
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Plan");
-        sb.append("{planCode='").append(planCode).append('\'');
+        sb.append("{addOns=").append(addOns);
+        sb.append(", planCode='").append(planCode).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", successLink='").append(successLink).append('\'');
         sb.append(", cancelLink='").append(cancelLink).append('\'');
-        sb.append(", displayDonationAmounts='").append(displayDonationAmounts).append('\'');
-        sb.append(", displayQuantity='").append(displayQuantity).append('\'');
-        // sb.append(", displayPhoneNumber='").append(displayPhoneNumber).append('\'');
-        // sb.append(", bypassHostedConfirmation='").append(bypassHostedConfirmation).append('\'');
+        sb.append(", displayDonationAmounts=").append(displayDonationAmounts);
+        sb.append(", displayQuantity=").append(displayQuantity);
+        sb.append(", displayPhoneNumber=").append(displayPhoneNumber);
+        sb.append(", bypassHostedConfirmation=").append(bypassHostedConfirmation);
         sb.append(", unitName='").append(unitName).append('\'');
         sb.append(", planIntervalUnit='").append(planIntervalUnit).append('\'');
-        sb.append(", planIntervalLength='").append(planIntervalLength).append('\'');
+        sb.append(", planIntervalLength=").append(planIntervalLength);
+        sb.append(", trialIntervalLength=").append(trialIntervalLength);
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
-        sb.append(", trialIntervalLength='").append(trialIntervalLength).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
-        sb.append(", createdAt='").append(createdAt).append('\'');
-        sb.append(", unitAmountInCents='").append(unitAmountInCents).append('\'');
-        sb.append(", setupFeeInCents='").append(setupFeeInCents).append('\'');
-        sb.append(", addOns='").append(addOns).append('\'');
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", unitAmountInCents=").append(unitAmountInCents);
+        sb.append(", setupFeeInCents=").append(setupFeeInCents);
         sb.append('}');
         return sb.toString();
     }
@@ -292,13 +282,61 @@ public class Plan extends RecurlyObject {
 
         final Plan plan = (Plan) o;
 
+        if (bypassHostedConfirmation != plan.bypassHostedConfirmation) {
+            return false;
+        }
+        if (displayPhoneNumber != plan.displayPhoneNumber) {
+            return false;
+        }
+        if (accountingCode != null ? !accountingCode.equals(plan.accountingCode) : plan.accountingCode != null) {
+            return false;
+        }
+        if (addOns != null ? !addOns.equals(plan.addOns) : plan.addOns != null) {
+            return false;
+        }
+        if (cancelLink != null ? !cancelLink.equals(plan.cancelLink) : plan.cancelLink != null) {
+            return false;
+        }
+        if (createdAt != null ? !createdAt.equals(plan.createdAt) : plan.createdAt != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(plan.description) : plan.description != null) {
+            return false;
+        }
+        if (displayDonationAmounts != null ? !displayDonationAmounts.equals(plan.displayDonationAmounts) : plan.displayDonationAmounts != null) {
+            return false;
+        }
+        if (displayQuantity != null ? !displayQuantity.equals(plan.displayQuantity) : plan.displayQuantity != null) {
+            return false;
+        }
         if (name != null ? !name.equals(plan.name) : plan.name != null) {
             return false;
         }
         if (planCode != null ? !planCode.equals(plan.planCode) : plan.planCode != null) {
             return false;
         }
-        if (description != null ? !description.equals(plan.description) : plan.description != null) {
+        if (planIntervalLength != null ? !planIntervalLength.equals(plan.planIntervalLength) : plan.planIntervalLength != null) {
+            return false;
+        }
+        if (planIntervalUnit != null ? !planIntervalUnit.equals(plan.planIntervalUnit) : plan.planIntervalUnit != null) {
+            return false;
+        }
+        if (setupFeeInCents != null ? !setupFeeInCents.equals(plan.setupFeeInCents) : plan.setupFeeInCents != null) {
+            return false;
+        }
+        if (successLink != null ? !successLink.equals(plan.successLink) : plan.successLink != null) {
+            return false;
+        }
+        if (trialIntervalLength != null ? !trialIntervalLength.equals(plan.trialIntervalLength) : plan.trialIntervalLength != null) {
+            return false;
+        }
+        if (trialIntervalUnit != null ? !trialIntervalUnit.equals(plan.trialIntervalUnit) : plan.trialIntervalUnit != null) {
+            return false;
+        }
+        if (unitAmountInCents != null ? !unitAmountInCents.equals(plan.unitAmountInCents) : plan.unitAmountInCents != null) {
+            return false;
+        }
+        if (unitName != null ? !unitName.equals(plan.unitName) : plan.unitName != null) {
             return false;
         }
 
@@ -307,8 +345,25 @@ public class Plan extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = planCode != null ? planCode.hashCode() : 0;
+        int result = addOns != null ? addOns.hashCode() : 0;
+        result = 31 * result + (planCode != null ? planCode.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (successLink != null ? successLink.hashCode() : 0);
+        result = 31 * result + (cancelLink != null ? cancelLink.hashCode() : 0);
+        result = 31 * result + (displayDonationAmounts != null ? displayDonationAmounts.hashCode() : 0);
+        result = 31 * result + (displayQuantity != null ? displayQuantity.hashCode() : 0);
+        result = 31 * result + (displayPhoneNumber ? 1 : 0);
+        result = 31 * result + (bypassHostedConfirmation ? 1 : 0);
+        result = 31 * result + (unitName != null ? unitName.hashCode() : 0);
+        result = 31 * result + (planIntervalUnit != null ? planIntervalUnit.hashCode() : 0);
+        result = 31 * result + (planIntervalLength != null ? planIntervalLength.hashCode() : 0);
+        result = 31 * result + (trialIntervalLength != null ? trialIntervalLength.hashCode() : 0);
+        result = 31 * result + (trialIntervalUnit != null ? trialIntervalUnit.hashCode() : 0);
+        result = 31 * result + (accountingCode != null ? accountingCode.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
+        result = 31 * result + (setupFeeInCents != null ? setupFeeInCents.hashCode() : 0);
         return result;
     }
 
@@ -419,5 +474,4 @@ public class Plan extends RecurlyObject {
         }
 
     }
-
 }
