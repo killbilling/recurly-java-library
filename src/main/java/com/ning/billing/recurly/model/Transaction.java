@@ -54,14 +54,14 @@ public class Transaction extends RecurlyObject {
     @XmlElement(name = "reference")
     private String reference;
 
-    //@XmlElement(name = "test", type=java.lang.Boolean.class)
-    //private Boolean test;
+    @XmlElement(name = "test")
+    private Boolean test;
 
-    //@XmlElement(name = "voidable")
-    //private Boolean voidable;
+    @XmlElement(name = "voidable")
+    private Boolean voidable;
 
-    //@XmlElement(name = "refundable")
-    //private Boolean refundable;
+    @XmlElement(name = "refundable")
+    private Boolean refundable;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -146,31 +146,30 @@ public class Transaction extends RecurlyObject {
         this.reference = stringOrNull(reference);
     }
 
-    /*
     public Boolean getTest() {
         return test;
     }
 
-    public void setTest(final Boolean test) {
-        this.test = test;
+    public void setTest(final Object test) {
+        this.test = booleanOrNull(test);
     }
 
     public Boolean getVoidable() {
         return voidable;
     }
 
-    public void setVoidable(final Boolean voidable) {
-        this.voidable = voidable;
+    public void setVoidable(final Object voidable) {
+        this.voidable = booleanOrNull(voidable);
     }
 
     public Boolean getRefundable() {
         return refundable;
     }
 
-    public void setRefundable(final Boolean refundable) {
-        this.refundable = refundable;
+    public void setRefundable(final Object refundable) {
+        this.refundable = booleanOrNull(refundable);
     }
-    */
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -193,11 +192,9 @@ public class Transaction extends RecurlyObject {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", status='").append(status).append('\'');
         sb.append(", reference='").append(reference).append('\'');
-        /*
         sb.append(", test=").append(test);
         sb.append(", voidable=").append(voidable);
         sb.append(", refundable=").append(refundable);
-        */
         sb.append(", createdAt=").append(createdAt);
         sb.append('}');
         return sb.toString();
@@ -235,11 +232,9 @@ public class Transaction extends RecurlyObject {
         if (reference != null ? !reference.equals(that.reference) : that.reference != null) {
             return false;
         }
-        /*
         if (refundable != null ? !refundable.equals(that.refundable) : that.refundable != null) {
             return false;
         }
-        */
         if (status != null ? !status.equals(that.status) : that.status != null) {
             return false;
         }
@@ -249,19 +244,16 @@ public class Transaction extends RecurlyObject {
         if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
             return false;
         }
-        /*
         if (test != null ? !test.equals(that.test) : that.test != null) {
             return false;
         }
-        */
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
-        /*
         if (voidable != null ? !voidable.equals(that.voidable) : that.voidable != null) {
             return false;
         }
-        */
+
         return true;
     }
 
@@ -277,11 +269,9 @@ public class Transaction extends RecurlyObject {
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (status != null ? status.hashCode() : 0);
         result = 31 * result + (reference != null ? reference.hashCode() : 0);
-        /*
         result = 31 * result + (test != null ? test.hashCode() : 0);
         result = 31 * result + (voidable != null ? voidable.hashCode() : 0);
         result = 31 * result + (refundable != null ? refundable.hashCode() : 0);
-        */
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
     }
