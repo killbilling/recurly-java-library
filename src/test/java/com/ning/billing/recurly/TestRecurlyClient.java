@@ -43,8 +43,13 @@ public class TestRecurlyClient {
 
     public static final String RECURLY_PAGE_SIZE = "recurly.page.size";
     public static final String KILLBILL_PAYMENT_RECURLY_API_KEY = "killbill.payment.recurly.apiKey";
+    public static final String KILLBILL_PAYMENT_RECURLY_DEFAULT_CURRENCY_KEY = "killbill.payment.recurly.currency";
 
     private static final Logger log = LoggerFactory.getLogger(TestRecurlyClient.class);
+
+    // Default to USD for all tests, which is expected to be supported by Recurly by default
+    // Multi Currency Support is an enterprise add-on
+    private static final String CURRENCY = System.getProperty(KILLBILL_PAYMENT_RECURLY_DEFAULT_CURRENCY_KEY, "USD");
 
     private RecurlyClient recurlyClient;
 
@@ -194,7 +199,7 @@ public class TestRecurlyClient {
             Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
-            subscriptionData.setCurrency("EUR");
+            subscriptionData.setCurrency(CURRENCY);
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
@@ -262,7 +267,7 @@ public class TestRecurlyClient {
             Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
-            subscriptionData.setCurrency("EUR");
+            subscriptionData.setCurrency(CURRENCY);
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
             // Create a subscription
@@ -270,7 +275,7 @@ public class TestRecurlyClient {
             accountData.setBillingInfo(billingInfoData);
             t.setAccount(accountData);
             t.setAmountInCents(10);
-            t.setCurrency("EUR");
+            t.setCurrency(CURRENCY);
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             Transaction createdT = recurlyClient.createTransaction(t);
 
