@@ -41,8 +41,6 @@ public class Coupon extends RecurlyObject {
     @XmlElement(name = "discount_percent")
     private String discountPercent;
 
-    // Getters & Setters
-
     /**
      * Gets the name of the {@link Coupon}
      *
@@ -73,7 +71,7 @@ public class Coupon extends RecurlyObject {
     /**
      * Sets the coupon code for the {@link Coupon}
      *
-     * @param couponCode
+     * @param couponCode The coupon code
      */
     public void setCouponCode(final String couponCode) {
         this.couponCode = stringOrNull(couponCode);
@@ -110,15 +108,14 @@ public class Coupon extends RecurlyObject {
         this.discountPercent = stringOrNull(discountPercent);
     }
 
-    // General Over-ridden methods
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Coupon");
-        sb.append("{name=").append(name);
-        sb.append(", couponCode=").append(couponCode);
-        sb.append(", discountType=").append(discountType);
+        sb.append("{name='").append(name).append('\'');
+        sb.append(", couponCode='").append(couponCode).append('\'');
+        sb.append(", discountType='").append(discountType).append('\'');
+        sb.append(", discountPercent='").append(discountPercent).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -134,6 +131,15 @@ public class Coupon extends RecurlyObject {
 
         final Coupon coupon = (Coupon) o;
 
+        if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
+            return false;
+        }
+        if (discountPercent != null ? !discountPercent.equals(coupon.discountPercent) : coupon.discountPercent != null) {
+            return false;
+        }
+        if (discountType != null ? !discountType.equals(coupon.discountType) : coupon.discountType != null) {
+            return false;
+        }
         if (name != null ? !name.equals(coupon.name) : coupon.name != null) {
             return false;
         }
@@ -144,9 +150,9 @@ public class Coupon extends RecurlyObject {
     @Override
     public int hashCode() {
         int result = name != null ? name.hashCode() : 0;
-        //result = 31 * result + ( != null ? invoices.hashCode() : 0);
+        result = 31 * result + (couponCode != null ? couponCode.hashCode() : 0);
+        result = 31 * result + (discountType != null ? discountType.hashCode() : 0);
+        result = 31 * result + (discountPercent != null ? discountPercent.hashCode() : 0);
         return result;
     }
-
-
 }
