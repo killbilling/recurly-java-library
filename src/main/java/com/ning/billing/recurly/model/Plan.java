@@ -367,68 +367,223 @@ public class Plan extends RecurlyObject {
         return result;
     }
 
-    ////////////////////////////////////////////////////////////////////
-    //
-    //@XmlRootElement(name = "unit_amount_in_cents")
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RecurlyUnitCurrency {
 
-        @XmlElement(name = "EUR")
-        @XmlValue
-        private Integer unitAmountEUR;
-
-        @XmlElement(name = "GBP")
-        @XmlValue
-        private Integer unitAmountGBP;
-
+        // United States Dollars
         @XmlElement(name = "USD")
         @XmlValue
         private Integer unitAmountUSD;
 
+        // Australian Dollars
+        @XmlElement(name = "AUD")
+        @XmlValue
+        private Integer unitAmountAUD;
+
+        // Canadian Dollars
+        @XmlElement(name = "CAD")
+        @XmlValue
+        private Integer unitAmountCAD;
+
+        // Euros
+        @XmlElement(name = "EUR")
+        @XmlValue
+        private Integer unitAmountEUR;
+
+        // British Pounds
+        @XmlElement(name = "GBP")
+        @XmlValue
+        private Integer unitAmountGBP;
+
+        // Czech Korunas
+        @XmlElement(name = "CZK")
+        @XmlValue
+        private Integer unitAmountCZK;
+
+        // Danish Krones
+        @XmlElement(name = "DKK")
+        @XmlValue
+        private Integer unitAmountDKK;
+
+        // Hungarian Forints
+        @XmlElement(name = "HUF")
+        @XmlValue
+        private Integer unitAmountHUF;
+
+        // Norwegian Krones
+        @XmlElement(name = "NOK")
+        @XmlValue
+        private Integer unitAmountNOK;
+
+        // New Zealand Dollars
+        @XmlElement(name = "NZD")
+        @XmlValue
+        private Integer unitAmountNZD;
+
+        // Polish Zloty
+        @XmlElement(name = "PLN")
+        @XmlValue
+        private Integer unitAmountPLN;
+
+        // Singapore Dollars
+        @XmlElement(name = "SGD")
+        @XmlValue
+        private Integer unitAmountSGD;
+
+        // Swedish Kronas
         @XmlElement(name = "SEK")
         @XmlValue
         private Integer unitAmountSEK;
 
-        public void setUnitAmountEUR(final Object unitAmountEUR) {
-            this.unitAmountEUR = integerOrNull(unitAmountEUR);
-        }
+        // Swiss Francs
+        @XmlElement(name = "CHF")
+        @XmlValue
+        private Integer unitAmountCHF;
 
-        public Integer getUnitAmountEUR() {
-            return this.unitAmountEUR;
-        }
+        // South African Rand
+        @XmlElement(name = "ZAR")
+        @XmlValue
+        private Integer unitAmountZAR;
 
-        public void setUnitAmountGBP(final Object unitAmountGBP) {
-            this.unitAmountGBP = integerOrNull(unitAmountGBP);
-        }
-
-        public Integer getUnitAmountGBP() {
-            return this.unitAmountGBP;
+        public Integer getUnitAmountUSD() {
+            return unitAmountUSD;
         }
 
         public void setUnitAmountUSD(final Object unitAmountUSD) {
             this.unitAmountUSD = integerOrNull(unitAmountUSD);
         }
 
-        public Integer getUnitAmountUSD() {
-            return this.unitAmountUSD;
+        public Integer getUnitAmountAUD() {
+            return unitAmountAUD;
+        }
+
+        public void setUnitAmountAUD(final Object unitAmountAUD) {
+            this.unitAmountAUD = integerOrNull(unitAmountAUD);
+        }
+
+        public Integer getUnitAmountCAD() {
+            return unitAmountCAD;
+        }
+
+        public void setUnitAmountCAD(final Object unitAmountCAD) {
+            this.unitAmountCAD = integerOrNull(unitAmountCAD);
+        }
+
+        public Integer getUnitAmountEUR() {
+            return unitAmountEUR;
+        }
+
+        public void setUnitAmountEUR(final Object unitAmountEUR) {
+            this.unitAmountEUR = integerOrNull(unitAmountEUR);
+        }
+
+        public Integer getUnitAmountGBP() {
+            return unitAmountGBP;
+        }
+
+        public void setUnitAmountGBP(final Object unitAmountGBP) {
+            this.unitAmountGBP = integerOrNull(unitAmountGBP);
+        }
+
+        public Integer getUnitAmountCZK() {
+            return unitAmountCZK;
+        }
+
+        public void setUnitAmountCZK(final Object unitAmountCZK) {
+            this.unitAmountCZK = integerOrNull(unitAmountCZK);
+        }
+
+        public Integer getUnitAmountDKK() {
+            return unitAmountDKK;
+        }
+
+        public void setUnitAmountDKK(final Object unitAmountDKK) {
+            this.unitAmountDKK = integerOrNull(unitAmountDKK);
+        }
+
+        public Integer getUnitAmountHUF() {
+            return unitAmountHUF;
+        }
+
+        public void setUnitAmountHUF(final Object unitAmountHUF) {
+            this.unitAmountHUF = integerOrNull(unitAmountHUF);
+        }
+
+        public Integer getUnitAmountNOK() {
+            return unitAmountNOK;
+        }
+
+        public void setUnitAmountNOK(final Object unitAmountNOK) {
+            this.unitAmountNOK = integerOrNull(unitAmountNOK);
+        }
+
+        public Integer getUnitAmountNZD() {
+            return unitAmountNZD;
+        }
+
+        public void setUnitAmountNZD(final Object unitAmountNZD) {
+            this.unitAmountNZD = integerOrNull(unitAmountNZD);
+        }
+
+        public Integer getUnitAmountPLN() {
+            return unitAmountPLN;
+        }
+
+        public void setUnitAmountPLN(final Object unitAmountPLN) {
+            this.unitAmountPLN = integerOrNull(unitAmountPLN);
+        }
+
+        public Integer getUnitAmountSGD() {
+            return unitAmountSGD;
+        }
+
+        public void setUnitAmountSGD(final Object unitAmountSGD) {
+            this.unitAmountSGD = integerOrNull(unitAmountSGD);
+        }
+
+        public Integer getUnitAmountSEK() {
+            return unitAmountSEK;
         }
 
         public void setUnitAmountSEK(final Object unitAmountSEK) {
             this.unitAmountSEK = integerOrNull(unitAmountSEK);
         }
 
-        public Integer getUnitAmountSEK() {
-            return this.unitAmountSEK;
+        public Integer getUnitAmountCHF() {
+            return unitAmountCHF;
+        }
+
+        public void setUnitAmountCHF(final Object unitAmountCHF) {
+            this.unitAmountCHF = integerOrNull(unitAmountCHF);
+        }
+
+        public Integer getUnitAmountZAR() {
+            return unitAmountZAR;
+        }
+
+        public void setUnitAmountZAR(final Object unitAmountZAR) {
+            this.unitAmountZAR = integerOrNull(unitAmountZAR);
         }
 
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
-            sb.append("UnitAmountInCents");
-            sb.append("{amount-in-EUR='").append(unitAmountEUR).append('\'');
-            sb.append(",amount-in-GBP='").append(unitAmountGBP).append('\'');
-            sb.append(",amount-in-USD='").append(unitAmountUSD).append('\'');
-            sb.append(",amount-in-SEK='").append(unitAmountSEK).append('\'');
+            sb.append("RecurlyUnitCurrency");
+            sb.append("{unitAmountUSD=").append(unitAmountUSD);
+            sb.append(", unitAmountAUD=").append(unitAmountAUD);
+            sb.append(", unitAmountCAD=").append(unitAmountCAD);
+            sb.append(", unitAmountEUR=").append(unitAmountEUR);
+            sb.append(", unitAmountGBP=").append(unitAmountGBP);
+            sb.append(", unitAmountCZK=").append(unitAmountCZK);
+            sb.append(", unitAmountDKK=").append(unitAmountDKK);
+            sb.append(", unitAmountHUF=").append(unitAmountHUF);
+            sb.append(", unitAmountNOK=").append(unitAmountNOK);
+            sb.append(", unitAmountNZD=").append(unitAmountNZD);
+            sb.append(", unitAmountPLN=").append(unitAmountPLN);
+            sb.append(", unitAmountSGD=").append(unitAmountSGD);
+            sb.append(", unitAmountSEK=").append(unitAmountSEK);
+            sb.append(", unitAmountCHF=").append(unitAmountCHF);
+            sb.append(", unitAmountZAR=").append(unitAmountZAR);
             sb.append('}');
             return sb.toString();
         }
@@ -442,22 +597,51 @@ public class Plan extends RecurlyObject {
                 return false;
             }
 
-            final RecurlyUnitCurrency currency = (RecurlyUnitCurrency) o;
+            final RecurlyUnitCurrency that = (RecurlyUnitCurrency) o;
 
-            if (unitAmountEUR != null ? !unitAmountEUR.equals(currency.unitAmountEUR) :
-                currency.unitAmountEUR != null) {
+            if (unitAmountAUD != null ? !unitAmountAUD.equals(that.unitAmountAUD) : that.unitAmountAUD != null) {
                 return false;
             }
-            if (unitAmountGBP != null ? !unitAmountGBP.equals(currency.unitAmountGBP) :
-                currency.unitAmountGBP != null) {
+            if (unitAmountCAD != null ? !unitAmountCAD.equals(that.unitAmountCAD) : that.unitAmountCAD != null) {
                 return false;
             }
-            if (unitAmountUSD != null ? !unitAmountUSD.equals(currency.unitAmountUSD) :
-                currency.unitAmountUSD != null) {
+            if (unitAmountCHF != null ? !unitAmountCHF.equals(that.unitAmountCHF) : that.unitAmountCHF != null) {
                 return false;
             }
-            if (unitAmountSEK != null ? !unitAmountSEK.equals(currency.unitAmountSEK) :
-                currency.unitAmountSEK != null) {
+            if (unitAmountCZK != null ? !unitAmountCZK.equals(that.unitAmountCZK) : that.unitAmountCZK != null) {
+                return false;
+            }
+            if (unitAmountDKK != null ? !unitAmountDKK.equals(that.unitAmountDKK) : that.unitAmountDKK != null) {
+                return false;
+            }
+            if (unitAmountEUR != null ? !unitAmountEUR.equals(that.unitAmountEUR) : that.unitAmountEUR != null) {
+                return false;
+            }
+            if (unitAmountGBP != null ? !unitAmountGBP.equals(that.unitAmountGBP) : that.unitAmountGBP != null) {
+                return false;
+            }
+            if (unitAmountHUF != null ? !unitAmountHUF.equals(that.unitAmountHUF) : that.unitAmountHUF != null) {
+                return false;
+            }
+            if (unitAmountNOK != null ? !unitAmountNOK.equals(that.unitAmountNOK) : that.unitAmountNOK != null) {
+                return false;
+            }
+            if (unitAmountNZD != null ? !unitAmountNZD.equals(that.unitAmountNZD) : that.unitAmountNZD != null) {
+                return false;
+            }
+            if (unitAmountPLN != null ? !unitAmountPLN.equals(that.unitAmountPLN) : that.unitAmountPLN != null) {
+                return false;
+            }
+            if (unitAmountSEK != null ? !unitAmountSEK.equals(that.unitAmountSEK) : that.unitAmountSEK != null) {
+                return false;
+            }
+            if (unitAmountSGD != null ? !unitAmountSGD.equals(that.unitAmountSGD) : that.unitAmountSGD != null) {
+                return false;
+            }
+            if (unitAmountUSD != null ? !unitAmountUSD.equals(that.unitAmountUSD) : that.unitAmountUSD != null) {
+                return false;
+            }
+            if (unitAmountZAR != null ? !unitAmountZAR.equals(that.unitAmountZAR) : that.unitAmountZAR != null) {
                 return false;
             }
 
@@ -466,12 +650,22 @@ public class Plan extends RecurlyObject {
 
         @Override
         public int hashCode() {
-            int result = unitAmountEUR != null ? unitAmountEUR.hashCode() : 0;
+            int result = unitAmountUSD != null ? unitAmountUSD.hashCode() : 0;
+            result = 31 * result + (unitAmountAUD != null ? unitAmountAUD.hashCode() : 0);
+            result = 31 * result + (unitAmountCAD != null ? unitAmountCAD.hashCode() : 0);
+            result = 31 * result + (unitAmountEUR != null ? unitAmountEUR.hashCode() : 0);
             result = 31 * result + (unitAmountGBP != null ? unitAmountGBP.hashCode() : 0);
-            result = 31 * result + (unitAmountUSD != null ? unitAmountUSD.hashCode() : 0);
+            result = 31 * result + (unitAmountCZK != null ? unitAmountCZK.hashCode() : 0);
+            result = 31 * result + (unitAmountDKK != null ? unitAmountDKK.hashCode() : 0);
+            result = 31 * result + (unitAmountHUF != null ? unitAmountHUF.hashCode() : 0);
+            result = 31 * result + (unitAmountNOK != null ? unitAmountNOK.hashCode() : 0);
+            result = 31 * result + (unitAmountNZD != null ? unitAmountNZD.hashCode() : 0);
+            result = 31 * result + (unitAmountPLN != null ? unitAmountPLN.hashCode() : 0);
+            result = 31 * result + (unitAmountSGD != null ? unitAmountSGD.hashCode() : 0);
             result = 31 * result + (unitAmountSEK != null ? unitAmountSEK.hashCode() : 0);
+            result = 31 * result + (unitAmountCHF != null ? unitAmountCHF.hashCode() : 0);
+            result = 31 * result + (unitAmountZAR != null ? unitAmountZAR.hashCode() : 0);
             return result;
         }
-
     }
 }
