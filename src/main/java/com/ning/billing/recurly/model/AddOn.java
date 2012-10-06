@@ -34,11 +34,11 @@ public class AddOn extends RecurlyObject {
     @XmlElement(name = "name")
     private String name;
 
-    //@XmlElement(name = "display_quantity_on_hosted_page")
-    //private Boolean displayQuantityOnHostedPage;
+    @XmlElement(name = "display_quantity_on_hosted_page")
+    private Boolean displayQuantityOnHostedPage;
 
-    //@XmlElement(name = "defaultQuantity")
-    //private Integer defaultQuantity;
+    @XmlElement(name = "defaultQuantity")
+    private Integer defaultQuantity;
 
     @XmlElement(name = "unit_amount_in_cents")
     private Plan.RecurlyUnitCurrency unitAmountInCents;
@@ -62,13 +62,12 @@ public class AddOn extends RecurlyObject {
         this.name = stringOrNull(name);
     }
 
-    /*
     public Boolean getDisplayQuantityOnHostedPage() {
         return displayQuantityOnHostedPage;
     }
 
-    public void setDisplayQuantityOnHostedPage(final Boolean displayQuantityOnHostedPage) {
-        this.displayQuantityOnHostedPage = displayQuantityOnHostedPage;
+    public void setDisplayQuantityOnHostedPage(final Object displayQuantityOnHostedPage) {
+        this.displayQuantityOnHostedPage = booleanOrNull(displayQuantityOnHostedPage);
     }
 
     public Integer getDefaultQuantity() {
@@ -78,7 +77,6 @@ public class AddOn extends RecurlyObject {
     public void setDefaultQuantity(final Object defaultQuantity) {
         this.defaultQuantity = integerOrNull(defaultQuantity);
     }
-    */
 
     public Plan.RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
@@ -102,8 +100,8 @@ public class AddOn extends RecurlyObject {
         sb.append("AddOn");
         sb.append("{addOnCode='").append(addOnCode).append('\'');
         sb.append(", name='").append(name).append('\'');
-        //sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
-        //sb.append(", defaultQuantity=").append(defaultQuantity);
+        sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
+        sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", createdAt=").append(createdAt);
         sb.append('}');
@@ -127,20 +125,15 @@ public class AddOn extends RecurlyObject {
         if (createdAt != null ? !createdAt.equals(addOn.createdAt) : addOn.createdAt != null) {
             return false;
         }
-        /*
         if (defaultQuantity != null ? !defaultQuantity.equals(addOn.defaultQuantity) : addOn.defaultQuantity != null) {
             return false;
         }
         if (displayQuantityOnHostedPage != null ? !displayQuantityOnHostedPage.equals(addOn.displayQuantityOnHostedPage) : addOn.displayQuantityOnHostedPage != null) {
             return false;
         }
-        */
         if (name != null ? !name.equals(addOn.name) : addOn.name != null) {
             return false;
         }
-        //if (plan != null ? !plan.equals(addOn.plan) : addOn.plan != null) {
-        //    return false;
-        //}
         if (unitAmountInCents != null ? !unitAmountInCents.equals(addOn.unitAmountInCents) : addOn.unitAmountInCents != null) {
             return false;
         }
@@ -152,8 +145,8 @@ public class AddOn extends RecurlyObject {
     public int hashCode() {
         int result = addOnCode != null ? addOnCode.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        //result = 31 * result + (displayQuantityOnHostedPage != null ? displayQuantityOnHostedPage.hashCode() : 0);
-        //result = 31 * result + (defaultQuantity != null ? defaultQuantity.hashCode() : 0);
+        result = 31 * result + (displayQuantityOnHostedPage != null ? displayQuantityOnHostedPage.hashCode() : 0);
+        result = 31 * result + (defaultQuantity != null ? defaultQuantity.hashCode() : 0);
         result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         return result;
