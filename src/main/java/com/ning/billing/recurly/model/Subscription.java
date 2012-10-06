@@ -21,11 +21,16 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "subscription")
 public class Subscription extends RecurlyObject {
+
+    @XmlTransient
+    public static final String SUBSCRIPTION_RESOURCE
+            = "/subscriptions";
 
     @XmlElement(name = "account")
     private Account account;
@@ -33,10 +38,13 @@ public class Subscription extends RecurlyObject {
     @XmlElement(name = "plan")
     private Plan plan;
 
+    @XmlElement(name = "plan_code")
+    private String planCode;
+
     @XmlElement(name = "uuid")
     private String uuid;
 
-    @XmlElement(name = "state")
+    @XmlElement(name = "state", required=false)
     private String state;
 
     @XmlElement(name = "unit_amount_in_cents")
@@ -87,6 +95,14 @@ public class Subscription extends RecurlyObject {
 
     public void setPlan(final Plan plan) {
         this.plan = plan;
+    }
+
+    public String getPlanCode() {
+        return planCode;
+    }
+
+    public void setPlanCode(final String planCode) {
+        this.planCode = stringOrNull(planCode);
     }
 
     public String getUuid() {
@@ -257,9 +273,11 @@ public class Subscription extends RecurlyObject {
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
             return false;
         }
+
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
+
         if (trialEndsAt != null ? !trialEndsAt.equals(that.trialEndsAt) : that.trialEndsAt != null) {
             return false;
         }
@@ -281,7 +299,7 @@ public class Subscription extends RecurlyObject {
         int result = account != null ? account.hashCode() : 0;
         result = 31 * result + (plan != null ? plan.hashCode() : 0);
         result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
+        //result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
