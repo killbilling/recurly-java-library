@@ -200,6 +200,7 @@ public class TestRecurlyClient {
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
