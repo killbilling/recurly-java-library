@@ -218,6 +218,7 @@ public class Account extends RecurlyObject {
         sb.append(", acceptLanguage='").append(acceptLanguage).append('\'');
         sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", billingInfo=").append(billingInfo);
         sb.append('}');
         return sb.toString();
     }
@@ -240,6 +241,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (adjustments != null ? !adjustments.equals(account.adjustments) : account.adjustments != null) {
+            return false;
+        }
+        if (billingInfo != null ? !billingInfo.equals(account.billingInfo) : account.billingInfo != null) {
             return false;
         }
         if (companyName != null ? !companyName.equals(account.companyName) : account.companyName != null) {
@@ -295,6 +299,7 @@ public class Account extends RecurlyObject {
         result = 31 * result + (acceptLanguage != null ? acceptLanguage.hashCode() : 0);
         result = 31 * result + (hostedLoginToken != null ? hostedLoginToken.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (billingInfo != null ? billingInfo.hashCode() : 0);
         return result;
     }
 }
