@@ -13,6 +13,13 @@ Getting started
 5. Go to your Recurly account, you should see some data (e.g. account created).
 6. Congrats! You're all set!
 
+Java properties
+---------------
+
+* Set `-Drecurly.debug=true` to output debug information in the info log file
+* Set `-Drecurly.page.size=20` to configure the page size for Recurly API calls
+* To run the tests, one can use `-Dkillbill.payment.recurly.currency=EUR` to override the default USD currency used
+
 Build
 -----
 
