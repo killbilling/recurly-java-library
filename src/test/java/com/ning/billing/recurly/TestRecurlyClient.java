@@ -55,7 +55,6 @@ public class TestRecurlyClient {
 
     @BeforeMethod(groups = "integration")
     public void setUp() throws Exception {
-        //
         final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
         if (apiKey == null) {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
@@ -68,13 +67,11 @@ public class TestRecurlyClient {
 
     @AfterMethod(groups = "integration")
     public void tearDown() throws Exception {
-        //
         recurlyClient.close();
     }
 
     @Test(groups = "integration")
     public void testGetPageSize() throws Exception {
-        //
         System.setProperty(RECURLY_PAGE_SIZE, "");
         Assert.assertEquals(new Integer("20"), RecurlyClient.getPageSize());
         System.setProperty(RECURLY_PAGE_SIZE, "350");
@@ -83,7 +80,6 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testGetPageSizeGetParam() throws Exception {
-        //
         System.setProperty(RECURLY_PAGE_SIZE, "");
         Assert.assertEquals("per_page=20", RecurlyClient.getPageSizeGetParam());
         System.setProperty(RECURLY_PAGE_SIZE, "350");
@@ -92,12 +88,10 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testCreateAccount() throws Exception {
-        //
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
 
         try {
-            //
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             final Account account = recurlyClient.createAccount(accountData);
 
@@ -149,7 +143,6 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
-        //
         final Plan planData = TestUtils.createRandomPlan();
         try {
             // Create a plan
@@ -178,7 +171,6 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testCreateSubscriptions() throws Exception {
-        //
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan();
@@ -190,7 +182,9 @@ public class TestRecurlyClient {
             // Create BillingInfo
             billingInfoData.setAccount(account);
             final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
             final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
 
             // Create a plan
             final Plan plan = recurlyClient.createPlan(planData);
@@ -226,7 +220,7 @@ public class TestRecurlyClient {
             // Check that the newly created sub is in the list
             boolean found = false;
             for (Subscription s : subs) {
-                if (s.getUuid().toString().equals(subscription.getUuid().toString())) {
+                if (s.getUuid().equals(subscription.getUuid())) {
                     found = true;
                     break;
                 }
@@ -247,7 +241,6 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testCreateAndQueryTransactions() throws Exception {
-        //
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan();
@@ -259,7 +252,9 @@ public class TestRecurlyClient {
             // Create BillingInfo
             billingInfoData.setAccount(account);
             final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
             final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
 
             // Create a plan
             final Plan plan = recurlyClient.createPlan(planData);
@@ -269,7 +264,7 @@ public class TestRecurlyClient {
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
-            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            recurlyClient.createSubscription(subscriptionData);
 
             // Create a subscription
             Transaction t = new Transaction();
@@ -277,7 +272,6 @@ public class TestRecurlyClient {
             t.setAccount(accountData);
             t.setAmountInCents(10);
             t.setCurrency(CURRENCY);
-            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             Transaction createdT = recurlyClient.createTransaction(t);
 
             // Test that the transaction created correctly
@@ -311,7 +305,6 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testAddons() throws Exception {
-
         // Create a Plan
         Plan planData = TestUtils.createRandomPlan();
         AddOn addOn = TestUtils.createRandomAddOn();
