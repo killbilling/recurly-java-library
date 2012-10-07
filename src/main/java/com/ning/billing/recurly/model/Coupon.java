@@ -39,7 +39,7 @@ public class Coupon extends RecurlyObject {
     private String discountType;
 
     @XmlElement(name = "discount_percent")
-    private String discountPercent;
+    private Integer discountPercent;
 
     /**
      * Gets the name of the {@link Coupon}
@@ -55,7 +55,7 @@ public class Coupon extends RecurlyObject {
      *
      * @param name The Name that is to be given to the {@link Coupon}
      */
-    public void setName(final String name) {
+    public void setName(final Object name) {
         this.name = stringOrNull(name);
     }
 
@@ -73,7 +73,7 @@ public class Coupon extends RecurlyObject {
      *
      * @param couponCode The coupon code
      */
-    public void setCouponCode(final String couponCode) {
+    public void setCouponCode(final Object couponCode) {
         this.couponCode = stringOrNull(couponCode);
     }
 
@@ -82,7 +82,7 @@ public class Coupon extends RecurlyObject {
      *
      * @param discountType A String of: 'percent'; 'dollars';
      */
-    public void setDiscountType(final String discountType) {
+    public void setDiscountType(final Object discountType) {
         this.discountType = stringOrNull(discountType);
     }
 
@@ -100,12 +100,12 @@ public class Coupon extends RecurlyObject {
      *
      * @return The percentage
      */
-    public String getDiscountPercent() {
+    public Integer getDiscountPercent() {
         return discountPercent;
     }
 
-    public void setDiscountPercent(final String discountPercent) {
-        this.discountPercent = stringOrNull(discountPercent);
+    public void setDiscountPercent(final Object discountPercent) {
+        this.discountPercent = integerOrNull(discountPercent);
     }
 
     @Override

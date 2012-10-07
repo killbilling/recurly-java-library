@@ -337,8 +337,7 @@ public class TestRecurlyClient {
         }
     }
 
-    // todo: uncomment when the coupon code is fixed
-    //@Test(groups="integration")
+    @Test(groups = "integration")
     public void testCreateCoupon() throws Exception {
         // Create the coupon
         Coupon c = new Coupon();
@@ -346,14 +345,11 @@ public class TestRecurlyClient {
         c.setCouponCode(randomString());
         c.setDiscountType("percent");
         c.setDiscountPercent("10");
+
         // Save the coupon
-        Coupon coupon = recurlyClient.createCoupon(c);
+        final Coupon coupon = recurlyClient.createCoupon(c);
+        Assert.assertNotNull(coupon);
 
-        if (null == coupon) {
-            Assert.fail("Returned coupon from Recurly was null");
-        }
-
-        // Tests
         Assert.assertEquals(coupon.getName(), c.getName());
         Assert.assertEquals(coupon.getCouponCode(), c.getCouponCode());
         Assert.assertEquals(coupon.getDiscountType(), c.getDiscountType());
