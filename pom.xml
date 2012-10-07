@@ -238,6 +238,7 @@
                                 <exclude>**/.settings/**</exclude>
                                 <exclude>.travis.yml</exclude>
                                 <exclude>bin/**</exclude>
+                                <exclude>CREDITS</exclude>
                             </excludes>
                         </configuration>
                     </execution>
