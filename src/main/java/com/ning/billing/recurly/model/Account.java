@@ -17,7 +17,10 @@
 package com.ning.billing.recurly.model;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,6 +33,12 @@ public class Account extends RecurlyObject {
 
     @XmlTransient
     public static final String ACCOUNT_RESOURCE = "/accounts";
+
+    @XmlTransient
+    public static final Pattern ACCOUNT_CODE_PATTERN = Pattern.compile(ACCOUNT_RESOURCE + "/(.+)$");
+
+    @XmlAttribute
+    private String href;
 
     @XmlElementWrapper(name = "adjustments")
     @XmlElement(name = "adjustment")
@@ -79,6 +88,23 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(final Object href) {
+        this.href = stringOrNull(href);
+
+        // If there was an href try to parse out the account code since
+        // Recurly doesn't currently provide it elsewhere.
+        if (this.href != null) {
+            Matcher m = ACCOUNT_CODE_PATTERN.matcher(this.href);
+            if (m.find()) {
+                setAccountCode(m.group(1));
+            }
+        }
+    }
 
     public List<Adjustment> getAdjustments() {
         return adjustments;
@@ -204,7 +230,8 @@ public class Account extends RecurlyObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Account");
-        sb.append("{adjustments=").append(adjustments);
+        sb.append("{href=").append(href);
+        sb.append(", adjustments=").append(adjustments);
         sb.append(", invoices=").append(invoices);
         sb.append(", subscriptions=").append(subscriptions);
         sb.append(", transactions=").append(transactions);
@@ -258,6 +285,9 @@ public class Account extends RecurlyObject {
         if (firstName != null ? !firstName.equals(account.firstName) : account.firstName != null) {
             return false;
         }
+        if (href != null ? !href.equals(account.href) : account.href != null) {
+            return false;
+        }
         if (hostedLoginToken != null ? !hostedLoginToken.equals(account.hostedLoginToken) : account.hostedLoginToken != null) {
             return false;
         }
@@ -285,7 +315,8 @@ public class Account extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = adjustments != null ? adjustments.hashCode() : 0;
+        int result = href != null ? href.hashCode() : 0;
+        result = 31 * result + (adjustments != null ? adjustments.hashCode() : 0);
         result = 31 * result + (invoices != null ? invoices.hashCode() : 0);
         result = 31 * result + (subscriptions != null ? subscriptions.hashCode() : 0);
         result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
