@@ -28,6 +28,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @XmlRootElement(name = "account")
 public class Account extends RecurlyObject {
 
@@ -37,7 +39,7 @@ public class Account extends RecurlyObject {
     @XmlTransient
     public static final Pattern ACCOUNT_CODE_PATTERN = Pattern.compile(ACCOUNT_RESOURCE + "/(.+)$");
 
-    @XmlAttribute
+    @XmlTransient
     private String href;
 
     @XmlElementWrapper(name = "adjustments")
@@ -89,6 +91,8 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
+    // Note: I'm not sure why @JsonIgnore is required here - shouldn't @XmlTransient be enough?
+    @JsonIgnore
     public String getHref() {
         return href;
     }
