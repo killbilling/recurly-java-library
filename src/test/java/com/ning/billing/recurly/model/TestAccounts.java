@@ -51,6 +51,7 @@ public class TestAccounts extends TestModelBase {
         Assert.assertEquals(accounts.size(), 1);
 
         final Account account = accounts.get(0);
+        Assert.assertEquals(account.getHref(), "https://api.recurly.com/v2/accounts/1");
         Assert.assertEquals(account.getAccountCode(), "1");
         Assert.assertEquals(account.getState(), "active");
         Assert.assertNull(account.getUsername());
