@@ -31,6 +31,7 @@ import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.Subscriptions;
@@ -293,6 +294,13 @@ public class TestRecurlyClient {
             if (!found) {
                 Assert.fail("Failed to locate the newly created transaction");
             }
+            
+            // Test Invoices retrieval
+            Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
+            // 2 Invoices are present (first, of the subscription created: second of the transaction being created)
+            Assert.assertEquals(invoices.size(), 2, "Number of Invoices incorrect");
+            Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
+
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());

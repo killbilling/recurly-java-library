@@ -32,6 +32,7 @@ import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.RecurlyObject;
@@ -330,7 +331,23 @@ public class RecurlyClient {
     }
 
     ///////////////////////////////////////////////////////////////////////////
+    // User invoices
 
+    /**
+     * Lookup an account's invoices
+     * <p/>
+     * Returns the account's invoices
+     *
+     * @param accountCode recurly account id
+     * @return the invoices associated with this account on success, null otherwise
+     */
+    public Invoices getAccountInvoices(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
+        		Invoices.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    
     /**
      * Create a Plan's info
      * <p/>
