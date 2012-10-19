@@ -294,7 +294,7 @@ public class TestRecurlyClient {
             if (!found) {
                 Assert.fail("Failed to locate the newly created transaction");
             }
-            
+
             // Test Invoices retrieval
             Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
             // 2 Invoices are present (first, of the subscription created: second of the transaction being created)

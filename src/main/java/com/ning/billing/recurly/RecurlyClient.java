@@ -343,11 +343,11 @@ public class RecurlyClient {
      */
     public Invoices getAccountInvoices(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
-        		Invoices.class);
+                     Invoices.class);
     }
 
     ///////////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Create a Plan's info
      * <p/>
