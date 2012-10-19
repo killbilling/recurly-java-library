@@ -264,10 +264,11 @@ public class TestRecurlyClient {
             Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
+            subscriptionData.setUnitAmountInCents(150);
             subscriptionData.setCurrency(CURRENCY);
             recurlyClient.createSubscription(subscriptionData);
 
-            // Create a subscription
+            // Create a transaction
             Transaction t = new Transaction();
             accountData.setBillingInfo(billingInfoData);
             t.setAccount(accountData);
@@ -297,10 +298,10 @@ public class TestRecurlyClient {
 
             // Test Invoices retrieval
             Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
-            // 2 Invoices are present (first, of the subscription created: second of the transaction being created)
+            // 2 Invoices are present (the first one is for the transaction, the second for the subscription)
             Assert.assertEquals(invoices.size(), 2, "Number of Invoices incorrect");
             Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
-
+            Assert.assertEquals(invoices.get(1).getTotalInCents(), subscriptionData.getUnitAmountInCents(), "Amount in cents is not the same");
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
