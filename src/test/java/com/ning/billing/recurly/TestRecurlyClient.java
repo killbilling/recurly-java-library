@@ -16,6 +16,8 @@
 
 package com.ning.billing.recurly;
 
+import static com.ning.billing.recurly.TestUtils.randomString;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -38,8 +40,6 @@ import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 
-import static com.ning.billing.recurly.TestUtils.randomString;
-
 public class TestRecurlyClient {
 
     public static final String RECURLY_PAGE_SIZE = "recurly.page.size";
@@ -54,7 +54,7 @@ public class TestRecurlyClient {
 
     private RecurlyClient recurlyClient;
 
-    @BeforeMethod(groups = "integration")
+    @BeforeMethod(groups = {"integration","newtests"})
     public void setUp() throws Exception {
         final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
         if (apiKey == null) {
@@ -66,7 +66,7 @@ public class TestRecurlyClient {
         recurlyClient.open();
     }
 
-    @AfterMethod(groups = "integration")
+    @AfterMethod(groups = {"integration","newtests"})
     public void tearDown() throws Exception {
         recurlyClient.close();
     }
@@ -240,11 +240,15 @@ public class TestRecurlyClient {
         }
     }
 
-    @Test(groups = "integration")
+    @Test(groups = {"integration", "newtests"})
     public void testCreateAndQueryTransactions() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan();
+        
+        System.out.println("Account     : " + accountData);
+        System.out.println("Billing Info: " + billingInfoData);
+        System.out.println("Plan        : " + planData);
 
         try {
             // Create a user
@@ -295,14 +299,19 @@ public class TestRecurlyClient {
             if (!found) {
                 Assert.fail("Failed to locate the newly created transaction");
             }
-
+            
             // Test Invoices retrieval
             Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
             // 2 Invoices are present (the first one is for the transaction, the second for the subscription)
             Assert.assertEquals(invoices.size(), 2, "Number of Invoices incorrect");
             Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
             Assert.assertEquals(invoices.get(1).getTotalInCents(), subscriptionData.getUnitAmountInCents(), "Amount in cents is not the same");
+
         } finally {
+        	
+        	System.out.println("recurlyClient: "  + recurlyClient);
+        	System.out.println("accountData  : "  + accountData);
+        	
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
