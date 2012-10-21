@@ -67,20 +67,6 @@ public class TestAdjustment extends TestModelBase {
         final String xml = xmlMapper.writeValueAsString(adjustment);
         Adjustment readValue = xmlMapper.readValue(xml, Adjustment.class);
         
-        System.out.println("Original XML Output:");
-        System.out.println(adjustmentData);
-        System.out.println();
-        System.out.println();
-        
-        System.out.println("XML Output:");
-        System.out.println(xml);
-        System.out.println();
-        System.out.println();
-        
-        System.out.println("Test:");
-        System.out.println(readValue);
-        System.out.println(adjustment);
-        
         // Temporarily disabled this test, because of the href does not return an equal result
 		// Assert.assertEquals(readValue, adjustment);
     }
