@@ -276,7 +276,7 @@ public class TestRecurlyClient {
             Transaction t = new Transaction();
             accountData.setBillingInfo(billingInfoData);
             t.setAccount(accountData);
-            t.setAmountInCents(10);
+            t.setAmountInCents(15);
             t.setCurrency(CURRENCY);
             Transaction createdT = recurlyClient.createTransaction(t);
 
@@ -305,7 +305,11 @@ public class TestRecurlyClient {
             // 2 Invoices are present (the first one is for the transaction, the second for the subscription)
             Assert.assertEquals(invoices.size(), 2, "Number of Invoices incorrect");
             Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
-            Assert.assertEquals(invoices.get(1).getTotalInCents(), subscriptionData.getUnitAmountInCents(), "Amount in cents is not the same");
+            
+            // Subscription also has setup fee in EUR ammount [see Also TestUtils.createRandomPrice()]
+			Assert.assertEquals((int) invoices.get(1).getTotalInCents(),
+					(int) (subscriptionData.getUnitAmountInCents() + plan.getSetupFeeInCents().getUnitAmountEUR()),
+					"Amount in cents is not the same");
 
         } finally {
         	

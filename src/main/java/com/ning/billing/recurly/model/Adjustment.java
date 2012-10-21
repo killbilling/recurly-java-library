@@ -161,8 +161,8 @@ public class Adjustment extends RecurlyObject {
         return taxable;
     }
 
-    public void setTaxable(final Boolean taxable) {
-        this.taxable = taxable;
+    public void setTaxable(final Object taxable) {
+        this.taxable = booleanOrNull(taxable);
     }
 
     public DateTime getStartDate() {
