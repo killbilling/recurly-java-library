@@ -229,6 +229,15 @@ public class TestRecurlyClient {
             if (!found) {
                 Assert.fail("Could not locate the subscription in the subscriptions associated with the account");
             }
+            
+            // Cancel a Subscription
+            recurlyClient.cancelSubscription(subscription);
+            Subscription cancelledSubscription = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertEquals(cancelledSubscription.getState(), "canceled");
+            
+            recurlyClient.reactivateSubscription(subscription);
+            Subscription reactivatedSubscription = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertEquals(reactivatedSubscription.getState(), "active");
 
         } finally {
             // Clear up the BillingInfo
@@ -240,7 +249,7 @@ public class TestRecurlyClient {
         }
     }
 
-    @Test(groups = {"integration", "newtests"})
+    @Test(groups = {"integration"})
     public void testCreateAndQueryTransactions() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
