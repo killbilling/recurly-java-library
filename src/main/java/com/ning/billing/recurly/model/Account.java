@@ -17,7 +17,10 @@
 package com.ning.billing.recurly.model;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -25,11 +28,19 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @XmlRootElement(name = "account")
 public class Account extends RecurlyObject {
 
     @XmlTransient
     public static final String ACCOUNT_RESOURCE = "/accounts";
+
+    @XmlTransient
+    public static final Pattern ACCOUNT_CODE_PATTERN = Pattern.compile(ACCOUNT_RESOURCE + "/(.+)$");
+
+    @XmlTransient
+    private String href;
 
     @XmlElementWrapper(name = "adjustments")
     @XmlElement(name = "adjustment")
@@ -76,6 +87,28 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "billing_info")
+    private BillingInfo billingInfo;
+
+    // Note: I'm not sure why @JsonIgnore is required here - shouldn't @XmlTransient be enough?
+    @JsonIgnore
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(final Object href) {
+        this.href = stringOrNull(href);
+
+        // If there was an href try to parse out the account code since
+        // Recurly doesn't currently provide it elsewhere.
+        if (this.href != null) {
+            Matcher m = ACCOUNT_CODE_PATTERN.matcher(this.href);
+            if (m.find()) {
+                setAccountCode(m.group(1));
+            }
+        }
+    }
 
     public List<Adjustment> getAdjustments() {
         return adjustments;
@@ -189,11 +222,20 @@ public class Account extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public BillingInfo getBillingInfo() {
+        return billingInfo;
+    }
+
+    public void setBillingInfo(final BillingInfo billingInfo) {
+        this.billingInfo = billingInfo;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Account");
-        sb.append("{adjustments=").append(adjustments);
+        sb.append("{href=").append(href);
+        sb.append(", adjustments=").append(adjustments);
         sb.append(", invoices=").append(invoices);
         sb.append(", subscriptions=").append(subscriptions);
         sb.append(", transactions=").append(transactions);
@@ -207,6 +249,7 @@ public class Account extends RecurlyObject {
         sb.append(", acceptLanguage='").append(acceptLanguage).append('\'');
         sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", billingInfo=").append(billingInfo);
         sb.append('}');
         return sb.toString();
     }
@@ -231,6 +274,9 @@ public class Account extends RecurlyObject {
         if (adjustments != null ? !adjustments.equals(account.adjustments) : account.adjustments != null) {
             return false;
         }
+        if (billingInfo != null ? !billingInfo.equals(account.billingInfo) : account.billingInfo != null) {
+            return false;
+        }
         if (companyName != null ? !companyName.equals(account.companyName) : account.companyName != null) {
             return false;
         }
@@ -241,6 +287,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (firstName != null ? !firstName.equals(account.firstName) : account.firstName != null) {
+            return false;
+        }
+        if (href != null ? !href.equals(account.href) : account.href != null) {
             return false;
         }
         if (hostedLoginToken != null ? !hostedLoginToken.equals(account.hostedLoginToken) : account.hostedLoginToken != null) {
@@ -270,7 +319,8 @@ public class Account extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = adjustments != null ? adjustments.hashCode() : 0;
+        int result = href != null ? href.hashCode() : 0;
+        result = 31 * result + (adjustments != null ? adjustments.hashCode() : 0);
         result = 31 * result + (invoices != null ? invoices.hashCode() : 0);
         result = 31 * result + (subscriptions != null ? subscriptions.hashCode() : 0);
         result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
@@ -284,6 +334,7 @@ public class Account extends RecurlyObject {
         result = 31 * result + (acceptLanguage != null ? acceptLanguage.hashCode() : 0);
         result = 31 * result + (hostedLoginToken != null ? hostedLoginToken.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (billingInfo != null ? billingInfo.hashCode() : 0);
         return result;
     }
 }

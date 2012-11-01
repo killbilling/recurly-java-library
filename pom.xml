@@ -24,7 +24,7 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.1.2-SNAPSHOT</version>
+    <version>0.1.4-SNAPSHOT</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>http://github.com/killbilling/recurly-java-library</url>
@@ -64,7 +64,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Core only -->
-        <jackson.version>2.0.5</jackson.version>
+        <jackson.version>2.1.0</jackson.version>
         <guava.version>12.0</guava.version>
         <slf4j.version>1.6.5</slf4j.version>
     </properties>
@@ -82,12 +82,12 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-xml</artifactId>
-            <version>2.0.4</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-joda</artifactId>
-            <version>2.0.4</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.module</groupId>
@@ -238,6 +238,7 @@
                                 <exclude>**/.settings/**</exclude>
                                 <exclude>.travis.yml</exclude>
                                 <exclude>bin/**</exclude>
+                                <exclude>CREDITS</exclude>
                             </excludes>
                         </configuration>
                     </execution>

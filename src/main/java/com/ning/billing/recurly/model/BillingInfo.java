@@ -89,6 +89,13 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "verification_value")
     private Integer verificationValue;
 
+    /**
+     * Account object associated to this BillingInfo
+     * <p/>
+     * Note: when fetching a BillingInfo object from Recurly, the account object is not guaranteed to be populated.
+     *
+     * @return account object
+     */
     public Account getAccount() {
         return account;
     }

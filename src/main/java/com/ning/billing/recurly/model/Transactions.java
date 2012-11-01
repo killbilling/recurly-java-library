@@ -19,8 +19,12 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement(name = "subscriptions")
-public class Subscriptions extends RecurlyObjects<Subscription> {
+/**
+ * @author Kristian.foster@gmail.com
+ */
+@XmlRootElement(name = "transaction")
+public class Transactions extends RecurlyObjects<Transaction> {
+
     @XmlTransient
-    public static final String SUBSCRIPTION_RESOURCE = "/subscriptions";
+    public static final String TRANSACTIONS_RESOURCE = "/transactions";
 }

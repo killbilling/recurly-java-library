@@ -19,7 +19,6 @@ package com.ning.billing.recurly.model;
 import java.util.Map;
 
 import javax.annotation.Nullable;
-import javax.xml.bind.annotation.XmlValue;
 
 import org.joda.time.DateTime;
 

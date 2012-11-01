@@ -16,24 +16,23 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import javax.xml.bind.annotation.XmlValue;
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import java.util.List;
+import javax.xml.bind.annotation.XmlValue;
 
 import org.joda.time.DateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @XmlRootElement(name = "plan")
 public class Plan extends RecurlyObject {
+
     @XmlTransient
     public static final String PLANS_RESOURCE = "/plans";
-
-    /////////////////////////////////////////////////////
-    // Attributes...
 
     @XmlElementWrapper(name = "add_ons")
     @XmlElement(name = "add_on")
@@ -60,12 +59,11 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "display_quantity")
     private Boolean displayQuantity;
 
-    // For some reason these don't work...
-    // @XmlElement(name = "display_phone_number")
-    // private boolean displayPhoneNumber;
+    @XmlElement(name = "display_phone_number")
+    private Boolean displayPhoneNumber;
 
-    // @XmlElement(name = "bypass_hosted_confirmation")
-    // private boolean bypassHostedConfirmation;
+    @XmlElement(name = "bypass_hosted_confirmation")
+    private Boolean bypassHostedConfirmation;
 
     @XmlElement(name = "unit_name")
     private String unitName;
@@ -94,9 +92,6 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "setup_fee_in_cents")
     private RecurlyUnitCurrency setupFeeInCents;
 
-    /////////////////////////////////////////////////////
-    // Getters & Setters
-
     public String getPlanCode() {
         return planCode;
     }
@@ -120,7 +115,7 @@ public class Plan extends RecurlyObject {
     public void setDescription(final Object description) {
         this.description = stringOrNull(description);
     }
-    
+
     public String getSuccessLink() {
         return successLink;
     }
@@ -153,21 +148,21 @@ public class Plan extends RecurlyObject {
         this.displayQuantity = booleanOrNull(displayQuantity);
     }
 
-    // public boolean getDisplayPhoneNumber() {
-    //     return displayPhoneNumber;
-    // }
+    public Boolean getDisplayPhoneNumber() {
+        return displayPhoneNumber;
+    }
 
-    // public void setDisplayPhoneNumber(boolean displayPhoneNumber) {
-    //     this.displayPhoneNumber = displayPhoneNumber;
-    // }
+    public void setDisplayPhoneNumber(final Object displayPhoneNumber) {
+        this.displayPhoneNumber = booleanOrNull(displayPhoneNumber);
+    }
 
-    // public boolean getBypassHostedConfirmation() {
-    //     return bypassHostedConfirmation;
-    // }
+    public Boolean getBypassHostedConfirmation() {
+        return bypassHostedConfirmation;
+    }
 
-    // public void setBypassHostedConfirmation(boolean bypassHostedConfirmation) {
-    //     this.bypassHostedConfirmation = bypassHostedConfirmation;
-    // }
+    public void setBypassHostedConfirmation(final Object bypassHostedConfirmation) {
+        this.bypassHostedConfirmation = booleanOrNull(bypassHostedConfirmation);
+    }
 
     public String getUnitName() {
         return unitName;
@@ -249,32 +244,29 @@ public class Plan extends RecurlyObject {
         this.addOns = addOns;
     }
 
-    /////////////////////////////////////////////////////
-    // Other
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Plan");
-        sb.append("{planCode='").append(planCode).append('\'');
+        sb.append("{addOns=").append(addOns);
+        sb.append(", planCode='").append(planCode).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", successLink='").append(successLink).append('\'');
         sb.append(", cancelLink='").append(cancelLink).append('\'');
-        sb.append(", displayDonationAmounts='").append(displayDonationAmounts).append('\'');
-        sb.append(", displayQuantity='").append(displayQuantity).append('\'');
-        // sb.append(", displayPhoneNumber='").append(displayPhoneNumber).append('\'');
-        // sb.append(", bypassHostedConfirmation='").append(bypassHostedConfirmation).append('\'');
+        sb.append(", displayDonationAmounts=").append(displayDonationAmounts);
+        sb.append(", displayQuantity=").append(displayQuantity);
+        sb.append(", displayPhoneNumber=").append(displayPhoneNumber);
+        sb.append(", bypassHostedConfirmation=").append(bypassHostedConfirmation);
         sb.append(", unitName='").append(unitName).append('\'');
         sb.append(", planIntervalUnit='").append(planIntervalUnit).append('\'');
-        sb.append(", planIntervalLength='").append(planIntervalLength).append('\'');
+        sb.append(", planIntervalLength=").append(planIntervalLength);
+        sb.append(", trialIntervalLength=").append(trialIntervalLength);
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
-        sb.append(", trialIntervalLength='").append(trialIntervalLength).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
-        sb.append(", createdAt='").append(createdAt).append('\'');
-        sb.append(", unitAmountInCents='").append(unitAmountInCents).append('\'');
-        sb.append(", setupFeeInCents='").append(setupFeeInCents).append('\'');
-        sb.append(", addOns='").append(addOns).append('\'');
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", unitAmountInCents=").append(unitAmountInCents);
+        sb.append(", setupFeeInCents=").append(setupFeeInCents);
         sb.append('}');
         return sb.toString();
     }
@@ -290,13 +282,61 @@ public class Plan extends RecurlyObject {
 
         final Plan plan = (Plan) o;
 
+        if (bypassHostedConfirmation != plan.bypassHostedConfirmation) {
+            return false;
+        }
+        if (displayPhoneNumber != plan.displayPhoneNumber) {
+            return false;
+        }
+        if (accountingCode != null ? !accountingCode.equals(plan.accountingCode) : plan.accountingCode != null) {
+            return false;
+        }
+        if (addOns != null ? !addOns.equals(plan.addOns) : plan.addOns != null) {
+            return false;
+        }
+        if (cancelLink != null ? !cancelLink.equals(plan.cancelLink) : plan.cancelLink != null) {
+            return false;
+        }
+        if (createdAt != null ? !createdAt.equals(plan.createdAt) : plan.createdAt != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(plan.description) : plan.description != null) {
+            return false;
+        }
+        if (displayDonationAmounts != null ? !displayDonationAmounts.equals(plan.displayDonationAmounts) : plan.displayDonationAmounts != null) {
+            return false;
+        }
+        if (displayQuantity != null ? !displayQuantity.equals(plan.displayQuantity) : plan.displayQuantity != null) {
+            return false;
+        }
         if (name != null ? !name.equals(plan.name) : plan.name != null) {
             return false;
         }
         if (planCode != null ? !planCode.equals(plan.planCode) : plan.planCode != null) {
             return false;
         }
-        if (description != null ? !description.equals(plan.description) : plan.description != null) {
+        if (planIntervalLength != null ? !planIntervalLength.equals(plan.planIntervalLength) : plan.planIntervalLength != null) {
+            return false;
+        }
+        if (planIntervalUnit != null ? !planIntervalUnit.equals(plan.planIntervalUnit) : plan.planIntervalUnit != null) {
+            return false;
+        }
+        if (setupFeeInCents != null ? !setupFeeInCents.equals(plan.setupFeeInCents) : plan.setupFeeInCents != null) {
+            return false;
+        }
+        if (successLink != null ? !successLink.equals(plan.successLink) : plan.successLink != null) {
+            return false;
+        }
+        if (trialIntervalLength != null ? !trialIntervalLength.equals(plan.trialIntervalLength) : plan.trialIntervalLength != null) {
+            return false;
+        }
+        if (trialIntervalUnit != null ? !trialIntervalUnit.equals(plan.trialIntervalUnit) : plan.trialIntervalUnit != null) {
+            return false;
+        }
+        if (unitAmountInCents != null ? !unitAmountInCents.equals(plan.unitAmountInCents) : plan.unitAmountInCents != null) {
+            return false;
+        }
+        if (unitName != null ? !unitName.equals(plan.unitName) : plan.unitName != null) {
             return false;
         }
 
@@ -305,76 +345,327 @@ public class Plan extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = planCode != null ? planCode.hashCode() : 0;
+        int result = addOns != null ? addOns.hashCode() : 0;
+        result = 31 * result + (planCode != null ? planCode.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + (successLink != null ? successLink.hashCode() : 0);
+        result = 31 * result + (cancelLink != null ? cancelLink.hashCode() : 0);
+        result = 31 * result + (displayDonationAmounts != null ? displayDonationAmounts.hashCode() : 0);
+        result = 31 * result + (displayQuantity != null ? displayQuantity.hashCode() : 0);
+        result = 31 * result + (displayPhoneNumber ? 1 : 0);
+        result = 31 * result + (bypassHostedConfirmation ? 1 : 0);
+        result = 31 * result + (unitName != null ? unitName.hashCode() : 0);
+        result = 31 * result + (planIntervalUnit != null ? planIntervalUnit.hashCode() : 0);
+        result = 31 * result + (planIntervalLength != null ? planIntervalLength.hashCode() : 0);
+        result = 31 * result + (trialIntervalLength != null ? trialIntervalLength.hashCode() : 0);
+        result = 31 * result + (trialIntervalUnit != null ? trialIntervalUnit.hashCode() : 0);
+        result = 31 * result + (accountingCode != null ? accountingCode.hashCode() : 0);
+        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
+        result = 31 * result + (setupFeeInCents != null ? setupFeeInCents.hashCode() : 0);
         return result;
     }
 
-    ////////////////////////////////////////////////////////////////////
-    //
-    //@XmlRootElement(name = "unit_amount_in_cents")
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class RecurlyUnitCurrency {
-        @XmlElement(name = "EUR")
-        @XmlValue
-        private Integer unitAmountEUR;
 
-        @XmlElement(name = "GBP")
-        @XmlValue
-        private Integer unitAmountGBP;
-
+        // United States Dollars
         @XmlElement(name = "USD")
         @XmlValue
         private Integer unitAmountUSD;
 
+        // Australian Dollars
+        @XmlElement(name = "AUD")
+        @XmlValue
+        private Integer unitAmountAUD;
+
+        // Canadian Dollars
+        @XmlElement(name = "CAD")
+        @XmlValue
+        private Integer unitAmountCAD;
+
+        // Euros
+        @XmlElement(name = "EUR")
+        @XmlValue
+        private Integer unitAmountEUR;
+
+        // British Pounds
+        @XmlElement(name = "GBP")
+        @XmlValue
+        private Integer unitAmountGBP;
+
+        // Czech Korunas
+        @XmlElement(name = "CZK")
+        @XmlValue
+        private Integer unitAmountCZK;
+
+        // Danish Krones
+        @XmlElement(name = "DKK")
+        @XmlValue
+        private Integer unitAmountDKK;
+
+        // Hungarian Forints
+        @XmlElement(name = "HUF")
+        @XmlValue
+        private Integer unitAmountHUF;
+
+        // Norwegian Krones
+        @XmlElement(name = "NOK")
+        @XmlValue
+        private Integer unitAmountNOK;
+
+        // New Zealand Dollars
+        @XmlElement(name = "NZD")
+        @XmlValue
+        private Integer unitAmountNZD;
+
+        // Polish Zloty
+        @XmlElement(name = "PLN")
+        @XmlValue
+        private Integer unitAmountPLN;
+
+        // Singapore Dollars
+        @XmlElement(name = "SGD")
+        @XmlValue
+        private Integer unitAmountSGD;
+
+        // Swedish Kronas
         @XmlElement(name = "SEK")
         @XmlValue
         private Integer unitAmountSEK;
 
-        public void setUnitAmountEUR(final Object unitAmountEUR) {
-            this.unitAmountEUR = integerOrNull(unitAmountEUR);
-        }
+        // Swiss Francs
+        @XmlElement(name = "CHF")
+        @XmlValue
+        private Integer unitAmountCHF;
 
-        public Integer getUnitAmountEUR() {
-            return this.unitAmountEUR;
-        }
+        // South African Rand
+        @XmlElement(name = "ZAR")
+        @XmlValue
+        private Integer unitAmountZAR;
 
-        public void setUnitAmountGBP(final Object unitAmountGBP) {
-            this.unitAmountGBP = integerOrNull(unitAmountGBP);
-        }
-
-        public Integer getUnitAmountGBP() {
-            return this.unitAmountGBP;
+        public Integer getUnitAmountUSD() {
+            return unitAmountUSD;
         }
 
         public void setUnitAmountUSD(final Object unitAmountUSD) {
             this.unitAmountUSD = integerOrNull(unitAmountUSD);
         }
 
-        public Integer getUnitAmountUSD() {
-            return this.unitAmountUSD;
+        public Integer getUnitAmountAUD() {
+            return unitAmountAUD;
+        }
+
+        public void setUnitAmountAUD(final Object unitAmountAUD) {
+            this.unitAmountAUD = integerOrNull(unitAmountAUD);
+        }
+
+        public Integer getUnitAmountCAD() {
+            return unitAmountCAD;
+        }
+
+        public void setUnitAmountCAD(final Object unitAmountCAD) {
+            this.unitAmountCAD = integerOrNull(unitAmountCAD);
+        }
+
+        public Integer getUnitAmountEUR() {
+            return unitAmountEUR;
+        }
+
+        public void setUnitAmountEUR(final Object unitAmountEUR) {
+            this.unitAmountEUR = integerOrNull(unitAmountEUR);
+        }
+
+        public Integer getUnitAmountGBP() {
+            return unitAmountGBP;
+        }
+
+        public void setUnitAmountGBP(final Object unitAmountGBP) {
+            this.unitAmountGBP = integerOrNull(unitAmountGBP);
+        }
+
+        public Integer getUnitAmountCZK() {
+            return unitAmountCZK;
+        }
+
+        public void setUnitAmountCZK(final Object unitAmountCZK) {
+            this.unitAmountCZK = integerOrNull(unitAmountCZK);
+        }
+
+        public Integer getUnitAmountDKK() {
+            return unitAmountDKK;
+        }
+
+        public void setUnitAmountDKK(final Object unitAmountDKK) {
+            this.unitAmountDKK = integerOrNull(unitAmountDKK);
+        }
+
+        public Integer getUnitAmountHUF() {
+            return unitAmountHUF;
+        }
+
+        public void setUnitAmountHUF(final Object unitAmountHUF) {
+            this.unitAmountHUF = integerOrNull(unitAmountHUF);
+        }
+
+        public Integer getUnitAmountNOK() {
+            return unitAmountNOK;
+        }
+
+        public void setUnitAmountNOK(final Object unitAmountNOK) {
+            this.unitAmountNOK = integerOrNull(unitAmountNOK);
+        }
+
+        public Integer getUnitAmountNZD() {
+            return unitAmountNZD;
+        }
+
+        public void setUnitAmountNZD(final Object unitAmountNZD) {
+            this.unitAmountNZD = integerOrNull(unitAmountNZD);
+        }
+
+        public Integer getUnitAmountPLN() {
+            return unitAmountPLN;
+        }
+
+        public void setUnitAmountPLN(final Object unitAmountPLN) {
+            this.unitAmountPLN = integerOrNull(unitAmountPLN);
+        }
+
+        public Integer getUnitAmountSGD() {
+            return unitAmountSGD;
+        }
+
+        public void setUnitAmountSGD(final Object unitAmountSGD) {
+            this.unitAmountSGD = integerOrNull(unitAmountSGD);
+        }
+
+        public Integer getUnitAmountSEK() {
+            return unitAmountSEK;
         }
 
         public void setUnitAmountSEK(final Object unitAmountSEK) {
             this.unitAmountSEK = integerOrNull(unitAmountSEK);
         }
 
-        public Integer getUnitAmountSEK() {
-            return this.unitAmountSEK;
+        public Integer getUnitAmountCHF() {
+            return unitAmountCHF;
+        }
+
+        public void setUnitAmountCHF(final Object unitAmountCHF) {
+            this.unitAmountCHF = integerOrNull(unitAmountCHF);
+        }
+
+        public Integer getUnitAmountZAR() {
+            return unitAmountZAR;
+        }
+
+        public void setUnitAmountZAR(final Object unitAmountZAR) {
+            this.unitAmountZAR = integerOrNull(unitAmountZAR);
         }
 
         @Override
         public String toString() {
             final StringBuilder sb = new StringBuilder();
-            sb.append("UnitAmountInCents");
-            sb.append("{amount-in-EUR='").append(unitAmountEUR).append('\'');
-            sb.append(",amount-in-GBP='").append(unitAmountGBP).append('\'');
-            sb.append(",amount-in-USD='").append(unitAmountUSD).append('\'');
-            sb.append(",amount-in-SEK='").append(unitAmountSEK).append('\'');
+            sb.append("RecurlyUnitCurrency");
+            sb.append("{unitAmountUSD=").append(unitAmountUSD);
+            sb.append(", unitAmountAUD=").append(unitAmountAUD);
+            sb.append(", unitAmountCAD=").append(unitAmountCAD);
+            sb.append(", unitAmountEUR=").append(unitAmountEUR);
+            sb.append(", unitAmountGBP=").append(unitAmountGBP);
+            sb.append(", unitAmountCZK=").append(unitAmountCZK);
+            sb.append(", unitAmountDKK=").append(unitAmountDKK);
+            sb.append(", unitAmountHUF=").append(unitAmountHUF);
+            sb.append(", unitAmountNOK=").append(unitAmountNOK);
+            sb.append(", unitAmountNZD=").append(unitAmountNZD);
+            sb.append(", unitAmountPLN=").append(unitAmountPLN);
+            sb.append(", unitAmountSGD=").append(unitAmountSGD);
+            sb.append(", unitAmountSEK=").append(unitAmountSEK);
+            sb.append(", unitAmountCHF=").append(unitAmountCHF);
+            sb.append(", unitAmountZAR=").append(unitAmountZAR);
             sb.append('}');
             return sb.toString();
         }
 
-    }
+        @Override
+        public boolean equals(final Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
 
+            final RecurlyUnitCurrency that = (RecurlyUnitCurrency) o;
+
+            if (unitAmountAUD != null ? !unitAmountAUD.equals(that.unitAmountAUD) : that.unitAmountAUD != null) {
+                return false;
+            }
+            if (unitAmountCAD != null ? !unitAmountCAD.equals(that.unitAmountCAD) : that.unitAmountCAD != null) {
+                return false;
+            }
+            if (unitAmountCHF != null ? !unitAmountCHF.equals(that.unitAmountCHF) : that.unitAmountCHF != null) {
+                return false;
+            }
+            if (unitAmountCZK != null ? !unitAmountCZK.equals(that.unitAmountCZK) : that.unitAmountCZK != null) {
+                return false;
+            }
+            if (unitAmountDKK != null ? !unitAmountDKK.equals(that.unitAmountDKK) : that.unitAmountDKK != null) {
+                return false;
+            }
+            if (unitAmountEUR != null ? !unitAmountEUR.equals(that.unitAmountEUR) : that.unitAmountEUR != null) {
+                return false;
+            }
+            if (unitAmountGBP != null ? !unitAmountGBP.equals(that.unitAmountGBP) : that.unitAmountGBP != null) {
+                return false;
+            }
+            if (unitAmountHUF != null ? !unitAmountHUF.equals(that.unitAmountHUF) : that.unitAmountHUF != null) {
+                return false;
+            }
+            if (unitAmountNOK != null ? !unitAmountNOK.equals(that.unitAmountNOK) : that.unitAmountNOK != null) {
+                return false;
+            }
+            if (unitAmountNZD != null ? !unitAmountNZD.equals(that.unitAmountNZD) : that.unitAmountNZD != null) {
+                return false;
+            }
+            if (unitAmountPLN != null ? !unitAmountPLN.equals(that.unitAmountPLN) : that.unitAmountPLN != null) {
+                return false;
+            }
+            if (unitAmountSEK != null ? !unitAmountSEK.equals(that.unitAmountSEK) : that.unitAmountSEK != null) {
+                return false;
+            }
+            if (unitAmountSGD != null ? !unitAmountSGD.equals(that.unitAmountSGD) : that.unitAmountSGD != null) {
+                return false;
+            }
+            if (unitAmountUSD != null ? !unitAmountUSD.equals(that.unitAmountUSD) : that.unitAmountUSD != null) {
+                return false;
+            }
+            if (unitAmountZAR != null ? !unitAmountZAR.equals(that.unitAmountZAR) : that.unitAmountZAR != null) {
+                return false;
+            }
+
+            return true;
+        }
+
+        @Override
+        public int hashCode() {
+            int result = unitAmountUSD != null ? unitAmountUSD.hashCode() : 0;
+            result = 31 * result + (unitAmountAUD != null ? unitAmountAUD.hashCode() : 0);
+            result = 31 * result + (unitAmountCAD != null ? unitAmountCAD.hashCode() : 0);
+            result = 31 * result + (unitAmountEUR != null ? unitAmountEUR.hashCode() : 0);
+            result = 31 * result + (unitAmountGBP != null ? unitAmountGBP.hashCode() : 0);
+            result = 31 * result + (unitAmountCZK != null ? unitAmountCZK.hashCode() : 0);
+            result = 31 * result + (unitAmountDKK != null ? unitAmountDKK.hashCode() : 0);
+            result = 31 * result + (unitAmountHUF != null ? unitAmountHUF.hashCode() : 0);
+            result = 31 * result + (unitAmountNOK != null ? unitAmountNOK.hashCode() : 0);
+            result = 31 * result + (unitAmountNZD != null ? unitAmountNZD.hashCode() : 0);
+            result = 31 * result + (unitAmountPLN != null ? unitAmountPLN.hashCode() : 0);
+            result = 31 * result + (unitAmountSGD != null ? unitAmountSGD.hashCode() : 0);
+            result = 31 * result + (unitAmountSEK != null ? unitAmountSEK.hashCode() : 0);
+            result = 31 * result + (unitAmountCHF != null ? unitAmountCHF.hashCode() : 0);
+            result = 31 * result + (unitAmountZAR != null ? unitAmountZAR.hashCode() : 0);
+            return result;
+        }
+    }
 }

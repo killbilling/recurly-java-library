@@ -26,37 +26,37 @@ public class TestPlans extends TestModelBase {
     public void testDeserialization() throws Exception {
         // See http://docs.recurly.com/api/plans
         final String plansData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                "<plans type=\"array\">\n" +
-                "  <plan href=\"https://api.recurly.com/v2/plans/gold\">\n" +
-                "    <add_ons href=\"https://api.recurly.com/v2/plans/gold/add_ons\"/>\n" +
-                "    <plan_code>gold</plan_code>\n" +
-                "    <name>Gold plan</name>\n" +
-                "    <description nil=\"nil\"></description>\n" +
-                "    <success_url nil=\"nil\"></success_url>\n" +
-                "    <cancel_url nil=\"nil\"></cancel_url>\n" +
-                "    <display_donation_amounts type=\"boolean\">false</display_donation_amounts>\n" +
-                "    <display_quantity type=\"boolean\">false</display_quantity>\n" +
-                "    <display_phone_number type=\"boolean\">false</display_phone_number>\n" +
-                "    <bypass_hosted_confirmation type=\"boolean\">false</bypass_hosted_confirmation>\n" +
-                "    <unit_name>unit</unit_name>\n" +
-                "    <payment_page_tos_link nil=\"nil\"></payment_page_tos_link>\n" +
-                "    <plan_interval_length type=\"integer\">1</plan_interval_length>\n" +
-                "    <plan_interval_unit>months</plan_interval_unit>\n" +
-                "    <trial_interval_length type=\"integer\">0</trial_interval_length>\n" +
-                "    <trial_interval_unit>days</trial_interval_unit>\n" +
-                "    <accounting_code nil=\"nil\"></accounting_code>\n" +
-                "    <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
-                "    <unit_amount_in_cents>\n" +
-                "      <USD type=\"integer\">1000</USD>\n" +
-                "      <EUR type=\"integer\">800</EUR>\n" +
-                "    </unit_amount_in_cents>\n" +
-                "    <setup_fee_in_cents>\n" +
-                "      <USD type=\"integer\">6000</USD>\n" +
-                "      <EUR type=\"integer\">4500</EUR>\n" +
-                "    </setup_fee_in_cents>\n" +
-                "  </plan>\n" +
-                "  <!-- Continued... -->\n" +
-                "</plans>";
+                                 "<plans type=\"array\">\n" +
+                                 "  <plan href=\"https://api.recurly.com/v2/plans/gold\">\n" +
+                                 "    <add_ons href=\"https://api.recurly.com/v2/plans/gold/add_ons\"/>\n" +
+                                 "    <plan_code>gold</plan_code>\n" +
+                                 "    <name>Gold plan</name>\n" +
+                                 "    <description nil=\"nil\"></description>\n" +
+                                 "    <success_url nil=\"nil\"></success_url>\n" +
+                                 "    <cancel_url nil=\"nil\"></cancel_url>\n" +
+                                 "    <display_donation_amounts type=\"boolean\">false</display_donation_amounts>\n" +
+                                 "    <display_quantity type=\"boolean\">false</display_quantity>\n" +
+                                 "    <display_phone_number type=\"boolean\">false</display_phone_number>\n" +
+                                 "    <bypass_hosted_confirmation type=\"boolean\">false</bypass_hosted_confirmation>\n" +
+                                 "    <unit_name>unit</unit_name>\n" +
+                                 "    <payment_page_tos_link nil=\"nil\"></payment_page_tos_link>\n" +
+                                 "    <plan_interval_length type=\"integer\">1</plan_interval_length>\n" +
+                                 "    <plan_interval_unit>months</plan_interval_unit>\n" +
+                                 "    <trial_interval_length type=\"integer\">0</trial_interval_length>\n" +
+                                 "    <trial_interval_unit>days</trial_interval_unit>\n" +
+                                 "    <accounting_code nil=\"nil\"></accounting_code>\n" +
+                                 "    <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                 "    <unit_amount_in_cents>\n" +
+                                 "      <USD type=\"integer\">1000</USD>\n" +
+                                 "      <EUR type=\"integer\">800</EUR>\n" +
+                                 "    </unit_amount_in_cents>\n" +
+                                 "    <setup_fee_in_cents>\n" +
+                                 "      <USD type=\"integer\">6000</USD>\n" +
+                                 "      <EUR type=\"integer\">4500</EUR>\n" +
+                                 "    </setup_fee_in_cents>\n" +
+                                 "  </plan>\n" +
+                                 "  <!-- Continued... -->\n" +
+                                 "</plans>";
 
         final Plans plans = xmlMapper.readValue(plansData, Plans.class);
         Assert.assertEquals(plans.size(), 1);

@@ -16,18 +16,17 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "add_on")
 public class AddOn extends RecurlyObject {
 
-    @XmlElement(name = "plan")
-    private Plan plan;
+    @XmlTransient
+    public static final String ADDONS_RESOURCE = "/add_ons";
 
     @XmlElement(name = "add_on_code")
     private String addOnCode;
@@ -42,18 +41,10 @@ public class AddOn extends RecurlyObject {
     private Integer defaultQuantity;
 
     @XmlElement(name = "unit_amount_in_cents")
-    private Map<String, Integer> unitAmountInCents;
+    private Plan.RecurlyUnitCurrency unitAmountInCents;
 
     @XmlElement(name = "createdAt")
     private DateTime createdAt;
-
-    public Plan getPlan() {
-        return plan;
-    }
-
-    public void setPlan(final Plan plan) {
-        this.plan = plan;
-    }
 
     public String getAddOnCode() {
         return addOnCode;
@@ -75,8 +66,8 @@ public class AddOn extends RecurlyObject {
         return displayQuantityOnHostedPage;
     }
 
-    public void setDisplayQuantityOnHostedPage(final Boolean displayQuantityOnHostedPage) {
-        this.displayQuantityOnHostedPage = displayQuantityOnHostedPage;
+    public void setDisplayQuantityOnHostedPage(final Object displayQuantityOnHostedPage) {
+        this.displayQuantityOnHostedPage = booleanOrNull(displayQuantityOnHostedPage);
     }
 
     public Integer getDefaultQuantity() {
@@ -87,11 +78,11 @@ public class AddOn extends RecurlyObject {
         this.defaultQuantity = integerOrNull(defaultQuantity);
     }
 
-    public Map<String, Integer> getUnitAmountInCents() {
+    public Plan.RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
     }
 
-    public void setUnitAmountInCents(final Map<String, Integer> unitAmountInCents) {
+    public void setUnitAmountInCents(final Plan.RecurlyUnitCurrency unitAmountInCents) {
         this.unitAmountInCents = unitAmountInCents;
     }
 
@@ -107,8 +98,7 @@ public class AddOn extends RecurlyObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("AddOn");
-        sb.append("{plan=").append(plan);
-        sb.append(", addOnCode='").append(addOnCode).append('\'');
+        sb.append("{addOnCode='").append(addOnCode).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
         sb.append(", defaultQuantity=").append(defaultQuantity);
@@ -144,9 +134,6 @@ public class AddOn extends RecurlyObject {
         if (name != null ? !name.equals(addOn.name) : addOn.name != null) {
             return false;
         }
-        if (plan != null ? !plan.equals(addOn.plan) : addOn.plan != null) {
-            return false;
-        }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(addOn.unitAmountInCents) : addOn.unitAmountInCents != null) {
             return false;
         }
@@ -156,8 +143,7 @@ public class AddOn extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = plan != null ? plan.hashCode() : 0;
-        result = 31 * result + (addOnCode != null ? addOnCode.hashCode() : 0);
+        int result = addOnCode != null ? addOnCode.hashCode() : 0;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (displayQuantityOnHostedPage != null ? displayQuantityOnHostedPage.hashCode() : 0);
         result = 31 * result + (defaultQuantity != null ? defaultQuantity.hashCode() : 0);

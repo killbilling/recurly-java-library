@@ -16,31 +16,43 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.UUID;
-
+import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.ImmutableList;
 
 public class TestAccount extends TestModelBase {
 
     @Test(groups = "fast")
     public void testSerialization() throws Exception {
-        final Account accountData = new Account();
-        accountData.setAccountCode(UUID.randomUUID().toString().substring(0, 5));
-        accountData.setEmail(UUID.randomUUID().toString().substring(0, 5) + "@laposte.net");
-        accountData.setFirstName(UUID.randomUUID().toString().substring(0, 5));
-        accountData.setLastName(UUID.randomUUID().toString().substring(0, 5));
-        accountData.setUsername(UUID.randomUUID().toString().substring(0, 5));
-        accountData.setAcceptLanguage("en_US");
-        accountData.setCompanyName(UUID.randomUUID().toString().substring(0, 5));
+        // See http://docs.recurly.com/api/accounts
+        final String accountData = "<account href=\"https://api.recurly.com/v2/accounts/1\">\n" +
+                                   "  <adjustments href=\"https://api.recurly.com/v2/accounts/1/adjustments\"/>\n" +
+                                   "  <billing_info href=\"https://api.recurly.com/v2/accounts/1/billing_info\"/>\n" +
+                                   "  <invoices href=\"https://api.recurly.com/v2/accounts/1/invoices\"/>\n" +
+                                   "  <redemption href=\"https://api.recurly.com/v2/accounts/1/redemption\"/>\n" +
+                                   "  <subscriptions href=\"https://api.recurly.com/v2/accounts/1/subscriptions\"/>\n" +
+                                   "  <transactions href=\"https://api.recurly.com/v2/accounts/1/transactions\"/>\n" +
+                                   "  <account_code>1</account_code>\n" +
+                                   "  <state>active</state>\n" +
+                                   "  <username nil=\"nil\"></username>\n" +
+                                   "  <email>verena@example.com</email>\n" +
+                                   "  <first_name>Verena</first_name>\n" +
+                                   "  <last_name>Example</last_name>\n" +
+                                   "  <accept_language nil=\"nil\"></accept_language>\n" +
+                                   "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
+                                   "  <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
+                                   "</account>";
 
-        final Adjustment adjustment = new Adjustment();
-        adjustment.setCurrency("USD");
-        accountData.setAdjustments(ImmutableList.<Adjustment>of(adjustment));
-
-        final String xml = xmlMapper.writeValueAsString(accountData);
-        Assert.assertEquals(xmlMapper.readValue(xml, Account.class), accountData);
+        final Account account = xmlMapper.readValue(accountData, Account.class);
+        Assert.assertEquals(account.getHref(), "https://api.recurly.com/v2/accounts/1");
+        Assert.assertEquals(account.getAccountCode(), "1");
+        Assert.assertEquals(account.getState(), "active");
+        Assert.assertNull(account.getUsername());
+        Assert.assertEquals(account.getEmail(), "verena@example.com");
+        Assert.assertEquals(account.getFirstName(), "Verena");
+        Assert.assertEquals(account.getLastName(), "Example");
+        Assert.assertNull(account.getAcceptLanguage());
+        Assert.assertEquals(account.getHostedLoginToken(), "a92468579e9c4231a6c0031c4716c01d");
+        Assert.assertEquals(account.getCreatedAt(), new DateTime("2011-10-25T12:00:00"));
     }
 }

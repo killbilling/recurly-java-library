@@ -150,24 +150,24 @@ public class Transaction extends RecurlyObject {
         return test;
     }
 
-    public void setTest(final Boolean test) {
-        this.test = test;
+    public void setTest(final Object test) {
+        this.test = booleanOrNull(test);
     }
 
     public Boolean getVoidable() {
         return voidable;
     }
 
-    public void setVoidable(final Boolean voidable) {
-        this.voidable = voidable;
+    public void setVoidable(final Object voidable) {
+        this.voidable = booleanOrNull(voidable);
     }
 
     public Boolean getRefundable() {
         return refundable;
     }
 
-    public void setRefundable(final Boolean refundable) {
-        this.refundable = refundable;
+    public void setRefundable(final Object refundable) {
+        this.refundable = booleanOrNull(refundable);
     }
 
     public DateTime getCreatedAt() {

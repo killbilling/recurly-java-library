@@ -1,11 +1,17 @@
+# Temp files and IDE files
+*.*#
 .idea
 *.iml
+# Compiled files
 *.class
 target
+# Dir for stuff i don't want to commit
+utils/
 # Package Files #
 *.jar
 *.war
 *.ear
+*.*~
 pom.xml.releaseBackup
 release.properties
 test-output/*
