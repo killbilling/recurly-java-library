@@ -33,6 +33,7 @@ import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
@@ -229,7 +230,13 @@ public class TestRecurlyClient {
             if (!found) {
                 Assert.fail("Could not locate the subscription in the subscriptions associated with the account");
             }
-
+            
+            // Test subscription termination
+            recurlyClient.terminateSubscription(subscription.getUuid(), RefundOption.none);
+            Subscription subAfterCancel = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertEquals(sub1.getUuid(), subAfterCancel.getUuid(),"It seems we did not change the correct subscription");
+            Assert.assertNotNull(subAfterCancel.getCanceledAt(),"Subscription should have been canceled");
+            Assert.assertNotEquals(sub1.getState(), subAfterCancel.getState(),"State should change from Active to Expired");
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
