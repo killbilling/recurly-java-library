@@ -16,6 +16,8 @@
 
 package com.ning.billing.recurly;
 
+import static com.ning.billing.recurly.TestUtils.randomString;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -33,12 +35,11 @@ import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
-
-import static com.ning.billing.recurly.TestUtils.randomString;
 
 public class TestRecurlyClient {
 
@@ -230,6 +231,12 @@ public class TestRecurlyClient {
                 Assert.fail("Could not locate the subscription in the subscriptions associated with the account");
             }
 
+            // Test subscription termination
+            recurlyClient.terminateSubscription(subscription.getUuid(), RefundOption.none);
+            Subscription subAfterCancel = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertEquals(sub1.getUuid(), subAfterCancel.getUuid(),"It seems we did not change the correct subscription");
+            Assert.assertNotNull(subAfterCancel.getCanceledAt(),"Subscription should have been canceled");
+            Assert.assertNotEquals(sub1.getState(), subAfterCancel.getState(),"State should change from Active to Expired");
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
