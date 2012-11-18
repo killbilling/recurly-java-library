@@ -26,6 +26,14 @@ import javax.xml.bind.DatatypeConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
@@ -36,6 +44,7 @@ import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.RecurlyObject;
+import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
@@ -44,15 +53,6 @@ import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
-
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.type.TypeFactory;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
 public class RecurlyClient {
 
@@ -215,7 +215,7 @@ public class RecurlyClient {
      * @return Subscriptions for the specified user
      */
     public Subscription getSubscription(final String uuid) {
-        return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE
+        return doGET(Subscriptions.SUBSCRIPTION_RESOURCE
                      + "/" + uuid,
                      Subscription.class);
     }
@@ -231,9 +231,10 @@ public class RecurlyClient {
     public Subscriptions getAccountSubscriptions(final String accountCode) {
         return doGET(Account.ACCOUNT_RESOURCE
                      + "/" + accountCode
-                     + Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                     + Subscriptions.SUBSCRIPTION_RESOURCE,
                      Subscriptions.class);
     }
+
 
     /**
      * Get the subscriptions for an account.
@@ -247,10 +248,43 @@ public class RecurlyClient {
     public Subscriptions getAccountSubscriptions(final String accountCode, final String status) {
         return doGET(Account.ACCOUNT_RESOURCE
                      + "/" + accountCode
-                     + Subscriptions.SUBSCRIPTIONS_RESOURCE
+                     + Subscriptions.SUBSCRIPTION_RESOURCE
                      + "?state="
                      + status,
                      Subscriptions.class);
+    }
+    
+    /**
+     * Terminate a particular {@link Subscription} by it's UUID
+     * <p/>
+     * Returns information about a single account.
+     *
+     * @param uuid UUID of the subscription to terminate
+     */
+    public void terminateSubscription(final String uuid, final RefundOption refund) {
+      doBodylessPut(Subscription.SUBSCRIPTION_RESOURCE+"/"+uuid+"/terminate?refund="+refund);
+    }
+
+    /**
+     * Cancel a particular {@link Subscription} by it's UUID, user moved to free at end of month.
+     * <p/>
+     * Returns information about a single account.
+     *
+     * @param uuid UUID of the subscription to terminate
+     */
+    public void cancelSubscription(final String uuid) {
+      doBodylessPut(Subscription.SUBSCRIPTION_RESOURCE+"/"+uuid+"/cancel");
+    }
+
+    /**
+     * Reactivate a canceled {@link Subscription} by it's UUID.
+     * <p/>
+     * Returns information about a single account.
+     *
+     * @param uuid UUID of the subscription to terminate
+     */
+    public void reactivateSubscription(final String uuid) {
+      doBodylessPut(Subscription.SUBSCRIPTION_RESOURCE+"/"+uuid+"/reactivate");
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -560,6 +594,10 @@ public class RecurlyClient {
 
         return callRecurlySafe(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
     }
+    
+    private void doBodylessPut(final String resource) {
+      callRecurlySafe(client.preparePut(baseUrl + resource).setBody(""), null);
+    }
 
     private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz) {
         final String xmlPayload;
@@ -650,4 +688,5 @@ public class RecurlyClient {
         builder.setMaximumConnectionsPerHost(-1);
         return new AsyncHttpClient(builder.build());
     }
+    
 }
