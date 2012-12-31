@@ -23,10 +23,24 @@ import java.util.concurrent.ExecutionException;
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 
-import com.ning.billing.recurly.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Plans;
+import com.ning.billing.recurly.model.RecurlyObject;
+import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionUpdate;
+import com.ning.billing.recurly.model.Subscriptions;
+import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.Transactions;
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
@@ -215,11 +229,11 @@ public class RecurlyClient {
      * @param uuid UUID of the subscription to update
      * @return Subscription the updated subscription
      */
-    public Subscription updateSubscription(final String uuid, SubscriptionUpdate subscriptionUpdate) {
+    public Subscription updateSubscription(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
         return doPUT(Subscriptions.SUBSCRIPTIONS_RESOURCE
-                + "/" + uuid,
-                subscriptionUpdate,
-                Subscription.class);
+                     + "/" + uuid,
+                     subscriptionUpdate,
+                     Subscription.class);
     }
 
     /**
