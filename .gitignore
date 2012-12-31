@@ -18,3 +18,5 @@ test-output/*
 .settings/*
 .project
 .classpath
+
+.DS_Store

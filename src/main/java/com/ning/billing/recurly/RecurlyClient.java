@@ -72,7 +72,7 @@ public class RecurlyClient {
      * required. Used internally by the client to decide whether to
      * generate debug output
      */
-    private static final boolean debug() {
+    private static boolean debug() {
         return Boolean.getBoolean(RECURLY_DEBUG_KEY);
     }
 
@@ -80,7 +80,7 @@ public class RecurlyClient {
      * Returns the page Size to use when querying. The page size
      * is set as System.property: recurly.page.size
      */
-    public static final Integer getPageSize() {
+    public static Integer getPageSize() {
         Integer pageSize;
         try {
             pageSize = new Integer(System.getProperty(RECURLY_PAGE_SIZE_KEY));
@@ -90,7 +90,7 @@ public class RecurlyClient {
         return pageSize;
     }
 
-    public static final String getPageSizeGetParam() {
+    public static String getPageSizeGetParam() {
         return PER_PAGE + getPageSize().toString();
     }
 
@@ -219,6 +219,32 @@ public class RecurlyClient {
         return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE
                      + "/" + uuid,
                      Subscription.class);
+    }
+
+    /**
+     * Cancel a subscription
+     * <p/>
+     * Cancel a subscription so it remains active and then expires at the end of the current bill cycle.
+     *
+     * @param subscription Subscription object
+     * @return -?-
+     */
+    public Subscription cancelSubscription(final Subscription subscription) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
+                     subscription, Subscription.class);
+    }
+
+    /**
+     * Reactivating a canceled subscription
+     * <p/>
+     * Reactivate a canceled subscription so it renews at the end of the current bill cycle.
+     *
+     * @param subscription Subscription object
+     * @return -?-
+     */
+    public Subscription reactivateSubscription(final Subscription subscription) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/reactivate",
+                     subscription, Subscription.class);
     }
 
     /**
@@ -581,6 +607,10 @@ public class RecurlyClient {
         final String xmlPayload;
         try {
             xmlPayload = xmlMapper.writeValueAsString(payload);
+            if (debug()) {
+                log.info("Msg to Recurly API [PUT]:: URL : {}", baseUrl + resource);
+                log.info("Payload for [PUT]:: {}", xmlPayload);
+            }
         } catch (IOException e) {
             log.warn("Unable to serialize {} object as XML: {}", clazz.getName(), payload.toString());
             return null;
