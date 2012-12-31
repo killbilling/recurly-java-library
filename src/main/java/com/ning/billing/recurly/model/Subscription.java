@@ -26,11 +26,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "subscription")
-public class Subscription extends RecurlyObject {
-
-    @XmlTransient
-    public static final String SUBSCRIPTION_RESOURCE
-            = "/subscriptions";
+public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "account")
     private Account account;
@@ -38,23 +34,14 @@ public class Subscription extends RecurlyObject {
     @XmlElement(name = "plan")
     private Plan plan;
 
-    @XmlElement(name = "plan_code")
-    private String planCode;
-
     @XmlElement(name = "uuid")
     private String uuid;
 
     @XmlElement(name = "state", required = false)
     private String state;
 
-    @XmlElement(name = "unit_amount_in_cents")
-    private Integer unitAmountInCents;
-
     @XmlElement(name = "currency")
     private String currency;
-
-    @XmlElement(name = "quantity")
-    private Integer quantity;
 
     @XmlElement(name = "activated_at")
     private DateTime activatedAt;
@@ -77,10 +64,6 @@ public class Subscription extends RecurlyObject {
     @XmlElement(name = "trial_ends_at")
     private DateTime trialEndsAt;
 
-    @XmlElementWrapper(name = "subscription_add_ons")
-    @XmlElement(name = "subscription_add_on")
-    private List<AddOn> addOns;
-
     public Account getAccount() {
         return account;
     }
@@ -95,14 +78,6 @@ public class Subscription extends RecurlyObject {
 
     public void setPlan(final Plan plan) {
         this.plan = plan;
-    }
-
-    public String getPlanCode() {
-        return planCode;
-    }
-
-    public void setPlanCode(final String planCode) {
-        this.planCode = stringOrNull(planCode);
     }
 
     public String getUuid() {
@@ -121,28 +96,12 @@ public class Subscription extends RecurlyObject {
         this.state = stringOrNull(state);
     }
 
-    public Integer getUnitAmountInCents() {
-        return unitAmountInCents;
-    }
-
-    public void setUnitAmountInCents(final Object unitAmountInCents) {
-        this.unitAmountInCents = integerOrNull(unitAmountInCents);
-    }
-
     public String getCurrency() {
         return currency;
     }
 
     public void setCurrency(final Object currency) {
         this.currency = stringOrNull(currency);
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(final Object quantity) {
-        this.quantity = integerOrNull(quantity);
     }
 
     public DateTime getActivatedAt() {
@@ -199,14 +158,6 @@ public class Subscription extends RecurlyObject {
 
     public void setTrialEndsAt(final Object trialEndsAt) {
         this.trialEndsAt = dateTimeOrNull(trialEndsAt);
-    }
-
-    public List<AddOn> getAddOns() {
-        return addOns;
-    }
-
-    public void setAddOns(final List<AddOn> addOns) {
-        this.addOns = addOns;
     }
 
     @Override

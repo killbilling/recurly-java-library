@@ -16,6 +16,7 @@
 
 package com.ning.billing.recurly;
 
+import com.ning.billing.recurly.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -25,18 +26,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.Accounts;
-import com.ning.billing.recurly.model.AddOn;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Coupon;
-import com.ning.billing.recurly.model.Invoices;
-import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.Subscriptions;
-import com.ning.billing.recurly.model.Transaction;
-import com.ning.billing.recurly.model.Transactions;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
 
@@ -363,5 +352,62 @@ public class TestRecurlyClient {
         Assert.assertEquals(coupon.getCouponCode(), c.getCouponCode());
         Assert.assertEquals(coupon.getDiscountType(), c.getDiscountType());
         Assert.assertEquals(coupon.getDiscountPercent(), c.getDiscountPercent());
+    }
+
+    @Test(groups = "integration")
+    public void testUpdateSubscriptions() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+        final Plan plan2Data = TestUtils.createRandomPlan(CURRENCY);
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Plan plan2 = recurlyClient.createPlan(plan2Data);
+            log.info(plan2.toString());
+            // Subscribe the user to the plan
+            Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+
+            // Test subscription creation
+            Assert.assertNotNull(subscription);
+            log.info("Created subscription: {} with plan {}", subscription.getUuid(), subscription.getPlan().getPlanCode());
+
+            SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
+            subscriptionUpdateData.setTimeframe(SubscriptionUpdate.Timeframe.now);
+            subscriptionUpdateData.setPlanCode(plan2.getPlanCode());
+            final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);
+
+            Assert.assertNotNull(subscriptionUpdated);
+            Assert.assertEquals(subscription.getUuid(), subscriptionUpdated.getUuid());
+            Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdated.getPlan());
+            Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdated.getPlan().getPlanCode());
+            log.info("Updated subscription: {} with new plan {}", subscription.getUuid(), subscriptionUpdated.getPlan().getPlanCode());
+
+        } finally {
+            // Clear up the BillingInfo
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plans
+            recurlyClient.deletePlan(planData.getPlanCode());
+            recurlyClient.deletePlan(plan2Data.getPlanCode());
+        }
     }
 }
