@@ -192,7 +192,7 @@ public class TestRecurlyClient {
             final Plan plan = recurlyClient.createPlan(planData);
 
             // Subscribe the user to the plan
-            Subscription subscriptionData = new Subscription();
+            final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
@@ -214,14 +214,14 @@ public class TestRecurlyClient {
             log.info("Created subscription: {}", subscription.getUuid());
 
             // Test lookup for subscription
-            Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());
+            final Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());
             Assert.assertNotNull(sub1);
             Assert.assertEquals(sub1, subscription);
             // Do a lookup for subs for given account
-            Subscriptions subs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
+            final Subscriptions subs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
             // Check that the newly created sub is in the list
             boolean found = false;
-            for (Subscription s : subs) {
+            for (final Subscription s : subs) {
                 if (s.getUuid().equals(subscription.getUuid())) {
                     found = true;
                     break;
@@ -316,12 +316,12 @@ public class TestRecurlyClient {
     @Test(groups = "integration")
     public void testAddons() throws Exception {
         // Create a Plan
-        Plan planData = TestUtils.createRandomPlan();
-        AddOn addOn = TestUtils.createRandomAddOn();
+        final Plan planData = TestUtils.createRandomPlan();
+        final AddOn addOn = TestUtils.createRandomAddOn();
 
         try {
             // Create an AddOn
-            Plan plan = recurlyClient.createPlan(planData);
+            final Plan plan = recurlyClient.createPlan(planData);
             AddOn addOnRecurly = recurlyClient.createPlanAddOn(plan.getPlanCode(), addOn);
 
             // Test the creation
@@ -350,7 +350,7 @@ public class TestRecurlyClient {
     @Test(groups = "integration")
     public void testCreateCoupon() throws Exception {
         // Create the coupon
-        Coupon c = new Coupon();
+        final Coupon c = new Coupon();
         c.setName(randomString());
         c.setCouponCode(randomString());
         c.setDiscountType("percent");
@@ -389,7 +389,7 @@ public class TestRecurlyClient {
             final Plan plan2 = recurlyClient.createPlan(plan2Data);
             log.info(plan2.toString());
             // Subscribe the user to the plan
-            Subscription subscriptionData = new Subscription();
+            final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
@@ -401,7 +401,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subscription);
             log.info("Created subscription: {} with plan {}", subscription.getUuid(), subscription.getPlan().getPlanCode());
 
-            SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
+            final SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
             subscriptionUpdateData.setTimeframe(SubscriptionUpdate.Timeframe.now);
             subscriptionUpdateData.setPlanCode(plan2.getPlanCode());
             final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);

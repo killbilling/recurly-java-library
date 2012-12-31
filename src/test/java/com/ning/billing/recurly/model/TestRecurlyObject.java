@@ -30,7 +30,7 @@ public class TestRecurlyObject extends TestModelBase {
         Assert.assertEquals(null, RecurlyObject.integerOrNull(null));
         Assert.assertEquals(null, RecurlyObject.stringOrNull(null));
 
-        HashMap<String, String> nilMap = new HashMap<String, String>();
+        final HashMap<String, String> nilMap = new HashMap<String, String>();
         nilMap.put(RecurlyObject.NIL_STR, RecurlyObject.NIL_STR);
         Assert.assertEquals(null, RecurlyObject.booleanOrNull(nilMap));
         Assert.assertEquals(null, RecurlyObject.dateTimeOrNull(nilMap));

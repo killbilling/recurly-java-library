@@ -48,13 +48,11 @@ public class TestUtils {
      *          String
      * @return A random alpah-numeric String
      */
-    public final static String getRandomAlphaNumString(final int n) {
-        //
+    public static String getRandomAlphaNumString(final int n) {
         int offset = n;
-        String retValue = UUID.randomUUID().toString().replace("-", "");
-        //
+        final String retValue = UUID.randomUUID().toString().replace("-", "");
+
         if (retValue.length() <= n) {
-            //
             offset = retValue.length() - 1;
         }
         return retValue.substring(0, offset);
@@ -68,8 +66,7 @@ public class TestUtils {
      *          String
      * @return A random numeric String
      */
-    public final static String getRandomNumString(final int n) {
-        //
+    public static String getRandomNumString(final int n) {
         return "" + new Double(Math.random() * 100).intValue();
     }
 
@@ -79,23 +76,23 @@ public class TestUtils {
      * @param upperRange The limit of the upperRange - the random returned value could be upto and including this value
      * @return The random integer - from within the range 0 to upperRange
      */
-    public final static Integer randomInteger(int upperRange) {
-        return new Integer((int) (Math.random() * upperRange));
+    public static Integer randomInteger(final int upperRange) {
+        return (int) (Math.random() * upperRange);
     }
 
-    public static final String createTestCCNumber() {
+    public static String createTestCCNumber() {
         return "4111-1111-1111-1111";
     }
 
-    public static final String createTestCCVerificationNumber() {
+    public static String createTestCCVerificationNumber() {
         return "123";
     }
 
-    public static final String createTestCCMonth() {
+    public static String createTestCCMonth() {
         return "11";
     }
 
-    public static final String createTestCCYear() {
+    public static String createTestCCYear() {
         return "2015";
     }
 
@@ -104,16 +101,15 @@ public class TestUtils {
      *
      * @return The random {@link com.ning.billing.recurly.model.Account} object
      */
-    public static final Account createRandomAccount() {
-        //
-        Account account = new Account();
+    public static Account createRandomAccount() {
+        final Account account = new Account();
         account.setAcceptLanguage("en_US");
         account.setAccountCode(UUID.randomUUID().toString());
         account.setCompanyName(getRandomAlphaNumString(10));
         account.setEmail(getRandomAlphaNumString(4) + "@test.com");
         account.setFirstName(getRandomAlphaNumString(5));
         account.setLastName(getRandomAlphaNumString(6));
-        //
+
         return account;
     }
 
@@ -122,8 +118,8 @@ public class TestUtils {
      *
      * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
      */
-    public static final BillingInfo createRandomBillingInfo() {
-        BillingInfo info = new BillingInfo();
+    public static BillingInfo createRandomBillingInfo() {
+        final BillingInfo info = new BillingInfo();
         info.setAccount(createRandomAccount());
         info.setFirstName(getRandomAlphaNumString(5));
         info.setLastName(getRandomAlphaNumString(6));
@@ -134,14 +130,14 @@ public class TestUtils {
         info.setState(getRandomAlphaNumString(10));
         info.setZip(getRandomAlphaNumString(5));
         info.setCountry(getRandomAlphaNumString(5));
-        info.setPhone(randomInteger(8).intValue());
+        info.setPhone(randomInteger(8));
         info.setVatNumber(getRandomNumString(8));
         //info.setIpAddress(LifecycleTest.getRandomAlphaNumString(5));
         info.setYear(createTestCCYear());
         info.setMonth(createTestCCMonth());
         info.setNumber(createTestCCNumber());
         info.setVerificationValue(createTestCCVerificationNumber());
-        //
+
         return info;
     }
 
@@ -150,30 +146,26 @@ public class TestUtils {
      *
      * @return The random {@link com.ning.billing.recurly.model.Plan} object
      */
-    public static final Plan createRandomPlan() {
-        //
-        Plan plan = new Plan();
+    public static Plan createRandomPlan() {
+        final Plan plan = new Plan();
         plan.setPlanCode(getRandomAlphaNumString(10));
         plan.setName(getRandomAlphaNumString(10));
         plan.setPlanIntervalLength(randomInteger(50) + 1);
         plan.setPlanIntervalUnit("months");
         plan.setSetupFeeInCents(createRandomPrice());
         plan.setUnitAmountInCents(createRandomPrice());
-        //
+
         return plan;
     }
 
     /**
      * Creates a random {@link Plan} object for testing use.
-     *
-     * @return
      */
-    public static final Plan createRandomPlan(String currencyCode) {
-        //
-        Plan plan = createRandomPlan();
+    public static Plan createRandomPlan(final String currencyCode) {
+        final Plan plan = createRandomPlan();
         plan.setSetupFeeInCents(createRandomSinglePrice(currencyCode));
         plan.setUnitAmountInCents(createRandomSinglePrice(currencyCode));
-        //
+
         return plan;
     }
 
@@ -182,9 +174,8 @@ public class TestUtils {
      *
      * @return The random {@link Plan.RecurlyUnitCurrency} object
      */
-    public static final Plan.RecurlyUnitCurrency createRandomPrice() {
-        //
-        Plan.RecurlyUnitCurrency price = new Plan.RecurlyUnitCurrency();
+    public static Plan.RecurlyUnitCurrency createRandomPrice() {
+        final Plan.RecurlyUnitCurrency price = new Plan.RecurlyUnitCurrency();
         /*
         price.setUnitAmountEUR(LifecycleTest.randomInteger(10));
         price.setUnitAmountGBP(LifecycleTest.randomInteger(10));
@@ -192,7 +183,7 @@ public class TestUtils {
         price.setUnitAmountSEK(LifecycleTest.randomInteger(10));
         */
         price.setUnitAmountEUR(10);
-        //
+
         return price;
     }
 
@@ -203,32 +194,26 @@ public class TestUtils {
      * @param currencyCode The curreny for which we shold return a random Price
      * @return The random {@link Plan.RecurlyUnitCurrency} object
      */
-    public static final Plan.RecurlyUnitCurrency createRandomSinglePrice(String currencyCode) {
-        //
-        Plan.RecurlyUnitCurrency price = new Plan.RecurlyUnitCurrency();
+    public static Plan.RecurlyUnitCurrency createRandomSinglePrice(final String currencyCode) {
+        final Plan.RecurlyUnitCurrency price = new Plan.RecurlyUnitCurrency();
 
         // using if's as we are not guaranteed to be on JDK7
-        //
         if (currencyCode.endsWith("EUR")) {
-            //
             price.setUnitAmountEUR(randomInteger(10));
         }
-        //
+
         if (currencyCode.endsWith("GBP")) {
-            //
             price.setUnitAmountGBP(randomInteger(10));
         }
-        //
+
         if (currencyCode.endsWith("USD")) {
-            //
             price.setUnitAmountUSD(randomInteger(10));
         }
-        //
+
         if (currencyCode.endsWith("SEK")) {
-            //
             price.setUnitAmountSEK(randomInteger(10));
         }
-        //
+
         return price;
     }
 
@@ -243,10 +228,9 @@ public class TestUtils {
      *
      * @return The {@link String} code for the randomly chosen currency
      */
-    public static final String createRandomCurrency() {
-        String[] currencies = {"EUR", "GBP", "USD", "SEK"};
-        String currency = currencies[(int) (Math.random() * currencies.length)];
-        return currency;
+    public static String createRandomCurrency() {
+        final String[] currencies = {"EUR", "GBP", "USD", "SEK"};
+        return currencies[(int) (Math.random() * currencies.length)];
     }
 
     /**
@@ -255,9 +239,9 @@ public class TestUtils {
      * @param currencyCode The currency code for which the subscription will be charged in
      * @return The {@link com.ning.billing.recurly.model.Subscription} object
      */
-    public static final Subscription createRandomSubscription(String currencyCode) {
+    public static Subscription createRandomSubscription(final String currencyCode) {
         //
-        Subscription sub = new Subscription();
+        final Subscription sub = new Subscription();
         sub.setQuantity(randomInteger(10));
         sub.setActivatedAt(DateTime.now());
         sub.setCanceledAt(DateTime.now());
@@ -273,8 +257,8 @@ public class TestUtils {
         sub.setCurrentPeriodEndsAt(DateTime.now());
         sub.setTrialStartedAt(DateTime.now());
         sub.setTrialEndsAt(DateTime.now());
-        List<AddOn> addOns = new ArrayList<AddOn>();
-        for (int i = 0; i < randomInteger(10).intValue(); i++) {
+        final List<AddOn> addOns = new ArrayList<AddOn>();
+        for (int i = 0; i < randomInteger(10); i++) {
             addOns.add(createRandomAddOn());
         }
         sub.setAddOns(addOns);
@@ -288,8 +272,8 @@ public class TestUtils {
      *
      * @return The random {@link Transaction} object
      */
-    public static final Transaction createRandomTransaction() {
-        Transaction trans = new Transaction();
+    public static Transaction createRandomTransaction() {
+        final Transaction trans = new Transaction();
         trans.setAccount(createRandomAccount());
         trans.setAction(getRandomAlphaNumString(5));
         trans.setAmountInCents(getRandomNumString(100));
@@ -298,7 +282,6 @@ public class TestUtils {
         trans.setStatus(getRandomAlphaNumString(2));
         trans.setCreatedAt(DateTime.now());
 
-        //
         return trans;
     }
 
@@ -307,12 +290,12 @@ public class TestUtils {
      *
      * @return The random {@link AddOn}
      */
-    public static final AddOn createRandomAddOn() {
-        AddOn addOn = new AddOn();
+    public static AddOn createRandomAddOn() {
+        final AddOn addOn = new AddOn();
         addOn.setAddOnCode(getRandomAlphaNumString(10));
         addOn.setName(getRandomAlphaNumString(10));
         addOn.setUnitAmountInCents(createRandomPrice());
-        //
+
         return addOn;
     }
 
@@ -323,10 +306,10 @@ public class TestUtils {
      *                     EUR;
      * @return The random {@link AddOn}
      */
-    public static final AddOn createRandomAddOn(String currencyCode) {
-        AddOn addOn = createRandomAddOn();
+    public static AddOn createRandomAddOn(final String currencyCode) {
+        final AddOn addOn = createRandomAddOn();
         addOn.setUnitAmountInCents(createRandomSinglePrice(currencyCode));
-        //
+
         return addOn;
     }
 }
