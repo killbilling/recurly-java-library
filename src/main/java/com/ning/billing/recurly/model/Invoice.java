@@ -61,8 +61,8 @@ public class Invoice extends RecurlyObject {
     private DateTime createdAt;
 
     @XmlElementWrapper(name = "line_items")
-    @XmlElement(name = "line_item")
-    private List<LineItem> lineItems;
+    @XmlElement(name = "adjustment")
+    private List<Adjustment> adjustments;
 
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
@@ -156,12 +156,12 @@ public class Invoice extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
-    public List<LineItem> getLineItems() {
-        return lineItems;
+    public List<Adjustment> getLineItems() {
+        return adjustments;
     }
 
-    public void setLineItems(final List<LineItem> lineItems) {
-        this.lineItems = lineItems;
+    public void setLineItems(final List<Adjustment> lineItems) {
+        this.adjustments = adjustments;
     }
 
     public List<Transaction> getTransactions() {
@@ -187,7 +187,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", createdAt=").append(createdAt);
-        sb.append(", lineItems=").append(lineItems);
+        sb.append(", lineItems=").append(adjustments);
         sb.append(", transactions=").append(transactions);
         sb.append('}');
         return sb.toString();
@@ -216,7 +216,7 @@ public class Invoice extends RecurlyObject {
         if (invoiceNumber != null ? !invoiceNumber.equals(invoice.invoiceNumber) : invoice.invoiceNumber != null) {
             return false;
         }
-        if (lineItems != null ? !lineItems.equals(invoice.lineItems) : invoice.lineItems != null) {
+        if (adjustments != null ? !adjustments.equals(invoice.adjustments) : invoice.adjustments != null) {
             return false;
         }
         if (poNumber != null ? !poNumber.equals(invoice.poNumber) : invoice.poNumber != null) {
@@ -260,7 +260,7 @@ public class Invoice extends RecurlyObject {
         result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (lineItems != null ? lineItems.hashCode() : 0);
+        result = 31 * result + (adjustments != null ? adjustments.hashCode() : 0);
         result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
         return result;
     }

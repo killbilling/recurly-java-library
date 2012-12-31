@@ -262,7 +262,7 @@ public class TestRecurlyClient {
             final Plan plan = recurlyClient.createPlan(planData);
 
             // Subscribe the user to the plan
-            Subscription subscriptionData = new Subscription();
+            final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setUnitAmountInCents(150);
@@ -270,12 +270,12 @@ public class TestRecurlyClient {
             recurlyClient.createSubscription(subscriptionData);
 
             // Create a transaction
-            Transaction t = new Transaction();
+            final Transaction t = new Transaction();
             accountData.setBillingInfo(billingInfoData);
             t.setAccount(accountData);
-            t.setAmountInCents(10);
+            t.setAmountInCents(15);
             t.setCurrency(CURRENCY);
-            Transaction createdT = recurlyClient.createTransaction(t);
+            final Transaction createdT = recurlyClient.createTransaction(t);
 
             // Test that the transaction created correctly
             Assert.assertNotNull(createdT);
@@ -285,9 +285,9 @@ public class TestRecurlyClient {
             log.info("Created transaction: {}", createdT.getUuid());
 
             // Test lookup on the transaction via the users account
-            Transactions trans = recurlyClient.getAccountTransactions(account.getAccountCode());
+            final Transactions trans = recurlyClient.getAccountTransactions(account.getAccountCode());
             boolean found = false;
-            for (Transaction _t : trans) {
+            for (final Transaction _t : trans) {
                 if (_t.getUuid().equals(createdT.getUuid())) {
                     found = true;
                     break;
@@ -298,7 +298,7 @@ public class TestRecurlyClient {
             }
 
             // Test Invoices retrieval
-            Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
+            final Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
             // 2 Invoices are present (the first one is for the transaction, the second for the subscription)
             Assert.assertEquals(invoices.size(), 2, "Number of Invoices incorrect");
             Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
