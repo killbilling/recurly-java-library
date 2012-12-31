@@ -220,6 +220,33 @@ public class RecurlyClient {
                      + "/" + uuid,
                      Subscription.class);
     }
+    
+    /**
+     * Cancel a subscription
+     * <p/>
+     * Cancel a subscription so it remains active and then expires at the end of the current bill cycle.
+     *
+     * @param subscription Subscription object
+     * @return -?-
+     */
+    public Subscription cancelSubscription(final Subscription subscription) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
+                      subscription, Subscription.class);
+    }
+
+    /**
+     * Reactivating a canceled subscription
+     * <p/>
+     * Reactivate a canceled subscription so it renews at the end of the current bill cycle.
+     *
+     * @param subscription Subscription object
+     * @return -?-
+     */
+    public Subscription reactivateSubscription(final Subscription subscription) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/reactivate",
+        		subscription, Subscription.class);
+    }
+
 
     /**
      * Update a particular {@link Subscription} by it's UUID
@@ -581,6 +608,10 @@ public class RecurlyClient {
         final String xmlPayload;
         try {
             xmlPayload = xmlMapper.writeValueAsString(payload);
+            if (debug()) {
+                log.info("Msg to Recurly API [PUT]:: URL : {}", baseUrl + resource);
+                log.info("Payload for [PUT]:: {}", xmlPayload);
+            }
         } catch (IOException e) {
             log.warn("Unable to serialize {} object as XML: {}", clazz.getName(), payload.toString());
             return null;
