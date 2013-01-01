@@ -55,7 +55,7 @@ public class RecurlyClient {
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
 
-    private static final Integer DEFAULT_PAGE_SIZE = new Integer(20);
+    private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final String PER_PAGE = "per_page=";
 
     public static final String FETCH_RESOURCE = "/recurly_js/result";
