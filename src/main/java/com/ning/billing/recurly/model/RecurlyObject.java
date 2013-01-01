@@ -16,10 +16,20 @@
 
 package com.ning.billing.recurly.model;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import org.joda.time.DateTime;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,6 +38,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public abstract class RecurlyObject {
 
     public static final String NIL_STR = "nil";
+    public static final List<String> NIL_VAL = Arrays.asList("nil", "true");
+
+    public static XmlMapper newXmlMapper() {
+        XmlMapper xmlMapper = new XmlMapper();
+        final AnnotationIntrospector primary = new JacksonAnnotationIntrospector();
+        final AnnotationIntrospector secondary = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
+        final AnnotationIntrospector pair = new AnnotationIntrospectorPair(primary, secondary);
+        xmlMapper.setAnnotationIntrospector(pair);
+        xmlMapper.registerModule(new JodaModule());
+        xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        return xmlMapper;
+    }
 
     public static Boolean booleanOrNull(@Nullable final Object object) {
         if (isNull(object)) {
@@ -94,11 +116,11 @@ public abstract class RecurlyObject {
         }
 
         // Hack to work around Recurly output for nil values: the response will contain
-        // an element with a nil attribute (e.g. <city nil="nil"></city>) which Jackson will
+        // an element with a nil attribute (e.g. <city nil="nil"></city> or <username nil="true"></username>) which Jackson will
         // interpret as an Object (Map), not a String.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 1 && NIL_STR.equals(map.get(NIL_STR))) {
+            if (map.keySet().size() >= 1 && NIL_VAL.contains(map.get(NIL_STR))) {
                 return true;
             }
         }
