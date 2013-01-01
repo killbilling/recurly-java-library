@@ -16,7 +16,6 @@
 
 package com.ning.billing.recurly;
 
-import com.ning.billing.recurly.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -26,6 +25,19 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionUpdate;
+import com.ning.billing.recurly.model.Subscriptions;
+import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.Transactions;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
 
@@ -180,7 +192,7 @@ public class TestRecurlyClient {
             final Plan plan = recurlyClient.createPlan(planData);
 
             // Subscribe the user to the plan
-            Subscription subscriptionData = new Subscription();
+            final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
@@ -202,14 +214,14 @@ public class TestRecurlyClient {
             log.info("Created subscription: {}", subscription.getUuid());
 
             // Test lookup for subscription
-            Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());
+            final Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());
             Assert.assertNotNull(sub1);
             Assert.assertEquals(sub1, subscription);
             // Do a lookup for subs for given account
-            Subscriptions subs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
+            final Subscriptions subs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
             // Check that the newly created sub is in the list
             boolean found = false;
-            for (Subscription s : subs) {
+            for (final Subscription s : subs) {
                 if (s.getUuid().equals(subscription.getUuid())) {
                     found = true;
                     break;
@@ -218,6 +230,15 @@ public class TestRecurlyClient {
             if (!found) {
                 Assert.fail("Could not locate the subscription in the subscriptions associated with the account");
             }
+
+            // Cancel a Subscription
+            recurlyClient.cancelSubscription(subscription);
+            Subscription cancelledSubscription = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertEquals(cancelledSubscription.getState(), "canceled");
+
+            recurlyClient.reactivateSubscription(subscription);
+            Subscription reactivatedSubscription = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertEquals(reactivatedSubscription.getState(), "active");
 
         } finally {
             // Clear up the BillingInfo
@@ -250,7 +271,7 @@ public class TestRecurlyClient {
             final Plan plan = recurlyClient.createPlan(planData);
 
             // Subscribe the user to the plan
-            Subscription subscriptionData = new Subscription();
+            final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setUnitAmountInCents(150);
@@ -258,12 +279,12 @@ public class TestRecurlyClient {
             recurlyClient.createSubscription(subscriptionData);
 
             // Create a transaction
-            Transaction t = new Transaction();
+            final Transaction t = new Transaction();
             accountData.setBillingInfo(billingInfoData);
             t.setAccount(accountData);
-            t.setAmountInCents(10);
+            t.setAmountInCents(15);
             t.setCurrency(CURRENCY);
-            Transaction createdT = recurlyClient.createTransaction(t);
+            final Transaction createdT = recurlyClient.createTransaction(t);
 
             // Test that the transaction created correctly
             Assert.assertNotNull(createdT);
@@ -273,9 +294,9 @@ public class TestRecurlyClient {
             log.info("Created transaction: {}", createdT.getUuid());
 
             // Test lookup on the transaction via the users account
-            Transactions trans = recurlyClient.getAccountTransactions(account.getAccountCode());
+            final Transactions trans = recurlyClient.getAccountTransactions(account.getAccountCode());
             boolean found = false;
-            for (Transaction _t : trans) {
+            for (final Transaction _t : trans) {
                 if (_t.getUuid().equals(createdT.getUuid())) {
                     found = true;
                     break;
@@ -286,7 +307,7 @@ public class TestRecurlyClient {
             }
 
             // Test Invoices retrieval
-            Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
+            final Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
             // 2 Invoices are present (the first one is for the transaction, the second for the subscription)
             Assert.assertEquals(invoices.size(), 2, "Number of Invoices incorrect");
             Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
@@ -304,12 +325,12 @@ public class TestRecurlyClient {
     @Test(groups = "integration")
     public void testAddons() throws Exception {
         // Create a Plan
-        Plan planData = TestUtils.createRandomPlan();
-        AddOn addOn = TestUtils.createRandomAddOn();
+        final Plan planData = TestUtils.createRandomPlan();
+        final AddOn addOn = TestUtils.createRandomAddOn();
 
         try {
             // Create an AddOn
-            Plan plan = recurlyClient.createPlan(planData);
+            final Plan plan = recurlyClient.createPlan(planData);
             AddOn addOnRecurly = recurlyClient.createPlanAddOn(plan.getPlanCode(), addOn);
 
             // Test the creation
@@ -338,7 +359,7 @@ public class TestRecurlyClient {
     @Test(groups = "integration")
     public void testCreateCoupon() throws Exception {
         // Create the coupon
-        Coupon c = new Coupon();
+        final Coupon c = new Coupon();
         c.setName(randomString());
         c.setCouponCode(randomString());
         c.setDiscountType("percent");
@@ -377,7 +398,7 @@ public class TestRecurlyClient {
             final Plan plan2 = recurlyClient.createPlan(plan2Data);
             log.info(plan2.toString());
             // Subscribe the user to the plan
-            Subscription subscriptionData = new Subscription();
+            final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
@@ -389,7 +410,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subscription);
             log.info("Created subscription: {} with plan {}", subscription.getUuid(), subscription.getPlan().getPlanCode());
 
-            SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
+            final SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
             subscriptionUpdateData.setTimeframe(SubscriptionUpdate.Timeframe.now);
             subscriptionUpdateData.setPlanCode(plan2.getPlanCode());
             final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);

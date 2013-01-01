@@ -16,20 +16,44 @@
 
 package com.ning.billing.recurly;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.ning.billing.recurly.model.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
+
+import javax.annotation.Nullable;
+import javax.xml.bind.DatatypeConverter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Plans;
+import com.ning.billing.recurly.model.RecurlyObject;
+import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionUpdate;
+import com.ning.billing.recurly.model.Subscriptions;
+import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.Transactions;
 import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
-import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.ExecutionException;
+import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
+import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.datatype.joda.JodaModule;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
 public class RecurlyClient {
 
@@ -48,7 +72,7 @@ public class RecurlyClient {
      * required. Used internally by the client to decide whether to
      * generate debug output
      */
-    private static final boolean debug() {
+    private static boolean debug() {
         return Boolean.getBoolean(RECURLY_DEBUG_KEY);
     }
 
@@ -56,7 +80,7 @@ public class RecurlyClient {
      * Returns the page Size to use when querying. The page size
      * is set as System.property: recurly.page.size
      */
-    public static final Integer getPageSize() {
+    public static Integer getPageSize() {
         Integer pageSize;
         try {
             pageSize = new Integer(System.getProperty(RECURLY_PAGE_SIZE_KEY));
@@ -66,11 +90,11 @@ public class RecurlyClient {
         return pageSize;
     }
 
-    public static final String getPageSizeGetParam() {
+    public static String getPageSizeGetParam() {
         return PER_PAGE + getPageSize().toString();
     }
 
-    private final XmlMapper xmlMapper;
+    private final XmlMapper xmlMapper = new XmlMapper();
 
     private final String key;
     private final String baseUrl;
@@ -192,6 +216,32 @@ public class RecurlyClient {
     }
 
     /**
+     * Cancel a subscription
+     * <p/>
+     * Cancel a subscription so it remains active and then expires at the end of the current bill cycle.
+     *
+     * @param subscription Subscription object
+     * @return -?-
+     */
+    public Subscription cancelSubscription(final Subscription subscription) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
+                     subscription, Subscription.class);
+    }
+
+    /**
+     * Reactivating a canceled subscription
+     * <p/>
+     * Reactivate a canceled subscription so it renews at the end of the current bill cycle.
+     *
+     * @param subscription Subscription object
+     * @return -?-
+     */
+    public Subscription reactivateSubscription(final Subscription subscription) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/reactivate",
+                     subscription, Subscription.class);
+    }
+
+    /**
      * Update a particular {@link Subscription} by it's UUID
      * <p/>
      * Returns information about a single account.
@@ -199,11 +249,11 @@ public class RecurlyClient {
      * @param uuid UUID of the subscription to update
      * @return Subscription the updated subscription
      */
-    public Subscription updateSubscription(final String uuid, SubscriptionUpdate subscriptionUpdate) {
+    public Subscription updateSubscription(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
         return doPUT(Subscriptions.SUBSCRIPTIONS_RESOURCE
-                + "/" + uuid,
-                subscriptionUpdate,
-                Subscription.class);
+                     + "/" + uuid,
+                     subscriptionUpdate,
+                     Subscription.class);
     }
 
     /**
@@ -551,6 +601,10 @@ public class RecurlyClient {
         final String xmlPayload;
         try {
             xmlPayload = xmlMapper.writeValueAsString(payload);
+            if (debug()) {
+                log.info("Msg to Recurly API [PUT]:: URL : {}", baseUrl + resource);
+                log.info("Payload for [PUT]:: {}", xmlPayload);
+            }
         } catch (IOException e) {
             log.warn("Unable to serialize {} object as XML: {}", clazz.getName(), payload.toString());
             return null;

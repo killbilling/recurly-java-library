@@ -18,6 +18,11 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 
+/**
+ * Subscription object for update calls.
+ * <p/>
+ * The timeframe parameter is specific to the update.
+ */
 public class SubscriptionUpdate extends AbstractSubscription {
 
     public static enum Timeframe {
@@ -32,19 +37,27 @@ public class SubscriptionUpdate extends AbstractSubscription {
         return timeframe;
     }
 
-    public void setTimeframe(Timeframe timeframe) {
+    public void setTimeframe(final Timeframe timeframe) {
         this.timeframe = timeframe;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof SubscriptionUpdate)) return false;
-        if (!super.equals(o)) return false;
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof SubscriptionUpdate)) {
+            return false;
+        }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         SubscriptionUpdate that = (SubscriptionUpdate) o;
 
-        if (timeframe != that.timeframe) return false;
+        if (timeframe != that.timeframe) {
+            return false;
+        }
 
         return true;
     }

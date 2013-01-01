@@ -16,24 +16,27 @@
 
 package com.ning.billing.recurly.model;
 
+import java.util.List;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.List;
 
 @XmlRootElement(name = "subscription")
 public class AbstractSubscription extends RecurlyObject {
 
-    public static final String SUBSCRIPTION_RESOURCE
-            = "/subscriptions";
+    public static final String SUBSCRIPTION_RESOURCE = "/subscriptions";
 
     @XmlElement(name = "unit_amount_in_cents")
     protected Integer unitAmountInCents;
+
     @XmlElement(name = "quantity")
     protected Integer quantity;
+
     @XmlElementWrapper(name = "subscription_add_ons")
     @XmlElement(name = "subscription_add_on")
     protected List<AddOn> addOns;
+
     @XmlElement(name = "plan_code")
     private String planCode;
 
@@ -70,17 +73,28 @@ public class AbstractSubscription extends RecurlyObject {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof AbstractSubscription)) return false;
-
-        AbstractSubscription that = (AbstractSubscription) o;
-
-        if (addOns != null ? !addOns.equals(that.addOns) : that.addOns != null) return false;
-        if (planCode != null ? !planCode.equals(that.planCode) : that.planCode != null) return false;
-        if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) return false;
-        if (unitAmountInCents != null ? !unitAmountInCents.equals(that.unitAmountInCents) : that.unitAmountInCents != null)
+    public boolean equals(final Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof AbstractSubscription)) {
             return false;
+        }
+
+        final AbstractSubscription that = (AbstractSubscription) o;
+
+        if (addOns != null ? !addOns.equals(that.addOns) : that.addOns != null) {
+            return false;
+        }
+        if (planCode != null ? !planCode.equals(that.planCode) : that.planCode != null) {
+            return false;
+        }
+        if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
+            return false;
+        }
+        if (unitAmountInCents != null ? !unitAmountInCents.equals(that.unitAmountInCents) : that.unitAmountInCents != null) {
+            return false;
+        }
 
         return true;
     }

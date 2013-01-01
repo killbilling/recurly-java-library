@@ -16,10 +16,10 @@
 
 package com.ning.billing.recurly.model;
 
-import org.joda.time.DateTime;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import org.joda.time.DateTime;
 
 @XmlRootElement(name = "subscription")
 public class Subscription extends AbstractSubscription {
