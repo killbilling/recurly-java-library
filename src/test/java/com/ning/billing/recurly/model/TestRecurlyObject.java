@@ -30,11 +30,17 @@ public class TestRecurlyObject extends TestModelBase {
         Assert.assertEquals(null, RecurlyObject.integerOrNull(null));
         Assert.assertEquals(null, RecurlyObject.stringOrNull(null));
 
-        final HashMap<String, String> nilMap = new HashMap<String, String>();
-        nilMap.put(RecurlyObject.NIL_STR, RecurlyObject.NIL_STR);
-        Assert.assertEquals(null, RecurlyObject.booleanOrNull(nilMap));
-        Assert.assertEquals(null, RecurlyObject.dateTimeOrNull(nilMap));
-        Assert.assertEquals(null, RecurlyObject.integerOrNull(nilMap));
-        Assert.assertEquals(null, RecurlyObject.stringOrNull(nilMap));
+        for (final String nil : RecurlyObject.NIL_VAL) {
+            final HashMap<String, String> nilMap = new HashMap<String, String>();
+            nilMap.put(RecurlyObject.NIL_STR, nil);
+            Assert.assertEquals(null, RecurlyObject.booleanOrNull(nilMap));
+            Assert.assertEquals(null, RecurlyObject.dateTimeOrNull(nilMap));
+            Assert.assertEquals(null, RecurlyObject.integerOrNull(nilMap));
+            Assert.assertEquals(null, RecurlyObject.stringOrNull(nilMap));
+        }
+
+        final HashMap<String, String> nonNilMap = new HashMap<String, String>();
+        nonNilMap.put("foo", "bar");
+        Assert.assertNotNull(RecurlyObject.isNull(nonNilMap));
     }
 }

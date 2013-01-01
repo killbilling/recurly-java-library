@@ -16,6 +16,8 @@
 
 package com.ning.billing.recurly.model;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -28,6 +30,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public abstract class RecurlyObject {
 
     public static final String NIL_STR = "nil";
+    public static final List<String> NIL_VAL = Arrays.asList("nil", "true");
 
     public static Boolean booleanOrNull(@Nullable final Object object) {
         if (isNull(object)) {
@@ -88,17 +91,17 @@ public abstract class RecurlyObject {
         return new DateTime(object.toString());
     }
 
-    public static boolean isNull(Object object) {
+    public static boolean isNull(@Nullable final Object object) {
         if (object == null) {
             return true;
         }
 
         // Hack to work around Recurly output for nil values: the response will contain
-        // an element with a nil attribute (e.g. <city nil="nil"></city>) which Jackson will
+        // an element with a nil attribute (e.g. <city nil="nil"></city> or <username nil="true"></username>) which Jackson will
         // interpret as an Object (Map), not a String.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 1 && NIL_STR.equals(map.get(NIL_STR))) {
+            if (map.keySet().size() >= 1 && map.get(NIL_STR) != null && NIL_VAL.contains(map.get(NIL_STR).toString())) {
                 return true;
             }
         }
