@@ -41,7 +41,7 @@ public abstract class RecurlyObject {
         // will interpret as an Object (Map), not Booleans.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 1 && "boolean".equals(map.get("type"))) {
+            if (map.keySet().size() >= 1 && "boolean".equals(map.get("type"))) {
                 return Boolean.valueOf((String) map.get(""));
             }
         }
