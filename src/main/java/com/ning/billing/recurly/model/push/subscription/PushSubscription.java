@@ -14,31 +14,23 @@
  * under the License.
  */
 
-package com.ning.billing.recurly.model;
+package com.ning.billing.recurly.model.push.subscription;
 
 import javax.xml.bind.annotation.XmlElement;
 
-/**
- * Subscription object for update calls.
- * <p/>
- * The timeframe parameter is specific to the update.
- */
-public class SubscriptionUpdate extends AbstractSubscription {
+import com.ning.billing.recurly.model.Subscription;
 
-    public static enum Timeframe {
-        now,
-        renewal
+public class PushSubscription extends Subscription {
+
+    @XmlElement(name = "total_amount_in_cents")
+    private Integer totalAmountInCents;
+
+    public Integer getTotalAmountInCents() {
+        return totalAmountInCents;
     }
 
-    @XmlElement
-    private Timeframe timeframe;
-
-    public Timeframe getTimeframe() {
-        return timeframe;
-    }
-
-    public void setTimeframe(final Timeframe timeframe) {
-        this.timeframe = timeframe;
+    public void setTotalAmountInCents(final Object totalAmountInCents) {
+        this.totalAmountInCents = integerOrNull(totalAmountInCents);
     }
 
     @Override
@@ -46,16 +38,16 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SubscriptionUpdate)) {
+        if (!(o instanceof PushSubscription)) {
             return false;
         }
         if (!super.equals(o)) {
             return false;
         }
 
-        final SubscriptionUpdate that = (SubscriptionUpdate) o;
+        final PushSubscription that = (PushSubscription) o;
 
-        if (timeframe != that.timeframe) {
+        if (totalAmountInCents != null ? !totalAmountInCents.equals(that.totalAmountInCents) : that.totalAmountInCents != null) {
             return false;
         }
 
@@ -65,7 +57,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @Override
     public int hashCode() {
         int result = super.hashCode();
-        result = 31 * result + (timeframe != null ? timeframe.hashCode() : 0);
+        result = 31 * result + (totalAmountInCents != null ? totalAmountInCents.hashCode() : 0);
         return result;
     }
 }

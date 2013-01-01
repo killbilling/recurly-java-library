@@ -14,14 +14,14 @@
  * under the License.
  */
 
-package com.ning.billing.recurly.model;
+package com.ning.billing.recurly.model.push.subscription;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
-@XmlRootElement(name = "plans")
-public class Accounts extends RecurlyObjects<Account> {
+@XmlRootElement(name = "updated_subscription_notification")
+public class UpdatedSubscriptionNotification extends SubscriptionNotification {
 
-    @XmlTransient
-    public static final String ACCOUNTS_RESOURCE = "/accounts";
+    public static UpdatedSubscriptionNotification read(final String payload) {
+        return read(payload, UpdatedSubscriptionNotification.class);
+    }
 }

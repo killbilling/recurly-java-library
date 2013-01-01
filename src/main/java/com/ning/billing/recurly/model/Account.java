@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Ning, Inc.
+ * Copyright 2010-2013 Ning, Inc.
  *
  * Ning licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -20,7 +20,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -103,7 +102,7 @@ public class Account extends RecurlyObject {
         // If there was an href try to parse out the account code since
         // Recurly doesn't currently provide it elsewhere.
         if (this.href != null) {
-            Matcher m = ACCOUNT_CODE_PATTERN.matcher(this.href);
+            final Matcher m = ACCOUNT_CODE_PATTERN.matcher(this.href);
             if (m.find()) {
                 setAccountCode(m.group(1));
             }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2010-2012 Ning, Inc.
+ * Copyright 2010-2013 Ning, Inc.
  *
  * Ning licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -46,14 +46,7 @@ import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
 
-import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
-import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 
 public class RecurlyClient {
 
@@ -94,7 +87,8 @@ public class RecurlyClient {
         return PER_PAGE + getPageSize().toString();
     }
 
-    private final XmlMapper xmlMapper = new XmlMapper();
+    // TODO: should we make it static?
+    private final XmlMapper xmlMapper;
 
     private final String key;
     private final String baseUrl;
@@ -107,13 +101,7 @@ public class RecurlyClient {
     public RecurlyClient(final String apiKey, final String host, final int port, final String version) {
         this.key = DatatypeConverter.printBase64Binary(apiKey.getBytes());
         this.baseUrl = String.format("https://%s:%d/%s", host, port, version);
-
-        final AnnotationIntrospector primary = new JacksonAnnotationIntrospector();
-        final AnnotationIntrospector secondary = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
-        final AnnotationIntrospector pair = new AnnotationIntrospectorPair(primary, secondary);
-        xmlMapper.setAnnotationIntrospector(pair);
-        xmlMapper.registerModule(new JodaModule());
-        xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        this.xmlMapper = RecurlyObject.newXmlMapper();
     }
 
     /**
@@ -571,7 +559,7 @@ public class RecurlyClient {
     ///////////////////////////////////////////////////////////////////////////
 
     private <T> T doGET(final String resource, final Class<T> clazz) {
-        StringBuffer url = new StringBuffer(baseUrl);
+        final StringBuffer url = new StringBuffer(baseUrl);
         url.append(resource);
         if (resource != null && !resource.contains("?")) {
             url.append("?");
@@ -658,11 +646,11 @@ public class RecurlyClient {
 
                               final InputStream in = response.getResponseBodyAsStream();
                               try {
-                                  String payload = convertStreamToString(in);
+                                  final String payload = convertStreamToString(in);
                                   if (debug()) {
                                       log.info("Msg from Recurly API :: {}", payload);
                                   }
-                                  T obj = xmlMapper.readValue(payload, clazz);
+                                  final T obj = xmlMapper.readValue(payload, clazz);
                                   return obj;
                               } finally {
                                   closeStream(in);
@@ -671,7 +659,7 @@ public class RecurlyClient {
                       }).get();
     }
 
-    private String convertStreamToString(java.io.InputStream is) {
+    private String convertStreamToString(final java.io.InputStream is) {
         try {
             return new java.util.Scanner(is).useDelimiter("\\A").next();
         } catch (java.util.NoSuchElementException e) {

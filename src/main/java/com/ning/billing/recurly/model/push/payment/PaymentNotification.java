@@ -14,14 +14,22 @@
  * under the License.
  */
 
-package com.ning.billing.recurly.model;
+package com.ning.billing.recurly.model.push.payment;
 
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
 
-@XmlRootElement(name = "plans")
-public class Accounts extends RecurlyObjects<Account> {
+import com.ning.billing.recurly.model.push.account.AccountNotification;
 
-    @XmlTransient
-    public static final String ACCOUNTS_RESOURCE = "/accounts";
+public abstract class PaymentNotification extends AccountNotification {
+
+    @XmlElement(name = "transaction")
+    private PushTransaction transaction;
+
+    public PushTransaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(final PushTransaction transaction) {
+        this.transaction = transaction;
+    }
 }
