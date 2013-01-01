@@ -1,12 +1,12 @@
 /*
- * Copyright 2010-2012 Ning, Inc.
- *
+ * Copyright 2010-2013 Ning, Inc.
+ *  *
  * Ning licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
- *
+ *  *
  *    http://www.apache.org/licenses/LICENSE-2.0
- *
+ *  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
  * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
@@ -14,17 +14,23 @@
  * under the License.
  */
 
-package com.ning.billing.recurly.model;
+package com.ning.billing.recurly.model.push.account;
 
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.testng.annotations.BeforeMethod;
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.push.Notification;
 
-public abstract class TestModelBase {
+import javax.xml.bind.annotation.XmlElement;
 
-    protected XmlMapper xmlMapper;
+public abstract class AccountNotification extends Notification {
 
-    @BeforeMethod(alwaysRun = true)
-    public void setUp() throws Exception {
-        xmlMapper = RecurlyObject.newXmlMapper();
+    @XmlElement(name = "account")
+    private Account account;
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }
