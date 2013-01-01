@@ -18,10 +18,6 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 
-/**
- * Created by User: bathily
- * Date: 31/12/12
- */
 public class SubscriptionUpdate extends AbstractSubscription {
 
     public static enum Timeframe {
