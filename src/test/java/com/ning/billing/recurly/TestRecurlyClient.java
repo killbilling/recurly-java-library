@@ -16,6 +16,7 @@
 
 package com.ning.billing.recurly;
 
+import com.ning.billing.recurly.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -25,19 +26,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.Accounts;
-import com.ning.billing.recurly.model.AddOn;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Coupon;
-import com.ning.billing.recurly.model.Invoices;
-import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.SubscriptionUpdate;
-import com.ning.billing.recurly.model.Subscriptions;
-import com.ning.billing.recurly.model.Transaction;
-import com.ning.billing.recurly.model.Transactions;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
 
@@ -86,6 +74,12 @@ public class TestRecurlyClient {
         Assert.assertEquals("per_page=20", RecurlyClient.getPageSizeGetParam());
         System.setProperty(RECURLY_PAGE_SIZE, "350");
         Assert.assertEquals("per_page=350", RecurlyClient.getPageSizeGetParam());
+    }
+
+    @Test(groups = "integration")
+    public void testGetCoupons() throws Exception {
+        final Coupons retrievedCoupons = recurlyClient.getCoupons();
+        Assert.assertTrue(retrievedCoupons.size() >= 0);
     }
 
     @Test(groups = "integration")
