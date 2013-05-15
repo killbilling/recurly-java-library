@@ -16,6 +16,9 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -28,6 +31,8 @@ public class Coupon extends RecurlyObject {
 
     @XmlTransient
     public static final String COUPON_RESOURCE = "/coupons";
+    @XmlTransient
+    private String href;
 
     @XmlElement(name = "name")
     private String name;
@@ -35,11 +40,70 @@ public class Coupon extends RecurlyObject {
     @XmlElement(name = "coupon_code")
     private String couponCode;
 
+    /**
+     * Last date to redeem the coupon, defaults to no date
+     */
+    @XmlElement(name = "redeem_by_date")
+    private DateTime redeemByDate;
+
+    /**
+     * Number of months after redemption that the coupon is valid, defaults to no date
+     */
+    @XmlElement(name = "applies_for_months")
+    private Integer appliesForMonths;
+
+    /**
+     * Maximum number of accounts that may use the coupon before it can no longer be redeemed
+     */
+    @XmlElement(name = "max_redemptions")
+    private Integer maxRedemptions;
+
+    /**
+     * The coupon is valid for all plans if true, defaults to true
+     */
+    @XmlElement(name = "applies_to_all_plans")
+    private Boolean appliesToAllPlans;
+
+    /**
+     * If true, the coupon applies to the first invoice only
+     */
+    @XmlElement(name = "single_use")
+    private Boolean singleUse;
+
+    /**
+     * "percent" or "dollars"
+     */
     @XmlElement(name = "discount_type")
     private String discountType;
 
+    /**
+     * Discount percentage if discount_type is "percent"
+     */
     @XmlElement(name = "discount_percent")
     private Integer discountPercent;
+
+    @XmlElement(name = "discount_in_cents")
+    private Integer discountInCents;
+
+    @XmlElement(name = "state")
+    private String state;
+
+    @JsonIgnore
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(final Object href) {
+        this.href = stringOrNull(href);
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(final Object state) {
+        this.state = stringOrNull(state);
+    }
 
     /**
      * Gets the name of the {@link Coupon}
@@ -106,6 +170,54 @@ public class Coupon extends RecurlyObject {
 
     public void setDiscountPercent(final Object discountPercent) {
         this.discountPercent = integerOrNull(discountPercent);
+    }
+
+    public DateTime getRedeemByDate() {
+        return redeemByDate;
+    }
+
+    public void setRedeemByDate(final Object redeemByDate) {
+        this.redeemByDate = dateTimeOrNull(redeemByDate);
+    }
+
+    public Integer getAppliesForMonths() {
+        return appliesForMonths;
+    }
+
+    public void setAppliesForMonths(final Object appliesForMonths) {
+        this.appliesForMonths = integerOrNull(appliesForMonths);
+    }
+
+    public Integer getMaxRedemptions() {
+        return maxRedemptions;
+    }
+
+    public void setMaxRedemptions(final Object maxRedemptions) {
+        this.maxRedemptions = integerOrNull(maxRedemptions);
+    }
+
+    public Boolean getSingleUse() {
+        return singleUse;
+    }
+
+    public void setSingleUse(final Object singleUse) {
+        this.singleUse = booleanOrNull(singleUse);
+    }
+
+    public Integer getDiscountInCents() {
+        return discountInCents;
+    }
+
+    public void setDiscountInCents(final Object discountInCents) {
+        this.discountInCents = integerOrNull(discountInCents);
+    }
+
+    public Boolean getAppliesToAllPlans() {
+        return appliesToAllPlans;
+    }
+
+    public void setAppliesToAllPlans(final Object appliesToAllPlans) {
+        this.appliesToAllPlans = booleanOrNull(appliesToAllPlans);
     }
 
     @Override
