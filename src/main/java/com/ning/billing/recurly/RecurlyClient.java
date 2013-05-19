@@ -16,6 +16,37 @@
 
 package com.ning.billing.recurly;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.concurrent.ExecutionException;
+
+import javax.annotation.Nullable;
+import javax.xml.bind.DatatypeConverter;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Coupons;
+import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Plans;
+import com.ning.billing.recurly.model.RecurlyObject;
+import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionUpdate;
+import com.ning.billing.recurly.model.Subscriptions;
+import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.Transactions;
+import com.ning.http.client.AsyncCompletionHandler;
+import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.AsyncHttpClientConfig;
+import com.ning.http.client.Response;
+
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
@@ -24,19 +55,6 @@ import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
-import com.ning.billing.recurly.model.*;
-import com.ning.http.client.AsyncCompletionHandler;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.Response;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Nullable;
-import javax.xml.bind.DatatypeConverter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.concurrent.ExecutionException;
 
 public class RecurlyClient {
 

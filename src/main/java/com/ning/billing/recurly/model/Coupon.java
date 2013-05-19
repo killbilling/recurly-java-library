@@ -16,12 +16,13 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.joda.time.DateTime;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.

@@ -16,16 +16,18 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.joda.time.DateTime;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+
+import org.joda.time.DateTime;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement(name = "account")
 public class Account extends RecurlyObject {
@@ -147,7 +149,6 @@ public class Account extends RecurlyObject {
         this.accountCode = stringOrNull(accountCode);
     }
 
-
     public String getState() {
         return state;
     }
@@ -155,6 +156,7 @@ public class Account extends RecurlyObject {
     public void setState(final Object state) {
         this.state = stringOrNull(state);
     }
+
     public String getUsername() {
         return username;
     }
