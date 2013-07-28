@@ -20,6 +20,11 @@ Java properties
 * Set `-Drecurly.page.size=20` to configure the page size for Recurly API calls
 * To run the tests, one can use `-Dkillbill.payment.recurly.currency=EUR` to override the default USD currency used
 
+Push notifications
+------------------
+
+See https://gist.github.com/dbathily/4433939 for an example on how to set it up.
+
 Build
 -----
 
