@@ -31,6 +31,7 @@ import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
@@ -141,6 +142,10 @@ public class RecurlyClient {
      */
     public Accounts getAccounts() {
         return doGET(Accounts.ACCOUNTS_RESOURCE, Accounts.class);
+    }
+
+    public Coupons getCoupons() {
+        return doGET(Coupons.COUPONS_RESOURCE, Coupons.class);
     }
 
     /**
