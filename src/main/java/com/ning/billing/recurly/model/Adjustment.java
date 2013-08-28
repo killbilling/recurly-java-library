@@ -70,6 +70,9 @@ public class Adjustment extends RecurlyObject {
     private DateTime createdAt;
 
     public Account getAccount() {
+        if (account != null && account.getCreatedAt() == null) {
+            account = fetch(account, Account.class);
+        }
         return account;
     }
 

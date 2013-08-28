@@ -61,6 +61,9 @@ public class Subscription extends AbstractSubscription {
     private DateTime trialEndsAt;
 
     public Account getAccount() {
+        if (account != null && account.getCreatedAt() == null) {
+            account = fetch(account, Account.class);
+        }
         return account;
     }
 

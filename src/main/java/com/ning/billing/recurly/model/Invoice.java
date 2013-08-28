@@ -69,6 +69,9 @@ public class Invoice extends RecurlyObject {
     private List<Transaction> transactions;
 
     public Account getAccount() {
+        if (account != null && account.getCreatedAt() == null) {
+            account = fetch(account, Account.class);
+        }
         return account;
     }
 

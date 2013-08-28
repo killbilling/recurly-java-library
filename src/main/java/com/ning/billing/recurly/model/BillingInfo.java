@@ -97,6 +97,9 @@ public class BillingInfo extends RecurlyObject {
      * @return account object
      */
     public Account getAccount() {
+        if (account != null && account.getCreatedAt() == null) {
+            account = fetch(account, Account.class);
+        }
         return account;
     }
 

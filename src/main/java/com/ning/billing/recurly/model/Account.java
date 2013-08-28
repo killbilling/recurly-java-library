@@ -38,9 +38,6 @@ public class Account extends RecurlyObject {
     @XmlTransient
     public static final Pattern ACCOUNT_CODE_PATTERN = Pattern.compile(ACCOUNT_RESOURCE + "/(.+)$");
 
-    @XmlTransient
-    private String href;
-
     @XmlElementWrapper(name = "adjustments")
     @XmlElement(name = "adjustment")
     private List<Adjustment> adjustments;
@@ -90,14 +87,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
-    // Note: I'm not sure why @JsonIgnore is required here - shouldn't @XmlTransient be enough?
-    @JsonIgnore
-    public String getHref() {
-        return href;
-    }
-
+    @Override
     public void setHref(final Object href) {
-        this.href = stringOrNull(href);
+        super.setHref(href);
 
         // If there was an href try to parse out the account code since
         // Recurly doesn't currently provide it elsewhere.

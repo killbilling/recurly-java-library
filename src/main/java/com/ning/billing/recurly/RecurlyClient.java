@@ -18,6 +18,7 @@ package com.ning.billing.recurly;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
 import javax.annotation.Nullable;
@@ -37,6 +38,7 @@ import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.RecurlyObject;
+import com.ning.billing.recurly.model.RecurlyObjects;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.Subscriptions;
@@ -574,10 +576,14 @@ public class RecurlyClient {
         }
         url.append(getPageSizeGetParam());
 
+        return doGETWithFullURL(clazz, url.toString());
+    }
+
+    public <T> T doGETWithFullURL(final Class<T> clazz, final String url) {
         if (debug()) {
             log.info("Msg to Recurly API [GET] :: URL : {}", url);
         }
-        return callRecurlySafe(client.prepareGet(url.toString()), clazz);
+        return callRecurlySafe(client.prepareGet(url), clazz);
     }
 
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {
@@ -633,6 +639,7 @@ public class RecurlyClient {
 
     private <T> T callRecurly(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
+        final RecurlyClient recurlyClient = this;
         return builder.addHeader("Authorization", "Basic " + key)
                       .addHeader("Accept", "application/xml")
                       .addHeader("Content-Type", "application/xml; charset=utf-8")
@@ -656,6 +663,13 @@ public class RecurlyClient {
                                       log.info("Msg from Recurly API :: {}", payload);
                                   }
                                   final T obj = xmlMapper.readValue(payload, clazz);
+                                  if (obj instanceof RecurlyObject) {
+                                      ((RecurlyObject) obj).setRecurlyClient(recurlyClient);
+                                  } else if (obj instanceof RecurlyObjects) {
+                                      for (final Object object : (RecurlyObjects) obj) {
+                                          ((RecurlyObject) object).setRecurlyClient(recurlyClient);
+                                      }
+                                  }
                                   return obj;
                               } finally {
                                   closeStream(in);
@@ -666,7 +680,7 @@ public class RecurlyClient {
 
     private String convertStreamToString(final java.io.InputStream is) {
         try {
-            return new java.util.Scanner(is).useDelimiter("\\A").next();
+            return new Scanner(is).useDelimiter("\\A").next();
         } catch (java.util.NoSuchElementException e) {
             return "";
         }

@@ -21,9 +21,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
+import com.ning.billing.recurly.RecurlyClient;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -37,8 +41,25 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject {
 
+    @XmlTransient
+    private RecurlyClient recurlyClient;
+
+    @XmlTransient
+    protected String href;
+
     public static final String NIL_STR = "nil";
     public static final List<String> NIL_VAL = Arrays.asList("nil", "true");
+
+    // See https://github.com/killbilling/recurly-java-library/issues/4 for why
+    // @JsonIgnore is required here and @XmlTransient is not enough
+    @JsonIgnore
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(final Object href) {
+        this.href = stringOrNull(href);
+    }
 
     public static XmlMapper newXmlMapper() {
         final XmlMapper xmlMapper = new XmlMapper();
@@ -126,5 +147,16 @@ public abstract class RecurlyObject {
         }
 
         return false;
+    }
+
+    <T extends RecurlyObject> T fetch(final T object, final Class<T> clazz) {
+        if (object.getHref() == null || recurlyClient == null) {
+            return object;
+        }
+        return recurlyClient.doGETWithFullURL(clazz, object.getHref());
+    }
+
+    public void setRecurlyClient(final RecurlyClient recurlyClient) {
+        this.recurlyClient = recurlyClient;
     }
 }

@@ -32,8 +32,6 @@ public class Coupon extends RecurlyObject {
 
     @XmlTransient
     public static final String COUPON_RESOURCE = "/coupons";
-    @XmlTransient
-    private String href;
 
     @XmlElement(name = "name")
     private String name;
@@ -88,15 +86,6 @@ public class Coupon extends RecurlyObject {
 
     @XmlElement(name = "state")
     private String state;
-
-    @JsonIgnore
-    public String getHref() {
-        return href;
-    }
-
-    public void setHref(final Object href) {
-        this.href = stringOrNull(href);
-    }
 
     public String getState() {
         return state;

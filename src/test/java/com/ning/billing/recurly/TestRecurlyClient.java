@@ -227,16 +227,21 @@ public class TestRecurlyClient {
             // Do a lookup for subs for given account
             final Subscriptions subs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
             // Check that the newly created sub is in the list
-            boolean found = false;
+            Subscription found = null;
             for (final Subscription s : subs) {
                 if (s.getUuid().equals(subscription.getUuid())) {
-                    found = true;
+                    found = s;
                     break;
                 }
             }
-            if (!found) {
+            if (found == null) {
                 Assert.fail("Could not locate the subscription in the subscriptions associated with the account");
             }
+
+            // Verify the subscription information, including nested parameters
+            // See https://github.com/killbilling/recurly-java-library/issues/4
+            Assert.assertEquals(found.getAccount().getAccountCode(), accountData.getAccountCode());
+            Assert.assertEquals(found.getAccount().getFirstName(), accountData.getFirstName());
 
             // Cancel a Subscription
             recurlyClient.cancelSubscription(subscription);
@@ -302,16 +307,27 @@ public class TestRecurlyClient {
 
             // Test lookup on the transaction via the users account
             final Transactions trans = recurlyClient.getAccountTransactions(account.getAccountCode());
-            boolean found = false;
+            // 3 transactions: voided verification, $1.5 for the plan and the $0.15 transaction above
+            Assert.assertEquals(trans.size(), 3);
+            Transaction found = null;
             for (final Transaction _t : trans) {
                 if (_t.getUuid().equals(createdT.getUuid())) {
-                    found = true;
+                    found = _t;
                     break;
                 }
             }
-            if (!found) {
+            if (found == null) {
                 Assert.fail("Failed to locate the newly created transaction");
             }
+
+            // Verify the transaction information, including nested parameters
+            // See https://github.com/killbilling/recurly-java-library/issues/4
+            Assert.assertEquals(found.getAccount().getAccountCode(), accountData.getAccountCode());
+            Assert.assertEquals(found.getAccount().getFirstName(), accountData.getFirstName());
+            Assert.assertEquals(found.getInvoice().getAccount().getAccountCode(), accountData.getAccountCode());
+            Assert.assertEquals(found.getInvoice().getAccount().getFirstName(), accountData.getFirstName());
+            Assert.assertEquals(found.getInvoice().getTotalInCents(), (Integer) 15);
+            Assert.assertEquals(found.getInvoice().getCurrency(), CURRENCY);
 
             // Test Invoices retrieval
             final Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());

@@ -46,6 +46,9 @@ public class Transaction extends AbstractTransaction {
     private DateTime createdAt;
 
     public Account getAccount() {
+        if (account != null && account.getCreatedAt() == null) {
+            account = fetch(account, Account.class);
+        }
         return account;
     }
 
@@ -54,6 +57,9 @@ public class Transaction extends AbstractTransaction {
     }
 
     public Invoice getInvoice() {
+        if (invoice != null && invoice.getCreatedAt() == null) {
+            invoice = fetch(invoice, Invoice.class);
+        }
         return invoice;
     }
 
