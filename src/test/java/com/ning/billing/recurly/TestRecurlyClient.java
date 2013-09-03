@@ -115,6 +115,14 @@ public class TestRecurlyClient {
             Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
             // Verify we can serialize date times
             Assert.assertEquals(Minutes.minutesBetween(account.getCreatedAt(), creationDateTime).getMinutes(), 0);
+            Assert.assertEquals(accountData.getAddress().getAddress1(), account.getAddress().getAddress1());
+            Assert.assertEquals(accountData.getAddress().getAddress2(), account.getAddress().getAddress2());
+            Assert.assertEquals(accountData.getAddress().getCity(), account.getAddress().getCity());
+            Assert.assertEquals(accountData.getAddress().getState(), account.getAddress().getState());
+            Assert.assertEquals(accountData.getAddress().getZip(), account.getAddress().getZip());
+            Assert.assertEquals(accountData.getAddress().getCountry(), account.getAddress().getCountry());
+            Assert.assertEquals(accountData.getAddress().getPhone(), account.getAddress().getPhone());
+
             log.info("Created account: {}", account.getAccountCode());
 
             // Test getting all

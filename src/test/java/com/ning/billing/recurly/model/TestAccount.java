@@ -41,6 +41,15 @@ public class TestAccount extends TestModelBase {
                                    "  <accept_language nil=\"nil\"></accept_language>\n" +
                                    "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
                                    "  <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
+                                   "  <address>\n" +
+                                   "      <address1>123 Main St.</address1>\n" +
+                                   "      <address2 nil=\"nil\"></address2>\n" +
+                                   "      <city>San Francisco</city>\n" +
+                                   "      <state>CA</state>\n" +
+                                   "      <zip>94105</zip>\n" +
+                                   "      <country>US</country>\n" +
+                                   "      <phone nil=\"nil\"></phone>\n" +
+                                   "  </address>" +
                                    "</account>";
 
         final Account account = xmlMapper.readValue(accountData, Account.class);
@@ -54,5 +63,12 @@ public class TestAccount extends TestModelBase {
         Assert.assertNull(account.getAcceptLanguage());
         Assert.assertEquals(account.getHostedLoginToken(), "a92468579e9c4231a6c0031c4716c01d");
         Assert.assertEquals(account.getCreatedAt(), new DateTime("2011-10-25T12:00:00"));
+        Assert.assertEquals(account.getAddress().getAddress1(), "123 Main St.");
+        Assert.assertNull(account.getAddress().getAddress2());
+        Assert.assertEquals(account.getAddress().getCity(), "San Francisco");
+        Assert.assertEquals(account.getAddress().getState(), "CA");
+        Assert.assertEquals(account.getAddress().getZip(), (Integer) 94105);
+        Assert.assertEquals(account.getAddress().getCountry(), "US");
+        Assert.assertNull(account.getAddress().getPhone());
     }
 }

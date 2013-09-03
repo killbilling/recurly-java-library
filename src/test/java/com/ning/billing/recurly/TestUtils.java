@@ -24,6 +24,7 @@ import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.Address;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Subscription;
@@ -109,6 +110,16 @@ public class TestUtils {
         account.setEmail(getRandomAlphaNumString(4) + "@test.com");
         account.setFirstName(getRandomAlphaNumString(5));
         account.setLastName(getRandomAlphaNumString(6));
+
+        final Address address = new Address();
+        address.setAddress1(UUID.randomUUID().toString());
+        address.setAddress2(UUID.randomUUID().toString());
+        address.setCity(UUID.randomUUID().toString());
+        address.setState(UUID.randomUUID().toString());
+        address.setZip(49302);
+        address.setCountry(UUID.randomUUID().toString());
+        address.setPhone(UUID.randomUUID().toString());
+        account.setAddress(address);
 
         return account;
     }

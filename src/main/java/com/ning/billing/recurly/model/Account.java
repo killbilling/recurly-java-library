@@ -38,6 +38,9 @@ public class Account extends RecurlyObject {
     @XmlTransient
     public static final Pattern ACCOUNT_CODE_PATTERN = Pattern.compile(ACCOUNT_RESOURCE + "/(.+)$");
 
+    @XmlElement(name = "address")
+    private Address address;
+
     @XmlElementWrapper(name = "adjustments")
     @XmlElement(name = "adjustment")
     private List<Adjustment> adjustments;
@@ -99,6 +102,14 @@ public class Account extends RecurlyObject {
                 setAccountCode(m.group(1));
             }
         }
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
     }
 
     public List<Adjustment> getAdjustments() {
@@ -223,9 +234,9 @@ public class Account extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Account");
-        sb.append("{href=").append(href);
+        final StringBuilder sb = new StringBuilder("Account{");
+        sb.append("address=").append(address);
+        sb.append(", href=").append(href);
         sb.append(", adjustments=").append(adjustments);
         sb.append(", invoices=").append(invoices);
         sb.append(", subscriptions=").append(subscriptions);
@@ -260,6 +271,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (accountCode != null ? !accountCode.equals(account.accountCode) : account.accountCode != null) {
+            return false;
+        }
+        if (address != null ? !address.equals(account.address) : account.address != null) {
             return false;
         }
         if (adjustments != null ? !adjustments.equals(account.adjustments) : account.adjustments != null) {
@@ -310,7 +324,8 @@ public class Account extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = href != null ? href.hashCode() : 0;
+        int result = address != null ? address.hashCode() : 0;
+        result = 31 * result + (href != null ? href.hashCode() : 0);
         result = 31 * result + (adjustments != null ? adjustments.hashCode() : 0);
         result = 31 * result + (invoices != null ? invoices.hashCode() : 0);
         result = 31 * result + (subscriptions != null ? subscriptions.hashCode() : 0);
