@@ -1,10 +1,25 @@
 recurly-java-library
 ====================
 
-Java library for Recurly, originally developed for [Killbilling](http://killbilling.org), an open-source subscription management and billing system.
+Java library for Recurly, originally developed for [Kill Bill](http://kill-bill.org), an open-source subscription management and billing system.
 
 Getting started
 ---------------
+
+The library is distributed via [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.ning.billing%22%20AND%20a%3A%22recurly-java-library%22):
+
+```
+<dependency>
+    <groupId>com.ning.billing</groupId>
+    <artifactId>recurly-java-library</artifactId>
+    <version>0.1.6</version>
+</dependency>
+```
+
+The easiest way to get started is by looking at the code examples in [TestRecurlyClient.java](https://github.com/killbilling/recurly-java-library/blob/master/src/test/java/com/ning/billing/recurly/TestRecurlyClient.java).
+
+Development
+-----------
 
 1. Make sure you can build the project by running the smoke tests: `mvn clean test`
 2. Go to [recurly.com](http://recurly.com/) and create an account. This account will be used as a sandbox environment for testing.
@@ -31,5 +46,3 @@ Build
 To build the project, use maven:
 
     mvn clean install
-
-Official builds are available in [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Cg%3A%22com.ning.billing%22%20AND%20a%3A%22recurly-java-library%22).
