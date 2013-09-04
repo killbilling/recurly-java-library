@@ -43,6 +43,9 @@ public class AbstractTransaction extends RecurlyObject {
     @XmlElement(name = "refundable")
     protected Boolean refundable;
 
+    @XmlElement(name = "transaction_error")
+    private TransactionError transactionError;
+
     public String getAction() {
         return action;
     }
@@ -99,12 +102,20 @@ public class AbstractTransaction extends RecurlyObject {
         this.refundable = booleanOrNull(refundable);
     }
 
+    public TransactionError getTransactionError() {
+        return transactionError;
+    }
+
+    public void setTransactionError(final TransactionError transactionError) {
+        this.transactionError = transactionError;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AbstractTransaction)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
 
@@ -128,6 +139,9 @@ public class AbstractTransaction extends RecurlyObject {
         if (test != null ? !test.equals(that.test) : that.test != null) {
             return false;
         }
+        if (transactionError != null ? !transactionError.equals(that.transactionError) : that.transactionError != null) {
+            return false;
+        }
         if (voidable != null ? !voidable.equals(that.voidable) : that.voidable != null) {
             return false;
         }
@@ -144,6 +158,7 @@ public class AbstractTransaction extends RecurlyObject {
         result = 31 * result + (test != null ? test.hashCode() : 0);
         result = 31 * result + (voidable != null ? voidable.hashCode() : 0);
         result = 31 * result + (refundable != null ? refundable.hashCode() : 0);
+        result = 31 * result + (transactionError != null ? transactionError.hashCode() : 0);
         return result;
     }
 }

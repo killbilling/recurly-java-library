@@ -124,6 +124,26 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testCreateAccountWithBadBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        // See http://docs.recurly.com/payment-gateways/test
+        billingInfoData.setNumber("4000-0000-0000-0093");
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            billingInfoData.setAccount(account);
+
+            recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.fail();
+        } catch (TransactionErrorException e) {
+            Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "fraud_ip_address");
+            Assert.assertEquals(e.getErrors().getTransactionError().getMerchantMessage(), "The payment gateway declined the transaction because it originated from an IP address known for fraudulent transactions.");
+            Assert.assertEquals(e.getErrors().getTransactionError().getCustomerMessage(), "The transaction was declined. Please contact support.");
+        }
+    }
+
+    @Test(groups = "integration")
     public void testCreateAccount() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();

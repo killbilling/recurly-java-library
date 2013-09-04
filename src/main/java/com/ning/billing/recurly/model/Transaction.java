@@ -42,8 +42,17 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "currency")
     private String currency;
 
+    @XmlElement(name = "source")
+    private String source;
+
+    @XmlElement(name = "recurring")
+    private Boolean recurring;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "details")
+    private TransactionDetails details;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -99,6 +108,22 @@ public class Transaction extends AbstractTransaction {
         this.currency = stringOrNull(currency);
     }
 
+    public String getSource() {
+        return source;
+    }
+
+    public void setSource(final Object source) {
+        this.source = stringOrNull(source);
+    }
+
+    public Boolean getRecurring() {
+        return recurring;
+    }
+
+    public void setRecurring(final Object recurring) {
+        this.recurring = booleanOrNull(recurring);
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -107,24 +132,27 @@ public class Transaction extends AbstractTransaction {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public TransactionDetails getDetails() {
+        return details;
+    }
+
+    public void setDetails(final TransactionDetails details) {
+        this.details = details;
+    }
+
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Transaction");
-        sb.append("{account=").append(account);
+        final StringBuilder sb = new StringBuilder("Transaction{");
+        sb.append("account=").append(account);
         sb.append(", invoice=").append(invoice);
         sb.append(", subscription='").append(subscription).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
-        sb.append(", action='").append(action).append('\'');
-        sb.append(", amountInCents=").append(amountInCents);
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", currency='").append(currency).append('\'');
-        sb.append(", status='").append(status).append('\'');
-        sb.append(", reference='").append(reference).append('\'');
-        sb.append(", test=").append(test);
-        sb.append(", voidable=").append(voidable);
-        sb.append(", refundable=").append(refundable);
+        sb.append(", source='").append(source).append('\'');
+        sb.append(", recurring=").append(recurring);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", details=").append(details);
         sb.append('}');
         return sb.toString();
     }
@@ -134,7 +162,7 @@ public class Transaction extends AbstractTransaction {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof Transaction)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         if (!super.equals(o)) {
@@ -152,7 +180,16 @@ public class Transaction extends AbstractTransaction {
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
             return false;
         }
+        if (details != null ? !details.equals(that.details) : that.details != null) {
+            return false;
+        }
         if (invoice != null ? !invoice.equals(that.invoice) : that.invoice != null) {
+            return false;
+        }
+        if (recurring != null ? !recurring.equals(that.recurring) : that.recurring != null) {
+            return false;
+        }
+        if (source != null ? !source.equals(that.source) : that.source != null) {
             return false;
         }
         if (subscription != null ? !subscription.equals(that.subscription) : that.subscription != null) {
@@ -177,7 +214,10 @@ public class Transaction extends AbstractTransaction {
         result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
         result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
+        result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (recurring != null ? recurring.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (details != null ? details.hashCode() : 0);
         return result;
     }
 }

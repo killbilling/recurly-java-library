@@ -33,6 +33,7 @@ import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
+import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
@@ -632,6 +633,12 @@ public class RecurlyClient {
             log.warn("Error while calling Recurly", e);
             return null;
         } catch (ExecutionException e) {
+            // Extract the errors exception, if any
+            if (e.getCause() != null &&
+                e.getCause().getCause() != null &&
+                e.getCause().getCause() instanceof TransactionErrorException) {
+                throw (TransactionErrorException) e.getCause().getCause();
+            }
             log.error("Execution error", e);
             return null;
         } catch (InterruptedException e) {
@@ -652,7 +659,10 @@ public class RecurlyClient {
                               if (response.getStatusCode() >= 300) {
                                   log.warn("Recurly error whilst calling: {}", response.getUri());
                                   log.warn("Recurly error: {}", response.getResponseBody());
-                                  return null;
+                                  // 422 can signal a transaction error, see http://docs.recurly.com/api/transactions/error-codes
+                                  if (response.getStatusCode() != 422) {
+                                      return null;
+                                  }
                               }
 
                               if (clazz == null) {
@@ -665,6 +675,20 @@ public class RecurlyClient {
                                   if (debug()) {
                                       log.info("Msg from Recurly API :: {}", payload);
                                   }
+
+                                  // Handle errors payload
+                                  if (response.getStatusCode() == 422) {
+                                      final Errors errors;
+                                      try {
+                                          errors = xmlMapper.readValue(payload, Errors.class);
+                                      } catch (Exception e) {
+                                          // Unclear if 422 is returned only for transaction errors?
+                                          log.debug("Unable to extract error", e);
+                                          return null;
+                                      }
+                                      throw new TransactionErrorException(errors);
+                                  }
+
                                   final T obj = xmlMapper.readValue(payload, clazz);
                                   if (obj instanceof RecurlyObject) {
                                       ((RecurlyObject) obj).setRecurlyClient(recurlyClient);
