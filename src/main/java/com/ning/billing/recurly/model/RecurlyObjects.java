@@ -18,6 +18,10 @@ package com.ning.billing.recurly.model;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.ning.billing.recurly.RecurlyClient;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -26,4 +30,75 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<T> {
 
+    @XmlTransient
+    private RecurlyClient recurlyClient;
+
+    @XmlTransient
+    private String startUrl;
+
+    @XmlTransient
+    private String prevUrl;
+
+    @XmlTransient
+    private String nextUrl;
+
+    @XmlTransient
+    private Integer nbRecords;
+
+    <U extends RecurlyObjects> U getStart(final Class<U> clazz) {
+        if (recurlyClient == null) {
+            return null;
+        }
+        return recurlyClient.doGETWithFullURL(clazz, startUrl);
+    }
+
+    <U extends RecurlyObjects> U getPrev(final Class<U> clazz) {
+        if (recurlyClient == null) {
+            return null;
+        }
+        return recurlyClient.doGETWithFullURL(clazz, prevUrl);
+    }
+
+    <U extends RecurlyObjects> U getNext(final Class<U> clazz) {
+        if (recurlyClient == null) {
+            return null;
+        }
+        return recurlyClient.doGETWithFullURL(clazz, nextUrl);
+    }
+
+    public void setRecurlyClient(final RecurlyClient recurlyClient) {
+        this.recurlyClient = recurlyClient;
+    }
+
+    public String getStartUrl() {
+        return startUrl;
+    }
+
+    public void setStartUrl(final String startUrl) {
+        this.startUrl = startUrl;
+    }
+
+    public String getPrevUrl() {
+        return prevUrl;
+    }
+
+    public void setPrevUrl(final String prevUrl) {
+        this.prevUrl = prevUrl;
+    }
+
+    public String getNextUrl() {
+        return nextUrl;
+    }
+
+    public void setNextUrl(final String nextUrl) {
+        this.nextUrl = nextUrl;
+    }
+
+    public Integer getNbRecords() {
+        return nbRecords;
+    }
+
+    public void setNbRecords(final Integer nbRecords) {
+        this.nbRecords = nbRecords;
+    }
 }

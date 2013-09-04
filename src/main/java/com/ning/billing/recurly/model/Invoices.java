@@ -24,4 +24,16 @@ public class Invoices extends RecurlyObjects<Invoice> {
 
     @XmlTransient
     public static final String INVOICES_RESOURCE = "/invoices";
+
+    public Invoices getStart() {
+        return getStart(Invoices.class);
+    }
+
+    public Invoices getPrev() {
+        return getPrev(Invoices.class);
+    }
+
+    public Invoices getNext() {
+        return getNext(Invoices.class);
+    }
 }

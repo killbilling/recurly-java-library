@@ -96,6 +96,34 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testPagination() throws Exception {
+        System.setProperty(RECURLY_PAGE_SIZE, "1");
+
+        final int minNumberOfAccounts = 5;
+        for (int i = 0; i < minNumberOfAccounts; i++) {
+            final Account accountData = TestUtils.createRandomAccount();
+            recurlyClient.createAccount(accountData);
+        }
+
+        Accounts accounts = recurlyClient.getAccounts();
+        Assert.assertNull(accounts.getPrevUrl());
+        for (int i = 0; i < minNumberOfAccounts; i++) {
+            // If the environment is used, we will have more than the ones we created
+            Assert.assertTrue(accounts.getNbRecords() >= minNumberOfAccounts);
+            Assert.assertEquals(accounts.size(), 1);
+            if (i < minNumberOfAccounts - 1) {
+                accounts = accounts.getNext();
+            }
+        }
+
+        for (int i = minNumberOfAccounts - 1; i >= 0; i--) {
+            Assert.assertTrue(accounts.getNbRecords() >= minNumberOfAccounts);
+            Assert.assertEquals(accounts.size(), 1);
+            accounts = accounts.getPrev();
+        }
+    }
+
+    @Test(groups = "integration")
     public void testCreateAccount() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();

@@ -24,4 +24,16 @@ public class Plans extends RecurlyObjects<Plan> {
 
     @XmlTransient
     public static final String PLANS_RESOURCE = "/plans";
+
+    public Plans getStart() {
+        return getStart(Plans.class);
+    }
+
+    public Plans getPrev() {
+        return getPrev(Plans.class);
+    }
+
+    public Plans getNext() {
+        return getNext(Plans.class);
+    }
 }

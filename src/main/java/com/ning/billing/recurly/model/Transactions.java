@@ -27,4 +27,16 @@ public class Transactions extends RecurlyObjects<Transaction> {
 
     @XmlTransient
     public static final String TRANSACTIONS_RESOURCE = "/transactions";
+
+    public Transactions getStart() {
+        return getStart(Transactions.class);
+    }
+
+    public Transactions getPrev() {
+        return getPrev(Transactions.class);
+    }
+
+    public Transactions getNext() {
+        return getNext(Transactions.class);
+    }
 }

@@ -24,4 +24,16 @@ public class Coupons extends RecurlyObjects<Coupon> {
 
     @XmlTransient
     public static final String COUPONS_RESOURCE = "/coupons";
+
+    public Coupons getStart() {
+        return getStart(Coupons.class);
+    }
+
+    public Coupons getPrev() {
+        return getPrev(Coupons.class);
+    }
+
+    public Coupons getNext() {
+        return getNext(Coupons.class);
+    }
 }

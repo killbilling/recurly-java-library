@@ -24,4 +24,16 @@ public class Accounts extends RecurlyObjects<Account> {
 
     @XmlTransient
     public static final String ACCOUNTS_RESOURCE = "/accounts";
+
+    public Accounts getStart() {
+        return getStart(Accounts.class);
+    }
+
+    public Accounts getPrev() {
+        return getPrev(Accounts.class);
+    }
+
+    public Accounts getNext() {
+        return getNext(Accounts.class);
+    }
 }

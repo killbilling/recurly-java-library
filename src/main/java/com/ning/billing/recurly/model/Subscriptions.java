@@ -24,4 +24,16 @@ public class Subscriptions extends RecurlyObjects<Subscription> {
 
     @XmlTransient
     public static final String SUBSCRIPTIONS_RESOURCE = "/subscriptions";
+
+    public Subscriptions getStart() {
+        return getStart(Subscriptions.class);
+    }
+
+    public Subscriptions getPrev() {
+        return getPrev(Subscriptions.class);
+    }
+
+    public Subscriptions getNext() {
+        return getNext(Subscriptions.class);
+    }
 }

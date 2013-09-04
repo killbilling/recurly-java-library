@@ -61,6 +61,9 @@ public class RecurlyClient {
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final String PER_PAGE = "per_page=";
 
+    private static final String X_RECORDS_HEADER_NAME = "X-Records";
+    private static final String LINK_HEADER_NAME = "Link";
+
     public static final String FETCH_RESOURCE = "/recurly_js/result";
 
     /**
@@ -666,8 +669,27 @@ public class RecurlyClient {
                                   if (obj instanceof RecurlyObject) {
                                       ((RecurlyObject) obj).setRecurlyClient(recurlyClient);
                                   } else if (obj instanceof RecurlyObjects) {
-                                      for (final Object object : (RecurlyObjects) obj) {
+                                      final RecurlyObjects recurlyObjects = (RecurlyObjects) obj;
+                                      recurlyObjects.setRecurlyClient(recurlyClient);
+
+                                      // Set the RecurlyClient on all objects for later use
+                                      for (final Object object : recurlyObjects) {
                                           ((RecurlyObject) object).setRecurlyClient(recurlyClient);
+                                      }
+
+                                      // Set the total number of records
+                                      final String xRecords = response.getHeader(X_RECORDS_HEADER_NAME);
+                                      if (xRecords != null) {
+                                          recurlyObjects.setNbRecords(Integer.valueOf(xRecords));
+                                      }
+
+                                      // Set links for pagination
+                                      final String linkHeader = response.getHeader(LINK_HEADER_NAME);
+                                      if (linkHeader != null) {
+                                          final String[] links = PaginationUtils.getLinks(linkHeader);
+                                          recurlyObjects.setStartUrl(links[0]);
+                                          recurlyObjects.setPrevUrl(links[1]);
+                                          recurlyObjects.setNextUrl(links[2]);
                                       }
                                   }
                                   return obj;
