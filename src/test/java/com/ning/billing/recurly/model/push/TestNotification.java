@@ -76,6 +76,7 @@ public class TestNotification extends TestModelBase {
                                                    "  <current_period_ends_at type=\"datetime\">2010-09-24T22:03:30Z</current_period_ends_at>\n" +
                                                    "  <trial_started_at nil=\"true\" type=\"datetime\"></trial_started_at>\n" +
                                                    "  <trial_ends_at nil=\"true\" type=\"datetime\"></trial_ends_at>\n" +
+                                                   "  <starts_at type=\"datetime\">2010-09-23T07:00:00Z</starts_at>\n" +
                                                    "</subscription>";
 
     private static final String TRANSACTIONDATA = "<transaction>\n" +
@@ -172,6 +173,7 @@ public class TestNotification extends TestModelBase {
         Assert.assertNull(subscription.getExpiresAt());
         Assert.assertEquals(subscription.getCurrentPeriodStartedAt(), new DateTime("2010-09-23T22:03:30Z"));
         Assert.assertEquals(subscription.getCurrentPeriodEndsAt(), new DateTime("2010-09-24T22:03:30Z"));
+        Assert.assertEquals(subscription.getStartsAt(), new DateTime("2010-09-23T07:00:00Z"));
         Assert.assertNull(subscription.getTrialStartedAt());
         Assert.assertNull(subscription.getTrialEndsAt());
     }

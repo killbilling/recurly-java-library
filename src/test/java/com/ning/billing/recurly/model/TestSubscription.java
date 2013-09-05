@@ -44,6 +44,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <current_period_ends_at type=\"datetime\">2010-07-27T07:00:00Z</current_period_ends_at>\n" +
                                         "  <trial_started_at nil=\"nil\"></trial_started_at>\n" +
                                         "  <trial_ends_at nil=\"nil\"></trial_ends_at>\n" +
+                                        "  <starts_at>2010-07-28T07:00:00Z</starts_at>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
                                         "  <a name=\"cancel\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/cancel\" method=\"put\"/>\n" +
@@ -65,7 +66,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertNull(subscription.getTrialStartedAt(), "");
         Assert.assertNull(subscription.getTrialEndsAt(), "");
         Assert.assertNull(subscription.getAddOns());
-
+        Assert.assertEquals(subscription.getStartsAt(), new DateTime("2010-07-28T07:00:00Z"));
         // Verify nested attributes
         Assert.assertEquals(subscription.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
         Assert.assertEquals(subscription.getAccount().getAccountCode(), "1");
