@@ -268,6 +268,7 @@ public class TestUtils {
         sub.setCurrentPeriodEndsAt(DateTime.now());
         sub.setTrialStartedAt(DateTime.now());
         sub.setTrialEndsAt(DateTime.now());
+        sub.setStartsAt(DateTime.now());
         final List<AddOn> addOns = new ArrayList<AddOn>();
         for (int i = 0; i < randomInteger(10); i++) {
             addOns.add(createRandomAddOn());
@@ -306,7 +307,7 @@ public class TestUtils {
         addOn.setAddOnCode(getRandomAlphaNumString(10));
         addOn.setName(getRandomAlphaNumString(10));
         addOn.setUnitAmountInCents(createRandomPrice());
-
+        addOn.setQuantity(5);
         return addOn;
     }
 

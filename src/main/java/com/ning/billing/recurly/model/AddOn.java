@@ -46,6 +46,9 @@ public class AddOn extends RecurlyObject {
     @XmlElement(name = "createdAt")
     private DateTime createdAt;
 
+    @XmlElement(name = "quantity")
+    private Integer quantity;
+
     public String getAddOnCode() {
         return addOnCode;
     }
@@ -94,6 +97,14 @@ public class AddOn extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(final Object quantity) {
+        this.quantity = integerOrNull(quantity);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -104,6 +115,7 @@ public class AddOn extends RecurlyObject {
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", quantity=").append(quantity);
         sb.append('}');
         return sb.toString();
     }
@@ -138,6 +150,10 @@ public class AddOn extends RecurlyObject {
             return false;
         }
 
+        if (quantity != null ? !quantity.equals(addOn.quantity) : addOn.quantity != null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -149,6 +165,7 @@ public class AddOn extends RecurlyObject {
         result = 31 * result + (defaultQuantity != null ? defaultQuantity.hashCode() : 0);
         result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
+        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         return result;
     }
 }

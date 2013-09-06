@@ -417,6 +417,7 @@ public class TestRecurlyClient {
             Assert.assertEquals(addOnRecurly.getAddOnCode(), addOn.getAddOnCode());
             Assert.assertEquals(addOnRecurly.getName(), addOn.getName());
             Assert.assertEquals(addOnRecurly.getUnitAmountInCents(), addOn.getUnitAmountInCents());
+            Assert.assertEquals(addOnRecurly.getQuantity(), addOn.getQuantity());
 
             // Query for an AddOn
             addOnRecurly = recurlyClient.getAddOn(plan.getPlanCode(), addOn.getAddOnCode());
