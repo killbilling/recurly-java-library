@@ -69,6 +69,7 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
+    //Purchase Order Number
     @XmlElement(name = "po_number")
     private String poNumber;
 
@@ -184,8 +185,8 @@ public class Subscription extends AbstractSubscription {
         return collectionMethod;
     }
 
-    public void setCollectionMethod(String collectionMethod) {
-        this.collectionMethod = collectionMethod;
+    public void setCollectionMethod(Object collectionMethod) {
+        this.collectionMethod = stringOrNull(collectionMethod);
     }
 
     public Integer getNetTerms() {
@@ -200,8 +201,8 @@ public class Subscription extends AbstractSubscription {
         return poNumber;
     }
 
-    public void setPoNumber(String poNumber) {
-        this.poNumber = poNumber;
+    public void setPoNumber(Object poNumber) {
+        this.poNumber = stringOrNull(poNumber);
     }
 
 
