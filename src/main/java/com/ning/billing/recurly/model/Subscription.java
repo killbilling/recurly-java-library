@@ -63,6 +63,15 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "starts_at")
     private DateTime startsAt;
 
+    @XmlElement(name = "collection_method")
+    private String collectionMethod;
+
+    @XmlElement(name = "net_terms")
+    private Integer netTerms;
+
+    @XmlElement(name = "po_number")
+    private String poNumber;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -170,6 +179,33 @@ public class Subscription extends AbstractSubscription {
         this.startsAt = dateTimeOrNull(startsAt);
     }
 
+
+    public String getCollectionMethod() {
+        return collectionMethod;
+    }
+
+    public void setCollectionMethod(String collectionMethod) {
+        this.collectionMethod = collectionMethod;
+    }
+
+    public Integer getNetTerms() {
+        return netTerms;
+    }
+
+    public void setNetTerms(final Object netTerms) {
+        this.netTerms = integerOrNull(netTerms);
+    }
+
+    public String getPoNumber() {
+        return poNumber;
+    }
+
+    public void setPoNumber(String poNumber) {
+        this.poNumber = poNumber;
+    }
+
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -239,7 +275,6 @@ public class Subscription extends AbstractSubscription {
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
-
         if (trialEndsAt != null ? !trialEndsAt.equals(that.trialEndsAt) : that.trialEndsAt != null) {
             return false;
         }
@@ -253,6 +288,18 @@ public class Subscription extends AbstractSubscription {
             return false;
         }
         if (startsAt != null ? !startsAt.equals(that.startsAt) : that.startsAt != null) {
+            return false;
+        }
+
+        if (collectionMethod != null ? !collectionMethod.equals(that.collectionMethod) : that.collectionMethod != null) {
+            return false;
+        }
+
+        if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
+            return false;
+        }
+
+        if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
             return false;
         }
 
@@ -277,6 +324,9 @@ public class Subscription extends AbstractSubscription {
         result = 31 * result + (trialEndsAt != null ? trialEndsAt.hashCode() : 0);
         result = 31 * result + (addOns != null ? addOns.hashCode() : 0);
         result = 31 * result + (startsAt != null ? startsAt.hashCode() : 0);
+        result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
+        result = 31 * result + (netTerms != null ? netTerms.hashCode() : 0);
+        result = 31 * result + (poNumber != null ? poNumber.hashCode() : 0);
         return result;
     }
 }
