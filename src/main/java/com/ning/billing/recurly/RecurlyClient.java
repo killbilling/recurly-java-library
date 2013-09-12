@@ -638,6 +638,10 @@ public class RecurlyClient {
                 e.getCause().getCause() != null &&
                 e.getCause().getCause() instanceof TransactionErrorException) {
                 throw (TransactionErrorException) e.getCause().getCause();
+            } else if (e.getCause() != null &&
+                       e.getCause() instanceof TransactionErrorException) {
+                // See https://github.com/killbilling/recurly-java-library/issues/16
+                throw (TransactionErrorException) e.getCause();
             }
             log.error("Execution error", e);
             return null;
