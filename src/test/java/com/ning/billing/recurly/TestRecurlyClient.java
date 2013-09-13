@@ -406,6 +406,8 @@ public class TestRecurlyClient {
         // Create a Plan
         final Plan planData = TestUtils.createRandomPlan();
         final AddOn addOn = TestUtils.createRandomAddOn();
+        // add ons for plans must not have quantity
+        addOn.setQuantity(null);
 
         try {
             // Create an AddOn
