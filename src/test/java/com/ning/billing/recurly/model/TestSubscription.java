@@ -50,6 +50,9 @@ public class TestSubscription extends TestModelBase {
                                         "  <a name=\"cancel\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/cancel\" method=\"put\"/>\n" +
                                         "  <a name=\"terminate\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/terminate\" method=\"put\"/>\n" +
                                         "  <a name=\"postpone\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/postpone\" method=\"put\"/>\n" +
+                                        "  <collection_method>manual</collection_method>\n" +
+                                        "  <net_terms type=\"integer\">10</net_terms>\n" +
+                                        "  <po_number>PO19384</po_number>\n" +
                                         "</subscription>";
 
         final Subscription subscription = xmlMapper.readValue(subscriptionData, Subscription.class);
@@ -67,6 +70,9 @@ public class TestSubscription extends TestModelBase {
         Assert.assertNull(subscription.getTrialEndsAt(), "");
         Assert.assertNull(subscription.getAddOns());
         Assert.assertEquals(subscription.getStartsAt(), new DateTime("2010-07-28T07:00:00Z"));
+        Assert.assertEquals(subscription.getCollectionMethod(), "manual");
+        Assert.assertEquals(subscription.getNetTerms(), (Integer) 10);
+        Assert.assertEquals(subscription.getPoNumber(), "PO19384");
         // Verify nested attributes
         Assert.assertEquals(subscription.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
         Assert.assertEquals(subscription.getAccount().getAccountCode(), "1");
