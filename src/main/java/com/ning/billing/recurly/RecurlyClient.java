@@ -444,6 +444,8 @@ public class RecurlyClient {
      * @return the {@link AddOn} object as identified by the passed in object
      */
     public AddOn createPlanAddOn(final String planCode, final AddOn addOn) {
+        // To avoid confusing Recurly
+        addOn.setQuantity(null);
         return doPOST(Plan.PLANS_RESOURCE +
                       "/" +
                       planCode +
