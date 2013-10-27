@@ -22,7 +22,23 @@ import org.testng.annotations.Test;
 public class TestErrors extends TestModelBase {
 
     @Test(groups = "fast")
-    public void testSerialization() throws Exception {
+    public void testSerializationErrors() throws Exception {
+        final String errorsData = "<errors>\n" +
+                                  "  <error field=\"billing_info.address1\" symbol=\"empty\">can't be empty</error>\n" +
+                                  "  <error field=\"billing_info.year\" symbol=\"less_than\">must be less than 2050</error>\n" +
+                                  "</errors>";
+
+        final Errors errors = xmlMapper.readValue(errorsData, Errors.class);
+        Assert.assertEquals(errors.getRecurlyErrors().get(0).getField(), "billing_info.address1");
+        Assert.assertEquals(errors.getRecurlyErrors().get(0).getSymbol(), "empty");
+        Assert.assertEquals(errors.getRecurlyErrors().get(0).getMessage(), "can't be empty");
+        Assert.assertEquals(errors.getRecurlyErrors().get(1).getField(), "billing_info.year");
+        Assert.assertEquals(errors.getRecurlyErrors().get(1).getSymbol(), "less_than");
+        Assert.assertEquals(errors.getRecurlyErrors().get(1).getMessage(), "must be less than 2050");
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationTransactionErrors() throws Exception {
         final String errorsData = "<errors>\n" +
                                   "  <transaction_error>\n" +
                                   "    <error_code>fraud_ip_address</error_code>\n" +

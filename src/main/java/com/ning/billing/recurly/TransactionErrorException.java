@@ -24,6 +24,7 @@ public class TransactionErrorException extends RuntimeException {
     private final Errors errors;
 
     public TransactionErrorException(final Errors errors) {
+        super(errors.toString());
         this.errors = errors;
     }
 

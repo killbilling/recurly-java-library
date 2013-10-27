@@ -16,6 +16,10 @@
 
 package com.ning.billing.recurly.model;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -27,6 +31,9 @@ public class Errors extends RecurlyObject {
 
     @XmlElement(name = "transaction")
     private Transaction transaction;
+
+    @XmlElement(name = "error")
+    private List<RecurlyError> recurlyErrors;
 
     public TransactionError getTransactionError() {
         return transactionError;
@@ -44,11 +51,32 @@ public class Errors extends RecurlyObject {
         this.transaction = transaction;
     }
 
+    public List<RecurlyError> getRecurlyErrors() {
+        return recurlyErrors;
+    }
+
+    public void setRecurlyErrors(final Object recurlyError) {
+        if (recurlyError instanceof Map) {
+            final RecurlyError error = new RecurlyError();
+            error.setField((String) ((Map) recurlyError).get("field"));
+            error.setSymbol((String) ((Map) recurlyError).get("symbol"));
+            error.setMessage((String) ((Map) recurlyError).get(""));
+
+            if (this.recurlyErrors == null) {
+                this.recurlyErrors = new LinkedList<RecurlyError>();
+            }
+            this.recurlyErrors.add(error);
+        } else {
+            this.recurlyErrors = (List<RecurlyError>) recurlyErrors;
+        }
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Errors{");
-        sb.append("transactionError='").append(transactionError).append('\'');
+        sb.append("transactionError=").append(transactionError);
         sb.append(", transaction=").append(transaction);
+        sb.append(", recurlyErrors=").append(recurlyErrors);
         sb.append('}');
         return sb.toString();
     }
@@ -64,6 +92,9 @@ public class Errors extends RecurlyObject {
 
         final Errors errors = (Errors) o;
 
+        if (recurlyErrors != null ? !recurlyErrors.equals(errors.recurlyErrors) : errors.recurlyErrors != null) {
+            return false;
+        }
         if (transaction != null ? !transaction.equals(errors.transaction) : errors.transaction != null) {
             return false;
         }
@@ -78,6 +109,7 @@ public class Errors extends RecurlyObject {
     public int hashCode() {
         int result = transactionError != null ? transactionError.hashCode() : 0;
         result = 31 * result + (transaction != null ? transaction.hashCode() : 0);
+        result = 31 * result + (recurlyErrors != null ? recurlyErrors.hashCode() : 0);
         return result;
     }
 }
