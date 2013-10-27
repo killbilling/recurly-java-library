@@ -18,6 +18,7 @@ package com.ning.billing.recurly;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 
@@ -45,7 +46,6 @@ import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
-import com.ning.http.client.AsyncCompletionHandler;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
@@ -653,85 +653,82 @@ public class RecurlyClient {
 
     private <T> T callRecurly(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
-        final RecurlyClient recurlyClient = this;
-        return builder.addHeader("Authorization", "Basic " + key)
-                      .addHeader("Accept", "application/xml")
-                      .addHeader("Content-Type", "application/xml; charset=utf-8")
-                      .execute(new AsyncCompletionHandler<T>() {
-                          @Override
-                          public T onCompleted(final Response response) throws Exception {
-                              if (response.getStatusCode() >= 300) {
-                                  log.warn("Recurly error whilst calling: {}", response.getUri());
-                                  log.warn("Recurly error: {}", response.getResponseBody());
-                                  // 422 can signal a transaction error, see http://docs.recurly.com/api/transactions/error-codes
-                                  if (response.getStatusCode() != 422) {
-                                      return null;
-                                  }
-                              }
+        final Response response = builder.addHeader("Authorization", "Basic " + key)
+                                         .addHeader("Accept", "application/xml")
+                                         .addHeader("Content-Type", "application/xml; charset=utf-8")
+                                         .execute()
+                                         .get();
 
-                              if (clazz == null) {
-                                  return null;
-                              }
+        if (response.getStatusCode() >= 300) {
+            log.warn("Recurly error whilst calling: {}", response.getUri());
+            log.warn("Recurly error: {}", response.getResponseBody());
+            // 422 can signal a transaction error, see http://docs.recurly.com/api/transactions/error-codes
+            if (response.getStatusCode() != 422) {
+                return null;
+            }
+        }
 
-                              final InputStream in = response.getResponseBodyAsStream();
-                              try {
-                                  final String payload = convertStreamToString(in);
-                                  if (debug()) {
-                                      log.info("Msg from Recurly API :: {}", payload);
-                                  }
+        final InputStream in = response.getResponseBodyAsStream();
+        try {
+            final String payload = convertStreamToString(in);
+            if (debug()) {
+                log.info("Msg from Recurly API :: {}", payload);
+            }
 
-                                  // Handle errors payload
-                                  if (response.getStatusCode() == 422) {
-                                      final Errors errors;
-                                      try {
-                                          errors = xmlMapper.readValue(payload, Errors.class);
-                                      } catch (Exception e) {
-                                          // Unclear if 422 is returned only for transaction errors?
-                                          log.debug("Unable to extract error", e);
-                                          return null;
-                                      }
-                                      throw new TransactionErrorException(errors);
-                                  }
+            // Handle errors payload
+            if (response.getStatusCode() == 422) {
+                final Errors errors;
+                try {
+                    errors = xmlMapper.readValue(payload, Errors.class);
+                } catch (Exception e) {
+                    // 422 is returned for transaction errors as well as bad input payloads
+                    log.debug("Unable to extract error", e);
+                    return null;
+                }
+                throw new TransactionErrorException(errors);
+            }
 
-                                  final T obj = xmlMapper.readValue(payload, clazz);
-                                  if (obj instanceof RecurlyObject) {
-                                      ((RecurlyObject) obj).setRecurlyClient(recurlyClient);
-                                  } else if (obj instanceof RecurlyObjects) {
-                                      final RecurlyObjects recurlyObjects = (RecurlyObjects) obj;
-                                      recurlyObjects.setRecurlyClient(recurlyClient);
+            if (clazz == null) {
+                return null;
+            }
 
-                                      // Set the RecurlyClient on all objects for later use
-                                      for (final Object object : recurlyObjects) {
-                                          ((RecurlyObject) object).setRecurlyClient(recurlyClient);
-                                      }
+            final T obj = xmlMapper.readValue(payload, clazz);
+            if (obj instanceof RecurlyObject) {
+                ((RecurlyObject) obj).setRecurlyClient(this);
+            } else if (obj instanceof RecurlyObjects) {
+                final RecurlyObjects recurlyObjects = (RecurlyObjects) obj;
+                recurlyObjects.setRecurlyClient(this);
 
-                                      // Set the total number of records
-                                      final String xRecords = response.getHeader(X_RECORDS_HEADER_NAME);
-                                      if (xRecords != null) {
-                                          recurlyObjects.setNbRecords(Integer.valueOf(xRecords));
-                                      }
+                // Set the RecurlyClient on all objects for later use
+                for (final Object object : recurlyObjects) {
+                    ((RecurlyObject) object).setRecurlyClient(this);
+                }
 
-                                      // Set links for pagination
-                                      final String linkHeader = response.getHeader(LINK_HEADER_NAME);
-                                      if (linkHeader != null) {
-                                          final String[] links = PaginationUtils.getLinks(linkHeader);
-                                          recurlyObjects.setStartUrl(links[0]);
-                                          recurlyObjects.setPrevUrl(links[1]);
-                                          recurlyObjects.setNextUrl(links[2]);
-                                      }
-                                  }
-                                  return obj;
-                              } finally {
-                                  closeStream(in);
-                              }
-                          }
-                      }).get();
+                // Set the total number of records
+                final String xRecords = response.getHeader(X_RECORDS_HEADER_NAME);
+                if (xRecords != null) {
+                    recurlyObjects.setNbRecords(Integer.valueOf(xRecords));
+                }
+
+                // Set links for pagination
+                final String linkHeader = response.getHeader(LINK_HEADER_NAME);
+                if (linkHeader != null) {
+                    final String[] links = PaginationUtils.getLinks(linkHeader);
+                    recurlyObjects.setStartUrl(links[0]);
+                    recurlyObjects.setPrevUrl(links[1]);
+                    recurlyObjects.setNextUrl(links[2]);
+                }
+            }
+            return obj;
+        } finally {
+            closeStream(in);
+        }
     }
 
     private String convertStreamToString(final java.io.InputStream is) {
         try {
             return new Scanner(is).useDelimiter("\\A").next();
-        } catch (java.util.NoSuchElementException e) {
+        } catch (final NoSuchElementException e) {
             return "";
         }
     }
