@@ -385,6 +385,14 @@ public class TestRecurlyClient {
             Assert.assertEquals(found.getInvoice().getTotalInCents(), (Integer) 15);
             Assert.assertEquals(found.getInvoice().getCurrency(), CURRENCY);
 
+            // Verify we can retrieve it
+            Assert.assertEquals(recurlyClient.getTransaction(found.getUuid()).getUuid(), found.getUuid());
+
+            // Verify we can refund it
+            Assert.assertTrue(recurlyClient.getTransaction(found.getUuid()).getRefundable());
+            recurlyClient.refundTransaction(found.getUuid(), null);
+            Assert.assertFalse(recurlyClient.getTransaction(found.getUuid()).getRefundable());
+
             // Test Invoices retrieval
             final Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
             // 2 Invoices are present (the first one is for the transaction, the second for the subscription)

@@ -18,6 +18,7 @@ package com.ning.billing.recurly;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
@@ -362,13 +363,38 @@ public class RecurlyClient {
     }
 
     /**
-     * Creates a {@link Transaction} throgh the Recurly API.
+     * Lookup a transaction
+     *
+     * @param transactionId recurly transaction id
+     * @return the transaction if found, null otherwise
+     */
+    public Transaction getTransaction(final String transactionId) {
+        return doGET(Transactions.TRANSACTIONS_RESOURCE + "/" + transactionId,
+                     Transaction.class);
+    }
+
+    /**
+     * Creates a {@link Transaction} through the Recurly API.
      *
      * @param trans The {@link Transaction} to create
      * @return The created {@link Transaction} object
      */
     public Transaction createTransaction(final Transaction trans) {
         return doPOST(Transactions.TRANSACTIONS_RESOURCE, trans, Transaction.class);
+    }
+
+    /**
+     * Refund a transaction
+     *
+     * @param transactionId recurly transaction id
+     * @param amount        amount to refund, null for full refund
+     */
+    public void refundTransaction(final String transactionId, @Nullable final BigDecimal amount) {
+        String url = Transactions.TRANSACTIONS_RESOURCE + "/" + transactionId;
+        if (amount != null) {
+            url = url + "?amount_in_cents=" + (amount.intValue() * 100);
+        }
+        doDELETE(url);
     }
 
     ///////////////////////////////////////////////////////////////////////////
