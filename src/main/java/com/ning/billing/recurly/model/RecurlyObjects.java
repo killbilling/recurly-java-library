@@ -46,21 +46,21 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     private Integer nbRecords;
 
     <U extends RecurlyObjects> U getStart(final Class<U> clazz) {
-        if (recurlyClient == null) {
+        if (recurlyClient == null || startUrl == null) {
             return null;
         }
         return recurlyClient.doGETWithFullURL(clazz, startUrl);
     }
 
     <U extends RecurlyObjects> U getPrev(final Class<U> clazz) {
-        if (recurlyClient == null) {
+        if (recurlyClient == null || prevUrl == null) {
             return null;
         }
         return recurlyClient.doGETWithFullURL(clazz, prevUrl);
     }
 
     <U extends RecurlyObjects> U getNext(final Class<U> clazz) {
-        if (recurlyClient == null) {
+        if (recurlyClient == null || nextUrl == null) {
             return null;
         }
         return recurlyClient.doGETWithFullURL(clazz, nextUrl);
