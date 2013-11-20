@@ -25,6 +25,19 @@ public class Adjustments extends RecurlyObjects<Adjustment> {
 	@XmlTransient
 	public static final String ADJUSTMENTS_RESOURCE = "/adjustments";
 
+	public enum AdjustmentType {
+		CHARGE("charge"), CREDIT("credit");
+		private final String type;
+
+		private AdjustmentType(String type) {
+			this.type = type;
+		}
+
+		public String getType() {
+			return type;
+		}
+	}
+
 	public Adjustments getStart() {
 		return getStart(Adjustments.class);
 	}

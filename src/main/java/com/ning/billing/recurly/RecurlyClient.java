@@ -33,6 +33,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.Adjustment;
+import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
@@ -198,6 +200,29 @@ public class RecurlyClient {
 	 */
 	public void closeAccount(final String accountCode) {
 		doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode);
+	}
+
+	// /////////////////////////////////////////////////////////////////////////
+	// Acount adjustments
+
+	public Adjustments getAccountAdjustments(String accountCode,
+			Adjustments.AdjustmentType type) {
+		return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode
+				+ Adjustments.ADJUSTMENTS_RESOURCE
+				+ (type != null ? "?type=" + type.getType() : ""),
+				Adjustments.class);
+	}
+
+	public Adjustment createAccountAdjustment(String accountCode,
+			Adjustment adjustment) {
+		return doPOST(Account.ACCOUNT_RESOURCE + "/" + accountCode
+				+ Adjustments.ADJUSTMENTS_RESOURCE, adjustment,
+				Adjustment.class);
+	}
+
+	public void deleteAccountAdjustment(String accountCode) {
+		doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode
+				+ Adjustments.ADJUSTMENTS_RESOURCE);
 	}
 
 	// //////////////////////////////////////////////////////////////////////////////////////
