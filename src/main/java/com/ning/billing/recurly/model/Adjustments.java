@@ -22,18 +22,31 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement(name = "adjustments")
 public class Adjustments extends RecurlyObjects<Adjustment> {
 
-    @XmlTransient
-    public static final String INVOICES_RESOURCE = "/adjustments";
+	@XmlTransient
+	public static final String ADJUSTMENTS_RESOURCE = "/adjustments";
 
-    public Adjustments getStart() {
-        return getStart(Adjustments.class);
-    }
+	public enum AdjustmentType {
+		CHARGE("charge"), CREDIT("credit");
+		private final String type;
 
-    public Adjustments getPrev() {
-        return getPrev(Adjustments.class);
-    }
+		private AdjustmentType(String type) {
+			this.type = type;
+		}
 
-    public Adjustments getNext() {
-        return getNext(Adjustments.class);
-    }
+		public String getType() {
+			return type;
+		}
+	}
+
+	public Adjustments getStart() {
+		return getStart(Adjustments.class);
+	}
+
+	public Adjustments getPrev() {
+		return getPrev(Adjustments.class);
+	}
+
+	public Adjustments getNext() {
+		return getNext(Adjustments.class);
+	}
 }
