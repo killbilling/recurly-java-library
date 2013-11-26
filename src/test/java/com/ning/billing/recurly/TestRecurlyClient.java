@@ -451,7 +451,7 @@ public class TestRecurlyClient {
             Assert.assertEquals(addOnRecurly.getAddOnCode(), addOn.getAddOnCode());
             Assert.assertEquals(addOnRecurly.getName(), addOn.getName());
             Assert.assertEquals(addOnRecurly.getUnitAmountInCents(), addOn.getUnitAmountInCents());
-            Assert.assertEquals(addOnRecurly.getQuantity(), addOn.getQuantity());
+            Assert.assertEquals(addOnRecurly.getDefaultQuantity(), addOn.getDefaultQuantity());
 
             // Query for an AddOn
             addOnRecurly = recurlyClient.getAddOn(plan.getPlanCode(), addOn.getAddOnCode());
@@ -459,8 +459,8 @@ public class TestRecurlyClient {
             // Check the 2 are the same
             Assert.assertEquals(addOnRecurly.getAddOnCode(), addOn.getAddOnCode());
             Assert.assertEquals(addOnRecurly.getName(), addOn.getName());
-            //Assert.assertEquals(addOnRecurly.getDefaultQuantity(), addOn.getDefaultQuantity());
-            //Assert.assertEquals(addOnRecurly.getDisplayQuantityOnHostedPage(), addOn.getDisplayQuantityOnHostedPage());
+            Assert.assertEquals(addOnRecurly.getDefaultQuantity(), addOn.getDefaultQuantity());
+            Assert.assertEquals(addOnRecurly.getDisplayQuantityOnHostedPage(), addOn.getDisplayQuantityOnHostedPage());
             Assert.assertEquals(addOnRecurly.getUnitAmountInCents(), addOn.getUnitAmountInCents());
         } finally {
             // Delete an AddOn

@@ -22,11 +22,12 @@ import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AddOn;
-import com.ning.billing.recurly.model.AddOns;
 import com.ning.billing.recurly.model.Address;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionAddOn;
+import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.Transaction;
 
 public class TestUtils {
@@ -268,9 +269,9 @@ public class TestUtils {
         sub.setTrialStartedAt(DateTime.now());
         sub.setTrialEndsAt(DateTime.now());
         sub.setStartsAt(DateTime.now());
-        final AddOns addOns = new AddOns();
+        final SubscriptionAddOns addOns = new SubscriptionAddOns();
         for (int i = 0; i < randomInteger(10); i++) {
-            addOns.add(createRandomAddOn());
+            addOns.add(createRandomSubscriptionAddOn());
         }
         sub.setAddOns(addOns);
 
@@ -305,6 +306,20 @@ public class TestUtils {
         final AddOn addOn = new AddOn();
         addOn.setAddOnCode(getRandomAlphaNumString(10));
         addOn.setName(getRandomAlphaNumString(10));
+        addOn.setUnitAmountInCents(createRandomPrice());
+        addOn.setDefaultQuantity(5);
+        addOn.setDisplayQuantityOnHostedPage(false);
+        return addOn;
+    }
+
+    /**
+     * Creates a random {@link SubscriptionAddOn} for use in Tests.
+     *
+     * @return The random {@link SubscriptionAddOn}
+     */
+    public static SubscriptionAddOn createRandomSubscriptionAddOn() {
+        final SubscriptionAddOn addOn = new SubscriptionAddOn();
+        addOn.setAddOnCode(getRandomAlphaNumString(10));
         addOn.setUnitAmountInCents(createRandomPrice());
         addOn.setQuantity(5);
         return addOn;

@@ -23,13 +23,10 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.joda.time.DateTime;
 
 @XmlRootElement(name = "add_on")
-public class AddOn extends RecurlyObject {
+public class AddOn extends AbstractAddOn {
 
     @XmlTransient
     public static final String ADDONS_RESOURCE = "/add_ons";
-
-    @XmlElement(name = "add_on_code")
-    private String addOnCode;
 
     @XmlElement(name = "name")
     private String name;
@@ -37,25 +34,14 @@ public class AddOn extends RecurlyObject {
     @XmlElement(name = "display_quantity_on_hosted_page")
     private Boolean displayQuantityOnHostedPage;
 
-    @XmlElement(name = "defaultQuantity")
+    @XmlElement(name = "default_quantity")
     private Integer defaultQuantity;
 
     @XmlElement(name = "unit_amount_in_cents")
     private Plan.RecurlyUnitCurrency unitAmountInCents;
 
-    @XmlElement(name = "createdAt")
+    @XmlElement(name = "created_at")
     private DateTime createdAt;
-
-    @XmlElement(name = "quantity")
-    private Integer quantity;
-
-    public String getAddOnCode() {
-        return addOnCode;
-    }
-
-    public void setAddOnCode(final Object addOnCode) {
-        this.addOnCode = stringOrNull(addOnCode);
-    }
 
     public String getName() {
         return name;
@@ -97,25 +83,14 @@ public class AddOn extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(final Object quantity) {
-        this.quantity = integerOrNull(quantity);
-    }
-
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("AddOn");
-        sb.append("{addOnCode='").append(addOnCode).append('\'');
-        sb.append(", name='").append(name).append('\'');
+        final StringBuilder sb = new StringBuilder("AddOn{");
+        sb.append("name='").append(name).append('\'');
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", createdAt=").append(createdAt);
-        sb.append(", quantity=").append(quantity);
         sb.append('}');
         return sb.toString();
     }
@@ -128,13 +103,13 @@ public class AddOn extends RecurlyObject {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
+        if (!super.equals(o)) {
+            return false;
+        }
 
         final AddOn addOn = (AddOn) o;
 
-        if (addOnCode != null ? !addOnCode.equals(addOn.addOnCode) : addOn.addOnCode != null) {
-            return false;
-        }
-        if (createdAt != null ? !createdAt.equals(addOn.createdAt) : addOn.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(addOn.createdAt) != 0 : addOn.createdAt != null) {
             return false;
         }
         if (defaultQuantity != null ? !defaultQuantity.equals(addOn.defaultQuantity) : addOn.defaultQuantity != null) {
@@ -150,22 +125,17 @@ public class AddOn extends RecurlyObject {
             return false;
         }
 
-        if (quantity != null ? !quantity.equals(addOn.quantity) : addOn.quantity != null) {
-            return false;
-        }
-
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = addOnCode != null ? addOnCode.hashCode() : 0;
+        int result = super.hashCode();
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (displayQuantityOnHostedPage != null ? displayQuantityOnHostedPage.hashCode() : 0);
         result = 31 * result + (defaultQuantity != null ? defaultQuantity.hashCode() : 0);
         result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
         return result;
     }
 }

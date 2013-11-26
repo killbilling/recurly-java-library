@@ -17,34 +17,16 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "subscription")
-public class AbstractSubscription extends RecurlyObject {
-
-    public static final String SUBSCRIPTION_RESOURCE = "/subscriptions";
+@XmlRootElement(name = "subscription_add_on")
+public class SubscriptionAddOn extends AbstractAddOn {
 
     @XmlElement(name = "unit_amount_in_cents")
-    protected Integer unitAmountInCents;
+    private Integer unitAmountInCents;
 
     @XmlElement(name = "quantity")
-    protected Integer quantity;
-
-    @XmlElementWrapper(name = "subscription_add_ons")
-    @XmlElement(name = "subscription_add_on")
-    protected SubscriptionAddOns addOns;
-
-    @XmlElement(name = "plan_code")
-    private String planCode;
-
-    public String getPlanCode() {
-        return planCode;
-    }
-
-    public void setPlanCode(final String planCode) {
-        this.planCode = stringOrNull(planCode);
-    }
+    private Integer quantity;
 
     public Integer getUnitAmountInCents() {
         return unitAmountInCents;
@@ -62,12 +44,13 @@ public class AbstractSubscription extends RecurlyObject {
         this.quantity = integerOrNull(quantity);
     }
 
-    public SubscriptionAddOns getAddOns() {
-        return addOns;
-    }
-
-    public void setAddOns(final SubscriptionAddOns addOns) {
-        this.addOns = addOns;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SubscriptionAddOn{");
+        sb.append("unitAmountInCents=").append(unitAmountInCents);
+        sb.append(", quantity=").append(quantity);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
@@ -75,22 +58,19 @@ public class AbstractSubscription extends RecurlyObject {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof AbstractSubscription)) {
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        if (!super.equals(o)) {
             return false;
         }
 
-        final AbstractSubscription that = (AbstractSubscription) o;
+        final SubscriptionAddOn addOn = (SubscriptionAddOn) o;
 
-        if (addOns != null ? !addOns.equals(that.addOns) : that.addOns != null) {
+        if (quantity != null ? !quantity.equals(addOn.quantity) : addOn.quantity != null) {
             return false;
         }
-        if (planCode != null ? !planCode.equals(that.planCode) : that.planCode != null) {
-            return false;
-        }
-        if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
-            return false;
-        }
-        if (unitAmountInCents != null ? !unitAmountInCents.equals(that.unitAmountInCents) : that.unitAmountInCents != null) {
+        if (unitAmountInCents != null ? !unitAmountInCents.equals(addOn.unitAmountInCents) : addOn.unitAmountInCents != null) {
             return false;
         }
 
@@ -99,10 +79,9 @@ public class AbstractSubscription extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = unitAmountInCents != null ? unitAmountInCents.hashCode() : 0;
+        int result = super.hashCode();
+        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
         result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        result = 31 * result + (addOns != null ? addOns.hashCode() : 0);
-        result = 31 * result + (planCode != null ? planCode.hashCode() : 0);
         return result;
     }
 }
