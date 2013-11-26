@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public class Adjustments extends RecurlyObjects<Adjustment> {
 
     @XmlTransient
-    public static final String INVOICES_RESOURCE = "/adjustments";
+    public static final String ADJUSTMENTS_RESOURCE = "/adjustments";
 
     public Adjustments getStart() {
         return getStart(Adjustments.class);
