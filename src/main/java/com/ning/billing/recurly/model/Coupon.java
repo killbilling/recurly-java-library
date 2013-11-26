@@ -22,8 +22,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.
  */

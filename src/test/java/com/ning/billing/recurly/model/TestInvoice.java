@@ -82,6 +82,6 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals((int) adjustment.getTotalInCents(), 5000);
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
 
-        Assert.assertNull(invoice.getTransactions());
+        Assert.assertEquals(invoice.getTransactions().size(), 0);
     }
 }

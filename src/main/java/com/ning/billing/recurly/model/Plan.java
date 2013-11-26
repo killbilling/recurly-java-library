@@ -16,8 +16,6 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -36,7 +34,7 @@ public class Plan extends RecurlyObject {
 
     @XmlElementWrapper(name = "add_ons")
     @XmlElement(name = "add_on")
-    private List<AddOn> addOns;
+    private AddOns addOns;
 
     @XmlElement(name = "plan_code")
     private String planCode;
@@ -236,11 +234,11 @@ public class Plan extends RecurlyObject {
         this.setupFeeInCents = setupFeeInCents;
     }
 
-    public List<AddOn> getAddOns() {
+    public AddOns getAddOns() {
         return this.addOns;
     }
 
-    public void setAddOns(final List<AddOn> addOns) {
+    public void setAddOns(final AddOns addOns) {
         this.addOns = addOns;
     }
 

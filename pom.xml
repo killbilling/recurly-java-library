@@ -64,7 +64,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Core only -->
-        <jackson.version>2.1.0</jackson.version>
+        <jackson.version>2.3.0</jackson.version>
         <guava.version>12.0</guava.version>
         <slf4j.version>1.6.5</slf4j.version>
     </properties>

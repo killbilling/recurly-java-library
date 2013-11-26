@@ -206,7 +206,6 @@ public class Subscription extends AbstractSubscription {
     }
 
 
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();

@@ -21,30 +21,30 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-@XmlRootElement(name = "invoices")
-public class Invoices extends RecurlyObjects<Invoice> {
+@XmlRootElement(name = "addons")
+public class AddOns extends RecurlyObjects<AddOn> {
 
     @XmlTransient
-    public static final String INVOICES_RESOURCE = "/invoices";
+    public static final String ADDONS_RESOURCE = "/addons";
 
     @XmlTransient
-    private static final String PROPERTY_NAME = "invoice";
+    private static final String PROPERTY_NAME = "addon";
 
     @JsonSetter(value = PROPERTY_NAME)
     @Override
-    public void setRecurlyObject(final Invoice value) {
+    public void setRecurlyObject(final AddOn value) {
         super.setRecurlyObject(value);
     }
 
-    public Invoices getStart() {
-        return getStart(Invoices.class);
+    public AddOns getStart() {
+        return getStart(AddOns.class);
     }
 
-    public Invoices getPrev() {
-        return getPrev(Invoices.class);
+    public AddOns getPrev() {
+        return getPrev(AddOns.class);
     }
 
-    public Invoices getNext() {
-        return getNext(Invoices.class);
+    public AddOns getNext() {
+        return getNext(AddOns.class);
     }
 }

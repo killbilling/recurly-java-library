@@ -16,7 +16,6 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -26,8 +25,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @XmlRootElement(name = "account")
 public class Account extends RecurlyObject {
@@ -43,19 +40,19 @@ public class Account extends RecurlyObject {
 
     @XmlElementWrapper(name = "adjustments")
     @XmlElement(name = "adjustment")
-    private List<Adjustment> adjustments;
+    private Adjustments adjustments;
 
     @XmlElementWrapper(name = "invoices")
     @XmlElement(name = "invoice")
-    private List<Invoice> invoices;
+    private Invoices invoices;
 
     @XmlElementWrapper(name = "subscriptions")
     @XmlElement(name = "subscription")
-    private List<Subscription> subscriptions;
+    private Subscriptions subscriptions;
 
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
-    private List<Transaction> transactions;
+    private Transactions transactions;
 
     @XmlElement(name = "account_code")
     private String accountCode;
@@ -112,35 +109,35 @@ public class Account extends RecurlyObject {
         this.address = address;
     }
 
-    public List<Adjustment> getAdjustments() {
+    public Adjustments getAdjustments() {
         return adjustments;
     }
 
-    public void setAdjustments(final List<Adjustment> adjustments) {
+    public void setAdjustments(final Adjustments adjustments) {
         this.adjustments = adjustments;
     }
 
-    public List<Invoice> getInvoices() {
+    public Invoices getInvoices() {
         return invoices;
     }
 
-    public void setInvoices(final List<Invoice> invoices) {
+    public void setInvoices(final Invoices invoices) {
         this.invoices = invoices;
     }
 
-    public List<Subscription> getSubscriptions() {
+    public Subscriptions getSubscriptions() {
         return subscriptions;
     }
 
-    public void setSubscriptions(final List<Subscription> subscriptions) {
+    public void setSubscriptions(final Subscriptions subscriptions) {
         this.subscriptions = subscriptions;
     }
 
-    public List<Transaction> getTransactions() {
+    public Transactions getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(final List<Transaction> transactions) {
+    public void setTransactions(final Transactions transactions) {
         this.transactions = transactions;
     }
 

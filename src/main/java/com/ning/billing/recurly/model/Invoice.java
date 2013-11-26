@@ -16,8 +16,6 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -62,11 +60,11 @@ public class Invoice extends RecurlyObject {
 
     @XmlElementWrapper(name = "line_items")
     @XmlElement(name = "adjustment")
-    private List<Adjustment> adjustments;
+    private Adjustments adjustments;
 
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
-    private List<Transaction> transactions;
+    private Transactions transactions;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -159,19 +157,19 @@ public class Invoice extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
-    public List<Adjustment> getLineItems() {
+    public Adjustments getLineItems() {
         return adjustments;
     }
 
-    public void setLineItems(final List<Adjustment> lineItems) {
+    public void setLineItems(final Adjustments lineItems) {
         this.adjustments = adjustments;
     }
 
-    public List<Transaction> getTransactions() {
+    public Transactions getTransactions() {
         return transactions;
     }
 
-    public void setTransactions(final List<Transaction> transactions) {
+    public void setTransactions(final Transactions transactions) {
         this.transactions = transactions;
     }
 

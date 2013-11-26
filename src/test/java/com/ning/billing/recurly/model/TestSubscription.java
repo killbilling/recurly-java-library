@@ -68,7 +68,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getCurrentPeriodEndsAt(), new DateTime("2010-07-27T07:00:00Z"));
         Assert.assertNull(subscription.getTrialStartedAt(), "");
         Assert.assertNull(subscription.getTrialEndsAt(), "");
-        Assert.assertNull(subscription.getAddOns());
+        Assert.assertEquals(subscription.getAddOns().size(), 0);
         Assert.assertEquals(subscription.getStartsAt(), new DateTime("2010-07-28T07:00:00Z"));
         Assert.assertEquals(subscription.getCollectionMethod(), "manual");
         Assert.assertEquals(subscription.getNetTerms(), (Integer) 10);

@@ -19,11 +19,22 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 @XmlRootElement(name = "adjustments")
 public class Adjustments extends RecurlyObjects<Adjustment> {
 
     @XmlTransient
     public static final String ADJUSTMENTS_RESOURCE = "/adjustments";
+
+    @XmlTransient
+    private static final String PROPERTY_NAME = "adjustment";
+
+    @JsonSetter(value = PROPERTY_NAME)
+    @Override
+    public void setRecurlyObject(final Adjustment value) {
+        super.setRecurlyObject(value);
+    }
 
     public enum AdjustmentType {
         CHARGE("charge"),

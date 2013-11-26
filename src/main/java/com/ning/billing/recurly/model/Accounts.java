@@ -19,11 +19,22 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
+
 @XmlRootElement(name = "plans")
 public class Accounts extends RecurlyObjects<Account> {
 
     @XmlTransient
     public static final String ACCOUNTS_RESOURCE = "/accounts";
+
+    @XmlTransient
+    private static final String PROPERTY_NAME = "account";
+
+    @JsonSetter(value = PROPERTY_NAME)
+    @Override
+    public void setRecurlyObject(final Account value) {
+        super.setRecurlyObject(value);
+    }
 
     public Accounts getStart() {
         return getStart(Accounts.class);

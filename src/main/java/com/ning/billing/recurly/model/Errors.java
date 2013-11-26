@@ -16,8 +16,6 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -33,7 +31,7 @@ public class Errors extends RecurlyObject {
     private Transaction transaction;
 
     @XmlElement(name = "error")
-    private List<RecurlyError> recurlyErrors;
+    private RecurlyErrors recurlyErrors;
 
     public TransactionError getTransactionError() {
         return transactionError;
@@ -51,7 +49,7 @@ public class Errors extends RecurlyObject {
         this.transaction = transaction;
     }
 
-    public List<RecurlyError> getRecurlyErrors() {
+    public RecurlyErrors getRecurlyErrors() {
         return recurlyErrors;
     }
 
@@ -63,11 +61,11 @@ public class Errors extends RecurlyObject {
             error.setMessage((String) ((Map) recurlyError).get(""));
 
             if (this.recurlyErrors == null) {
-                this.recurlyErrors = new LinkedList<RecurlyError>();
+                this.recurlyErrors = new RecurlyErrors();
             }
             this.recurlyErrors.add(error);
         } else {
-            this.recurlyErrors = (List<RecurlyError>) recurlyErrors;
+            this.recurlyErrors = (RecurlyErrors) recurlyErrors;
         }
     }
 
