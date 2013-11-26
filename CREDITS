@@ -13,6 +13,12 @@ D: Multiple Currency support
 D: Lots of unit tests (awesome)
 S: UK
 
+N: Nicolas Guerrier
+E: nicolas.guerrier@prediseo.com
+D: Account adjustments
+S: Montpellier
+S: France
+
 N: Joel Hegg
 E: joel@decide.com
 D: Support for the Recurly.js fetch API
