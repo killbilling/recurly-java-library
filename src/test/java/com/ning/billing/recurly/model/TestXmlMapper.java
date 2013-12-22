@@ -16,6 +16,7 @@
 
 package com.ning.billing.recurly.model;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -26,6 +27,12 @@ import org.testng.annotations.Test;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.Version;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class TestXmlMapper extends TestModelBase {
@@ -36,6 +43,21 @@ public class TestXmlMapper extends TestModelBase {
                                                                 "  <subscriptions type=\"array\">\n" +
                                                                 "  </subscriptions>", Subscriptions.class);
         Assert.assertEquals(subscriptions.size(), 0);
+    }
+
+    public class ValuesSerializer extends StdSerializer<Values> {
+
+        protected ValuesSerializer() {
+            super(Values.class);
+        }
+
+        @Override
+        public void serialize(final Values values, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+            for (final String value : values) {
+                jgen.writeFieldName("value");
+                jgen.writeString(value);
+            }
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -53,14 +75,24 @@ public class TestXmlMapper extends TestModelBase {
 
     @Test(groups = "fast", description = "See https://github.com/FasterXML/jackson-dataformat-xml/issues/76")
     public void testCollection() throws Exception {
-        final Values values = new XmlMapper().readValue("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                                        "  <values type=\"array\">\n" +
-                                                        "    <value>Hi!</value>" +
-                                                        "    <value>Salut!</value>" +
-                                                        "  </values>",
-                                                        Values.class);
+        final XmlMapper xmlMapper = new XmlMapper();
+        final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
+        m.addSerializer(Values.class, new ValuesSerializer());
+        xmlMapper.registerModule(m);
+
+        final Values values = xmlMapper.readValue("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                                                  "  <values type=\"array\">\n" +
+                                                  "    <value>Hi!</value>" +
+                                                  "    <value>Salut!</value>" +
+                                                  "  </values>",
+                                                  Values.class);
         Assert.assertEquals(values.size(), 2);
         Assert.assertEquals(values.get(0), "Hi!");
         Assert.assertEquals(values.get(1), "Salut!");
+
+        // Test we can re-serialize
+        final String valueAsString = xmlMapper.writeValueAsString(values);
+        final Values values2 = xmlMapper.readValue(valueAsString, Values.class);
+        Assert.assertEquals(values2, values);
     }
 }

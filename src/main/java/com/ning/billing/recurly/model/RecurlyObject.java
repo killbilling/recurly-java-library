@@ -26,13 +26,16 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.RecurlyClient;
+import com.ning.billing.recurly.model.jackson.RecurlyObjectsSerializer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
@@ -69,6 +72,20 @@ public abstract class RecurlyObject {
         xmlMapper.setAnnotationIntrospector(pair);
         xmlMapper.registerModule(new JodaModule());
         xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+
+        final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
+        m.addSerializer(Accounts.class, new RecurlyObjectsSerializer<Accounts, Account>(Accounts.class, "account"));
+        m.addSerializer(AddOns.class, new RecurlyObjectsSerializer<AddOns, AddOn>(AddOns.class, "add_on"));
+        m.addSerializer(Adjustments.class, new RecurlyObjectsSerializer<Adjustments, Adjustment>(Adjustments.class, "adjustment"));
+        m.addSerializer(Coupons.class, new RecurlyObjectsSerializer<Coupons, Coupon>(Coupons.class, "coupon"));
+        m.addSerializer(Invoices.class, new RecurlyObjectsSerializer<Invoices, Invoice>(Invoices.class, "invoice"));
+        m.addSerializer(Plans.class, new RecurlyObjectsSerializer<Plans, Plan>(Plans.class, "plan"));
+        m.addSerializer(RecurlyErrors.class, new RecurlyObjectsSerializer<RecurlyErrors, RecurlyError>(RecurlyErrors.class, "error"));
+        m.addSerializer(SubscriptionAddOns.class, new RecurlyObjectsSerializer<SubscriptionAddOns, SubscriptionAddOn>(SubscriptionAddOns.class, "subscription_add_on"));
+        m.addSerializer(Subscriptions.class, new RecurlyObjectsSerializer<Subscriptions, Subscription>(Subscriptions.class, "subscription"));
+        m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<Transactions, Transaction>(Transactions.class, "transaction"));
+        xmlMapper.registerModule(m);
+
         return xmlMapper;
     }
 

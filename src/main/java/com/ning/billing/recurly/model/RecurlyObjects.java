@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.ning.billing.recurly.RecurlyClient;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
@@ -54,6 +55,7 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     @XmlTransient
     private Integer nbRecords;
 
+    @JsonIgnore
     <U extends RecurlyObjects> U getStart(final Class<U> clazz) {
         if (recurlyClient == null || startUrl == null) {
             return null;
@@ -61,6 +63,7 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
         return recurlyClient.doGETWithFullURL(clazz, startUrl);
     }
 
+    @JsonIgnore
     <U extends RecurlyObjects> U getPrev(final Class<U> clazz) {
         if (recurlyClient == null || prevUrl == null) {
             return null;
@@ -68,6 +71,7 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
         return recurlyClient.doGETWithFullURL(clazz, prevUrl);
     }
 
+    @JsonIgnore
     <U extends RecurlyObjects> U getNext(final Class<U> clazz) {
         if (recurlyClient == null || nextUrl == null) {
             return null;
@@ -75,39 +79,54 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
         return recurlyClient.doGETWithFullURL(clazz, nextUrl);
     }
 
+    @JsonIgnore
     public void setRecurlyClient(final RecurlyClient recurlyClient) {
         this.recurlyClient = recurlyClient;
     }
 
+    @JsonIgnore
     public String getStartUrl() {
         return startUrl;
     }
 
+    @JsonIgnore
     public void setStartUrl(final String startUrl) {
         this.startUrl = startUrl;
     }
 
+    @JsonIgnore
     public String getPrevUrl() {
         return prevUrl;
     }
 
+    @JsonIgnore
     public void setPrevUrl(final String prevUrl) {
         this.prevUrl = prevUrl;
     }
 
+    @JsonIgnore
     public String getNextUrl() {
         return nextUrl;
     }
 
+    @JsonIgnore
     public void setNextUrl(final String nextUrl) {
         this.nextUrl = nextUrl;
     }
 
+    @JsonIgnore
     public Integer getNbRecords() {
         return nbRecords;
     }
 
+    @JsonIgnore
     public void setNbRecords(final Integer nbRecords) {
         this.nbRecords = nbRecords;
+    }
+
+    @Override
+    @JsonIgnore // To avoid printing an <empty> tag in the XML
+    public boolean isEmpty() {
+        return super.isEmpty();
     }
 }

@@ -58,6 +58,7 @@ public class TestSubscription extends TestModelBase {
                                         "</subscription>";
 
         final Subscription subscription = verifySubscription(subscriptionData);
+        verifyPaginationData(subscription);
         Assert.assertEquals(subscription.getAddOns().size(), 0);
     }
 
@@ -105,6 +106,16 @@ public class TestSubscription extends TestModelBase {
                                         "</subscription>";
 
         final Subscription subscription = verifySubscription(subscriptionData);
+        verifySubscriptionAddons(subscription);
+        verifyPaginationData(subscription);
+
+        // Verify we can serialize them properly
+        final String subscriptionDataSerialized = xmlMapper.writeValueAsString(subscription);
+        final Subscription subscription2 = verifySubscription(subscriptionDataSerialized);
+        verifySubscriptionAddons(subscription2);
+    }
+
+    private void verifySubscriptionAddons(final Subscription subscription) {
         Assert.assertEquals(subscription.getAddOns().size(), 2);
         Assert.assertEquals(subscription.getAddOns().get(0).getAddOnCode(), "extra_users");
         Assert.assertEquals(subscription.getAddOns().get(0).getQuantity(), (Integer) 2);
@@ -132,9 +143,13 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getCollectionMethod(), "manual");
         Assert.assertEquals(subscription.getNetTerms(), (Integer) 10);
         Assert.assertEquals(subscription.getPoNumber(), "PO19384");
+
+        return subscription;
+    }
+
+    private void verifyPaginationData(final Subscription subscription) {
         // Verify nested attributes
         Assert.assertEquals(subscription.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
         Assert.assertEquals(subscription.getAccount().getAccountCode(), "1");
-        return subscription;
     }
 }

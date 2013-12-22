@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 @XmlRootElement(name = "errors")
@@ -33,14 +34,17 @@ public class RecurlyErrors extends RecurlyObjects<RecurlyError> {
         super.setRecurlyObject(value);
     }
 
+    @JsonIgnore
     public RecurlyErrors getStart() {
         return getStart(RecurlyErrors.class);
     }
 
+    @JsonIgnore
     public RecurlyErrors getPrev() {
         return getPrev(RecurlyErrors.class);
     }
 
+    @JsonIgnore
     public RecurlyErrors getNext() {
         return getNext(RecurlyErrors.class);
     }

@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 @XmlRootElement(name = "coupons")
@@ -36,14 +37,17 @@ public class Coupons extends RecurlyObjects<Coupon> {
         super.setRecurlyObject(value);
     }
 
+    @JsonIgnore
     public Coupons getStart() {
         return getStart(Coupons.class);
     }
 
+    @JsonIgnore
     public Coupons getPrev() {
         return getPrev(Coupons.class);
     }
 
+    @JsonIgnore
     public Coupons getNext() {
         return getNext(Coupons.class);
     }

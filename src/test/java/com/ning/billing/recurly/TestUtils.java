@@ -248,34 +248,25 @@ public class TestUtils {
      * Creates a random {@link com.ning.billing.recurly.model.Subscription} object for use in tests
      *
      * @param currencyCode The currency code for which the subscription will be charged in
+     * @param plan         The associated plan
+     * @param account      The associated account
+     * @param planAddOns   AddOns for that subscription
      * @return The {@link com.ning.billing.recurly.model.Subscription} object
      */
-    public static Subscription createRandomSubscription(final String currencyCode) {
-        //
+    public static Subscription createRandomSubscription(final String currencyCode, final Plan plan, final Account account, final Iterable<AddOn> planAddOns) {
         final Subscription sub = new Subscription();
         sub.setQuantity(randomInteger(10));
-        sub.setActivatedAt(DateTime.now());
-        sub.setCanceledAt(DateTime.now());
-        sub.setExpiresAt(DateTime.now());
         sub.setCurrency(createRandomCurrency());
-        sub.setPlan(createRandomPlan());
-        sub.setPlanCode(randomString());
-        sub.setState(getRandomAlphaNumString(5));
-        sub.setAccount(createRandomAccount());
+        sub.setPlanCode(plan.getPlanCode());
+        sub.setAccount(account);
         sub.setUnitAmountInCents(randomInteger(10));
         sub.setCurrency(currencyCode);
-        sub.setCurrentPeriodStartedAt(DateTime.now());
-        sub.setCurrentPeriodEndsAt(DateTime.now());
-        sub.setTrialStartedAt(DateTime.now());
-        sub.setTrialEndsAt(DateTime.now());
-        sub.setStartsAt(DateTime.now());
         final SubscriptionAddOns addOns = new SubscriptionAddOns();
-        for (int i = 0; i < randomInteger(10); i++) {
-            addOns.add(createRandomSubscriptionAddOn());
+        for (final AddOn addOn : planAddOns) {
+            addOns.add(createRandomSubscriptionAddOn(addOn.getAddOnCode()));
         }
         sub.setAddOns(addOns);
 
-        //
         return sub;
     }
 
@@ -315,12 +306,13 @@ public class TestUtils {
     /**
      * Creates a random {@link SubscriptionAddOn} for use in Tests.
      *
+     * @param addOnCode AddOn code
      * @return The random {@link SubscriptionAddOn}
      */
-    public static SubscriptionAddOn createRandomSubscriptionAddOn() {
+    public static SubscriptionAddOn createRandomSubscriptionAddOn(final String addOnCode) {
         final SubscriptionAddOn addOn = new SubscriptionAddOn();
-        addOn.setAddOnCode(getRandomAlphaNumString(10));
-        addOn.setUnitAmountInCents(createRandomPrice());
+        addOn.setAddOnCode(addOnCode);
+        addOn.setUnitAmountInCents(42);
         addOn.setQuantity(5);
         return addOn;
     }
