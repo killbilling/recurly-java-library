@@ -41,4 +41,71 @@ public class TestSubscriptionUpdate extends TestModelBase {
         Assert.assertEquals(subscription.getQuantity(), (Integer) 1);
         Assert.assertEquals(subscription.getAddOns().size(), 0);
     }
+
+    @Test(groups = "fast")
+    public void testSerializationWithoutAddOns() throws Exception {
+        final SubscriptionUpdate subscription = new SubscriptionUpdate();
+        subscription.setPlanCode("gold");
+        subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
+        subscription.setUnitAmountInCents(800);
+        subscription.setQuantity(1);
+
+        final String xml = xmlMapper.writeValueAsString(subscription);
+        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+                "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                "<quantity>1</quantity>" +
+                "<plan_code>gold</plan_code>" +
+                "<timeframe>now</timeframe>" +
+                "</subscription>");
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationWithEmptyAddOns() throws Exception {
+        final SubscriptionUpdate subscription = new SubscriptionUpdate();
+        subscription.setPlanCode("gold");
+        subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
+        subscription.setUnitAmountInCents(800);
+        subscription.setQuantity(1);
+        subscription.setAddOns(new SubscriptionAddOns());
+
+        final String xml = xmlMapper.writeValueAsString(subscription);
+        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+                "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                "<quantity>1</quantity>" +
+                "<subscription_add_ons></subscription_add_ons>" +
+                "<plan_code>gold</plan_code>" +
+                "<timeframe>now</timeframe>" +
+                "</subscription>");
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationWithAddOns() throws Exception {
+        final SubscriptionUpdate subscription = new SubscriptionUpdate();
+        subscription.setPlanCode("gold");
+        subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
+        subscription.setUnitAmountInCents(800);
+        subscription.setQuantity(1);
+        final SubscriptionAddOns addOns = new SubscriptionAddOns();
+        final SubscriptionAddOn addOn = new SubscriptionAddOn();
+        addOn.setAddOnCode("extra_users");
+        addOn.setQuantity(2);
+        addOn.setUnitAmountInCents(1000);
+        addOns.add(addOn);
+        subscription.setAddOns(addOns);
+
+        final String xml = xmlMapper.writeValueAsString(subscription);
+        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+                "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                "<quantity>1</quantity>" +
+                "<subscription_add_ons>" +
+                "<subscription_add_on>" +
+                "<add_on_code>extra_users</add_on_code>" +
+                "<unit_amount_in_cents>1000</unit_amount_in_cents>" +
+                "<quantity>2</quantity>" +
+                "</subscription_add_on>" +
+                "</subscription_add_ons>" +
+                "<plan_code>gold</plan_code>" +
+                "<timeframe>now</timeframe>" +
+                "</subscription>");
+    }
 }
