@@ -37,6 +37,7 @@ import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
@@ -392,6 +393,10 @@ public class TestRecurlyClient {
             final Subscription reactivatedSubscription = recurlyClient.getSubscription(subscription.getUuid());
             Assert.assertEquals(reactivatedSubscription.getState(), "active");
 
+            // Terminate a Subscription
+            recurlyClient.terminateSubscription(subscription, RefundOption.full);
+            final Subscription expiredSubscription = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertEquals(expiredSubscription.getState(), "expired");
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());

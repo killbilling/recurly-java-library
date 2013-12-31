@@ -45,6 +45,7 @@ import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
+import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.Subscriptions;
@@ -253,6 +254,16 @@ public class RecurlyClient {
     public Subscription cancelSubscription(final Subscription subscription) {
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
                      subscription, Subscription.class);
+    }
+
+    /**
+     * Terminate a particular {@link Subscription} by it's UUID
+     *
+     * @param subscription Subscription to terminate
+     */
+    public void terminateSubscription(final Subscription subscription, final RefundOption refund) {
+        doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/terminate?refund=" + refund,
+              subscription, Subscription.class);
     }
 
     /**
