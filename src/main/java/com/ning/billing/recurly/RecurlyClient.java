@@ -26,30 +26,10 @@ import java.util.concurrent.ExecutionException;
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 
+import com.ning.billing.recurly.model.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.Accounts;
-import com.ning.billing.recurly.model.AddOn;
-import com.ning.billing.recurly.model.Adjustment;
-import com.ning.billing.recurly.model.Adjustments;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Coupon;
-import com.ning.billing.recurly.model.Coupons;
-import com.ning.billing.recurly.model.Errors;
-import com.ning.billing.recurly.model.Invoice;
-import com.ning.billing.recurly.model.Invoices;
-import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.Plans;
-import com.ning.billing.recurly.model.RecurlyAPIError;
-import com.ning.billing.recurly.model.RecurlyObject;
-import com.ning.billing.recurly.model.RecurlyObjects;
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.SubscriptionUpdate;
-import com.ning.billing.recurly.model.Subscriptions;
-import com.ning.billing.recurly.model.Transaction;
-import com.ning.billing.recurly.model.Transactions;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
@@ -254,6 +234,16 @@ public class RecurlyClient {
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
                      subscription, Subscription.class);
     }
+
+  /**
+   * Terminate a particular {@link Subscription} by it's UUID
+   *
+   * @param subscription Subscription to terminate
+   */
+  public void terminateSubscription(final Subscription subscription, final RefundOption refund) {
+    doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/terminate?refund=" + refund,
+        subscription, Subscription.class);
+  }
 
     /**
      * Reactivating a canceled subscription

@@ -21,6 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.ning.billing.recurly.model.*;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Minutes;
@@ -28,21 +29,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.ning.billing.recurly.model.Account;
-import com.ning.billing.recurly.model.Accounts;
-import com.ning.billing.recurly.model.AddOn;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Coupon;
-import com.ning.billing.recurly.model.Coupons;
-import com.ning.billing.recurly.model.Invoices;
-import com.ning.billing.recurly.model.Plan;
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.SubscriptionAddOns;
-import com.ning.billing.recurly.model.SubscriptionUpdate;
-import com.ning.billing.recurly.model.Subscriptions;
-import com.ning.billing.recurly.model.Transaction;
-import com.ning.billing.recurly.model.Transactions;
 
 public class TestRecurlyClient {
 
@@ -391,6 +377,12 @@ public class TestRecurlyClient {
             recurlyClient.reactivateSubscription(subscription);
             final Subscription reactivatedSubscription = recurlyClient.getSubscription(subscription.getUuid());
             Assert.assertEquals(reactivatedSubscription.getState(), "active");
+
+            // terminate a Subscription
+            recurlyClient.terminateSubscription(subscription, RefundOption.full);
+            final Subscription shouldNotExist = recurlyClient.getSubscription(subscription.getUuid());
+            Assert.assertNull(shouldNotExist);
+
 
         } finally {
             // Clear up the BillingInfo
