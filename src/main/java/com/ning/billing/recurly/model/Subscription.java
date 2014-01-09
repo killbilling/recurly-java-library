@@ -60,6 +60,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "trial_ends_at")
     private DateTime trialEndsAt;
 
+    @XmlElement(name = "pending_subscription")
+    private Subscription pendingSubscription;
+
     @XmlElement(name = "starts_at")
     private DateTime startsAt;
 
@@ -172,6 +175,14 @@ public class Subscription extends AbstractSubscription {
         this.trialEndsAt = dateTimeOrNull(trialEndsAt);
     }
 
+    public Subscription getPendingSubscription() {
+        return pendingSubscription;
+    }
+
+    public void setPendingSubscription(final Subscription pendingSubscription) {
+        this.pendingSubscription = pendingSubscription;
+    }
+
     public DateTime getStartsAt() {
         return startsAt;
     }
@@ -226,6 +237,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", trialEndsAt=").append(trialEndsAt);
         sb.append(", startsAt=").append(startsAt);
         sb.append(", addOns=").append(addOns);
+        sb.append(", pendingSubscription=").append(pendingSubscription);
         sb.append('}');
         return sb.toString();
     }
@@ -290,7 +302,9 @@ public class Subscription extends AbstractSubscription {
         if (startsAt != null ? !startsAt.equals(that.startsAt) : that.startsAt != null) {
             return false;
         }
-
+        if (pendingSubscription != null ? !pendingSubscription.equals(that.pendingSubscription) : that.pendingSubscription != null) {
+            return false;
+        }
         if (collectionMethod != null ? !collectionMethod.equals(that.collectionMethod) : that.collectionMethod != null) {
             return false;
         }
@@ -323,6 +337,7 @@ public class Subscription extends AbstractSubscription {
         result = 31 * result + (trialStartedAt != null ? trialStartedAt.hashCode() : 0);
         result = 31 * result + (trialEndsAt != null ? trialEndsAt.hashCode() : 0);
         result = 31 * result + (addOns != null ? addOns.hashCode() : 0);
+        result = 31 * result + (pendingSubscription != null ? pendingSubscription.hashCode() : 0);
         result = 31 * result + (startsAt != null ? startsAt.hashCode() : 0);
         result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
         result = 31 * result + (netTerms != null ? netTerms.hashCode() : 0);
