@@ -45,6 +45,7 @@ import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
+import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
@@ -577,6 +578,61 @@ public class RecurlyClient {
      */
     public Coupon getCoupon(final String couponCode) {
         return doGET(Coupon.COUPON_RESOURCE + "/" + couponCode, Coupon.class);
+    }
+
+    /**
+     * Delete a {@link Coupon}
+     * <p/>
+     *
+     * @param couponCode The code for the {@link Coupon}
+     * @return the {@link Coupon} object
+     */
+    public void deleteCoupon(final String couponCode) {
+        doDELETE(Coupon.COUPON_RESOURCE + "/" + couponCode);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Redeem a {@link Coupon} on an account.
+     *
+     * @param couponCode redeemed coupon id
+     * @return the {@link Coupon} object
+     */
+    public Redemption redeemCoupon(final String couponCode, final Redemption redemption) {
+        return doPOST(Coupon.COUPON_RESOURCE + "/" + couponCode + Redemption.REDEEM_RESOURCE,
+                redemption, Redemption.class);
+    }
+
+    /**
+     * Lookup a coupon redemption on an invoice.
+     *
+     * @param accountCode recurly account id
+     * @return the coupon redemption for this account on success, null otherwise
+     */
+    public Redemption getCouponRedemptionByAccount(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTION_RESOURCE,
+                Redemption.class);
+    }
+
+    /**
+     * Lookup a coupon redemption on an invoice.
+     *
+     * @param invoiceNumber invoice number
+     * @return the coupon redemption for this invoice on success, null otherwise
+     */
+    public Redemption getCouponRedemptionByInvoice(final String invoiceNumber) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
+                Redemption.class);
+    }
+
+    /**
+     * Deletes a coupon from an account.
+     *
+     * @param accountCode recurly account id
+     */
+    public void deleteCouponRedemption(final String accountCode) {
+        doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTION_RESOURCE);
     }
 
     ///////////////////////////////////////////////////////////////////////////
