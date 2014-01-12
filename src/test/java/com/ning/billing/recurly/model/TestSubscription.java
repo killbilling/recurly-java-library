@@ -55,10 +55,21 @@ public class TestSubscription extends TestModelBase {
                                         "  <po_number>PO19384</po_number>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
+                                        "  <pending_subscription type=\"subscription\">\n" +
+                                        "    <plan href=\"https://api.recurly.com/v2/plans/silver\">\n" +
+                                        "      <plan_code>silver</plan_code>\n" +
+                                        "      <name>Silver plan</name>\n" +
+                                        "    </plan>\n" +
+                                        "    <unit_amount_in_cents type=\"integer\">400</unit_amount_in_cents>\n" +
+                                        "    <quantity type=\"integer\">1</quantity>\n" +
+                                        "    <subscription_add_ons type=\"array\">\n" +
+                                        "    </subscription_add_ons>\n" +
+                                        "  </pending_subscription>\n" +
                                         "</subscription>";
 
         final Subscription subscription = verifySubscription(subscriptionData);
         verifyPaginationData(subscription);
+        verifyPendingSubscription(subscription);
         Assert.assertEquals(subscription.getAddOns().size(), 0);
     }
 
@@ -151,5 +162,14 @@ public class TestSubscription extends TestModelBase {
         // Verify nested attributes
         Assert.assertEquals(subscription.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
         Assert.assertEquals(subscription.getAccount().getAccountCode(), "1");
+    }
+
+    private void verifyPendingSubscription(final Subscription subscription) {
+        Subscription pending = subscription.getPendingSubscription();
+        Assert.assertEquals(pending.getPlan().getPlanCode(), "silver");
+        Assert.assertEquals(pending.getPlan().getName(), "Silver plan");
+        Assert.assertEquals(pending.getUnitAmountInCents(), (Integer) 400);
+        Assert.assertEquals(pending.getQuantity(), (Integer) 1);
+        Assert.assertEquals(pending.getAddOns().size(), 0);
     }
 }
