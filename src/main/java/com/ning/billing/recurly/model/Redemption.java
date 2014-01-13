@@ -154,7 +154,7 @@ public class Redemption extends RecurlyObject {
         if (accountCode != null ? !accountCode.equals(that.accountCode) : that.accountCode != null) {
             return false;
         }
-        if (coupon != null ? !coupon.equals(that.account) : that.account != null) {
+        if (coupon != null ? !coupon.equals(that.coupon) : that.coupon != null) {
             return false;
         }
         if (account != null ? !account.equals(that.account) : that.account != null) {

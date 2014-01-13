@@ -621,7 +621,7 @@ public class RecurlyClient {
      * @param invoiceNumber invoice number
      * @return the coupon redemption for this invoice on success, null otherwise
      */
-    public Redemption getCouponRedemptionByInvoice(final String invoiceNumber) {
+    public Redemption getCouponRedemptionByInvoice(final Integer invoiceNumber) {
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
                 Redemption.class);
     }
