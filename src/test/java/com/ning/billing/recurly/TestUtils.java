@@ -256,7 +256,8 @@ public class TestUtils {
      */
     public static Subscription createRandomSubscription(final String currencyCode, final Plan plan, final Account account, final Iterable<AddOn> planAddOns) {
         final Subscription sub = new Subscription();
-        sub.setQuantity(randomInteger(10));
+        // Make sure the quantity is > 0
+        sub.setQuantity(randomInteger(10) + 1);
         sub.setCurrency(createRandomCurrency());
         sub.setPlanCode(plan.getPlanCode());
         sub.setAccount(account);
