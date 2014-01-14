@@ -24,6 +24,7 @@ import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.Address;
 import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOn;
@@ -329,5 +330,19 @@ public class TestUtils {
         addOn.setUnitAmountInCents(createRandomSinglePrice(currencyCode));
 
         return addOn;
+    }
+
+    /**
+     * Creates a random {@link Coupon} object for use in Tests
+     *
+     * @return The random {@link Coupon} object
+     */
+    public static Coupon createRandomCoupon() {
+        final Coupon coupon = new Coupon();
+        coupon.setName(TestUtils.randomString());
+        coupon.setCouponCode(TestUtils.randomString());
+        coupon.setDiscountType("percent");
+        coupon.setDiscountPercent("10");
+        return coupon;
     }
 }

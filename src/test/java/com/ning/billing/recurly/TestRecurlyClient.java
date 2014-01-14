@@ -37,6 +37,7 @@ import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
@@ -534,21 +535,28 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testCreateCoupon() throws Exception {
-        // Create the coupon
-        final Coupon c = new Coupon();
-        c.setName(TestUtils.randomString());
-        c.setCouponCode(TestUtils.randomString());
-        c.setDiscountType("percent");
-        c.setDiscountPercent("10");
+        final Coupon couponData = TestUtils.createRandomCoupon();
 
-        // Save the coupon
-        final Coupon coupon = recurlyClient.createCoupon(c);
-        Assert.assertNotNull(coupon);
+        try {
+            // Create the coupon
+            Coupon coupon = recurlyClient.createCoupon(couponData);
+            Assert.assertNotNull(coupon);
+            Assert.assertEquals(coupon.getName(), couponData.getName());
+            Assert.assertEquals(coupon.getCouponCode(), couponData.getCouponCode());
+            Assert.assertEquals(coupon.getDiscountType(), couponData.getDiscountType());
+            Assert.assertEquals(coupon.getDiscountPercent(), couponData.getDiscountPercent());
 
-        Assert.assertEquals(coupon.getName(), c.getName());
-        Assert.assertEquals(coupon.getCouponCode(), c.getCouponCode());
-        Assert.assertEquals(coupon.getDiscountType(), c.getDiscountType());
-        Assert.assertEquals(coupon.getDiscountPercent(), c.getDiscountPercent());
+            // Get the coupon
+            coupon = recurlyClient.getCoupon(couponData.getCouponCode());
+            Assert.assertNotNull(coupon);
+            Assert.assertEquals(coupon.getName(), couponData.getName());
+            Assert.assertEquals(coupon.getCouponCode(), couponData.getCouponCode());
+            Assert.assertEquals(coupon.getDiscountType(), couponData.getDiscountType());
+            Assert.assertEquals(coupon.getDiscountPercent(), couponData.getDiscountPercent());
+
+        } finally {
+            recurlyClient.deleteCoupon(couponData.getCouponCode());
+        }
     }
 
     @Test(groups = "integration")
@@ -602,6 +610,91 @@ public class TestRecurlyClient {
             // Delete the Plans
             recurlyClient.deletePlan(planData.getPlanCode());
             recurlyClient.deletePlan(plan2Data.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testRedeemCoupon() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final Coupon couponData = TestUtils.createRandomCoupon();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Coupon coupon = recurlyClient.createCoupon(couponData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+
+            // Subscribe the user to the plan
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            Assert.assertNotNull(subscription);
+
+            // No coupon at this point
+            try {
+                recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
+                Assert.fail("Coupon should not be found.");
+            } catch (RecurlyAPIException expected) {
+                Assert.assertTrue(true);
+            }
+
+            // Redeem a coupon
+            final Redemption redemptionData = new Redemption();
+            redemptionData.setAccountCode(account.getAccountCode());
+            redemptionData.setCurrency(CURRENCY);
+            Redemption redemption = recurlyClient.redeemCoupon(coupon.getCouponCode(), redemptionData);
+            Assert.assertNotNull(redemption);
+            Assert.assertEquals(redemption.getCoupon().getCouponCode(), coupon.getCouponCode());
+            Assert.assertEquals(redemption.getAccount().getAccountCode(), account.getAccountCode());
+            Assert.assertFalse(redemption.getSingleUse());
+            Assert.assertEquals(redemption.getTotalDiscountedInCents(), (Integer) 0);
+            Assert.assertEquals(redemption.getState(), "active");
+            Assert.assertEquals(redemption.getCurrency(), CURRENCY);
+
+            // Get the coupon redemption
+            redemption = recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
+            Assert.assertNotNull(redemption);
+            Assert.assertEquals(redemption.getCoupon().getCouponCode(), coupon.getCouponCode());
+            Assert.assertEquals(redemption.getAccount().getAccountCode(), account.getAccountCode());
+
+            // Remove a coupon
+            recurlyClient.deleteCouponRedemption(account.getAccountCode());
+            try {
+                recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
+                Assert.fail("Coupon should be removed.");
+            } catch (RecurlyAPIException expected) {
+                Assert.assertTrue(true);
+            }
+
+            // Redeem a coupon once again
+            final Redemption redemptionData2 = new Redemption();
+            redemptionData2.setAccountCode(account.getAccountCode());
+            redemptionData2.setCurrency(CURRENCY);
+            redemption = recurlyClient.redeemCoupon(coupon.getCouponCode(), redemptionData2);
+            Assert.assertNotNull(redemption);
+            redemption = recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
+            Assert.assertEquals(redemption.getCoupon().getCouponCode(), coupon.getCouponCode());
+            Assert.assertEquals(redemption.getAccount().getAccountCode(), account.getAccountCode());
+            Assert.assertFalse(redemption.getSingleUse());
+            Assert.assertEquals(redemption.getTotalDiscountedInCents(), (Integer) 0);
+            Assert.assertEquals(redemption.getState(), "active");
+            Assert.assertEquals(redemption.getCurrency(), CURRENCY);
+
+        } finally {
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            recurlyClient.deletePlan(planData.getPlanCode());
+            recurlyClient.deleteCoupon(couponData.getCouponCode());
         }
     }
 }
