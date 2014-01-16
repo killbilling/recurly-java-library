@@ -32,6 +32,7 @@ import org.slf4j.LoggerFactory;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.AddOns;
 import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
@@ -533,11 +534,11 @@ public class RecurlyClient {
      *
      * @return the {@link AddOn} objects as identified by the passed plan ID
      */
-    public AddOn getAddOns(final String planCode) {
+    public AddOns getAddOns(final String planCode) {
         return doGET(Plan.PLANS_RESOURCE +
                      "/" +
                      planCode +
-                     AddOn.ADDONS_RESOURCE, AddOn.class);
+                     AddOn.ADDONS_RESOURCE, AddOns.class);
     }
 
     /**

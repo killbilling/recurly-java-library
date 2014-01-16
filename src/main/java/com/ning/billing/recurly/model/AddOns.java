@@ -22,14 +22,14 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-@XmlRootElement(name = "addons")
+@XmlRootElement(name = "add_ons")
 public class AddOns extends RecurlyObjects<AddOn> {
 
     @XmlTransient
-    public static final String ADDONS_RESOURCE = "/addons";
+    public static final String ADDONS_RESOURCE = "/add_ons";
 
     @XmlTransient
-    private static final String PROPERTY_NAME = "addon";
+    private static final String PROPERTY_NAME = "add_on";
 
     @JsonSetter(value = PROPERTY_NAME)
     @Override
