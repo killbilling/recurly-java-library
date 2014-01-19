@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.AddOns;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
@@ -525,6 +526,15 @@ public class TestRecurlyClient {
             Assert.assertEquals(addOnRecurly.getDefaultQuantity(), addOn.getDefaultQuantity());
             Assert.assertEquals(addOnRecurly.getDisplayQuantityOnHostedPage(), addOn.getDisplayQuantityOnHostedPage());
             Assert.assertEquals(addOnRecurly.getUnitAmountInCents(), addOn.getUnitAmountInCents());
+
+            // Query for AddOns and Check again
+            AddOns addOns = recurlyClient.getAddOns(plan.getPlanCode());
+            Assert.assertEquals(addOns.size(), 1);
+            Assert.assertEquals(addOns.get(0).getAddOnCode(), addOn.getAddOnCode());
+            Assert.assertEquals(addOns.get(0).getName(), addOn.getName());
+            Assert.assertEquals(addOns.get(0).getDefaultQuantity(), addOn.getDefaultQuantity());
+            Assert.assertEquals(addOns.get(0).getDisplayQuantityOnHostedPage(), addOn.getDisplayQuantityOnHostedPage());
+            Assert.assertEquals(addOns.get(0).getUnitAmountInCents(), addOn.getUnitAmountInCents());
         } finally {
             // Delete an AddOn
             recurlyClient.deleteAddOn(planData.getPlanCode(), addOn.getAddOnCode());
