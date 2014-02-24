@@ -40,6 +40,23 @@ Push notifications
 
 See https://gist.github.com/dbathily/4433939 for an example on how to set it up.
 
+Signature Generation for Recurly.js
+-------------------------------------
+
+A special signature string is needed for the BuildSubscriptionForm helper method in the recurly.js library. To obtain a signature on the server to pass to the page, simply use:
+	
+	String signature = <client>.getRecurlySignature(String jsPrivateKey);
+
+If you wish to specify extra parameters (such as account id and subscription code), build an ArrayList<String> with url-encoded key=value string pairs. For example:
+
+    List<String> extraParams = new ArrayList<String>();
+    extraParams.add(String.format("%s=%s", "subscription%5Bplan_code%5D", "testplan1"));
+    extraParams.add(String.format("%s=%s", "account%5Baccount_code%5D", "123abc"));
+	String signature = <client>.getRecurlySignature(String jsPrivateKey, extraParams);
+	
+Refer to the [Recurly.js Signature Generation documentation](http://docs.recurly.com/api/recurlyjs/signatures) for more information on the format for building parameters.
+
+
 Build
 -----
 

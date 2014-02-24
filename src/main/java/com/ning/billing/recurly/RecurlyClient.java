@@ -22,6 +22,9 @@ import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.UUID;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
@@ -58,6 +61,11 @@ import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.base.Joiner;
+import com.google.common.io.BaseEncoding;
+import javax.crypto.Mac;
+import javax.crypto.SecretKey;
+import javax.crypto.spec.SecretKeySpec;
 
 public class RecurlyClient {
 
@@ -73,6 +81,12 @@ public class RecurlyClient {
     private static final String LINK_HEADER_NAME = "Link";
 
     public static final String FETCH_RESOURCE = "/recurly_js/result";
+
+    // Specific to Recurly.js signature generation method
+    public static final String PARAMETER_FORMAT = "%s=%s";
+    public static final String PARAMETER_SEPARATOR = "&";
+    public static final String NONCE_PARAMETER = "nonce";
+    public static final String TIMESTAMP_PARAMETER = "timestamp";
 
     /**
      * Checks a system property to see if debugging output is
@@ -680,6 +694,63 @@ public class RecurlyClient {
 
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {
         return doGET(FETCH_RESOURCE + "/" + recurlyToken, clazz);
+    }
+
+    /**
+     * Get Recurly.js Signature
+     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
+     * <p/>
+     * Returns a signature key for use with recurly.js BuildSubscriptionForm.
+     *
+     * @param privateJsKey recurly.js private key
+     * @return signature string on success, null otherwise
+     */
+    public String getRecurlySignature(String privateJsKey) {
+        return getRecurlySignature(privateJsKey, new ArrayList<String>());
+    }
+
+    /**
+     * Get Recurly.js Signature with extra parameter strings in the format "[param]=[value]"
+     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
+     * <p/>
+     * Returns a signature key for use with recurly.js BuildSubscriptionForm.
+     *
+     * @param privateJsKey recurly.js private key
+     * @param extraParams extra parameters to include in the signature
+     * @return signature string on success, null otherwise
+     */
+    public String getRecurlySignature(String privateJsKey, List<String> extraParams) {
+        final long unixTime = System.currentTimeMillis() / 1000L;
+        final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+
+        // Mandatory parameters shared by all signatures (as per spec)
+        extraParams.add(String.format(PARAMETER_FORMAT, NONCE_PARAMETER, uuid));
+        extraParams.add(String.format(PARAMETER_FORMAT, TIMESTAMP_PARAMETER, unixTime));
+        String protectedParams = Joiner.on(PARAMETER_SEPARATOR).join(extraParams);
+
+        return generateRecurlyHMAC(privateJsKey, protectedParams) + "|" + protectedParams;
+    }
+
+    /**
+     * HMAC-SHA1 Hash Generator - Helper method
+     * <p/>
+     * Returns a signature key for use with recurly.js BuildSubscriptionForm.
+     *
+     * @param privateJsKey recurly.js private key
+     * @param protectedParams protected parameter string in the format: &lt;secure_hash&gt;|&lt;protected_string&gt;
+     * @return subscription object on success, null otherwise
+     */
+    private String generateRecurlyHMAC(String privateJsKey, String protectedParams) {
+        try {
+            SecretKey sk = new SecretKeySpec(privateJsKey.getBytes(), "HmacSHA1");
+            Mac mac = Mac.getInstance("HmacSHA1");
+            mac.init(sk);
+            byte[] result = mac.doFinal(protectedParams.getBytes("UTF-8"));
+            return BaseEncoding.base16().encode(result);
+        } catch (Exception e) {
+            log.error("Error while trying to generate Recurly HMAC signature", e);
+            return null;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////////////
