@@ -710,7 +710,7 @@ public class RecurlyClient {
     }
 
     /**
-     * Get Recurly.js Signature with extra parameter strings in the format "[param]=[value]"
+     * Get Recurly.js Signature
      * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
      * <p/>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
@@ -722,10 +722,26 @@ public class RecurlyClient {
     public String getRecurlySignature(String privateJsKey, List<String> extraParams) {
         final long unixTime = System.currentTimeMillis() / 1000L;
         final String uuid = UUID.randomUUID().toString().replaceAll("-", "");
+        return getRecurlySignature(privateJsKey, unixTime, uuid, extraParams);
+    }
 
+    /**
+     * Get Recurly.js Signature with extra parameter strings in the format "[param]=[value]"
+     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
+     * <p/>
+     * Returns a signature key for use with recurly.js BuildSubscriptionForm.
+     *
+     * @param privateJsKey recurly.js private key
+     * @param unixTime Unix timestamp, i.e. elapsed seconds since Midnight, Jan 1st 1970, UTC
+     * @param nonce A randomly generated string (number used only once)
+     * @param extraParams extra parameters to include in the signature
+     * @return signature string on success, null otherwise
+     */
+    public String getRecurlySignature(String privateJsKey, Long unixTime, String nonce, List<String> extraParams) {
         // Mandatory parameters shared by all signatures (as per spec)
-        extraParams.add(String.format(PARAMETER_FORMAT, NONCE_PARAMETER, uuid));
+        extraParams = (extraParams == null) ? new ArrayList<String>() : extraParams;
         extraParams.add(String.format(PARAMETER_FORMAT, TIMESTAMP_PARAMETER, unixTime));
+        extraParams.add(String.format(PARAMETER_FORMAT, NONCE_PARAMETER, nonce));
         String protectedParams = Joiner.on(PARAMETER_SEPARATOR).join(extraParams);
 
         return generateRecurlyHMAC(privateJsKey, protectedParams) + "|" + protectedParams;
