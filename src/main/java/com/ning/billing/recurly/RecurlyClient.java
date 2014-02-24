@@ -746,7 +746,7 @@ public class RecurlyClient {
             Mac mac = Mac.getInstance("HmacSHA1");
             mac.init(sk);
             byte[] result = mac.doFinal(protectedParams.getBytes("UTF-8"));
-            return BaseEncoding.base16().encode(result);
+            return BaseEncoding.base16().encode(result).toLowerCase();
         } catch (Exception e) {
             log.error("Error while trying to generate Recurly HMAC signature", e);
             return null;
