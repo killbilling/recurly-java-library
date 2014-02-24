@@ -65,7 +65,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Core only -->
         <jackson.version>2.3.0</jackson.version>
-        <guava.version>12.0</guava.version>
+        <guava.version>16.0.1</guava.version>
         <slf4j.version>1.6.5</slf4j.version>
     </properties>
     <dependencies>
@@ -101,10 +101,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <version>1.4</version>
-        </dependency> 
+            <groupId>com.google.code.findbugs</groupId>
+            <artifactId>jsr305</artifactId>
+            <version>2.0.3</version>
+        </dependency>
         <dependency>
             <groupId>com.ning</groupId>
             <artifactId>async-http-client</artifactId>

@@ -61,8 +61,8 @@ import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import org.apache.commons.codec.binary.Hex;
 import com.google.common.base.Joiner;
+import com.google.common.io.BaseEncoding;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -746,7 +746,8 @@ public class RecurlyClient {
             Mac mac = Mac.getInstance("HmacSHA1");
             mac.init(sk);
             byte[] result = mac.doFinal(protectedParams.getBytes("UTF-8"));
-            return Hex.encodeHexString(result);
+            System.out.println(BaseEncoding.base16().encode(result));
+            return BaseEncoding.base16().encode(result);
         } catch (Exception e) {
             log.error("Error while trying to generate Recurly HMAC signature", e);
             return null;
