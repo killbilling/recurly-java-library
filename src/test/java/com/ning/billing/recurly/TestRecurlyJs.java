@@ -31,8 +31,6 @@ public class TestRecurlyJs {
         final String expected = "0da7006b2093fd3d2d24a1f1f414bd9a5810a689|timestamp=1329942896&nonce=unique";
 
         String actual = RecurlyJs.getRecurlySignature(jsPrivateKey, mockUnixTime, mockNonce, null);
-        System.out.println(actual);
-        System.out.println(expected);
         Assert.assertEquals(actual, expected);
     }
 
@@ -52,8 +50,6 @@ public class TestRecurlyJs {
         customParams.add(String.format(PARAMETER_FORMAT, ACCOUNT_CODE_PARAMETER, "johndoe123"));
 
         String actual = RecurlyJs.getRecurlySignature(jsPrivateKey, mockUnixTime, mockNonce, customParams);
-        System.out.println(actual);
-        System.out.println(expected);
         Assert.assertEquals(actual, expected);
     }
 }
