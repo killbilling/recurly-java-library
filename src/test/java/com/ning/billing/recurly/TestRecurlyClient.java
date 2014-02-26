@@ -707,4 +707,5 @@ public class TestRecurlyClient {
             recurlyClient.deleteCoupon(couponData.getCouponCode());
         }
     }
+
 }
