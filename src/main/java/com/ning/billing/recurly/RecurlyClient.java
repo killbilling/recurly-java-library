@@ -586,7 +586,6 @@ public class RecurlyClient {
      * <p/>
      *
      * @param couponCode The code for the {@link Coupon}
-     * @return the {@link Coupon} object
      */
     public void deleteCoupon(final String couponCode) {
         doDELETE(Coupon.COUPON_RESOURCE + "/" + couponCode);
