@@ -686,7 +686,7 @@ public class RecurlyClient {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private <T> T doGET(final String resource, final Class<T> clazz) {
+    public <T> T doGET(final String resource, final Class<T> clazz) {
         final StringBuffer url = new StringBuffer(baseUrl);
         url.append(resource);
         if (resource != null && !resource.contains("?")) {
