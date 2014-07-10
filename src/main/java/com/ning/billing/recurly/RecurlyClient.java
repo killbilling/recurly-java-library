@@ -372,7 +372,7 @@ public class RecurlyClient {
     	billingInfo.setTokenId(recurlyToken);
     	billingInfo.setAccount(null);
     	
-    	return doPOST(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE,
+    	return doPUT(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE,
     			billingInfo, BillingInfo.class);
     }
 
