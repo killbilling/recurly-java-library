@@ -361,12 +361,17 @@ public class RecurlyClient {
      * Updates/creates billing information for an existing recurly account based on a recurly.js token.  
      * 
      * @param recurlyToken		token_id of the Recurly.js token for which BillingInfo should be updated/created
-     * @param accountCode		recurly account id
+     * @param billingInfo		recurly BillingInfo initiated with only Recurly Account 
      * @return					the current billing info object associated with this account on success, null otherwise
      */
     
-    public BillingInfo createOrUpdateBillingInfo(final String recurlyToken, final String accountCode, final BillingInfo billingInfo){
+    public BillingInfo createOrUpdateBillingInfo(final String recurlyToken, final BillingInfo billingInfo){
     
+    	final String accountCode = billingInfo.getAccount().getAccountCode();
+    	
+    	billingInfo.setTokenId(recurlyToken);
+    	billingInfo.setAccount(null);
+    	
     	return doPOST(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE,
     			billingInfo, BillingInfo.class);
     }
