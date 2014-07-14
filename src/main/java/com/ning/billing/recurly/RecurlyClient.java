@@ -202,8 +202,27 @@ public class RecurlyClient {
     // Account adjustments
 
     public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type) {
-        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + Adjustments.ADJUSTMENTS_RESOURCE + (type != null ? "?type=" + type.getType() : ""),
-                     Adjustments.class);
+        return getAccountAdjustments(accountCode, type, null);
+    }
+
+    public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type, final Adjustments.AdjustmentState state) {
+        String url = Account.ACCOUNT_RESOURCE + "/" + accountCode + Adjustments.ADJUSTMENTS_RESOURCE;
+        if (type != null || state != null) {
+            url += "?";
+        }
+
+        if (type != null) {
+            url += "type=" + type.getType();
+            if (state != null) {
+                url += "&";
+            }
+        }
+
+        if (state != null) {
+            url += "state=" + state.getState();
+        }
+
+        return doGET(url, Adjustments.class);
     }
 
     public Adjustment createAccountAdjustment(final String accountCode, final Adjustment adjustment) {

@@ -52,6 +52,21 @@ public class Adjustments extends RecurlyObjects<Adjustment> {
         }
     }
 
+    public enum AdjustmentState {
+        PENDING("pending"),
+        INVOICED("invoiced");
+
+        private final String state;
+
+        private AdjustmentState(final String state) {
+            this.state = state;
+        }
+
+        public String getState() {
+            return state;
+        }
+    }
+
     @JsonIgnore
     public Adjustments getStart() {
         return getStart(Adjustments.class);
