@@ -202,22 +202,27 @@ public class RecurlyClient {
     // Account adjustments
 
     public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type) {
-        return getAccountAdjustments(accountCode,type,null);
+        return getAccountAdjustments(accountCode, type, null);
     }
-    public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type,final Adjustments.AdjustmentState state) {
-        StringBuilder sb = new StringBuilder().append(Account.ACCOUNT_RESOURCE).append("/").append(accountCode).append(Adjustments.ADJUSTMENTS_RESOURCE );
-        if(type != null){            
-            sb.append("?type=").append(type.getType());
+
+    public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type, final Adjustments.AdjustmentState state) {
+        String url = Account.ACCOUNT_RESOURCE + "/" + accountCode + Adjustments.ADJUSTMENTS_RESOURCE;
+        if (type != null || state != null) {
+            url += "?";
         }
-        if(state != null){
-            if(type != null){
-                sb.append("&");
-            }else{
-                sb.append("?");
+
+        if (type != null) {
+            url += "type=" + type.getType();
+            if (state != null) {
+                url += "&";
             }
-            sb.append("state=").append(state.getState());
-        }        
-        return doGET(sb.toString(),Adjustments.class);
+        }
+
+        if (state != null) {
+            url += "state=" + state.getState();
+        }
+
+        return doGET(url, Adjustments.class);
     }
 
     public Adjustment createAccountAdjustment(final String accountCode, final Adjustment adjustment) {
@@ -697,7 +702,7 @@ public class RecurlyClient {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    public <T> T doGET(final String resource, final Class<T> clazz) {
+    private <T> T doGET(final String resource, final Class<T> clazz) {
         final StringBuffer url = new StringBuffer(baseUrl);
         url.append(resource);
         if (resource != null && !resource.contains("?")) {

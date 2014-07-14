@@ -182,7 +182,7 @@ public class TestRecurlyClient {
         final Coupons retrievedCoupons = recurlyClient.getCoupons();
         Assert.assertTrue(retrievedCoupons.size() >= 0);
     }
-    
+
     @Test(groups = "integration")
     public void testGetAdjustments() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
@@ -211,11 +211,11 @@ public class TestRecurlyClient {
             subscriptionData.setUnitAmountInCents(1242);
 
             //Add some adjustments to the account's open invoice
-            final Adjustment adjustment = new Adjustment();            
+            final Adjustment adjustment = new Adjustment();
             adjustment.setCurrency("USD");
             adjustment.setUnitAmountInCents("100");
             adjustment.setDescription("A description of an account adjustment");
-            
+
             //Use an "accounting code" for one of the adjustments
             String adjustmentAccountCode = "example account code";
             final Adjustment adjustmentWithCode = new Adjustment();
@@ -223,34 +223,34 @@ public class TestRecurlyClient {
             adjustmentWithCode.setCurrency("USD");
             adjustmentWithCode.setUnitAmountInCents("200");
             adjustmentWithCode.setDescription("A description of an account adjustment with a code");
-                        
+
             //Create 2 new Adjustments
             recurlyClient.createAccountAdjustment(accountData.getAccountCode(), adjustment);
             recurlyClient.createAccountAdjustment(accountData.getAccountCode(), adjustmentWithCode);
-                        
+
             // Test adjustment retrieval methods
             Adjustments retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, null);
-            Assert.assertEquals(retrievedAdjustments.size(),2,"Did not retrieve correct count of Adjustments of any type and state");
-            
+            Assert.assertEquals(retrievedAdjustments.size(), 2, "Did not retrieve correct count of Adjustments of any type and state");
+
             retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), Adjustments.AdjustmentType.CHARGE, null);
-            Assert.assertEquals(retrievedAdjustments.size(),2,"Did not retrieve correct count of Adjustments of type Charge");
-            
+            Assert.assertEquals(retrievedAdjustments.size(), 2, "Did not retrieve correct count of Adjustments of type Charge");
+
             retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), Adjustments.AdjustmentType.CHARGE, Adjustments.AdjustmentState.INVOICED);
-            Assert.assertEquals(retrievedAdjustments.size(),0,"Retrieved Adjustments of type Charge marked as invoiced although none should be.");
-            
+            Assert.assertEquals(retrievedAdjustments.size(), 0, "Retrieved Adjustments of type Charge marked as invoiced although none should be.");
+
             retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.INVOICED);
-            Assert.assertEquals(retrievedAdjustments.size(),0,"Retrieved Adjustments marked as invoiced although none should be.");
-            
+            Assert.assertEquals(retrievedAdjustments.size(), 0, "Retrieved Adjustments marked as invoiced although none should be.");
+
             retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), Adjustments.AdjustmentType.CHARGE, Adjustments.AdjustmentState.PENDING);
-            Assert.assertEquals(2,retrievedAdjustments.size(),"Did not retrieve correct count of Adjustments of type Charge in Pending state");
+            Assert.assertEquals(2, retrievedAdjustments.size(), "Did not retrieve correct count of Adjustments of type Charge in Pending state");
             int adjAccountCodeCounter = 0;
-            for(Adjustment adj: retrievedAdjustments){
-                if(adjustmentAccountCode.equals(adj.getAccountingCode())){
+            for (Adjustment adj : retrievedAdjustments) {
+                if (adjustmentAccountCode.equals(adj.getAccountingCode())) {
                     adjAccountCodeCounter++;
                 }
             }
-            Assert.assertEquals(adjAccountCodeCounter,1,"An unexpected number of Adjustments were assigned the accountCode ["+adjustmentAccountCode+"]");            
-            
+            Assert.assertEquals(adjAccountCodeCounter, 1, "An unexpected number of Adjustments were assigned the accountCode [" + adjustmentAccountCode + "]");
+
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
@@ -259,8 +259,8 @@ public class TestRecurlyClient {
             // Delete the Plan
             recurlyClient.deletePlan(planData.getPlanCode());
         }
-        
-    }    
+
+    }
 
     @Test(groups = "integration")
     public void testPagination() throws Exception {

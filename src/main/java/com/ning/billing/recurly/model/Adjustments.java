@@ -51,6 +51,7 @@ public class Adjustments extends RecurlyObjects<Adjustment> {
             return type;
         }
     }
+
     public enum AdjustmentState {
         PENDING("pending"),
         INVOICED("invoiced");
