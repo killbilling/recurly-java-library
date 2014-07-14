@@ -33,6 +33,8 @@ import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
+import com.ning.billing.recurly.model.Adjustment;
+import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
@@ -180,6 +182,85 @@ public class TestRecurlyClient {
         final Coupons retrievedCoupons = recurlyClient.getCoupons();
         Assert.assertTrue(retrievedCoupons.size() >= 0);
     }
+    
+    @Test(groups = "integration")
+    public void testGetAdjustments() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Subscribe the user to the plan
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+
+            //Add some adjustments to the account's open invoice
+            final Adjustment adjustment = new Adjustment();            
+            adjustment.setCurrency("USD");
+            adjustment.setUnitAmountInCents("100");
+            adjustment.setDescription("A description of an account adjustment");
+            
+            //Use an "accounting code" for one of the adjustments
+            String adjustmentAccountCode = "example account code";
+            final Adjustment adjustmentWithCode = new Adjustment();
+            adjustmentWithCode.setAccountingCode(adjustmentAccountCode);
+            adjustmentWithCode.setCurrency("USD");
+            adjustmentWithCode.setUnitAmountInCents("200");
+            adjustmentWithCode.setDescription("A description of an account adjustment with a code");
+                        
+            //Create 2 new Adjustments
+            recurlyClient.createAccountAdjustment(accountData.getAccountCode(), adjustment);
+            recurlyClient.createAccountAdjustment(accountData.getAccountCode(), adjustmentWithCode);
+                        
+            // Test adjustment retrieval methods
+            Adjustments retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, null);
+            Assert.assertEquals(retrievedAdjustments.size(),2,"Did not retrieve correct count of Adjustments of any type and state");
+            
+            retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), Adjustments.AdjustmentType.CHARGE, null);
+            Assert.assertEquals(retrievedAdjustments.size(),2,"Did not retrieve correct count of Adjustments of type Charge");
+            
+            retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), Adjustments.AdjustmentType.CHARGE, Adjustments.AdjustmentState.INVOICED);
+            Assert.assertEquals(retrievedAdjustments.size(),0,"Retrieved Adjustments of type Charge marked as invoiced although none should be.");
+            
+            retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.INVOICED);
+            Assert.assertEquals(retrievedAdjustments.size(),0,"Retrieved Adjustments marked as invoiced although none should be.");
+            
+            retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), Adjustments.AdjustmentType.CHARGE, Adjustments.AdjustmentState.PENDING);
+            Assert.assertEquals(2,retrievedAdjustments.size(),"Did not retrieve correct count of Adjustments of type Charge in Pending state");
+            int adjAccountCodeCounter = 0;
+            for(Adjustment adj: retrievedAdjustments){
+                if(adjustmentAccountCode.equals(adj.getAccountingCode())){
+                    adjAccountCodeCounter++;
+                }
+            }
+            Assert.assertEquals(adjAccountCodeCounter,1,"An unexpected number of Adjustments were assigned the accountCode ["+adjustmentAccountCode+"]");            
+            
+        } finally {
+            // Clear up the BillingInfo
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+        
+    }    
 
     @Test(groups = "integration")
     public void testPagination() throws Exception {
