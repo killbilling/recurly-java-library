@@ -46,7 +46,7 @@ public class TestAccount extends TestModelBase {
                                    "      <address2 nil=\"nil\"></address2>\n" +
                                    "      <city>San Francisco</city>\n" +
                                    "      <state>CA</state>\n" +
-                                   "      <zip>94105</zip>\n" +
+                                   "      <zip>94105-1804</zip>\n" +
                                    "      <country>US</country>\n" +
                                    "      <phone nil=\"nil\"></phone>\n" +
                                    "  </address>" +
@@ -67,7 +67,7 @@ public class TestAccount extends TestModelBase {
         Assert.assertNull(account.getAddress().getAddress2());
         Assert.assertEquals(account.getAddress().getCity(), "San Francisco");
         Assert.assertEquals(account.getAddress().getState(), "CA");
-        Assert.assertEquals(account.getAddress().getZip(), (Integer) 94105);
+        Assert.assertEquals(account.getAddress().getZip(), "94105-1804");
         Assert.assertEquals(account.getAddress().getCountry(), "US");
         Assert.assertNull(account.getAddress().getPhone());
     }
