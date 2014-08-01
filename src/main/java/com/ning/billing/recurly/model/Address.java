@@ -35,7 +35,7 @@ public class Address extends RecurlyObject {
     private String state;
 
     @XmlElement(name = "zip")
-    private Integer zip;
+    private String zip;
 
     @XmlElement(name = "country")
     private String country;
@@ -75,12 +75,12 @@ public class Address extends RecurlyObject {
         this.state = stringOrNull(state);
     }
 
-    public Integer getZip() {
+    public String getZip() {
         return zip;
     }
 
     public void setZip(final Object zip) {
-        this.zip = integerOrNull(zip);
+        this.zip = stringOrNull(zip);
     }
 
     public String getCountry() {
