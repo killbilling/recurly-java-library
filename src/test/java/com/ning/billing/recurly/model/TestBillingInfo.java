@@ -43,7 +43,7 @@ public class TestBillingInfo extends TestModelBase {
         billingInfo.setPhone(randomString());
         billingInfo.setState(randomString());
         billingInfo.setVatNumber(randomString());
-        billingInfo.setVerificationValue(Integer.MAX_VALUE);
+        billingInfo.setVerificationValue("009"); //CVV can have leading zeroes
         billingInfo.setYear(Integer.MIN_VALUE);
         billingInfo.setZip(randomString());
 
