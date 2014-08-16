@@ -789,6 +789,7 @@ public class RecurlyClient {
         final Response response = builder.addHeader("Authorization", "Basic " + key)
                                          .addHeader("Accept", "application/xml")
                                          .addHeader("Content-Type", "application/xml; charset=utf-8")
+                                         .setBodyEncoding("UTF-8")
                                          .execute()
                                          .get();
 
