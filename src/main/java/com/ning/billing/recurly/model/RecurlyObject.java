@@ -113,14 +113,6 @@ public abstract class RecurlyObject {
 
         return object.toString().trim();
     }
-    public static String numericOrNull(@Nullable final Object object) {
-        if (isNull(object)) {
-            return null;
-        }
-
-        String value = object.toString().trim();        
-        return value.matches("[0-9]+") ? value : null;
-    }
     public static Integer integerOrNull(@Nullable final Object object) {
         if (isNull(object)) {
             return null;

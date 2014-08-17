@@ -268,7 +268,7 @@ public class BillingInfo extends RecurlyObject {
     }
 
     public void setVerificationValue(final Object verificationValue) {
-        this.verificationValue = numericOrNull(verificationValue);
+        this.verificationValue = stringOrNull(verificationValue);
     }
 
     public String getTokenId(){
