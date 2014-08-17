@@ -111,7 +111,7 @@ public abstract class RecurlyObject {
             return null;
         }
 
-        return object.toString();
+        return object.toString().trim();
     }
 
     public static Integer integerOrNull(@Nullable final Object object) {

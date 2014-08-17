@@ -87,7 +87,7 @@ public class BillingInfo extends RecurlyObject {
     private String number;
 
     @XmlElement(name = "verification_value")
-    private Integer verificationValue;
+    private String verificationValue;
 
     @XmlElement(name = "token_id")
     private String tokenId;
@@ -263,12 +263,12 @@ public class BillingInfo extends RecurlyObject {
         this.number = stringOrNull(number);
     }
 
-    public Integer getVerificationValue() {
+    public String getVerificationValue() {
         return verificationValue;
     }
 
     public void setVerificationValue(final Object verificationValue) {
-        this.verificationValue = integerOrNull(verificationValue);
+        this.verificationValue = stringOrNull(verificationValue);
     }
 
     public String getTokenId(){
