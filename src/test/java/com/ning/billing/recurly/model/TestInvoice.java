@@ -32,7 +32,7 @@ public class TestInvoice extends TestModelBase {
                                    + "  <state>open</state>\n"
                                    + "  <invoice_number type=\"integer\">1402</invoice_number>\n"
                                    + "  <po_number nil=\"nil\"></po_number>\n"
-                                   + "  <vat_number nil=\"nil\"></vat_number>\n"
+                                   + "  <vat_number></vat_number>\n"
                                    + "  <subtotal_in_cents type=\"integer\">9900</subtotal_in_cents>\n"
                                    + "  <tax_in_cents type=\"integer\">0</tax_in_cents>\n"
                                    + "  <total_in_cents type=\"integer\">9900</total_in_cents>\n"
@@ -68,7 +68,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getState(), "open");
         Assert.assertEquals((int) invoice.getInvoiceNumber(), 1402);
         Assert.assertNull(invoice.getPoNumber());
-        Assert.assertNull(invoice.getVarNumber());
+        Assert.assertNull(invoice.getVatNumber());
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 9900);
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);
         Assert.assertEquals((int) invoice.getTotalInCents(), 9900);
