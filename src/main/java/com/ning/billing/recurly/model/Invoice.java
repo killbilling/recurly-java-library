@@ -41,7 +41,7 @@ public class Invoice extends RecurlyObject {
     private Integer poNumber;
 
     @XmlElement(name = "vat_number")
-    private Integer varNumber;
+    private String varNumber;
 
     @XmlElement(name = "subtotal_in_cents")
     private Integer subtotalInCents;
@@ -109,12 +109,12 @@ public class Invoice extends RecurlyObject {
         this.poNumber = integerOrNull(poNumber);
     }
 
-    public Integer getVarNumber() {
+    public String getVarNumber() {
         return varNumber;
     }
 
-    public void setVarNumber(final Object varNumber) {
-        this.varNumber = integerOrNull(varNumber);
+    public void setVarNumber(final String varNumber) {
+        this.varNumber = stringOrNull(varNumber);
     }
 
     public Integer getSubtotalInCents() {
