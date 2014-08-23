@@ -41,7 +41,7 @@ public class Invoice extends RecurlyObject {
     private Integer poNumber;
 
     @XmlElement(name = "vat_number")
-    private Integer varNumber;
+    private String vatNumber;
 
     @XmlElement(name = "subtotal_in_cents")
     private Integer subtotalInCents;
@@ -109,12 +109,12 @@ public class Invoice extends RecurlyObject {
         this.poNumber = integerOrNull(poNumber);
     }
 
-    public Integer getVarNumber() {
-        return varNumber;
+    public String getVatNumber() {
+        return vatNumber;
     }
 
-    public void setVarNumber(final Object varNumber) {
-        this.varNumber = integerOrNull(varNumber);
+    public void setVatNumber(final String varNumber) {
+        this.vatNumber = stringOrNull(varNumber);
     }
 
     public Integer getSubtotalInCents() {
@@ -182,7 +182,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
         sb.append(", poNumber=").append(poNumber);
-        sb.append(", varNumber=").append(varNumber);
+        sb.append(", varNumber=").append(vatNumber);
         sb.append(", subtotalInCents=").append(subtotalInCents);
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", totalInCents=").append(totalInCents);
@@ -241,7 +241,7 @@ public class Invoice extends RecurlyObject {
         if (uuid != null ? !uuid.equals(invoice.uuid) : invoice.uuid != null) {
             return false;
         }
-        if (varNumber != null ? !varNumber.equals(invoice.varNumber) : invoice.varNumber != null) {
+        if (vatNumber != null ? !vatNumber.equals(invoice.vatNumber) : invoice.vatNumber != null) {
             return false;
         }
 
@@ -255,7 +255,7 @@ public class Invoice extends RecurlyObject {
         result = 31 * result + (state != null ? state.hashCode() : 0);
         result = 31 * result + (invoiceNumber != null ? invoiceNumber.hashCode() : 0);
         result = 31 * result + (poNumber != null ? poNumber.hashCode() : 0);
-        result = 31 * result + (varNumber != null ? varNumber.hashCode() : 0);
+        result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
         result = 31 * result + (subtotalInCents != null ? subtotalInCents.hashCode() : 0);
         result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
         result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
