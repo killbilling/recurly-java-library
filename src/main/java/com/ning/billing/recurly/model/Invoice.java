@@ -113,7 +113,7 @@ public class Invoice extends RecurlyObject {
         return vatNumber;
     }
 
-    public void setVatNumber(final String varNumber) {
+    public void setVatNumber(final Object varNumber) {
         this.vatNumber = stringOrNull(varNumber);
     }
 
