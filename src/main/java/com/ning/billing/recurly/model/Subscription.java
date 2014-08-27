@@ -75,6 +75,9 @@ public class Subscription extends AbstractSubscription {
     //Purchase Order Number
     @XmlElement(name = "po_number")
     private String poNumber;
+    
+    @XmlElement(name = "first_renewal_date")
+    private DateTime firstRenewalDate;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -215,6 +218,14 @@ public class Subscription extends AbstractSubscription {
     public void setPoNumber(Object poNumber) {
         this.poNumber = stringOrNull(poNumber);
     }
+    
+    public DateTime getFirstRenewalDate() {
+        return firstRenewalDate;
+    }
+
+    public void setFirstRenewalDate(final Object firstRenewalDate) {
+        this.firstRenewalDate = dateTimeOrNull(firstRenewalDate);
+    }
 
 
     @Override
@@ -238,6 +249,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", startsAt=").append(startsAt);
         sb.append(", addOns=").append(addOns);
         sb.append(", pendingSubscription=").append(pendingSubscription);
+        sb.append(", firstRenewalDate=").append(firstRenewalDate);
         sb.append('}');
         return sb.toString();
     }
@@ -314,6 +326,10 @@ public class Subscription extends AbstractSubscription {
         }
 
         if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
+            return false;
+        }
+        
+        if (firstRenewalDate != null ? !firstRenewalDate.equals(that.firstRenewalDate) : that.firstRenewalDate != null) {
             return false;
         }
 

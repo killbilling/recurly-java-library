@@ -26,6 +26,7 @@ import java.util.concurrent.ExecutionException;
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,7 +57,6 @@ import com.ning.billing.recurly.model.Transactions;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
-
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 
 public class RecurlyClient {
@@ -274,6 +274,19 @@ public class RecurlyClient {
      */
     public Subscription cancelSubscription(final Subscription subscription) {
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
+                     subscription, Subscription.class);
+    }
+    
+    /**
+     * Postpone a subscription
+     * <p/>
+     * postpone a subscription, setting a new renewal date.
+     *
+     * @param subscription Subscription object
+     * @return -?-
+     */
+    public Subscription postponeSubscription(final Subscription subscription, final DateTime renewaldate) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/postpone?next_renewal_date="+renewaldate,
                      subscription, Subscription.class);
     }
 
