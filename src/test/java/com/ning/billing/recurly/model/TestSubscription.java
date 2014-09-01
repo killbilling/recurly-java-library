@@ -53,6 +53,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
+                                        "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
                                         "  <pending_subscription type=\"subscription\">\n" +
@@ -102,6 +103,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
+                                        "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "    <subscription_add_on>\n" +
                                         "      <add_on_code>extra_users</add_on_code>\n" +
@@ -154,6 +156,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getCollectionMethod(), "manual");
         Assert.assertEquals(subscription.getNetTerms(), (Integer) 10);
         Assert.assertEquals(subscription.getPoNumber(), "PO19384");
+        Assert.assertEquals(subscription.getFirstRenewalDate(), new DateTime("2011-07-01T07:00:00Z"));
 
         return subscription;
     }
