@@ -23,7 +23,7 @@ public class RecurlyAPIException extends RuntimeException {
     private final RecurlyAPIError recurlyError;
 
     public RecurlyAPIException(final RecurlyAPIError recurlyError) {
-        super(recurlyError.toString());
+        super(recurlyError.toString()==null? "Unspecified API Error" : recurlyError.toString());
         this.recurlyError = recurlyError;
     }
 
