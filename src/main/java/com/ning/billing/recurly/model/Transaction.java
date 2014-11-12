@@ -51,6 +51,12 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "recurring")
     private Boolean recurring;
 
+    @XmlElement(name = "cvv_result")
+    private String cvvResult;
+
+    @XmlElement(name = "avs_result")
+    private String avsResult;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -125,6 +131,22 @@ public class Transaction extends AbstractTransaction {
 
     public void setSource(final Object source) {
         this.source = stringOrNull(source);
+    }
+
+    public void setCvvResult(final Object cvvResult) {
+        this.cvvResult = stringOrNull(cvvResult);
+    }
+
+    public String getCvvResult() {
+        return cvvResult;
+    }
+
+    public void setAvsResult(final Object avsResult) {
+        this.avsResult = stringOrNull(avsResult);
+    }
+
+    public String getAvsResult() {
+        return avsResult;
     }
 
     public Boolean getRecurring() {
@@ -204,6 +226,12 @@ public class Transaction extends AbstractTransaction {
         if (recurring != null ? !recurring.equals(that.recurring) : that.recurring != null) {
             return false;
         }
+       if (cvvResult != null ? !cvvResult.equals(that.cvvResult) : that.cvvResult != null) {
+            return false;
+        }
+        if (avsResult != null ? !avsResult.equals(that.avsResult) : that.avsResult != null) {
+            return false;
+        }
         if (source != null ? !source.equals(that.source) : that.source != null) {
             return false;
         }
@@ -232,6 +260,8 @@ public class Transaction extends AbstractTransaction {
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (source != null ? source.hashCode() : 0);
         result = 31 * result + (recurring != null ? recurring.hashCode() : 0);
+        result = 31 * result + (cvvResult != null ? cvvResult.hashCode() : 0);
+        result = 31 * result + (avsResult != null ? avsResult.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (details != null ? details.hashCode() : 0);
         return result;
