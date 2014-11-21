@@ -21,6 +21,63 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
 
+/**
+ * Transaction model. Example transaction:
+ * 
+<transaction href="https://xxxxxx.recurly.com/v2/transactions/1234567890abcdefghijk" type="credit_card">
+  <account href="https://xxxxxx.recurly.com/v2/accounts/ericjung@foo.com"/>
+  <invoice href="https://xxxxxx.recurly.com/v2/invoices/2055"/>
+  <subscription href="https://xxxxxx.recurly.com/v2/subscriptions/889440abcd3223edfg3312"/>
+  <uuid>1234567890abcdefghijk</uuid>
+  <action>purchase</action>
+  <amount_in_cents type="integer">89432</amount_in_cents>
+  <tax_in_cents type="integer">0</tax_in_cents>
+  <currency>USD</currency>
+  <status>success</status>
+  <payment_method>credit_card</payment_method>
+  <reference>5436062</reference>
+  <source>subscription</source>
+  <recurring type="boolean">false</recurring>
+  <test type="boolean">true</test>
+  <voidable type="boolean">true</voidable>
+  <refundable type="boolean">true</refundable>
+  <cvv_result code="M">Match</cvv_result>
+  <avs_result code="D">Street address and postal code match.</avs_result>
+  <avs_result_street nil="nil"></avs_result_street>
+  <avs_result_postal nil="nil"></avs_result_postal>
+  <created_at type="datetime">2017-10-21T17:10:19Z</created_at>
+  <details>
+    <account>
+      <account_code>ericjung@foo.com</account_code>
+      <first_name>Eric</first_name>
+      <last_name>Jung</last_name>
+      <company nil="nil"></company>
+      <email>ericjung@foo.com</email>
+      <billing_info type="credit_card">
+        <first_name>Eric</first_name>
+        <last_name>Jung</last_name>
+        <address1>666 Dante Way</address1>
+        <address2>United States</address2>
+        <city>Styx</city>
+        <state>NJ</state>
+        <zip>08002</zip>
+        <country>US</country>
+        <phone nil="nil"></phone>
+        <vat_number nil="nil"></vat_number>
+        <card_type>Visa</card_type>
+        <year type="integer">2017</year>
+        <month type="integer">12</month>
+        <first_six>411111</first_six>
+        <last_four>1111</last_four>
+      </billing_info>
+    </account>
+  </details>
+  <a name="refund" href="https://xxxxxx.recurly.com/v2/transactions/1234567890abcdefghijk" method="delete"/>
+</transaction>
+
+ * @author fidel
+ *
+ */
 @XmlRootElement(name = "transaction")
 public class Transaction extends AbstractTransaction {
 
@@ -42,26 +99,29 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "currency")
     private String currency;
 
-    @XmlElement(name = "description")
-    private String description;
+    @XmlElement(name = "payment_method")
+    private String paymentMethod;    
 
     @XmlElement(name = "source")
-    private String source;
-
-    @XmlElement(name = "recurring")
-    private Boolean recurring;
+    private String source;    
 
     @XmlElement(name = "cvv_result")
-    private String cvvResult;
-
+    private String cvvResult;    
+        
     @XmlElement(name = "avs_result")
     private String avsResult;
+    
+    @XmlElement(name = "avs_result_street")
+    private String avsResultStreet;    
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
     @XmlElement(name = "details")
     private TransactionDetails details;
+
+    @XmlElement(name = "refundUrl")
+    private String refundUrl;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -117,14 +177,6 @@ public class Transaction extends AbstractTransaction {
         this.currency = stringOrNull(currency);
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final Object description) {
-        this.description = stringOrNull(description);
-    }
-
     public String getSource() {
         return source;
     }
@@ -149,14 +201,6 @@ public class Transaction extends AbstractTransaction {
         return avsResult;
     }
 
-    public Boolean getRecurring() {
-        return recurring;
-    }
-
-    public void setRecurring(final Object recurring) {
-        this.recurring = booleanOrNull(recurring);
-    }
-
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -173,6 +217,146 @@ public class Transaction extends AbstractTransaction {
         this.details = details;
     }
 
+    /**
+     * @return the status
+     */
+    public String getStatus() {
+      return status;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(String status) {
+      this.status = status;
+    }
+
+    /**
+     * @return the paymentMethod
+     */
+    public String getPaymentMethod() {
+      return paymentMethod;
+    }
+
+    /**
+     * @param paymentMethod the paymentMethod to set
+     */
+    public void setPaymentMethod(String paymentMethod) {
+      this.paymentMethod = paymentMethod;
+    }
+
+    /**
+     * @return the reference
+     */
+    public String getReference() {
+      return reference;
+    }
+
+    /**
+     * @param reference the reference to set
+     */
+    public void setReference(String reference) {
+      this.reference = reference;
+    }
+
+    /**
+     * @return the avsResultStreet
+     */
+    public String getAvsResultStreet() {
+      return avsResultStreet;
+    }
+
+    /**
+     * @param avsResultStreet the avsResultStreet to set
+     */
+    public void setAvsResultStreet(String avsResultStreet) {
+      this.avsResultStreet = avsResultStreet;
+    }
+
+    /**
+     * @return the refundUrl
+     */
+    public String getRefundUrl() {
+      return refundUrl;
+    }
+
+    /**
+     * @param refundUrl the refundUrl to set
+     */
+    public void setRefundUrl(String refundUrl) {
+      this.refundUrl = refundUrl;
+    }
+
+    /**
+     * @return the action
+     */
+    public String getAction() {
+      return action;
+    }
+
+    /**
+     * @param action the action to set
+     */
+    public void setAction(String action) {
+      this.action = action;
+    }
+
+    /**
+     * @param subscription the subscription to set
+     */
+    public void setSubscription(String subscription) {
+      this.subscription = subscription;
+    }
+
+    /**
+     * @param uuid the uuid to set
+     */
+    public void setUuid(String uuid) {
+      this.uuid = uuid;
+    }
+
+    /**
+     * @param taxInCents the taxInCents to set
+     */
+    public void setTaxInCents(Integer taxInCents) {
+      this.taxInCents = taxInCents;
+    }
+
+    /**
+     * @param currency the currency to set
+     */
+    public void setCurrency(String currency) {
+      this.currency = currency;
+    }
+
+    /**
+     * @param source the source to set
+     */
+    public void setSource(String source) {
+      this.source = source;
+    }
+
+    /**
+     * @param cvvResult the cvvResult to set
+     */
+    public void setCvvResult(String cvvResult) {
+      this.cvvResult = cvvResult;
+    }
+
+    /**
+     * @param avsResult the avsResult to set
+     */
+    public void setAvsResult(String avsResult) {
+      this.avsResult = avsResult;
+    }
+
+    /**
+     * @param createdAt the createdAt to set
+     */
+    public void setCreatedAt(DateTime createdAt) {
+      this.createdAt = createdAt;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Transaction{");
@@ -182,9 +366,7 @@ public class Transaction extends AbstractTransaction {
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", currency='").append(currency).append('\'');
-        sb.append(", description='").append(description).append('\'');
         sb.append(", source='").append(source).append('\'');
-        sb.append(", recurring=").append(recurring);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", details=").append(details);
         sb.append('}');
@@ -214,16 +396,10 @@ public class Transaction extends AbstractTransaction {
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
             return false;
         }
-        if (description != null ? !description.equals(that.description) : that.description != null) {
-            return false;
-        }
         if (details != null ? !details.equals(that.details) : that.details != null) {
             return false;
         }
         if (invoice != null ? !invoice.equals(that.invoice) : that.invoice != null) {
-            return false;
-        }
-        if (recurring != null ? !recurring.equals(that.recurring) : that.recurring != null) {
             return false;
         }
        if (cvvResult != null ? !cvvResult.equals(that.cvvResult) : that.cvvResult != null) {
@@ -257,9 +433,7 @@ public class Transaction extends AbstractTransaction {
         result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
         result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (source != null ? source.hashCode() : 0);
-        result = 31 * result + (recurring != null ? recurring.hashCode() : 0);
         result = 31 * result + (cvvResult != null ? cvvResult.hashCode() : 0);
         result = 31 * result + (avsResult != null ? avsResult.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
