@@ -16,6 +16,9 @@
 
 package com.ning.billing.recurly.model;
 
+import java.util.Map;
+
+import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -222,16 +225,16 @@ public class Plan extends RecurlyObject {
         return unitAmountInCents;
     }
 
-    public void setUnitAmountInCents(final RecurlyUnitCurrency unitAmountInCents) {
-        this.unitAmountInCents = unitAmountInCents;
+    public void setUnitAmountInCents(final Object unitAmountInCents) {
+        this.unitAmountInCents = RecurlyUnitCurrency.build(unitAmountInCents);
     }
 
     public RecurlyUnitCurrency getSetupFeeInCents() {
         return setupFeeInCents;
     }
 
-    public void setSetupFeeInCents(final RecurlyUnitCurrency setupFeeInCents) {
-        this.setupFeeInCents = setupFeeInCents;
+    public void setSetupFeeInCents(final Object setupFeeInCents) {
+        this.setupFeeInCents = RecurlyUnitCurrency.build(setupFeeInCents);
     }
 
     public AddOns getAddOns() {
@@ -442,6 +445,40 @@ public class Plan extends RecurlyObject {
         @XmlElement(name = "ZAR")
         @XmlValue
         private Integer unitAmountZAR;
+
+        public static RecurlyUnitCurrency build(@Nullable final Object unitAmountInCents) {
+            if (isNull(unitAmountInCents)) {
+                return null;
+            }
+
+            if (unitAmountInCents instanceof RecurlyUnitCurrency) {
+                return (RecurlyUnitCurrency) unitAmountInCents;
+            }
+
+            final RecurlyUnitCurrency recurlyUnitCurrency = new RecurlyUnitCurrency();
+
+            if (unitAmountInCents instanceof Map) {
+                final Map amounts = (Map) unitAmountInCents;
+
+                recurlyUnitCurrency.setUnitAmountUSD(amounts.get("USD"));
+                recurlyUnitCurrency.setUnitAmountAUD(amounts.get("AUD"));
+                recurlyUnitCurrency.setUnitAmountCAD(amounts.get("CAD"));
+                recurlyUnitCurrency.setUnitAmountEUR(amounts.get("EUR"));
+                recurlyUnitCurrency.setUnitAmountGBP(amounts.get("GBP"));
+                recurlyUnitCurrency.setUnitAmountCZK(amounts.get("CZK"));
+                recurlyUnitCurrency.setUnitAmountDKK(amounts.get("DKK"));
+                recurlyUnitCurrency.setUnitAmountHUF(amounts.get("HUF"));
+                recurlyUnitCurrency.setUnitAmountNOK(amounts.get("NOK"));
+                recurlyUnitCurrency.setUnitAmountNZD(amounts.get("NZD"));
+                recurlyUnitCurrency.setUnitAmountPLN(amounts.get("PLN"));
+                recurlyUnitCurrency.setUnitAmountSGD(amounts.get("SGD"));
+                recurlyUnitCurrency.setUnitAmountSEK(amounts.get("SEK"));
+                recurlyUnitCurrency.setUnitAmountCHF(amounts.get("CHF"));
+                recurlyUnitCurrency.setUnitAmountZAR(amounts.get("ZAR"));
+            }
+
+            return recurlyUnitCurrency;
+        }
 
         public Integer getUnitAmountUSD() {
             return unitAmountUSD;

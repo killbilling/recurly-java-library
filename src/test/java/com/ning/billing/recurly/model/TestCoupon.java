@@ -24,8 +24,8 @@ import static org.testng.Assert.assertEquals;
 public class TestCoupon extends TestModelBase {
 
     @Test(groups = "fast")
-    public void testSerialization() throws Exception {
-        // See http://docs.recurly.com/api/accounts
+    public void testDeserializationPercent() throws Exception {
+        // See http://docs.recurly.com/api/coupons
         final String couponData =
                 "<coupon href=\"https://api.recurly.com/v2/coupons/f8028\">\n" +
                 "  <redemptions href=\"https://api.recurly.com/v2/coupons/f8028/redemptions\"/>\n" +
@@ -54,6 +54,46 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getState(), "redeemable");
         assertEquals(coupon.getDiscountType(), "percent");
         assertEquals(coupon.getDiscountPercent(), new Integer(100));
+        assertEquals(coupon.getRedeemByDate(), new DateTime("2013-10-10T00:00:00Z"));
+        assertEquals(coupon.getSingleUse(), Boolean.TRUE);
+        assertEquals(coupon.getAppliesForMonths(), new Integer(1));
+        assertEquals(coupon.getAppliesToAllPlans(), Boolean.TRUE);
+        assertEquals(coupon.getMaxRedemptions(), null);
+    }
+
+    @Test(groups = "fast", description = "https://github.com/killbilling/recurly-java-library/issues/57")
+    public void testDeserializationDollars() throws Exception {
+        // See http://docs.recurly.com/api/coupons
+        final String couponData =
+                "<coupon href=\"https://api.recurly.com/v2/coupons/f8028\">\n" +
+                "  <redemptions href=\"https://api.recurly.com/v2/coupons/f8028/redemptions\"/>\n" +
+                "  <coupon_code>f8028</coupon_code>\n" +
+                "  <name>t</name>\n" +
+                "  <state>redeemable</state>\n" +
+                "  <description nil=\"nil\"></description>\n" +
+                "  <discount_type>dollars</discount_type>\n" +
+                "  <discount_in_cents>\n" +
+                "    <USD type=\"integer\">199</USD>\n" +
+                "  </discount_in_cents>" +
+                "  <redeem_by_date type=\"datetime\">2013-10-10T00:00:00Z</redeem_by_date>\n" +
+                "  <single_use type=\"boolean\">true</single_use>\n" +
+                "  <applies_for_months type=\"integer\">1</applies_for_months>\n" +
+                "  <max_redemptions nil=\"nil\"></max_redemptions>\n" +
+                "  <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
+                "  <created_at type=\"datetime\">2013-05-08T10:21:52Z</created_at>\n" +
+                "  <plan_codes type=\"array\">\n" +
+                "  </plan_codes>\n" +
+                "  <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/f8028/redeem\" method=\"post\"/>\n" +
+                "</coupon>\n";
+
+        final Coupon coupon = xmlMapper.readValue(couponData, Coupon.class);
+
+        assertEquals(coupon.getHref(), "https://api.recurly.com/v2/coupons/f8028");
+        assertEquals(coupon.getCouponCode(), "f8028");
+        assertEquals(coupon.getName(), "t");
+        assertEquals(coupon.getState(), "redeemable");
+        assertEquals(coupon.getDiscountType(), "dollars");
+        assertEquals(coupon.getDiscountInCents().getUnitAmountUSD(), new Integer(199));
         assertEquals(coupon.getRedeemByDate(), new DateTime("2013-10-10T00:00:00Z"));
         assertEquals(coupon.getSingleUse(), Boolean.TRUE);
         assertEquals(coupon.getAppliesForMonths(), new Integer(1));

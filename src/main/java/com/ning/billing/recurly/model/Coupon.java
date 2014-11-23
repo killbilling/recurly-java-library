@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 
+import com.ning.billing.recurly.model.Plan.RecurlyUnitCurrency;
+
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.
  */
@@ -80,7 +82,7 @@ public class Coupon extends RecurlyObject {
     private Integer discountPercent;
 
     @XmlElement(name = "discount_in_cents")
-    private Integer discountInCents;
+    private RecurlyUnitCurrency discountInCents;
 
     @XmlElement(name = "state")
     private String state;
@@ -192,12 +194,12 @@ public class Coupon extends RecurlyObject {
         this.singleUse = booleanOrNull(singleUse);
     }
 
-    public Integer getDiscountInCents() {
+    public RecurlyUnitCurrency getDiscountInCents() {
         return discountInCents;
     }
 
     public void setDiscountInCents(final Object discountInCents) {
-        this.discountInCents = integerOrNull(discountInCents);
+        this.discountInCents = RecurlyUnitCurrency.build(discountInCents);
     }
 
     public Boolean getAppliesToAllPlans() {
