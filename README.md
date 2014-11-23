@@ -1,7 +1,7 @@
 recurly-java-library
 ====================
 
-Java library for Recurly, originally developed for [Kill Bill](http://kill-bill.org), an open-source subscription management and billing system.
+Java library for Recurly, originally developed for [Kill Bill](http://killbill.io), an open-source subscription management and billing system.
 
 Getting started
 ---------------
@@ -12,7 +12,7 @@ The library is distributed via [Maven Central](http://search.maven.org/#search%7
 <dependency>
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
-    <version>0.1.6</version>
+    <version>0.2.4</version>
 </dependency>
 ```
 
