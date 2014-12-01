@@ -72,6 +72,8 @@ public class RecurlyClient {
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
 
+    private static final String USER_AGENT = "KillBill/0.2.4; " + System.getProperty("java.version");
+
     public static final String FETCH_RESOURCE = "/recurly_js/result";
 
     /**
@@ -802,6 +804,7 @@ public class RecurlyClient {
         final Response response = builder.addHeader("Authorization", "Basic " + key)
                                          .addHeader("Accept", "application/xml")
                                          .addHeader("Content-Type", "application/xml; charset=utf-8")
+                                         .addHeader("User-Agent", USER_AGENT)
                                          .setBodyEncoding("UTF-8")
                                          .execute()
                                          .get();
