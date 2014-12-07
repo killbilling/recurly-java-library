@@ -18,10 +18,16 @@ package com.ning.billing.recurly;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 import java.math.BigDecimal;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.NoSuchElementException;
+import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
@@ -57,7 +63,14 @@ import com.ning.billing.recurly.model.Transactions;
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
+
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Objects;
+import com.google.common.base.StandardSystemProperty;
+import com.google.common.io.CharSource;
+import com.google.common.io.Resources;
+import com.google.common.net.HttpHeaders;
 
 public class RecurlyClient {
 
@@ -71,6 +84,11 @@ public class RecurlyClient {
 
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
+
+    private static final String GIT_PROPERTIES_FILE = "com/ning/billing/recurly/git.properties";
+    @VisibleForTesting
+    static final String GIT_COMMIT_ID_DESCRIBE_SHORT = "git.commit.id.describe-short";
+    private static final Pattern TAG_FROM_GIT_DESCRIBE_PATTERN = Pattern.compile("recurly-java-library-([0-9]*\\.[0-9]*\\.[0-9]*)(-[0-9]*)?");
 
     public static final String FETCH_RESOURCE = "/recurly_js/result";
 
@@ -103,6 +121,7 @@ public class RecurlyClient {
 
     // TODO: should we make it static?
     private final XmlMapper xmlMapper;
+    private final String userAgent;
 
     private final String key;
     private final String baseUrl;
@@ -116,6 +135,7 @@ public class RecurlyClient {
         this.key = DatatypeConverter.printBase64Binary(apiKey.getBytes());
         this.baseUrl = String.format("https://%s:%d/%s", host, port, version);
         this.xmlMapper = RecurlyObject.newXmlMapper();
+        this.userAgent = buildUserAgent();
     }
 
     /**
@@ -802,6 +822,7 @@ public class RecurlyClient {
         final Response response = builder.addHeader("Authorization", "Basic " + key)
                                          .addHeader("Accept", "application/xml")
                                          .addHeader("Content-Type", "application/xml; charset=utf-8")
+                                         .addHeader(HttpHeaders.USER_AGENT, userAgent)
                                          .setBodyEncoding("UTF-8")
                                          .execute()
                                          .get();
@@ -900,5 +921,47 @@ public class RecurlyClient {
         final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
         builder.setMaximumConnectionsPerHost(-1);
         return new AsyncHttpClient(builder.build());
+    }
+
+    @VisibleForTesting
+    String getUserAgent() {
+        return userAgent;
+    }
+
+    private String buildUserAgent() {
+        final String defaultVersion = "0.0.0";
+        final String defaultJavaVersion = "0.0.0";
+
+        try {
+            final Properties gitRepositoryState = new Properties();
+            final URL resourceURL = Resources.getResource(GIT_PROPERTIES_FILE);
+            final CharSource charSource = Resources.asCharSource(resourceURL, Charset.forName("UTF-8"));
+
+            Reader reader = null;
+            try {
+                reader = charSource.openStream();
+                gitRepositoryState.load(reader);
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+            }
+
+            final String version = Objects.firstNonNull(getVersionFromGitRepositoryState(gitRepositoryState), defaultVersion);
+            final String javaVersion = Objects.firstNonNull(StandardSystemProperty.JAVA_VERSION.value(), defaultJavaVersion);
+            return String.format("KillBill/%s; %s", version, javaVersion);
+        } catch (final Exception e) {
+            return String.format("KillBill/%s; %s", defaultVersion, defaultJavaVersion);
+        }
+    }
+
+    @VisibleForTesting
+    String getVersionFromGitRepositoryState(final Properties gitRepositoryState) {
+        final String gitDescribe = gitRepositoryState.getProperty(GIT_COMMIT_ID_DESCRIBE_SHORT);
+        if (gitDescribe == null) {
+            return null;
+        }
+        final Matcher matcher = TAG_FROM_GIT_DESCRIBE_PATTERN.matcher(gitDescribe);
+        return matcher.find() ? matcher.group(1) : null;
     }
 }
