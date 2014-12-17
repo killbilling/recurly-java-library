@@ -26,6 +26,9 @@ public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "account")
     private Account account;
+	
+	@XmlElement(name = "invoice")
+	private Invoice invoice;
 
     @XmlElement(name = "plan")
     private Plan plan;
@@ -88,6 +91,13 @@ public class Subscription extends AbstractSubscription {
 
     public void setAccount(final Account account) {
         this.account = account;
+    }
+	
+    public Invoice getInvoice() {
+        if (invoice != null && invoice.getCreatedAt() == null) {
+            invoice = fetch(invoice, Invoice.class);
+        }
+        return invoice;
     }
 
     public Plan getPlan() {
