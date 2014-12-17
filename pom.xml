@@ -288,6 +288,7 @@
                     <!--
                       | Apple's JVM sometimes requires more memory
                     -->
+		    <additionalparam>-Xdoclint:none</additionalparam>
                     <additionalJOption>-J-Xmx1024m</additionalJOption>
                     <source>1.6</source>
                     <encoding>UTF-8</encoding>
