@@ -1,3 +1,4 @@
+<<<<<<< Local Changes
 /*
  * Copyright 2010-2013 Ning, Inc.
  *
@@ -249,20 +250,6 @@ public class RecurlyClient {
         return doPOST(Subscription.SUBSCRIPTION_RESOURCE,
                       subscription, Subscription.class);
     }
-	
-    /**
-     * Preview a subscription
-     * <p/>
-     * Previews a subscription for an account.
-     *
-     * @param subscription Subscription object
-     * @return the newly created Subscription object on success, null otherwise
-     */
-    public Subscription previewSubscription(final Subscription subscription) {
-        return doPOST(Subscription.SUBSCRIPTION_RESOURCE
-					  + "/preview",
-                      subscription, Subscription.class);
-    }
 
     /**
      * Get a particular {@link Subscription} by it's UUID
@@ -330,7 +317,7 @@ public class RecurlyClient {
     /**
      * Update a particular {@link Subscription} by it's UUID
      * <p/>
-     * Returns information about a single subscription.
+     * Returns information about a single account.
      *
      * @param uuid UUID of the subscription to update
      * @return Subscription the updated subscription
@@ -338,21 +325,6 @@ public class RecurlyClient {
     public Subscription updateSubscription(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
         return doPUT(Subscriptions.SUBSCRIPTIONS_RESOURCE
                      + "/" + uuid,
-                     subscriptionUpdate,
-                     Subscription.class);
-    }
-	
-    /**
-     * Preview an update to a particular {@link Subscription} by it's UUID
-     * <p/>
-     * Returns information about a single subscription.
-     *
-     * @param uuid UUID of the subscription to preview an update for
-     * @return Subscription the updated subscription preview
-     */
-    public Subscription updateSubscriptionPreview(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
-        return doPOST(Subscriptions.SUBSCRIPTIONS_RESOURCE
-                     + "/" + uuid + "/preview",
                      subscriptionUpdate,
                      Subscription.class);
     }
@@ -507,6 +479,24 @@ public class RecurlyClient {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
                      Invoices.class);
     }
+	
+	/**
+	 * Mark an invoice as paid successfully
+	 *
+	 * @param invoiceId Recurly Invoice ID
+	 */
+	public void markInvoiceSuccessful(final string invoiceId) {
+		doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful");
+	}
+	
+	/**
+	 * Mark an invoice as failed collection
+	 *
+	 * @param invoiceId Recurly Invoice ID
+	 */
+	public void markInvoiceFailed(final string invoiceId) {
+		doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed");
+	}		
 
     ///////////////////////////////////////////////////////////////////////////
 
@@ -931,3 +921,5 @@ public class RecurlyClient {
         return new AsyncHttpClient(builder.build());
     }
 }
+=======
+>>>>>>> External Changes
