@@ -249,6 +249,20 @@ public class RecurlyClient {
         return doPOST(Subscription.SUBSCRIPTION_RESOURCE,
                       subscription, Subscription.class);
     }
+	
+    /**
+     * Preview a subscription
+     * <p/>
+     * Previews a subscription for an account.
+     *
+     * @param subscription Subscription object
+     * @return the newly created Subscription object on success, null otherwise
+     */
+    public Subscription previewSubscription(final Subscription subscription) {
+        return doPOST(Subscription.SUBSCRIPTION_RESOURCE
+					  + "/preview",
+                      subscription, Subscription.class);
+    }
 
     /**
      * Get a particular {@link Subscription} by it's UUID
@@ -316,7 +330,7 @@ public class RecurlyClient {
     /**
      * Update a particular {@link Subscription} by it's UUID
      * <p/>
-     * Returns information about a single account.
+     * Returns information about a single subscription.
      *
      * @param uuid UUID of the subscription to update
      * @return Subscription the updated subscription
@@ -324,6 +338,21 @@ public class RecurlyClient {
     public Subscription updateSubscription(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
         return doPUT(Subscriptions.SUBSCRIPTIONS_RESOURCE
                      + "/" + uuid,
+                     subscriptionUpdate,
+                     Subscription.class);
+    }
+	
+    /**
+     * Preview an update to a particular {@link Subscription} by it's UUID
+     * <p/>
+     * Returns information about a single subscription.
+     *
+     * @param uuid UUID of the subscription to preview an update for
+     * @return Subscription the updated subscription preview
+     */
+    public Subscription updateSubscriptionPreview(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
+        return doPOST(Subscriptions.SUBSCRIPTIONS_RESOURCE
+                     + "/" + uuid + "/preview",
                      subscriptionUpdate,
                      Subscription.class);
     }
