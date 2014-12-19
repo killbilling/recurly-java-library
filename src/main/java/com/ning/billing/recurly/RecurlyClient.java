@@ -320,6 +320,7 @@ public class RecurlyClient {
      * Returns information about a single account.
      *
      * @param uuid UUID of the subscription to update
+	 * @param subscriptionUpdate subscriptionUpdate object
      * @return Subscription the updated subscription
      */
     public Subscription updateSubscription(final String uuid, final SubscriptionUpdate subscriptionUpdate) {

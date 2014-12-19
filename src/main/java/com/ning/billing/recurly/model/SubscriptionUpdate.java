@@ -29,6 +29,11 @@ public class SubscriptionUpdate extends AbstractSubscription {
         now,
         renewal
     }
+	
+	public static enum CollectionMethod {
+		automatic,
+		manual
+	}
 
     @XmlElement
     private Timeframe timeframe;
@@ -39,6 +44,17 @@ public class SubscriptionUpdate extends AbstractSubscription {
 
     public void setTimeframe(final Timeframe timeframe) {
         this.timeframe = timeframe;
+    }
+	
+    @XmlElement
+    private CollectionMethod collectionMethod;
+	
+    public String getCollectionMethod() {
+        return collectionMethod;
+    }
+
+    public void setCollectionMethod(final CollectionMethod collectionMethod) {
+        this.collectionMethod = collectionMethod;
     }
 
     @Override
