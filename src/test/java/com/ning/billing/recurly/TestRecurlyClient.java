@@ -430,19 +430,7 @@ public class TestRecurlyClient {
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
-			
-			// Preview the user subscribing to the plan
-			final Subscription subscriptionPreview = recurlyClient.previewSubscription(subscriptionData);
 				
-			// Test the subscription preview
-            Assert.assertNotNull(subscriptionPreview);
-            Assert.assertEquals(subscriptionPreview.getCurrency(), subscriptionData.getCurrency());
-            if (null == subscriptionData.getQuantity()) {
-                Assert.assertEquals(subscriptionPreview.getQuantity(), new Integer(1));
-            } else {
-                Assert.assertEquals(subscriptionPreview.getQuantity(), subscriptionData.getQuantity());
-            }
-			
 			// Subscribe the user to the plan
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
@@ -701,19 +689,8 @@ public class TestRecurlyClient {
             final SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
             subscriptionUpdateData.setTimeframe(SubscriptionUpdate.Timeframe.now);
             subscriptionUpdateData.setPlanCode(plan2.getPlanCode());
-			subscriptionUpdateData.setCollectionMethod(SubscriptionUpdate.CollectionMethod.manual);
-			
-			// Preview the subscription update
-	        final Subscription subscriptionUpdatedPreview = recurlyClient.updateSubscriptionPreview(subscription.getUuid(), subscriptionUpdateData);
-            
-			Assert.assertNotNull(subscriptionUpdatedPreview);
-            Assert.assertEquals(subscription.getUuid(), subscriptionUpdatedPreview.getUuid());
-            Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdatedPreview.getPlan());
-            Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdatedPreview.getPlan().getPlanCode());
-			
-			Assert.assertEquals(SubscriptionUpdate.CollectionMethod.manual,subscriptionUpdatedPreview.getCollectionMethod());
-			Assert.assertNotEquals(subscription.getCollectionMethod(),subscriptionUpdatedPreview.getCollectionMethod());
-			
+			subscriptionUpdateData.setCollectionMethod("manual");
+						
 			//Update the subscription
             final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);
 
@@ -721,7 +698,7 @@ public class TestRecurlyClient {
             Assert.assertEquals(subscription.getUuid(), subscriptionUpdated.getUuid());
             Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdated.getPlan());
             Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdated.getPlan().getPlanCode());
-			Assert.assertEquals(SubscriptionUpdate.CollectionMethod.manual,subscriptionUpdated.getCollectionMethod());
+			Assert.assertEquals("manual",subscriptionUpdated.getCollectionMethod());
 			Assert.assertNotEquals(subscription.getCollectionMethod(),subscriptionUpdated.getCollectionMethod());
         } finally {
             // Clear up the BillingInfo

@@ -30,11 +30,6 @@ public class SubscriptionUpdate extends AbstractSubscription {
         renewal
     }
 	
-	public static enum CollectionMethod {
-		automatic,
-		manual
-	}
-
     @XmlElement
     private Timeframe timeframe;
 
@@ -46,15 +41,15 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.timeframe = timeframe;
     }
 	
-    @XmlElement
-    private CollectionMethod collectionMethod;
+    @XmlElement(name = "collection_method")
+    private String collectionMethod;
 	
-    public CollectionMethod getCollectionMethod() {
+    public String getCollectionMethod() {
         return collectionMethod;
     }
 
-    public void setCollectionMethod(final CollectionMethod collectionMethod) {
-        this.collectionMethod = collectionMethod;
+    public void setCollectionMethod(Object collectionMethod) {
+        this.collectionMethod = stringOrNull(collectionMethod);
     }
 
     @Override
