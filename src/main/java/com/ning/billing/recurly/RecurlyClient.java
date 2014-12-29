@@ -1,4 +1,3 @@
-<<<<<<< Local Changes
 /*
  * Copyright 2010-2013 Ning, Inc.
  *
@@ -922,5 +921,3 @@ public class RecurlyClient {
         return new AsyncHttpClient(builder.build());
     }
 }
-=======
->>>>>>> External Changes

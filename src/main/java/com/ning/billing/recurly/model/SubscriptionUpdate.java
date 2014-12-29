@@ -49,7 +49,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement
     private CollectionMethod collectionMethod;
 	
-    public String getCollectionMethod() {
+    public CollectionMethod getCollectionMethod() {
         return collectionMethod;
     }
 

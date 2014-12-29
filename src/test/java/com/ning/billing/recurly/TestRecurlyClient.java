@@ -701,6 +701,7 @@ public class TestRecurlyClient {
             final SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
             subscriptionUpdateData.setTimeframe(SubscriptionUpdate.Timeframe.now);
             subscriptionUpdateData.setPlanCode(plan2.getPlanCode());
+			subscriptionUpdateData.setCollectionMethod(SubscriptionUpdate.CollectionMethod.manual);
 			
 			// Preview the subscription update
 	        final Subscription subscriptionUpdatedPreview = recurlyClient.updateSubscriptionPreview(subscription.getUuid(), subscriptionUpdateData);
@@ -710,6 +711,9 @@ public class TestRecurlyClient {
             Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdatedPreview.getPlan());
             Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdatedPreview.getPlan().getPlanCode());
 			
+			Assert.assertEquals(SubscriptionUpdate.CollectionMethod.manual,subscriptionUpdatedPreview.getCollectionMethod());
+			Assert.assertNotEquals(subscription.getCollectionMethod(),subscriptionUpdatedPreview.getCollectionMethod());
+			
 			//Update the subscription
             final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);
 
@@ -717,6 +721,8 @@ public class TestRecurlyClient {
             Assert.assertEquals(subscription.getUuid(), subscriptionUpdated.getUuid());
             Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdated.getPlan());
             Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdated.getPlan().getPlanCode());
+			Assert.assertEquals(SubscriptionUpdate.CollectionMethod.manual,subscriptionUpdated.getCollectionMethod());
+			Assert.assertNotEquals(subscription.getCollectionMethod(),subscriptionUpdated.getCollectionMethod());
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
