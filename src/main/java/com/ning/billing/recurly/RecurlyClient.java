@@ -481,22 +481,21 @@ public class RecurlyClient {
     }
 	
 	/**
-	 * Mark an invoice as paid successfully
-	 *
-	 * @param invoiceId Recurly Invoice ID
-	 */
-	public void markInvoiceSuccessful(final string invoiceId) {
-		doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful");
+	* Mark an invoice as paid successfully
+	*
+	* @param invoiceId Recurly Invoice ID
+	*/
+	public Invoice markInvoiceSuccessful(final String invoiceId) {
+	return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful",null,Invoice.class);
 	}
-	
 	/**
-	 * Mark an invoice as failed collection
-	 *
-	 * @param invoiceId Recurly Invoice ID
-	 */
-	public void markInvoiceFailed(final string invoiceId) {
-		doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed");
-	}		
+	* Mark an invoice as failed collection
+	*
+	* @param invoiceId Recurly Invoice ID
+	*/
+	public Invoice markInvoiceFailed(final String invoiceId) {
+	return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed",null,Invoice.class);
+	}
 
     ///////////////////////////////////////////////////////////////////////////
 
