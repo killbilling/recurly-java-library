@@ -1,4 +1,3 @@
-<<<<<<< Local Changes
 /*
  * Copyright 2010-2013 Ning, Inc.
  *
@@ -481,12 +480,25 @@ public class RecurlyClient {
     }
 	
 	/**
+	* Post an invoice: invoice pending charges on an account
+	* <p/>
+	* Returns an invoice
+	*
+	* @param accountCode
+	* @return the invoice that was generated on success, null otherwise
+	*/
+	
+	public Invoice postAccountInvoice(final String accountCode) {
+		return doPOST(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,null,Invoice.class);
+	}
+	
+	/**
 	* Mark an invoice as paid successfully
 	*
 	* @param invoiceId Recurly Invoice ID
 	*/
 	public Invoice markInvoiceSuccessful(final String invoiceId) {
-	return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful",null,Invoice.class);
+		return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful",null,Invoice.class);
 	}
 	/**
 	* Mark an invoice as failed collection
@@ -494,7 +506,7 @@ public class RecurlyClient {
 	* @param invoiceId Recurly Invoice ID
 	*/
 	public Invoice markInvoiceFailed(final String invoiceId) {
-	return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed",null,Invoice.class);
+		return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed",null,Invoice.class);
 	}
 
     ///////////////////////////////////////////////////////////////////////////
@@ -920,5 +932,3 @@ public class RecurlyClient {
         return new AsyncHttpClient(builder.build());
     }
 }
-=======
->>>>>>> External Changes

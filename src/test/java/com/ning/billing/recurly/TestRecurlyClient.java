@@ -38,6 +38,7 @@ import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
+import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Redemption;
@@ -431,18 +432,6 @@ public class TestRecurlyClient {
             subscriptionData.setUnitAmountInCents(1242);
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
 			
-			// Preview the user subscribing to the plan
-			final Subscription subscriptionPreview = recurlyClient.previewSubscription(subscriptionData);
-				
-			// Test the subscription preview
-            Assert.assertNotNull(subscriptionPreview);
-            Assert.assertEquals(subscriptionPreview.getCurrency(), subscriptionData.getCurrency());
-            if (null == subscriptionData.getQuantity()) {
-                Assert.assertEquals(subscriptionPreview.getQuantity(), new Integer(1));
-            } else {
-                Assert.assertEquals(subscriptionPreview.getQuantity(), subscriptionData.getQuantity());
-            }
-			
 			// Subscribe the user to the plan
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
@@ -503,6 +492,34 @@ public class TestRecurlyClient {
             recurlyClient.deletePlan(planData.getPlanCode());
         }
     }
+	
+    @Test(groups = "integration")
+    public void testCreateAndQueryInvoices() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+		
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+			
+			// Create an Adjustmnet
+			final Adjustment a = new Adjustment();
+			accountData.setBillingInfo(billingInfoData);
+			a.setAccount(accountData);
+			a.setUnitAmountInCents(150);
+			a.setCurrency(CURRENCY);
+			
+			final Adjustment createdA = recurlyClient.createAccountAdjustment(accountData.getAccountCode,a);
+			
+		}
+	}
 
     @Test(groups = "integration")
     public void testCreateAndQueryTransactions() throws Exception {
@@ -701,14 +718,6 @@ public class TestRecurlyClient {
             final SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
             subscriptionUpdateData.setTimeframe(SubscriptionUpdate.Timeframe.now);
             subscriptionUpdateData.setPlanCode(plan2.getPlanCode());
-			
-			// Preview the subscription update
-	        final Subscription subscriptionUpdatedPreview = recurlyClient.updateSubscriptionPreview(subscription.getUuid(), subscriptionUpdateData);
-            
-			Assert.assertNotNull(subscriptionUpdatedPreview);
-            Assert.assertEquals(subscription.getUuid(), subscriptionUpdatedPreview.getUuid());
-            Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdatedPreview.getPlan());
-            Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdatedPreview.getPlan().getPlanCode());
 			
 			//Update the subscription
             final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);
