@@ -67,7 +67,6 @@ public class Invoice extends RecurlyObject {
     @XmlElementWrapper(name = "line_items")
     @XmlElement(name = "adjustment")
 	private Adjustments lineItems;
-    /*private Adjustments adjustments;*/
 
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
@@ -245,9 +244,6 @@ public class Invoice extends RecurlyObject {
         if (lineItems != null ? !lineItems.equals(invoice.lineItems) : invoice.lineItems != null) {
             return false;
         }
-        /*if (adjustments != null ? !adjustments.equals(invoice.adjustments) : invoice.adjustments != null) {
-            return false;
-        }*/
         if (poNumber != null ? !poNumber.equals(invoice.poNumber) : invoice.poNumber != null) {
             return false;
         }
