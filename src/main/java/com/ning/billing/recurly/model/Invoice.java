@@ -57,10 +57,17 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+	
+    @XmlElement(name = "collection_method")
+    private String collectionMethod;
+
+    @XmlElement(name = "net_terms")
+    private Integer netTerms;
 
     @XmlElementWrapper(name = "line_items")
     @XmlElement(name = "adjustment")
-    private Adjustments adjustments;
+	private Adjustments lineItems;
+    /*private Adjustments adjustments;*/
 
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
@@ -156,13 +163,29 @@ public class Invoice extends RecurlyObject {
     public void setCreatedAt(final Object createdAt) {
         this.createdAt = dateTimeOrNull(createdAt);
     }
+	
+    public String getCollectionMethod() {
+        return collectionMethod;
+    }
+
+    public void setCollectionMethod(Object collectionMethod) {
+        this.collectionMethod = stringOrNull(collectionMethod);
+    }
+
+    public Integer getNetTerms() {
+        return netTerms;
+    }
+
+    public void setNetTerms(final Object netTerms) {
+        this.netTerms = integerOrNull(netTerms);
+    }
 
     public Adjustments getLineItems() {
-        return adjustments;
+        return lineItems;
     }
 
     public void setLineItems(final Adjustments lineItems) {
-        this.adjustments = adjustments;
+        this.lineItems = lineItems;
     }
 
     public Transactions getTransactions() {
@@ -182,13 +205,15 @@ public class Invoice extends RecurlyObject {
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
         sb.append(", poNumber=").append(poNumber);
-        sb.append(", varNumber=").append(vatNumber);
+        sb.append(", vatNumber=").append(vatNumber);
         sb.append(", subtotalInCents=").append(subtotalInCents);
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", createdAt=").append(createdAt);
-        sb.append(", lineItems=").append(adjustments);
+		sb.append(", collectionMethod=").append(collectionMethod);
+		sb.append(", netTerms=").append(netTerms);
+        sb.append(", lineItems=").append(lineItems);
         sb.append(", transactions=").append(transactions);
         sb.append('}');
         return sb.toString();
@@ -217,9 +242,12 @@ public class Invoice extends RecurlyObject {
         if (invoiceNumber != null ? !invoiceNumber.equals(invoice.invoiceNumber) : invoice.invoiceNumber != null) {
             return false;
         }
-        if (adjustments != null ? !adjustments.equals(invoice.adjustments) : invoice.adjustments != null) {
+        if (lineItems != null ? !lineItems.equals(invoice.lineItems) : invoice.lineItems != null) {
             return false;
         }
+        /*if (adjustments != null ? !adjustments.equals(invoice.adjustments) : invoice.adjustments != null) {
+            return false;
+        }*/
         if (poNumber != null ? !poNumber.equals(invoice.poNumber) : invoice.poNumber != null) {
             return false;
         }
@@ -261,7 +289,7 @@ public class Invoice extends RecurlyObject {
         result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (adjustments != null ? adjustments.hashCode() : 0);
+        result = 31 * result + (lineItems != null ? lineItems.hashCode() : 0);
         result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
         return result;
     }
