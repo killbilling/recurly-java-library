@@ -38,6 +38,7 @@ import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
+import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Redemption;
@@ -136,6 +137,10 @@ public class TestRecurlyClient {
             for (int i = 0; i < nbAddOns; i++) {
                 Assert.assertEquals(subscriptionWithAddons.getAddOns().get(i).getAddOnCode(), addons.get(i).getAddOnCode());
             }
+			
+			//fetch the corresponding invoice
+			final Invoice subInvoice = subscriptionWithAddons.getInvoice();
+			Assert.assertNotNull(subInvoice);
 
             // Remove all addons
             final SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate();
