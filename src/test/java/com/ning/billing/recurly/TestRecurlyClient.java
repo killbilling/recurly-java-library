@@ -138,6 +138,10 @@ public class TestRecurlyClient {
                 Assert.assertEquals(subscriptionWithAddons.getAddOns().get(i).getAddOnCode(), addons.get(i).getAddOnCode());
             }
 
+            // Fetch the corresponding invoice
+            final Invoice subInvoice = subscriptionWithAddons.getInvoice();
+            Assert.assertNotNull(subInvoice);
+
             // Remove all addons
             final SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate();
             subscriptionUpdate.setAddOns(new SubscriptionAddOns());
