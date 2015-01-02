@@ -114,7 +114,6 @@ public class TestErrors extends TestModelBase {
         Assert.assertEquals(errors.getTransaction().getStatus(), "declined");
         Assert.assertEquals(errors.getTransaction().getReference(), "8433694");
         Assert.assertEquals(errors.getTransaction().getSource(), "billing_info");
-        Assert.assertFalse(errors.getTransaction().getRecurring());
         Assert.assertTrue(errors.getTransaction().getTest());
         Assert.assertFalse(errors.getTransaction().getVoidable());
         Assert.assertFalse(errors.getTransaction().getRefundable());
