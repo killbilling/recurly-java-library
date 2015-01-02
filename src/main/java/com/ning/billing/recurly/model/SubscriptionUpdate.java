@@ -41,12 +41,23 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.timeframe = timeframe;
     }
 
+    @XmlElement(name = "collection_method")
+    private String collectionMethod;
+
+    public String getCollectionMethod() {
+        return collectionMethod;
+    }
+
+    public void setCollectionMethod(Object collectionMethod) {
+        this.collectionMethod = stringOrNull(collectionMethod);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof SubscriptionUpdate)) {
+        if (o == null || getClass() != o.getClass()) {
             return false;
         }
         if (!super.equals(o)) {
@@ -55,6 +66,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
 
         final SubscriptionUpdate that = (SubscriptionUpdate) o;
 
+        if (collectionMethod != null ? !collectionMethod.equals(that.collectionMethod) : that.collectionMethod != null) {
+            return false;
+        }
         if (timeframe != that.timeframe) {
             return false;
         }
@@ -66,6 +80,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (timeframe != null ? timeframe.hashCode() : 0);
+        result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
         return result;
     }
 }
