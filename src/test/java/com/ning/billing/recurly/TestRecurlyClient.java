@@ -423,13 +423,27 @@ public class TestRecurlyClient {
             // Create a plan
             final Plan plan = recurlyClient.createPlan(planData);
 
-            // Subscribe the user to the plan
+            // Set up a subscription
             final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
+
+            // Preview the user subscribing to the plan
+            final Subscription subscriptionPreview = recurlyClient.previewSubscription(subscriptionData);
+
+            // Test the subscription preview
+            Assert.assertNotNull(subscriptionPreview);
+            Assert.assertEquals(subscriptionPreview.getCurrency(), subscriptionData.getCurrency());
+            if (null == subscriptionData.getQuantity()) {
+                Assert.assertEquals(subscriptionPreview.getQuantity(), new Integer(1));
+            } else {
+                Assert.assertEquals(subscriptionPreview.getQuantity(), subscriptionData.getQuantity());
+            }
+
+            // Subscribe the user to the plan
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
             // Test subscription creation
@@ -681,12 +695,22 @@ public class TestRecurlyClient {
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
-            // Test subscription creation
             Assert.assertNotNull(subscription);
 
+            // Set subscription update info.
             final SubscriptionUpdate subscriptionUpdateData = new SubscriptionUpdate();
             subscriptionUpdateData.setTimeframe(SubscriptionUpdate.Timeframe.now);
             subscriptionUpdateData.setPlanCode(plan2.getPlanCode());
+
+            // Preview the subscription update
+            final Subscription subscriptionUpdatedPreview = recurlyClient.updateSubscriptionPreview(subscription.getUuid(), subscriptionUpdateData);
+
+            Assert.assertNotNull(subscriptionUpdatedPreview);
+            Assert.assertEquals(subscription.getUuid(), subscriptionUpdatedPreview.getUuid());
+            Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdatedPreview.getPlan());
+            Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdatedPreview.getPlan().getPlanCode());
+
+            // Update the subscription
             final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);
 
             Assert.assertNotNull(subscriptionUpdated);

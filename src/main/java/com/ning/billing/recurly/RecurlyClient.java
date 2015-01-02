@@ -271,6 +271,20 @@ public class RecurlyClient {
     }
 
     /**
+     * Preview a subscription
+     * <p/>
+     * Previews a subscription for an account.
+     *
+     * @param subscription Subscription object
+     * @return the newly created Subscription object on success, null otherwise
+     */
+    public Subscription previewSubscription(final Subscription subscription) {
+        return doPOST(Subscription.SUBSCRIPTION_RESOURCE
+                      + "/preview",
+                      subscription, Subscription.class);
+    }
+
+    /**
      * Get a particular {@link Subscription} by it's UUID
      * <p/>
      * Returns information about a single account.
@@ -296,7 +310,7 @@ public class RecurlyClient {
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
                      subscription, Subscription.class);
     }
-    
+
     /**
      * Postpone a subscription
      * <p/>
@@ -306,7 +320,7 @@ public class RecurlyClient {
      * @return -?-
      */
     public Subscription postponeSubscription(final Subscription subscription, final DateTime renewaldate) {
-        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/postpone?next_renewal_date="+renewaldate,
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/postpone?next_renewal_date=" + renewaldate,
                      subscription, Subscription.class);
     }
 
@@ -336,7 +350,7 @@ public class RecurlyClient {
     /**
      * Update a particular {@link Subscription} by it's UUID
      * <p/>
-     * Returns information about a single account.
+     * Returns information about a single subscription.
      *
      * @param uuid UUID of the subscription to update
      * @return Subscription the updated subscription
@@ -346,6 +360,21 @@ public class RecurlyClient {
                      + "/" + uuid,
                      subscriptionUpdate,
                      Subscription.class);
+    }
+
+    /**
+     * Preview an update to a particular {@link Subscription} by it's UUID
+     * <p/>
+     * Returns information about a single subscription.
+     *
+     * @param uuid UUID of the subscription to preview an update for
+     * @return Subscription the updated subscription preview
+     */
+    public Subscription updateSubscriptionPreview(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
+        return doPOST(Subscriptions.SUBSCRIPTIONS_RESOURCE
+                      + "/" + uuid + "/preview",
+                      subscriptionUpdate,
+                      Subscription.class);
     }
 
     /**
@@ -653,7 +682,7 @@ public class RecurlyClient {
      */
     public Redemption redeemCoupon(final String couponCode, final Redemption redemption) {
         return doPOST(Coupon.COUPON_RESOURCE + "/" + couponCode + Redemption.REDEEM_RESOURCE,
-                redemption, Redemption.class);
+                      redemption, Redemption.class);
     }
 
     /**
@@ -664,7 +693,7 @@ public class RecurlyClient {
      */
     public Redemption getCouponRedemptionByAccount(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTION_RESOURCE,
-                Redemption.class);
+                     Redemption.class);
     }
 
     /**
@@ -675,7 +704,7 @@ public class RecurlyClient {
      */
     public Redemption getCouponRedemptionByInvoice(final Integer invoiceNumber) {
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
-                Redemption.class);
+                     Redemption.class);
     }
 
     /**
