@@ -528,6 +528,36 @@ public class RecurlyClient {
                      Invoices.class);
     }
 
+    /**
+     * Post an invoice: invoice pending charges on an account
+     * <p/>
+     * Returns an invoice
+     *
+     * @param accountCode
+     * @return the invoice that was generated on success, null otherwise
+     */
+    public Invoice postAccountInvoice(final String accountCode, final Invoice invoice) {
+        return doPOST(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE, invoice, Invoice.class);
+    }
+
+    /**
+     * Mark an invoice as paid successfully
+     *
+     * @param invoiceId Recurly Invoice ID
+     */
+    public Invoice markInvoiceSuccessful(final Integer invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful", null, Invoice.class);
+    }
+
+    /**
+     * Mark an invoice as failed collection
+     *
+     * @param invoiceId Recurly Invoice ID
+     */
+    public Invoice markInvoiceFailed(final Integer invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, Invoice.class);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
 
     /**
@@ -804,7 +834,12 @@ public class RecurlyClient {
     private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz) {
         final String xmlPayload;
         try {
-            xmlPayload = xmlMapper.writeValueAsString(payload);
+            if (payload != null) {
+                xmlPayload = xmlMapper.writeValueAsString(payload);
+            } else {
+                xmlPayload = null;
+            }
+
             if (debug()) {
                 log.info("Msg to Recurly API [PUT]:: URL : {}", baseUrl + resource);
                 log.info("Payload for [PUT]:: {}", xmlPayload);

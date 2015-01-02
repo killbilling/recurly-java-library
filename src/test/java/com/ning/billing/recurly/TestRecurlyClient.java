@@ -38,6 +38,7 @@ import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
+import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Redemption;
@@ -501,6 +502,78 @@ public class TestRecurlyClient {
             recurlyClient.closeAccount(accountData.getAccountCode());
             // Delete the Plan
             recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCreateAndCloseInvoices() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+
+            // Create an Adjustment
+            final Adjustment a = new Adjustment();
+            a.setUnitAmountInCents(150);
+            a.setCurrency(CURRENCY);
+
+            final Adjustment createdA = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), a);
+
+            // Post an invoice/invoice the adjustment
+            final Invoice invoiceData = new Invoice();
+            invoiceData.setCollectionMethod("manual");
+            invoiceData.setLineItems(null);
+            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
+            Assert.assertNotNull(invoice);
+
+            // Check to see if the adjustment was invoiced properly
+            Adjustments retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.PENDING);
+            Assert.assertEquals(retrievedAdjustments.size(), 0, "Retrieved Adjustments marked as pending although none should be.");
+
+            retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.INVOICED);
+            Assert.assertEquals(retrievedAdjustments.size(), 1, "Not all Adjustments marked as invoiced although all should be.");
+
+            // Attempt to close the invoice
+            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getInvoiceNumber());
+            Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
+
+            // Create an Adjustment
+            final Adjustment b = new Adjustment();
+            b.setUnitAmountInCents(250);
+            b.setCurrency(CURRENCY);
+
+            final Adjustment createdB = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), b);
+
+            // Post an invoice/invoice the adjustment
+            final Invoice failInvoiceData = new Invoice();
+            failInvoiceData.setCollectionMethod("manual");
+            failInvoiceData.setLineItems(null);
+            final Invoice invoiceFail = recurlyClient.postAccountInvoice(accountData.getAccountCode(), failInvoiceData);
+            Assert.assertNotNull(invoiceFail);
+
+            // Check to see if the adjustment was invoiced properly
+            retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.PENDING);
+            Assert.assertEquals(retrievedAdjustments.size(), 0, "Retrieved Adjustments marked as pending although none should be.");
+
+            retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.INVOICED);
+            Assert.assertEquals(retrievedAdjustments.size(), 2, "Not all Adjustments marked as invoiced although all should be.");
+
+            final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getInvoiceNumber());
+            Assert.assertEquals(failedInvoice.getState(), "failed", "Invoice not failed successfully");
+        } finally {
+            // Clear up the BillingInfo
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
 

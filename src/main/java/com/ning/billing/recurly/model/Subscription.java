@@ -27,6 +27,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "account")
     private Account account;
 
+    @XmlElement(name = "invoice")
+    private Invoice invoice;
+
     @XmlElement(name = "plan")
     private Plan plan;
 
@@ -75,7 +78,7 @@ public class Subscription extends AbstractSubscription {
     //Purchase Order Number
     @XmlElement(name = "po_number")
     private String poNumber;
-    
+
     @XmlElement(name = "first_renewal_date")
     private DateTime firstRenewalDate;
 
@@ -88,6 +91,13 @@ public class Subscription extends AbstractSubscription {
 
     public void setAccount(final Account account) {
         this.account = account;
+    }
+
+    public Invoice getInvoice() {
+        if (invoice != null && invoice.getCreatedAt() == null) {
+            invoice = fetch(invoice, Invoice.class);
+        }
+        return invoice;
     }
 
     public Plan getPlan() {
@@ -218,7 +228,7 @@ public class Subscription extends AbstractSubscription {
     public void setPoNumber(Object poNumber) {
         this.poNumber = stringOrNull(poNumber);
     }
-    
+
     public DateTime getFirstRenewalDate() {
         return firstRenewalDate;
     }
@@ -328,7 +338,7 @@ public class Subscription extends AbstractSubscription {
         if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
             return false;
         }
-        
+
         if (firstRenewalDate != null ? !firstRenewalDate.equals(that.firstRenewalDate) : that.firstRenewalDate != null) {
             return false;
         }
