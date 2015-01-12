@@ -83,7 +83,7 @@ public class Subscription extends AbstractSubscription {
     private DateTime firstRenewalDate;
 
     public Account getAccount() {
-        if (account != null && account.getCreatedAt() == null) {
+        if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
         }
         return account;
@@ -94,7 +94,7 @@ public class Subscription extends AbstractSubscription {
     }
 
     public Invoice getInvoice() {
-        if (invoice != null && invoice.getCreatedAt() == null) {
+        if (invoice != null && invoice.getHref() != null && !invoice.getHref().isEmpty()) {
             invoice = fetch(invoice, Invoice.class);
         }
         return invoice;

@@ -453,6 +453,8 @@ public class TestRecurlyClient {
 
             // Test subscription creation
             Assert.assertNotNull(subscription);
+			// Test invoice fetching via href
+			Assert.assertNotNull(subscription.getInvoice());
             Assert.assertEquals(subscription.getCurrency(), subscriptionData.getCurrency());
             if (null == subscriptionData.getQuantity()) {
                 Assert.assertEquals(subscription.getQuantity(), new Integer(1));
@@ -784,6 +786,8 @@ public class TestRecurlyClient {
             final Subscription subscriptionUpdatedPreview = recurlyClient.updateSubscriptionPreview(subscription.getUuid(), subscriptionUpdateData);
 
             Assert.assertNotNull(subscriptionUpdatedPreview);
+			// Test inline invoice fetch
+			Assert.assertNotNull(subscriptionUpdatedPreview.getInvoice());
             Assert.assertEquals(subscription.getUuid(), subscriptionUpdatedPreview.getUuid());
             Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdatedPreview.getPlan());
             Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdatedPreview.getPlan().getPlanCode());
