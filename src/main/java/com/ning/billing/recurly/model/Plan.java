@@ -89,7 +89,7 @@ public class Plan extends RecurlyObject {
 
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
-
+ 
     @XmlElement(name = "setup_fee_in_cents")
     private RecurlyUnitCurrency setupFeeInCents;
 

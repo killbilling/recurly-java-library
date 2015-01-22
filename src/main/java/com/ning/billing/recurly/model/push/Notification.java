@@ -30,7 +30,7 @@ import com.google.common.base.CaseFormat;
 public abstract class Notification extends RecurlyObject {
 
     private static Logger log = LoggerFactory.getLogger(Notification.class);
-    private static Pattern ROOT_NAME = Pattern.compile("<(.*_notification)>");
+    private static Pattern ROOT_NAME = Pattern.compile("<([^\\?].*_notification)>[^<>]");
 
     public static enum Type {
         BillingInfoUpdatedNotification(com.ning.billing.recurly.model.push.account.BillingInfoUpdatedNotification.class),

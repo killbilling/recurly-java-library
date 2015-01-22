@@ -81,6 +81,9 @@ public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "first_renewal_date")
     private DateTime firstRenewalDate;
+    
+    @XmlElement(name = "coupon_code")
+    private String couponCode; 
 
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
@@ -237,8 +240,11 @@ public class Subscription extends AbstractSubscription {
         this.firstRenewalDate = dateTimeOrNull(firstRenewalDate);
     }
 
+    public void setCouponCode(String couponCode) {
+		this.couponCode = couponCode;
+	}
 
-    @Override
+	@Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("Subscription");
