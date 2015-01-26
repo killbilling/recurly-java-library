@@ -86,10 +86,13 @@ public class Plan extends RecurlyObject {
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+    
+    @XmlElement(name = "tax_code")
+    private String taxCode;
 
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
- 
+    
     @XmlElement(name = "setup_fee_in_cents")
     private RecurlyUnitCurrency setupFeeInCents;
 
@@ -237,7 +240,15 @@ public class Plan extends RecurlyObject {
         this.setupFeeInCents = RecurlyUnitCurrency.build(setupFeeInCents);
     }
 
-    public AddOns getAddOns() {
+    public String getTaxCode() {
+		return taxCode;
+	}
+
+	public void setTaxCode(final Object taxCode) {
+        this.taxCode = stringOrNull(taxCode);
+	}
+
+	public AddOns getAddOns() {
         return this.addOns;
     }
 
@@ -268,6 +279,7 @@ public class Plan extends RecurlyObject {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", setupFeeInCents=").append(setupFeeInCents);
+        sb.append(", taxCode=").append(taxCode);
         sb.append('}');
         return sb.toString();
     }
@@ -328,6 +340,9 @@ public class Plan extends RecurlyObject {
         if (successLink != null ? !successLink.equals(plan.successLink) : plan.successLink != null) {
             return false;
         }
+        if (taxCode != null ? !taxCode.equals(plan.taxCode) : plan.taxCode != null) {
+            return false;
+        }
         if (trialIntervalLength != null ? !trialIntervalLength.equals(plan.trialIntervalLength) : plan.trialIntervalLength != null) {
             return false;
         }
@@ -359,6 +374,7 @@ public class Plan extends RecurlyObject {
         result = 31 * result + (unitName != null ? unitName.hashCode() : 0);
         result = 31 * result + (planIntervalUnit != null ? planIntervalUnit.hashCode() : 0);
         result = 31 * result + (planIntervalLength != null ? planIntervalLength.hashCode() : 0);
+        result = 31 * result + (taxCode != null ? taxCode.hashCode() : 0);
         result = 31 * result + (trialIntervalLength != null ? trialIntervalLength.hashCode() : 0);
         result = 31 * result + (trialIntervalUnit != null ? trialIntervalUnit.hashCode() : 0);
         result = 31 * result + (accountingCode != null ? accountingCode.hashCode() : 0);

@@ -45,6 +45,7 @@ public class TestPlan extends TestModelBase {
                                 "  <trial_interval_unit>days</trial_interval_unit>\n" +
                                 "  <accounting_code nil=\"nil\"></accounting_code>\n" +
                                 "  <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                "  <tax_code nil=\"nil\"></tax_code>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "    <USD type=\"integer\">1000</USD>\n" +
                                 "    <EUR type=\"integer\">800</EUR>\n" +
@@ -98,6 +99,7 @@ public class TestPlan extends TestModelBase {
                                 "  <trial_interval_unit>days</trial_interval_unit>\n" +
                                 "  <accounting_code nil=\"nil\"></accounting_code>\n" +
                                 "  <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                "  <tax_code nil=\"nil\"></tax_code>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "  </unit_amount_in_cents>\n" +
                                 "  <setup_fee_in_cents>\n" +
