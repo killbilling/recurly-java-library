@@ -241,12 +241,12 @@ public class Plan extends RecurlyObject {
     }
 
     public String getTaxCode() {
-		return taxCode;
-	}
+        return taxCode;
+    }
 
-	public void setTaxCode(final Object taxCode) {
+    public void setTaxCode(final Object taxCode) {
         this.taxCode = stringOrNull(taxCode);
-	}
+    }
 
 	public AddOns getAddOns() {
         return this.addOns;
