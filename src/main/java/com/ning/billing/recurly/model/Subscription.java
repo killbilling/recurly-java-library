@@ -74,6 +74,9 @@ public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "net_terms")
     private Integer netTerms;
+	
+	@XmlElement(name = "coupon_code")
+	private String couponCode;
 
     //Purchase Order Number
     @XmlElement(name = "po_number")
@@ -236,6 +239,10 @@ public class Subscription extends AbstractSubscription {
     public void setFirstRenewalDate(final Object firstRenewalDate) {
         this.firstRenewalDate = dateTimeOrNull(firstRenewalDate);
     }
+	
+	public void setCouponCode(final String couponCode) {
+		this.couponCode = couponCode;
+	}
 
 
     @Override
