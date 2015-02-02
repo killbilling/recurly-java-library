@@ -413,6 +413,7 @@ public class TestRecurlyClient {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan();
+		final Coupon couponData = TestUtils.createRandomCoupon();
 
         try {
             // Create a user
@@ -427,6 +428,9 @@ public class TestRecurlyClient {
 
             // Create a plan
             final Plan plan = recurlyClient.createPlan(planData);
+			
+			// Create a coupon
+            Coupon coupon = recurlyClient.createCoupon(couponData);
 
             // Set up a subscription
             final Subscription subscriptionData = new Subscription();
@@ -434,6 +438,8 @@ public class TestRecurlyClient {
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
+			// Apply a coupon at the time of subscription creation
+			subscriptionData.setCouponCode(couponData.getCouponCode());
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
 
             // Preview the user subscribing to the plan
@@ -487,6 +493,11 @@ public class TestRecurlyClient {
             // See https://github.com/killbilling/recurly-java-library/issues/4
             Assert.assertEquals(found.getAccount().getAccountCode(), accountData.getAccountCode());
             Assert.assertEquals(found.getAccount().getFirstName(), accountData.getFirstName());
+			
+			// Verify the coupon redemption
+			final Redemption redemption = recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
+			Assert.assertNotNull(redemption);
+			Assert.assertEquals(redemption.getCoupon().getCouponCode(),couponData.getCouponCode());
 
             // Cancel a Subscription
             recurlyClient.cancelSubscription(subscription);
