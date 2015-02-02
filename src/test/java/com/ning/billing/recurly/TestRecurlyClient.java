@@ -1,9 +1,10 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2015 Pierre-Alexandre Meyer
  *
- * Ning licenses this file to you under the Apache License, version 2.0
- * (the "License"); you may not use this file except in compliance with the
- * License.  You may obtain a copy of the License at:
+ * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -413,7 +414,7 @@ public class TestRecurlyClient {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan();
-		final Coupon couponData = TestUtils.createRandomCoupon();
+        final Coupon couponData = TestUtils.createRandomCoupon();
 
         try {
             // Create a user
@@ -428,8 +429,8 @@ public class TestRecurlyClient {
 
             // Create a plan
             final Plan plan = recurlyClient.createPlan(planData);
-			
-			// Create a coupon
+
+            // Create a coupon
             Coupon coupon = recurlyClient.createCoupon(couponData);
 
             // Set up a subscription
@@ -438,8 +439,8 @@ public class TestRecurlyClient {
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
-			// Apply a coupon at the time of subscription creation
-			subscriptionData.setCouponCode(couponData.getCouponCode());
+            // Apply a coupon at the time of subscription creation
+            subscriptionData.setCouponCode(couponData.getCouponCode());
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
 
             // Preview the user subscribing to the plan
@@ -493,11 +494,11 @@ public class TestRecurlyClient {
             // See https://github.com/killbilling/recurly-java-library/issues/4
             Assert.assertEquals(found.getAccount().getAccountCode(), accountData.getAccountCode());
             Assert.assertEquals(found.getAccount().getFirstName(), accountData.getFirstName());
-			
-			// Verify the coupon redemption
-			final Redemption redemption = recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
-			Assert.assertNotNull(redemption);
-			Assert.assertEquals(redemption.getCoupon().getCouponCode(),couponData.getCouponCode());
+
+            // Verify the coupon redemption
+            final Redemption redemption = recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
+            Assert.assertNotNull(redemption);
+            Assert.assertEquals(redemption.getCoupon().getCouponCode(), couponData.getCouponCode());
 
             // Cancel a Subscription
             recurlyClient.cancelSubscription(subscription);
