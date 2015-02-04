@@ -26,6 +26,7 @@ import com.ning.billing.recurly.model.Address;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.RecurlyUnitCurrency;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOn;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
@@ -182,12 +183,12 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link Plan.RecurlyUnitCurrency} object for testing use.
+     * Creates a random {@link RecurlyUnitCurrency} object for testing use.
      *
-     * @return The random {@link Plan.RecurlyUnitCurrency} object
+     * @return The random {@link RecurlyUnitCurrency} object
      */
-    public static Plan.RecurlyUnitCurrency createRandomPrice() {
-        final Plan.RecurlyUnitCurrency price = new Plan.RecurlyUnitCurrency();
+    public static RecurlyUnitCurrency createRandomPrice() {
+        final RecurlyUnitCurrency price = new RecurlyUnitCurrency();
         /*
         price.setUnitAmountEUR(LifecycleTest.randomInteger(10));
         price.setUnitAmountGBP(LifecycleTest.randomInteger(10));
@@ -200,14 +201,14 @@ public class TestUtils {
     }
 
     /**
-     * Creates a random {@link Plan.RecurlyUnitCurrency} object for testing use. The Price
+     * Creates a random {@link RecurlyUnitCurrency} object for testing use. The Price
      * object
      *
-     * @param currencyCode The curreny for which we shold return a random Price
-     * @return The random {@link Plan.RecurlyUnitCurrency} object
+     * @param currencyCode The currency for which we should return a random Price
+     * @return The random {@link RecurlyUnitCurrency} object
      */
-    public static Plan.RecurlyUnitCurrency createRandomSinglePrice(final String currencyCode) {
-        final Plan.RecurlyUnitCurrency price = new Plan.RecurlyUnitCurrency();
+    public static RecurlyUnitCurrency createRandomSinglePrice(final String currencyCode) {
+        final RecurlyUnitCurrency price = new RecurlyUnitCurrency();
 
         // using if's as we are not guaranteed to be on JDK7
         if (currencyCode.endsWith("EUR")) {

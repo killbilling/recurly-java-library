@@ -18,12 +18,16 @@ package com.ning.billing.recurly.model.jackson;
 
 import java.io.IOException;
 
+import javax.xml.namespace.QName;
+
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
 
 import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.core.json.JsonWriteContext;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 
 public class RecurlyObjectsSerializer<T extends RecurlyObjects<U>, U extends RecurlyObject> extends StdSerializer<T> {
 
@@ -36,9 +40,25 @@ public class RecurlyObjectsSerializer<T extends RecurlyObjects<U>, U extends Rec
 
     @Override
     public void serialize(final T values, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
+        if (values.isEmpty()) {
+            jgen.writeStartArray();
+            jgen.writeEndArray();
+            return;
+        }
+
+        final ToXmlGenerator xmlgen = (ToXmlGenerator) jgen;
+        // Nested RecurlyObjects
+        final boolean shouldSkipWritingFieldName = xmlgen.getOutputContext().writeFieldName(elementName) == JsonWriteContext.STATUS_EXPECT_VALUE;
+        boolean firstValue = true;
         for (final U value : values) {
-            jgen.writeFieldName(elementName);
-            jgen.writeObject(value);
+            if (!shouldSkipWritingFieldName && firstValue) {
+                xmlgen.setNextName(new QName(null, elementName));
+            } else if (!shouldSkipWritingFieldName) {
+                xmlgen.writeFieldName(elementName);
+            }
+            firstValue = false;
+
+            xmlgen.writeObject(value);
         }
     }
 }

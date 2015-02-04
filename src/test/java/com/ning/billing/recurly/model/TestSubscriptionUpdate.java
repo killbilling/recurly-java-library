@@ -52,11 +52,11 @@ public class TestSubscriptionUpdate extends TestModelBase {
 
         final String xml = xmlMapper.writeValueAsString(subscription);
         Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
-                "<unit_amount_in_cents>800</unit_amount_in_cents>" +
-                "<quantity>1</quantity>" +
-                "<plan_code>gold</plan_code>" +
-                "<timeframe>now</timeframe>" +
-                "</subscription>");
+                                 "<timeframe>now</timeframe>" +
+                                 "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                                 "<quantity>1</quantity>" +
+                                 "<plan_code>gold</plan_code>" +
+                                 "</subscription>");
     }
 
     @Test(groups = "fast")
@@ -70,12 +70,12 @@ public class TestSubscriptionUpdate extends TestModelBase {
 
         final String xml = xmlMapper.writeValueAsString(subscription);
         Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
-                "<unit_amount_in_cents>800</unit_amount_in_cents>" +
-                "<quantity>1</quantity>" +
-                "<subscription_add_ons></subscription_add_ons>" +
-                "<plan_code>gold</plan_code>" +
-                "<timeframe>now</timeframe>" +
-                "</subscription>");
+                                 "<timeframe>now</timeframe>" +
+                                 "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                                 "<quantity>1</quantity>" +
+                                 "<subscription_add_ons></subscription_add_ons>" +
+                                 "<plan_code>gold</plan_code>" +
+                                 "</subscription>");
     }
 
     @Test(groups = "fast")
@@ -95,17 +95,17 @@ public class TestSubscriptionUpdate extends TestModelBase {
 
         final String xml = xmlMapper.writeValueAsString(subscription);
         Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
-                "<unit_amount_in_cents>800</unit_amount_in_cents>" +
-                "<quantity>1</quantity>" +
-                "<subscription_add_ons>" +
-                "<subscription_add_on>" +
-                "<add_on_code>extra_users</add_on_code>" +
-                "<unit_amount_in_cents>1000</unit_amount_in_cents>" +
-                "<quantity>2</quantity>" +
-                "</subscription_add_on>" +
-                "</subscription_add_ons>" +
-                "<plan_code>gold</plan_code>" +
-                "<timeframe>now</timeframe>" +
-                "</subscription>");
+                                 "<timeframe>now</timeframe>" +
+                                 "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                                 "<quantity>1</quantity>" +
+                                 "<subscription_add_ons>" +
+                                 "<subscription_add_on>" +
+                                 "<add_on_code>extra_users</add_on_code>" +
+                                 "<unit_amount_in_cents>1000</unit_amount_in_cents>" +
+                                 "<quantity>2</quantity>" +
+                                 "</subscription_add_on>" +
+                                 "</subscription_add_ons>" +
+                                 "<plan_code>gold</plan_code>" +
+                                 "</subscription>");
     }
 }

@@ -19,13 +19,14 @@ package com.ning.billing.recurly.model;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import com.ning.billing.recurly.model.jackson.RecurlyXmlSerializerProvider;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -61,7 +62,7 @@ public class TestXmlMapper extends TestModelBase {
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
-    @XmlRootElement(name = "values")
+    @JsonRootName("values")
     @JsonFormat(shape = JsonFormat.Shape.OBJECT)
     private static final class Values extends ArrayList<String> {
 
@@ -76,6 +77,7 @@ public class TestXmlMapper extends TestModelBase {
     @Test(groups = "fast", description = "See https://github.com/FasterXML/jackson-dataformat-xml/issues/76")
     public void testCollection() throws Exception {
         final XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.setSerializerProvider(new RecurlyXmlSerializerProvider());
         final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
         m.addSerializer(Values.class, new ValuesSerializer());
         xmlMapper.registerModule(m);
@@ -86,13 +88,13 @@ public class TestXmlMapper extends TestModelBase {
                                                   "    <value>Salut!</value>" +
                                                   "  </values>",
                                                   Values.class);
-        Assert.assertEquals(values.size(), 2);
+        Assert.assertEquals(values.size(), 2, values.toString());
         Assert.assertEquals(values.get(0), "Hi!");
         Assert.assertEquals(values.get(1), "Salut!");
 
         // Test we can re-serialize
         final String valueAsString = xmlMapper.writeValueAsString(values);
         final Values values2 = xmlMapper.readValue(valueAsString, Values.class);
-        Assert.assertEquals(values2, values);
+        Assert.assertEquals(values2, values, valueAsString);
     }
 }
