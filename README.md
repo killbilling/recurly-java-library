@@ -18,6 +18,8 @@ The library is distributed via [Maven Central](http://search.maven.org/#search%7
 
 The easiest way to get started is by looking at the code examples in [TestRecurlyClient.java](https://github.com/killbilling/recurly-java-library/blob/master/src/test/java/com/ning/billing/recurly/TestRecurlyClient.java).
 
+Note: the 0.3.x release train is under development, the latest stable version is 0.2.4.
+
 Development
 -----------
 
@@ -44,7 +46,7 @@ Signature Generation for Recurly.js
 -------------------------------------
 
 A special signature string is needed for the BuildSubscriptionForm helper method in the recurly.js library. To obtain a signature on the server to pass to the page, simply use:
-	
+
 	String signature = RecurlyJs.getRecurlySignature(String jsPrivateKey);
 
 If you wish to specify extra parameters (such as account id and subscription code), build an ArrayList<String> with url-encoded key=value string pairs. For example:
@@ -53,7 +55,7 @@ If you wish to specify extra parameters (such as account id and subscription cod
     extraParams.add(String.format("%s=%s", "subscription%5Bplan_code%5D", "testplan1"));
     extraParams.add(String.format("%s=%s", "account%5Baccount_code%5D", "123abc"));
 	String signature = RecurlyJs.getRecurlySignature(String jsPrivateKey, extraParams);
-	
+
 Refer to the [Recurly.js Signature Generation documentation](http://docs.recurly.com/api/recurlyjs/signatures) for more information on the format for building parameters.
 
 
