@@ -27,6 +27,7 @@ import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.RecurlyClient;
 import com.ning.billing.recurly.model.jackson.RecurlyObjectsSerializer;
+import com.ning.billing.recurly.model.jackson.RecurlyXmlSerializerProvider;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -66,6 +67,7 @@ public abstract class RecurlyObject {
 
     public static XmlMapper newXmlMapper() {
         final XmlMapper xmlMapper = new XmlMapper();
+        xmlMapper.setSerializerProvider(new RecurlyXmlSerializerProvider());
         final AnnotationIntrospector primary = new JacksonAnnotationIntrospector();
         final AnnotationIntrospector secondary = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
         final AnnotationIntrospector pair = new AnnotationIntrospectorPair(primary, secondary);

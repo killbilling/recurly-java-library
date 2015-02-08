@@ -1,9 +1,11 @@
 /*
  * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2015 Pierre-Alexandre Meyer
  *
- * Ning licenses this file to you under the Apache License, version 2.0
- * (the "License"); you may not use this file except in compliance with the
- * License.  You may obtain a copy of the License at:
+ * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -54,6 +56,15 @@ public class TestAccount extends TestModelBase {
 
         final Account account = xmlMapper.readValue(accountData, Account.class);
         Assert.assertEquals(account.getHref(), "https://api.recurly.com/v2/accounts/1");
+        verifyAccount(account);
+
+        // Verify serialization
+        final String accountSerialized = xmlMapper.writeValueAsString(account);
+        final Account account2 = xmlMapper.readValue(accountSerialized, Account.class);
+        verifyAccount(account2);
+    }
+
+    private void verifyAccount(final Account account) {
         Assert.assertEquals(account.getAccountCode(), "1");
         Assert.assertEquals(account.getState(), "active");
         Assert.assertNull(account.getUsername());

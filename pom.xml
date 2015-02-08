@@ -24,7 +24,7 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.5-SNAPSHOT</version>
+    <version>0.3.0-SNAPSHOT</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>http://github.com/killbilling/recurly-java-library</url>
@@ -63,8 +63,7 @@
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Core only -->
-        <jackson.version>2.3.0</jackson.version>
+        <jackson.version>2.5.0</jackson.version>
         <guava.version>16.0.1</guava.version>
         <slf4j.version>1.6.5</slf4j.version>
     </properties>

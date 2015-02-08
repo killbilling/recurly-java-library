@@ -1,9 +1,10 @@
 /*
  * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2015 Pierre-Alexandre Meyer
  *
- * Ning licenses this file to you under the Apache License, version 2.0
- * (the "License"); you may not use this file except in compliance with the
- * License.  You may obtain a copy of the License at:
+ * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -38,7 +39,7 @@ public class AddOn extends AbstractAddOn {
     private Integer defaultQuantity;
 
     @XmlElement(name = "unit_amount_in_cents")
-    private Plan.RecurlyUnitCurrency unitAmountInCents;
+    private RecurlyUnitCurrency unitAmountInCents;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -67,11 +68,11 @@ public class AddOn extends AbstractAddOn {
         this.defaultQuantity = integerOrNull(defaultQuantity);
     }
 
-    public Plan.RecurlyUnitCurrency getUnitAmountInCents() {
+    public RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
     }
 
-    public void setUnitAmountInCents(final Plan.RecurlyUnitCurrency unitAmountInCents) {
+    public void setUnitAmountInCents(final RecurlyUnitCurrency unitAmountInCents) {
         this.unitAmountInCents = unitAmountInCents;
     }
 
