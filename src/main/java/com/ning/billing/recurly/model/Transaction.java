@@ -56,6 +56,12 @@ public class Transaction extends AbstractTransaction {
 
     @XmlElement(name = "details")
     private TransactionDetails details;
+	
+	@XmlElement(name = "payment_method")
+	private String paymentMethod;
+	
+	@XmlElement(name = "collected_at")
+	private DateTime collectedAt;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -150,6 +156,23 @@ public class Transaction extends AbstractTransaction {
     public void setDetails(final TransactionDetails details) {
         this.details = details;
     }
+	
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(final Object paymentMethod) {
+        this.paymentMethod = stringOrNull(paymentMethod);
+    }
+	
+    public DateTime getCollectedAt() {
+        return collectedAt;
+    }
+
+    public void setCollectedAt(final Object collectedAt) {
+        this.collectedAt = dateTimeOrNull(collectedAt);
+    }
+	
 
     @Override
     public String toString() {
@@ -165,6 +188,8 @@ public class Transaction extends AbstractTransaction {
         sb.append(", recurring=").append(recurring);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", details=").append(details);
+        sb.append(", paymentMethod=").append(paymentMethod);
+        sb.append(", collectedAt=").append(collectedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -216,8 +241,14 @@ public class Transaction extends AbstractTransaction {
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
-
-        return true;
+        if (paymentMethod != null ? !paymentMethod.equals(that.paymentMethod) : that.paymentMethod != null) {
+            return false;
+        }
+        if (collectedAt != null ? !collectedAt.equals(that.collectedAt) : that.collectedAt != null) {
+            return false;
+        }
+		
+		return true;
     }
 
     @Override
