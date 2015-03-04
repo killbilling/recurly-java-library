@@ -558,18 +558,16 @@ public class RecurlyClient {
     public Invoice markInvoiceFailed(final Integer invoiceId) {
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, Invoice.class);
     }
-	
-	/**
-	* Enter an offline payment for a manual invoice (beta) - Recurly Enterprise Feature
-	*
-	* @param invoiceId Recurly Invoice ID
-	* @param payment The external payment
-	*/
-		
-	public Transaction enterOfflinePayment(final Integer invoiceId, final Transaction payment) {
-		return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/transactions", payment, Transaction.class);
-	}
-	
+
+    /**
+     * Enter an offline payment for a manual invoice (beta) - Recurly Enterprise Feature
+     *
+     * @param invoiceId Recurly Invoice ID
+     * @param payment   The external payment
+     */
+    public Transaction enterOfflinePayment(final Integer invoiceId, final Transaction payment) {
+        return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/transactions", payment, Transaction.class);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
 

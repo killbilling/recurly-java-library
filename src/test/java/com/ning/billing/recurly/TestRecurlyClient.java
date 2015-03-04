@@ -63,7 +63,7 @@ public class TestRecurlyClient {
 
     private RecurlyClient recurlyClient;
 
-    @BeforeMethod(alwaysRun = true)
+    @BeforeMethod(groups = {"integration", "enterprise"})
     public void setUp() throws Exception {
         final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
         if (apiKey == null) {
@@ -75,7 +75,7 @@ public class TestRecurlyClient {
         recurlyClient.open();
     }
 
-    @AfterMethod(alwaysRun = true)
+    @AfterMethod(groups = {"integration", "enterprise"})
     public void tearDown() throws Exception {
         recurlyClient.close();
     }
@@ -577,8 +577,8 @@ public class TestRecurlyClient {
             Assert.assertEquals(retrievedAdjustments.size(), 0, "Retrieved Adjustments marked as pending although none should be.");
 
             retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.INVOICED);
-            Assert.assertEquals(retrievedAdjustments.size(), 2, "Not all Adjustments marked as invoiced although all should be.");   
-			
+            Assert.assertEquals(retrievedAdjustments.size(), 2, "Not all Adjustments marked as invoiced although all should be.");
+
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
@@ -586,7 +586,7 @@ public class TestRecurlyClient {
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
-	
+
     @Test(groups = "enterprise")
     public void testCreateAndCloseManualInvoices() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
@@ -627,35 +627,35 @@ public class TestRecurlyClient {
             final Invoice invoiceFail = recurlyClient.postAccountInvoice(accountData.getAccountCode(), failInvoiceData);
             Assert.assertNotNull(invoiceFail);
 
-			// Attempt to fail the invoice
+            // Attempt to fail the invoice
             final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getInvoiceNumber());
             Assert.assertEquals(failedInvoice.getState(), "failed", "Invoice not failed successfully");
-			
+
             // Create an Adjustment
             final Adjustment c = new Adjustment();
             c.setUnitAmountInCents(450);
             c.setCurrency(CURRENCY);
-			
-			final Adjustment createdC = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), c);
-			
+
+            final Adjustment createdC = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), c);
+
             // Post an invoice/invoice the adjustment
             final Invoice externalInvoiceData = new Invoice();
-			externalInvoiceData.setCollectionMethod("manual");
+            externalInvoiceData.setCollectionMethod("manual");
             externalInvoiceData.setLineItems(null);
             final Invoice invoiceExternal = recurlyClient.postAccountInvoice(accountData.getAccountCode(), externalInvoiceData);
             Assert.assertNotNull(invoiceExternal);
-			
-			//create an external payment to pay off the invoice
-			final Transaction externalPaymentData = new Transaction();
-			externalPaymentData.setPaymentMethod("other");
-			final DateTime collectionDateTime = new DateTime(DateTimeZone.UTC);
-			externalPaymentData.setCollectedAt(collectionDateTime);
-			externalPaymentData.setAmountInCents(450);
-			
-			final Transaction externalPayment = recurlyClient.enterOfflinePayment(invoiceExternal.getInvoiceNumber(), externalPaymentData);
-			Assert.assertNotNull(externalPayment);
-			Assert.assertEquals(externalPayment.getInvoice().getState(), "collected", "Invoice not closed successfully");      
-			
+
+            //create an external payment to pay off the invoice
+            final Transaction externalPaymentData = new Transaction();
+            externalPaymentData.setPaymentMethod("other");
+            final DateTime collectionDateTime = new DateTime(DateTimeZone.UTC);
+            externalPaymentData.setCollectedAt(collectionDateTime);
+            externalPaymentData.setAmountInCents(450);
+
+            final Transaction externalPayment = recurlyClient.enterOfflinePayment(invoiceExternal.getInvoiceNumber(), externalPaymentData);
+            Assert.assertNotNull(externalPayment);
+            Assert.assertEquals(externalPayment.getInvoice().getState(), "collected", "Invoice not closed successfully");
+
         } finally {
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
