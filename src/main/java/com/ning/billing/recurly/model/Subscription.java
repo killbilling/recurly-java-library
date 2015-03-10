@@ -82,6 +82,12 @@ public class Subscription extends AbstractSubscription {
     //Purchase Order Number
     @XmlElement(name = "po_number")
     private String poNumber;
+    
+    @XmlElement(name = "terms_and_conditions")
+    private String termsAndConditions;
+    
+    @XmlElement(name = "customer_notes")
+    private String customerNotes;
 
     @XmlElement(name = "first_renewal_date")
     private DateTime firstRenewalDate;
@@ -208,7 +214,6 @@ public class Subscription extends AbstractSubscription {
         this.startsAt = dateTimeOrNull(startsAt);
     }
 
-
     public String getCollectionMethod() {
         return collectionMethod;
     }
@@ -235,6 +240,22 @@ public class Subscription extends AbstractSubscription {
 
     public DateTime getFirstRenewalDate() {
         return firstRenewalDate;
+    }
+    
+    public String getCustomerNotes() {
+        return customerNotes;
+    }
+
+    public void setCustomerNotes(Object customerNotes) {
+        this.customerNotes = stringOrNull(customerNotes);
+    }
+    
+    public String getTermsAndConditions() {
+        return termsAndConditions;
+    }
+
+    public void setTermsAndConditions(Object termsAndConditions) {
+        this.termsAndConditions = stringOrNull(termsAndConditions);
     }
 
     public void setFirstRenewalDate(final Object firstRenewalDate) {
