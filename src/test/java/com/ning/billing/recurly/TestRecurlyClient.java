@@ -47,6 +47,7 @@ import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
+import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
@@ -441,6 +442,9 @@ public class TestRecurlyClient {
             subscriptionData.setUnitAmountInCents(1242);
             // Apply a coupon at the time of subscription creation
             subscriptionData.setCouponCode(couponData.getCouponCode());
+            // Create some notes on the subscription
+            subscriptionData.setCustomerNotes("Customer Notes");
+            subscriptionData.setTermsAndConditions("Terms and Conditions");
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
 
             // Preview the user subscribing to the plan
@@ -499,6 +503,19 @@ public class TestRecurlyClient {
             final Redemption redemption = recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
             Assert.assertNotNull(redemption);
             Assert.assertEquals(redemption.getCoupon().getCouponCode(), couponData.getCouponCode());
+            
+            // Update the subscription's notes
+            final SubscriptionNotes subscriptionNotesData = new SubscriptionNotes();
+            subscriptionNotesData.setTermsAndConditions("New Terms and Conditions");
+            subscriptionNotesData.setCustomerNotes("New Customer Notes");
+                      
+            recurlyClient.updateSubscriptionNotes(subscription.getUuid(), subscriptionNotesData);
+            final Subscription subscriptionWithNotes = recurlyClient.getSubscription(subscription.getUuid());
+              
+            // Verify that the notes were updated
+            Assert.assertNotNull(subscriptionWithNotes);
+            Assert.assertEquals(subscriptionWithNotes.getTermsAndConditions(), subscriptionNotesData.getTermsAndConditions());
+            Assert.assertEquals(subscriptionWithNotes.getCustomerNotes(), subscriptionNotesData.getCustomerNotes());
 
             // Cancel a Subscription
             recurlyClient.cancelSubscription(subscription);

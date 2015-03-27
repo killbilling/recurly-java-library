@@ -57,6 +57,7 @@ import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
+import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
@@ -287,10 +288,10 @@ public class RecurlyClient {
     /**
      * Get a particular {@link Subscription} by it's UUID
      * <p/>
-     * Returns information about a single account.
+     * Returns information about a single subscription.
      *
      * @param uuid UUID of the subscription to lookup
-     * @return Subscriptions for the specified user
+     * @return Subscription
      */
     public Subscription getSubscription(final String uuid) {
         return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE
@@ -376,6 +377,21 @@ public class RecurlyClient {
                       + "/" + uuid + "/preview",
                       subscriptionUpdate,
                       Subscription.class);
+    }
+    
+    
+    /**
+     * Update to a particular {@link Subscription}'s notes by it's UUID
+     * <p/>
+     * Returns information about a single subscription.
+     *
+     * @param uuid UUID of the subscription to preview an update for
+     * @param subscriptionNotes SubscriptionNotes object
+     * @return Subscription the updated subscription 
+     */
+    public Subscription updateSubscriptionNotes(final String uuid, final SubscriptionNotes subscriptionNotes) {
+      return doPUT(SubscriptionNotes.SUBSCRIPTION_RESOURCE + "/" + uuid + "/notes",
+                   subscriptionNotes, Subscription.class);
     }
 
     /**
