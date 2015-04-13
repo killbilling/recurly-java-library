@@ -31,7 +31,7 @@ public class TestRecurlyClientUserAgent {
 
     @BeforeMethod(groups = "fast")
     public void setUp() throws Exception {
-        recurlyClient = new RecurlyClient(UUID.randomUUID().toString());
+        recurlyClient = new RecurlyClient(UUID.randomUUID().toString(), "api");
     }
 
     @Test(groups = "fast")
