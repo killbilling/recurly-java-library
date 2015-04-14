@@ -531,6 +531,18 @@ public class RecurlyClient {
 
     ///////////////////////////////////////////////////////////////////////////
     // User invoices
+    
+    /**
+     * Lookup an invoice
+     * <p/>
+     * Returns the invoice
+     *
+     * @param invoiceId Recurly Invoice ID
+     * @return the invoice
+     */
+    public Invoice getInvoice(final Integer invoiceId) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId, Invoice.class);
+    }    
 
     /**
      * Lookup an account's invoices
