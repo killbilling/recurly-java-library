@@ -143,7 +143,13 @@ public class TestRecurlyClient {
             // Fetch the corresponding invoice
             final Invoice subInvoice = subscriptionWithAddons.getInvoice();
             Assert.assertNotNull(subInvoice);
-
+            
+            // Refetch the invoice using the getInvoice method
+            final int invoiceID = subInvoice.getInvoiceNumber();
+            final Invoice gotInvoice = recurlyClient.getInvoice(invoiceID);
+            
+            Assert.assertEquals(subInvoice,gotInvoice);
+            
             // Remove all addons
             final SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate();
             subscriptionUpdate.setAddOns(new SubscriptionAddOns());
