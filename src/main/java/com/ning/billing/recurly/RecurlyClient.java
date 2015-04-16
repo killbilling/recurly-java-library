@@ -127,9 +127,13 @@ public class RecurlyClient {
     private final String key;
     private final String baseUrl;
     private AsyncHttpClient client;
-
+    
     public RecurlyClient(final String apiKey) {
-        this(apiKey, "api.recurly.com", 443, "v2");
+        this(apiKey, "api");
+    }
+
+    public RecurlyClient(final String apiKey, final String subDomain) {
+        this(apiKey, subDomain + ".recurly.com", 443, "v2");
     }
 
     public RecurlyClient(final String apiKey, final String host, final int port, final String version) {

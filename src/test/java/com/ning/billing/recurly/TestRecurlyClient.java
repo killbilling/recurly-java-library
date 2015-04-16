@@ -56,6 +56,7 @@ public class TestRecurlyClient {
 
     public static final String RECURLY_PAGE_SIZE = "recurly.page.size";
     public static final String KILLBILL_PAYMENT_RECURLY_API_KEY = "killbill.payment.recurly.apiKey";
+    public static final String KILLBILL_PAYMENT_RECURLY_SUBDOMAIN = "killbill.payment.recurly.subDomain";
     public static final String KILLBILL_PAYMENT_RECURLY_DEFAULT_CURRENCY_KEY = "killbill.payment.recurly.currency";
 
     // Default to USD for all tests, which is expected to be supported by Recurly by default
@@ -67,12 +68,19 @@ public class TestRecurlyClient {
     @BeforeMethod(groups = {"integration", "enterprise"})
     public void setUp() throws Exception {
         final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
+        String subDomainTemp = System.getProperty(KILLBILL_PAYMENT_RECURLY_SUBDOMAIN);
         if (apiKey == null) {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
                         " -Dkillbill.payment.recurly.apiKey=...");
         }
+        
+        if (subDomainTemp == null) {
+          subDomainTemp = "api";
+        }
+        
+        final String subDomain = subDomainTemp;
 
-        recurlyClient = new RecurlyClient(apiKey);
+        recurlyClient = new RecurlyClient(apiKey, subDomain);
         recurlyClient.open();
     }
 
