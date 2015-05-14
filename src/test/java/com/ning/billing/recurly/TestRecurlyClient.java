@@ -553,6 +553,53 @@ public class TestRecurlyClient {
             recurlyClient.deletePlan(planData.getPlanCode());
         }
     }
+    
+    @Test(groups = "integration")
+    public void testCreateBulkSubscriptions() throws Exception {
+      final Account accountData = TestUtils.createRandomAccount();
+      final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+      try {        
+          final Account account = recurlyClient.createAccount(accountData);
+          // Create BillingInfo
+          billingInfoData.setAccount(account);
+          final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+          // Test bulk subscription creation
+          for(int i = 0; i < 3; i++) {
+            final Plan planData = TestUtils.createRandomPlan();
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setBulk(true);
+            
+            //create the subscription
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+            
+          }
+          // Check that the newly created subs are in the list
+          final Subscriptions bulkSubs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
+
+          int count = 0;
+          
+          for (final Subscription s : bulkSubs) {
+            count++;
+          }
+          
+          if (count != 3) {
+              Assert.fail("Could not create subscriptions in bulk");
+          }
+      } finally {
+          // Clear up the BillingInfo
+          recurlyClient.clearBillingInfo(accountData.getAccountCode());
+          // Close the account
+          recurlyClient.closeAccount(accountData.getAccountCode());
+      }
+    }
 
     @Test(groups = "integration")
     public void testCreateAndCloseInvoices() throws Exception {
