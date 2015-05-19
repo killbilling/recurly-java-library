@@ -91,6 +91,9 @@ public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "first_renewal_date")
     private DateTime firstRenewalDate;
+    
+    @XmlElement(name = "bulk")
+    private Boolean bulk;
 
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
@@ -265,6 +268,10 @@ public class Subscription extends AbstractSubscription {
     public void setCouponCode(final String couponCode) {
         this.couponCode = couponCode;
     }
+    
+    public void setBulk(final Object bulk) {
+        this.bulk = booleanOrNull(bulk);
+    }
 
 
     @Override
@@ -289,6 +296,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", addOns=").append(addOns);
         sb.append(", pendingSubscription=").append(pendingSubscription);
         sb.append(", firstRenewalDate=").append(firstRenewalDate);
+        sb.append(", bulk=").append(bulk);
         sb.append('}');
         return sb.toString();
     }
@@ -369,6 +377,10 @@ public class Subscription extends AbstractSubscription {
         }
 
         if (firstRenewalDate != null ? !firstRenewalDate.equals(that.firstRenewalDate) : that.firstRenewalDate != null) {
+            return false;
+        }
+        
+        if (bulk != null ? !bulk.equals(that.bulk) : that.bulk != null) {
             return false;
         }
 
