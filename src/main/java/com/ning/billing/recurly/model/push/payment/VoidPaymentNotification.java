@@ -19,9 +19,9 @@ package com.ning.billing.recurly.model.push.payment;
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "void_payment_notification")
-public class VoidedPaymentNotification extends PaymentNotification {
+public class VoidPaymentNotification extends PaymentNotification {
 
-    public static VoidedPaymentNotification read(final String payload) {
-        return read(payload, VoidedPaymentNotification.class);
+    public static VoidPaymentNotification read(final String payload) {
+        return read(payload, VoidPaymentNotification.class);
     }
 }

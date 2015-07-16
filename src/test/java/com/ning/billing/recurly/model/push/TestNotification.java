@@ -34,7 +34,7 @@ import com.ning.billing.recurly.model.push.payment.PaymentNotification;
 import com.ning.billing.recurly.model.push.payment.PushTransaction;
 import com.ning.billing.recurly.model.push.payment.SuccessfulPaymentNotification;
 import com.ning.billing.recurly.model.push.payment.SuccessfulRefundNotification;
-import com.ning.billing.recurly.model.push.payment.VoidedPaymentNotification;
+import com.ning.billing.recurly.model.push.payment.VoidPaymentNotification;
 import com.ning.billing.recurly.model.push.subscription.CanceledSubscriptionNotification;
 import com.ning.billing.recurly.model.push.subscription.ExpiredSubscriptionNotification;
 import com.ning.billing.recurly.model.push.subscription.NewSubscriptionNotification;
@@ -262,8 +262,8 @@ public class TestNotification extends TestModelBase {
     }
 
     @Test(groups = "fast")
-    public void testVoidedPaymentNotification() {
-        deserialize(VoidedPaymentNotification.class);
+    public void testVoidPaymentNotification() {
+        deserialize(VoidPaymentNotification.class);
     }
 
     @Test(groups = "fast")
