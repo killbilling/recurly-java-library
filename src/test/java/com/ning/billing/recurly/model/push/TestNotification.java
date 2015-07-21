@@ -92,8 +92,9 @@ public class TestNotification extends TestModelBase {
                                                   "  <reference></reference>\n" +
                                                   "  <cvv_result code=\"\"></cvv_result>\n" +
                                                   "  <avs_result code=\"D\">Street address and postal code match.</avs_result>\n" +
-                                                  "  <avs_result_street nil=\"true\"></avs_result_street>\n" +
-                                                  "  <avs_result_postal nil=\"true\"></avs_result_postal>\n" +
+                                                  "  <avs_result_street>123 Main St.</avs_result_street>\n" +
+                                                  "  <avs_result_postal>20121</avs_result_postal>\n" +
+                                                  "  <source>subscription</source>\n" +
                                                   "  <test type=\"boolean\">true</test>\n" +
                                                   "  <voidable type=\"boolean\">true</voidable>\n" +
                                                   "  <refundable type=\"boolean\">true</refundable>\n" +
@@ -194,6 +195,9 @@ public class TestNotification extends TestModelBase {
         Assert.assertTrue(transaction.getTest());
         Assert.assertTrue(transaction.getRefundable());
         Assert.assertTrue(transaction.getVoidable());
+        Assert.assertEquals(transaction.getAvsResultStreet(), "123 Main St.");
+        Assert.assertEquals(transaction.getAvsResultPostal(), "20121");
+        Assert.assertEquals(transaction.getSource(), "subscription");
 
         final PushTransaction.VerificationResult cvv = transaction.getCvvResult();
         Assert.assertNotNull(cvv);
