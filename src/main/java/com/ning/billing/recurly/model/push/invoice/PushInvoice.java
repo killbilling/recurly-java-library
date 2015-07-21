@@ -35,19 +35,19 @@ public class PushInvoice extends Invoice {
     @XmlElement(name = "closed_at")
     private DateTime closedAt;
 
-    public void setSubscriptionId(Object subscriptionId) {
-        this.subscriptionId = stringOrNull(subscriptionId);
-    }
-
     public String getSubscriptionId() {
         return subscriptionId;
+    }
+
+    public void setSubscriptionId(final Object subscriptionId) {
+        this.subscriptionId = stringOrNull(subscriptionId);
     }
 
     public String getInvoiceNumberPrefix() {
         return invoiceNumberPrefix;
     }
 
-    public void setInvoiceNumberPrefix(Object invoiceNumberPrefix) {
+    public void setInvoiceNumberPrefix(final Object invoiceNumberPrefix) {
         this.invoiceNumberPrefix = stringOrNull(invoiceNumberPrefix);
     }
 
@@ -55,7 +55,7 @@ public class PushInvoice extends Invoice {
         return date;
     }
 
-    public void setDate(Object date) {
+    public void setDate(final Object date) {
         this.date = dateTimeOrNull(date);
     }
 
@@ -63,7 +63,7 @@ public class PushInvoice extends Invoice {
         return closedAt;
     }
 
-    public void setClosedAt(Object closedAt) {
+    public void setClosedAt(final Object closedAt) {
         this.closedAt = dateTimeOrNull(closedAt);
     }
 
