@@ -25,7 +25,7 @@ public class TestAddOns extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/plans/add-ons
+        // See https://dev.recurly.com/docs/list-add-ons-for-a-plan
         final String addOnsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                   "<add_ons type=\"array\">\n" +
                                   "  <add_on href=\"https://your-subdomain.recurly.com/v2/plans/gold/add_ons/ipaddresses\">\n" +

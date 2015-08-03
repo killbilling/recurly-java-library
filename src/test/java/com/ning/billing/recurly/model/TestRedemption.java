@@ -25,7 +25,7 @@ public class TestRedemption extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See https://docs.recurly.com/api/coupons/coupon-redemption
+        // See https://dev.recurly.com/docs/lookup-a-coupon-redemption-on-an-account
         final String redemptionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<redemption href=\"https://your-subdomain.recurly.com/v2/accounts/1/redemption\">\n" +
                 "  <coupon href=\"https://your-subdomain.recurly.com/v2/coupons/special\"/>\n" +

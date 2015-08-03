@@ -26,7 +26,7 @@ public class TestCoupon extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserializationPercent() throws Exception {
-        // See http://docs.recurly.com/api/coupons
+        // See https://dev.recurly.com/docs/list-active-coupons
         final String couponData =
                 "<coupon href=\"https://api.recurly.com/v2/coupons/f8028\">\n" +
                 "  <redemptions href=\"https://api.recurly.com/v2/coupons/f8028/redemptions\"/>\n" +
@@ -64,7 +64,7 @@ public class TestCoupon extends TestModelBase {
 
     @Test(groups = "fast", description = "https://github.com/killbilling/recurly-java-library/issues/57")
     public void testDeserializationDollars() throws Exception {
-        // See http://docs.recurly.com/api/coupons
+        // See https://dev.recurly.com/docs/list-active-coupons
         final String couponData =
                 "<coupon href=\"https://api.recurly.com/v2/coupons/f8028\">\n" +
                 "  <redemptions href=\"https://api.recurly.com/v2/coupons/f8028/redemptions\"/>\n" +

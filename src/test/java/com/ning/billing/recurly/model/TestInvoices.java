@@ -25,7 +25,7 @@ public class TestInvoices extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/invoices
+        // See https://dev.recurly.com/docs/list-invoices
         final String invoicesData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                                     + "<invoices type=\"array\">\n"
                                     + "  <invoice href=\"https://api.recurly.com/v2/invoices/e3f0a9e084a2468480d00ee61b090d4d\">\n"

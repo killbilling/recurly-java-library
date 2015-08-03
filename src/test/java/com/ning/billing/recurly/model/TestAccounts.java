@@ -25,7 +25,7 @@ public class TestAccounts extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/accounts
+        // See https://dev.recurly.com/docs/list-accounts
         final String accountsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                     "<accounts type=\"array\">\n" +
                                     "  <account href=\"https://api.recurly.com/v2/accounts/1\">\n" +

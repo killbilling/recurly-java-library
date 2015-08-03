@@ -128,7 +128,7 @@ public class RecurlyClient {
     private final String key;
     private final String baseUrl;
     private AsyncHttpClient client;
-    
+
     public RecurlyClient(final String apiKey) {
         this(apiKey, "api");
     }
@@ -383,8 +383,8 @@ public class RecurlyClient {
                       subscriptionUpdate,
                       Subscription.class);
     }
-    
-    
+
+
     /**
      * Update to a particular {@link Subscription}'s notes by it's UUID
      * <p/>
@@ -392,7 +392,7 @@ public class RecurlyClient {
      *
      * @param uuid UUID of the subscription to preview an update for
      * @param subscriptionNotes SubscriptionNotes object
-     * @return Subscription the updated subscription 
+     * @return Subscription the updated subscription
      */
     public Subscription updateSubscriptionNotes(final String uuid, final SubscriptionNotes subscriptionNotes) {
       return doPUT(SubscriptionNotes.SUBSCRIPTION_RESOURCE + "/" + uuid + "/notes",
@@ -536,7 +536,7 @@ public class RecurlyClient {
 
     ///////////////////////////////////////////////////////////////////////////
     // User invoices
-    
+
     /**
      * Lookup an invoice
      * <p/>
@@ -547,7 +547,7 @@ public class RecurlyClient {
      */
     public Invoice getInvoice(final Integer invoiceId) {
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId, Invoice.class);
-    }    
+    }
 
     /**
      * Lookup an account's invoices
@@ -951,7 +951,7 @@ public class RecurlyClient {
                     try {
                         errors = xmlMapper.readValue(payload, Errors.class);
                     } catch (Exception e) {
-                        // 422 is returned for transaction errors (see http://docs.recurly.com/api/transactions/error-codes)
+                        // 422 is returned for transaction errors (see https://recurly.readme.io/v2.0/page/transaction-errors)
                         // as well as bad input payloads
                         log.debug("Unable to extract error", e);
                         return null;

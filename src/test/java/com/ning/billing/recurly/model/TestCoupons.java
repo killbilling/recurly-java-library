@@ -24,7 +24,7 @@ public class TestCoupons extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/accounts
+        // See https://dev.recurly.com/docs/list-accounts
         final String accountsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                     "<coupons type=\"array\">\n" +
                                     "  <coupon href=\"https://api.recurly.com/v2/coupons/cdeb2\">\n" +

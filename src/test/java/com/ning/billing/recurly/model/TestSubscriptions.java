@@ -24,7 +24,7 @@ public class TestSubscriptions extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/subscriptions
+        // See https://dev.recurly.com/docs/list-subscriptions
         final String subscriptionsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                          "<subscriptions type=\"array\">\n" +
                                          "  <subscription href=\"https://your-subdomain.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96\">\n" +

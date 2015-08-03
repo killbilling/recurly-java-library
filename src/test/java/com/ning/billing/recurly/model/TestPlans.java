@@ -25,7 +25,7 @@ public class TestPlans extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/plans
+        // See https://dev.recurly.com/docs/list-plans
         final String plansData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                  "<plans type=\"array\">\n" +
                                  "  <plan href=\"https://api.recurly.com/v2/plans/gold\">\n" +
