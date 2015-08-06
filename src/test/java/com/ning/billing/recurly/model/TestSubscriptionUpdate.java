@@ -24,7 +24,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/subscriptions
+        // See https://dev.recurly.com/docs/list-subscriptions
         final String subscriptionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                         "<subscription>\n" +
                                         "  <timeframe>now</timeframe>\n" +

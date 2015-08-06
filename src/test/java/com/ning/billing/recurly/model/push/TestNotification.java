@@ -47,7 +47,7 @@ import com.ning.billing.recurly.model.push.subscription.UpdatedSubscriptionNotif
 
 import com.google.common.base.CaseFormat;
 
-// See http://docs.recurly.com/api/push-notifications
+// See https://recurly.readme.io/v2.0/page/webhooks
 public class TestNotification extends TestModelBase {
 
     private static final Logger log = LoggerFactory.getLogger(TestNotification.class);

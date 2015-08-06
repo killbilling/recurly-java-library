@@ -22,7 +22,7 @@ import com.ning.billing.recurly.model.push.payment.VoidPaymentNotification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-// See http://docs.recurly.com/api/push-notifications
+// See https://recurly.readme.io/v2.0/page/webhooks
 public class TestVoidNotification extends TestModelBase {
 
     @Test(groups = "fast")

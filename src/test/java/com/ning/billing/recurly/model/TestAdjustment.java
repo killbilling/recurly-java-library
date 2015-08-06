@@ -25,7 +25,7 @@ public class TestAdjustment extends TestModelBase {
 
     @Test(groups = "fast")
     public void testSerialization() throws Exception {
-        // See http://docs.recurly.com/api/adjustments
+        // See https://dev.recurly.com/docs/list-an-accounts-adjustments
         final String adjustmentData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                       "<adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n" +
                                       "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n" +

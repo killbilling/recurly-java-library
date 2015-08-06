@@ -25,7 +25,7 @@ public class TestPlan extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserializationWithAmounts() throws Exception {
-        // See http://docs.recurly.com/api/plans
+        // See https://dev.recurly.com/docs/list-plans
         final String planData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                 "<plan href=\"https://api.recurly.com/v2/plans/gold\">\n" +
                                 "  <add_ons href=\"https://api.recurly.com/v2/plans/gold/add_ons\"/>\n" +
@@ -78,7 +78,7 @@ public class TestPlan extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserializationWithoutAmounts() throws Exception {
-        // See http://docs.recurly.com/api/plans
+        // See https://dev.recurly.com/docs/list-plans
         final String planData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                 "<plan href=\"https://api.recurly.com/v2/plans/gold\">\n" +
                                 "  <add_ons href=\"https://api.recurly.com/v2/plans/gold/add_ons\"/>\n" +

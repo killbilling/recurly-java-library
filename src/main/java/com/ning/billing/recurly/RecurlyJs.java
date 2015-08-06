@@ -41,7 +41,7 @@ public class RecurlyJs {
 
     /**
      * Get Recurly.js Signature
-     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
+     * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
      * <p/>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
@@ -54,7 +54,7 @@ public class RecurlyJs {
 
     /**
      * Get Recurly.js Signature
-     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
+     * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
      * <p/>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
@@ -70,7 +70,7 @@ public class RecurlyJs {
 
     /**
      * Get Recurly.js Signature with extra parameter strings in the format "[param]=[value]"
-     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
+     * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
      * <p/>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *

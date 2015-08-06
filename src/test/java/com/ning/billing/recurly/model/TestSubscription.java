@@ -27,7 +27,7 @@ public class TestSubscription extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/subscriptions
+        // See https://dev.recurly.com/docs/list-subscriptions
         final String subscriptionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                         "<subscription href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96\">\n" +
                                         "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n" +
@@ -77,7 +77,7 @@ public class TestSubscription extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserializationWithAddons() throws Exception {
-        // See http://docs.recurly.com/api/subscriptions/subscription-add-ons
+        // See https://dev.recurly.com/docs/subscription-add-ons
         final String subscriptionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                         "<subscription href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96\">\n" +
                                         "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n" +
