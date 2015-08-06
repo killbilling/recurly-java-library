@@ -24,7 +24,7 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.2.6</version>
+    <version>0.3.0</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>http://github.com/killbilling/recurly-java-library</url>
@@ -63,15 +63,19 @@
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- Core only -->
-        <jackson.version>2.3.0</jackson.version>
-        <guava.version>16.0.1</guava.version>
-        <slf4j.version>1.6.5</slf4j.version>
+        <jackson.version>2.5.0</jackson.version>
+        <guava.version>18.0</guava.version>
+        <slf4j.version>1.7.10</slf4j.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
         <dependency>
@@ -108,12 +112,12 @@
         <dependency>
             <groupId>com.ning</groupId>
             <artifactId>async-http-client</artifactId>
-            <version>1.7.20</version>
+            <version>1.9.8</version>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
-            <version>2.0</version>
+            <version>2.7</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -129,7 +133,7 @@
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
-            <version>6.3.1</version>
+            <version>6.8.21</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -995,7 +995,7 @@ public class RecurlyClient {
         // Don't limit the number of connections per host
         // See https://github.com/ning/async-http-client/issues/issue/28
         final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
-        builder.setMaximumConnectionsPerHost(-1);
+        builder.setMaxConnectionsPerHost(-1);
         return new AsyncHttpClient(builder.build());
     }
 

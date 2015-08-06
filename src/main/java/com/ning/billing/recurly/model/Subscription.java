@@ -1,9 +1,10 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2015 Pierre-Alexandre Meyer
  *
- * Ning licenses this file to you under the Apache License, version 2.0
- * (the "License"); you may not use this file except in compliance with the
- * License.  You may obtain a copy of the License at:
+ * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -75,15 +76,15 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
+    @XmlElement(name = "coupon_code")
+    private String couponCode;
+
     //Purchase Order Number
     @XmlElement(name = "po_number")
     private String poNumber;
 
     @XmlElement(name = "first_renewal_date")
     private DateTime firstRenewalDate;
-    
-    @XmlElement(name = "coupon_code")
-    private String couponCode; 
 
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
@@ -240,9 +241,9 @@ public class Subscription extends AbstractSubscription {
         this.firstRenewalDate = dateTimeOrNull(firstRenewalDate);
     }
 
-    public void setCouponCode(String couponCode) {
-		this.couponCode = couponCode;
-	}
+    public void setCouponCode(final String couponCode) {
+        this.couponCode = couponCode;
+    }
 
 	@Override
     public String toString() {

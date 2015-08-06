@@ -1,9 +1,11 @@
 /*
  * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2015 Pierre-Alexandre Meyer
  *
- * Ning licenses this file to you under the Apache License, version 2.0
- * (the "License"); you may not use this file except in compliance with the
- * License.  You may obtain a copy of the License at:
+ * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
+ * version 2.0 (the "License"); you may not use this file except in compliance
+ * with the License. You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,22 +28,31 @@ public class TestAddOns extends TestModelBase {
     public void testDeserialization() throws Exception {
         // See http://docs.recurly.com/api/plans/add-ons
         final String addOnsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
-                                 "<add_ons type=\"array\">\n" +
-                                 "  <add_on href=\"https://your-subdomain.recurly.com/v2/plans/gold/add_ons/ipaddresses\">\n" +
-                                 "    <plan href=\"https://your-subdomain.recurly.com/v2/plans/gold\"/>\n" +
-                                 "    <add_on_code>ipaddresses</add_on_code>\n" +
-                                 "    <name>IP Addresses</name>\n" +
-                                 "    <display_quantity_on_hosted_page type=\"boolean\">false</display_quantity_on_hosted_page>\n" +
-                                 "    <default_quantity type=\"integer\">1</default_quantity>\n" +
-                                 "    <unit_amount_in_cents>\n" +
-                                 "      <USD>200</USD>\n" +
-                                 "    </unit_amount_in_cents>\n" +
-                                 "    <created_at type=\"datetime\">2011-06-28T12:34:56Z</created_at>\n" +
-                                 "  </add_on>\n" +
-                                 "  <!-- Continued... -->\n" +
-                                 "</add_ons>";
+                                  "<add_ons type=\"array\">\n" +
+                                  "  <add_on href=\"https://your-subdomain.recurly.com/v2/plans/gold/add_ons/ipaddresses\">\n" +
+                                  "    <plan href=\"https://your-subdomain.recurly.com/v2/plans/gold\"/>\n" +
+                                  "    <add_on_code>ipaddresses</add_on_code>\n" +
+                                  "    <name>IP Addresses</name>\n" +
+                                  "    <display_quantity_on_hosted_page type=\"boolean\">false</display_quantity_on_hosted_page>\n" +
+                                  "    <default_quantity type=\"integer\">1</default_quantity>\n" +
+                                  "    <unit_amount_in_cents>\n" +
+                                  "      <USD>200</USD>\n" +
+                                  "    </unit_amount_in_cents>\n" +
+                                  "    <created_at type=\"datetime\">2011-06-28T12:34:56Z</created_at>\n" +
+                                  "  </add_on>\n" +
+                                  "  <!-- Continued... -->\n" +
+                                  "</add_ons>";
 
         final AddOns addOns = xmlMapper.readValue(addOnsData, AddOns.class);
+        verifyAddOns(addOns);
+
+        // Verify serialization
+        final String addOnsSerialized = xmlMapper.writeValueAsString(addOns);
+        final AddOns addOns2 = xmlMapper.readValue(addOnsSerialized, AddOns.class);
+        verifyAddOns(addOns2);
+    }
+
+    private void verifyAddOns(final AddOns addOns) {
         Assert.assertEquals(addOns.size(), 1);
 
         final AddOn addOn = addOns.get(0);

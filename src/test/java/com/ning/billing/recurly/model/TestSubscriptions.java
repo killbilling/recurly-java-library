@@ -54,6 +54,16 @@ public class TestSubscriptions extends TestModelBase {
                                          "</subscriptions>";
 
         final Subscriptions subscriptions = xmlMapper.readValue(subscriptionsData, Subscriptions.class);
+        verifySubscriptions(subscriptions);
+
+
+        // Verify serialization
+        final String subscriptionsSerialized = xmlMapper.writeValueAsString(subscriptions);
+        final Subscriptions subscriptions2 = xmlMapper.readValue(subscriptionsSerialized, Subscriptions.class);
+        verifySubscriptions(subscriptions2);
+    }
+
+    private void verifySubscriptions(final Subscriptions subscriptions) {
         Assert.assertEquals(subscriptions.size(), 1);
 
         final Subscription subscription = subscriptions.get(0);
