@@ -21,7 +21,7 @@ import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Subscription object for update calls.
- * <p/>
+ * <p>
  * The timeframe parameter is specific to the update.
  */
 public class SubscriptionUpdate extends AbstractSubscription {

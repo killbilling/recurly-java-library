@@ -96,7 +96,7 @@ public class BillingInfo extends RecurlyObject {
 
     /**
      * Account object associated to this BillingInfo
-     * <p/>
+     * <p>
      * Note: when fetching a BillingInfo object from Recurly, the account object is not guaranteed to be populated.
      *
      * @return account object

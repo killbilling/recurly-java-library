@@ -42,7 +42,7 @@ public class RecurlyJs {
     /**
      * Get Recurly.js Signature
      * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
-     * <p/>
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key
@@ -55,7 +55,7 @@ public class RecurlyJs {
     /**
      * Get Recurly.js Signature
      * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
-     * <p/>
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key
@@ -71,7 +71,7 @@ public class RecurlyJs {
     /**
      * Get Recurly.js Signature with extra parameter strings in the format "[param]=[value]"
      * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
-     * <p/>
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key
@@ -92,7 +92,7 @@ public class RecurlyJs {
 
     /**
      * HMAC-SHA1 Hash Generator - Helper method
-     * <p/>
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key
