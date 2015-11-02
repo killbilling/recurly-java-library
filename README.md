@@ -13,13 +13,11 @@ The library is distributed via [Maven Central](http://search.maven.org/#search%7
 <dependency>
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
-    <version>0.2.4</version>
+    <version>0.4.0</version>
 </dependency>
 ```
 
 The easiest way to get started is by looking at the code examples in [TestRecurlyClient.java](https://github.com/killbilling/recurly-java-library/blob/master/src/test/java/com/ning/billing/recurly/TestRecurlyClient.java).
-
-Note: the 0.3.x release train is under development, the latest stable version is 0.2.4.
 
 Development
 -----------
