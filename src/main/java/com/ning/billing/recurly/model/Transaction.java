@@ -46,9 +46,6 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "description")
     private String description;
 
-    @XmlElement(name = "source")
-    private String source;
-
     @XmlElement(name = "recurring")
     private Boolean recurring;
 
@@ -126,14 +123,6 @@ public class Transaction extends AbstractTransaction {
         this.description = stringOrNull(description);
     }
 
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(final Object source) {
-        this.source = stringOrNull(source);
-    }
-
     public Boolean getRecurring() {
         return recurring;
     }
@@ -185,7 +174,6 @@ public class Transaction extends AbstractTransaction {
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", description='").append(description).append('\'');
-        sb.append(", source='").append(source).append('\'');
         sb.append(", recurring=").append(recurring);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", details=").append(details);
@@ -230,9 +218,6 @@ public class Transaction extends AbstractTransaction {
         if (recurring != null ? !recurring.equals(that.recurring) : that.recurring != null) {
             return false;
         }
-        if (source != null ? !source.equals(that.source) : that.source != null) {
-            return false;
-        }
         if (subscription != null ? !subscription.equals(that.subscription) : that.subscription != null) {
             return false;
         }
@@ -262,7 +247,6 @@ public class Transaction extends AbstractTransaction {
         result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (source != null ? source.hashCode() : 0);
         result = 31 * result + (recurring != null ? recurring.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (details != null ? details.hashCode() : 0);
