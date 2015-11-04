@@ -17,6 +17,7 @@
 
 package com.ning.billing.recurly.model.push;
 
+import com.ning.billing.recurly.model.push.invoice.*;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,6 +102,22 @@ public class TestNotification extends TestModelBase {
                                                   "  <refundable type=\"boolean\">true</refundable>\n" +
                                                   "</transaction>";
 
+    private static final String INVOICEDATA = "<invoice>\n" +
+                                              "  <uuid>ffc64d71d4b5404e93f13aac9c63b007</uuid>\n" +
+                                              "  <subscription_id nil=\"true\"></subscription_id>\n" +
+                                              "  <state>collected</state>\n" +
+                                              "  <invoice_number_prefix></invoice_number_prefix>\n" +
+                                              "  <invoice_number type=\"integer\">1000</invoice_number>\n" +
+                                              "  <po_number></po_number>\n" +
+                                              "  <vat_number></vat_number>\n" +
+                                              "  <total_in_cents type=\"integer\">1100</total_in_cents>\n" +
+                                              "  <currency>USD</currency>\n" +
+                                              "  <date type=\"datetime\">2014-01-01T20:20:29Z</date>\n" +
+                                              "  <closed_at type=\"datetime\">2014-01-01T20:24:02Z</closed_at>\n" +
+                                              "  <net_terms type=\"integer\">0</net_terms>\n" +
+                                              "  <collection_method>automatic</collection_method>\n" +
+                                              "</invoice>";
+
     private <T extends Notification> void deserialize(final Class<T> clazz) {
 
         final String xmlElement = CaseFormat.UPPER_CAMEL.to(CaseFormat.LOWER_UNDERSCORE, clazz.getSimpleName());
@@ -108,7 +125,7 @@ public class TestNotification extends TestModelBase {
                 .append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n")
                 .append("<").append(xmlElement).append(">\n");
 
-        boolean isAccount = false, isSubscription = false, isPayment = false;
+        boolean isAccount = false, isSubscription = false, isPayment = false, isInvoice = false;
 
         if (AccountNotification.class.isAssignableFrom(clazz)) {
             notificationDataBuilder.append(ACCOUNTDATA).append("\n");
@@ -123,6 +140,11 @@ public class TestNotification extends TestModelBase {
         if (PaymentNotification.class.isAssignableFrom(clazz)) {
             notificationDataBuilder.append(TRANSACTIONDATA).append("\n");
             isPayment = true;
+        }
+
+        if(InvoiceNotification.class.isAssignableFrom(clazz)) {
+            notificationDataBuilder.append(INVOICEDATA).append("\n");
+            isInvoice = true;
         }
 
         notificationDataBuilder.append("</").append(xmlElement).append(">");
@@ -143,6 +165,9 @@ public class TestNotification extends TestModelBase {
         }
         if (isPayment) {
             testPaymentNotification((PaymentNotification) notification);
+        }
+        if (isInvoice) {
+            testInvoiceNotification((InvoiceNotification) notification);
         }
         log.info("{} deserialized", clazz.getSimpleName());
     }
@@ -211,6 +236,24 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(avs.getMessage(), "Street address and postal code match.");
     }
 
+    private void testInvoiceNotification(final InvoiceNotification invoiceNotification) {
+        PushInvoice invoice = invoiceNotification.getInvoice();
+        Assert.assertNotNull(invoice);
+        Assert.assertEquals(invoice.getUuid(), "ffc64d71d4b5404e93f13aac9c63b007");
+        Assert.assertNull(invoice.getSubscriptionId());
+        Assert.assertEquals(invoice.getState(), "collected");
+        Assert.assertNull(invoice.getInvoiceNumberPrefix());
+        Assert.assertEquals(invoice.getInvoiceNumber(), new Integer(1000));
+        Assert.assertNull(invoice.getPoNumber());
+        Assert.assertNull(invoice.getVatNumber());
+        Assert.assertEquals(invoice.getTotalInCents(), new Integer(1100));
+        Assert.assertEquals(invoice.getCurrency(), "USD");
+        Assert.assertEquals(invoice.getDate(), new DateTime("2014-01-01T20:20:29Z"));
+        Assert.assertEquals(invoice.getClosedAt(), new DateTime("2014-01-01T20:24:02Z"));
+        Assert.assertEquals(invoice.getNetTerms(), new Integer(0));
+        Assert.assertEquals(invoice.getCollectionMethod(), "automatic");
+    }
+
     @Test(groups = "fast")
     public void testNewAccountNotification() {
         deserialize(NewAccountNotification.class);
@@ -274,5 +317,25 @@ public class TestNotification extends TestModelBase {
     @Test(groups = "fast")
     public void testSuccessfulRefundNotification() {
         deserialize(SuccessfulRefundNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testClosedInvoiceNotification() {
+        deserialize(ClosedInvoiceNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testNewInvoiceNotification() {
+        deserialize(NewInvoiceNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testPastDueInvoiceNotification() {
+        deserialize(PastDueInvoiceNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testProcessingInvoiceNotification() {
+        deserialize(ProcessingInvoiceNotification.class);
     }
 }
