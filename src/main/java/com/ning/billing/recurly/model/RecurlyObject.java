@@ -48,7 +48,9 @@ import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject implements Serializable{
 
-    @XmlTransient
+	private static final long serialVersionUID = 1L;
+
+	@XmlTransient
     private RecurlyClient recurlyClient;
 
     @XmlTransient
