@@ -1,8 +1,9 @@
 /*
- * Copyright 2014 Pierre-Alexandre Meyer
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance with the
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
+ * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
@@ -31,7 +32,7 @@ public class TestRecurlyClientUserAgent {
 
     @BeforeMethod(groups = "fast")
     public void setUp() throws Exception {
-        recurlyClient = new RecurlyClient(UUID.randomUUID().toString());
+        recurlyClient = new RecurlyClient(UUID.randomUUID().toString(), "api");
     }
 
     @Test(groups = "fast")

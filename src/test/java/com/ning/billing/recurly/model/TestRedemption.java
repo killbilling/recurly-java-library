@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -24,7 +25,7 @@ public class TestRedemption extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See https://docs.recurly.com/api/coupons/coupon-redemption
+        // See https://dev.recurly.com/docs/lookup-a-coupon-redemption-on-an-account
         final String redemptionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                 "<redemption href=\"https://your-subdomain.recurly.com/v2/accounts/1/redemption\">\n" +
                 "  <coupon href=\"https://your-subdomain.recurly.com/v2/coupons/special\"/>\n" +

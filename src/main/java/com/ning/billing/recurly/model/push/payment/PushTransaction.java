@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -26,50 +27,6 @@ import com.ning.billing.recurly.model.AbstractTransaction;
 
 public class PushTransaction extends AbstractTransaction {
 
-    public static class VerificationResult {
-
-        private String code;
-
-        private String message;
-
-        public VerificationResult() {
-        }
-
-        public VerificationResult(final String code, final String message) {
-            this.code = code;
-            this.message = message;
-        }
-
-        public String getCode() {
-            return code;
-        }
-
-        public void setCode(final String code) {
-            this.code = code;
-        }
-
-        public String getMessage() {
-            return message;
-        }
-
-        public void setMessage(final String message) {
-            this.message = message;
-        }
-
-        public static VerificationResult as(final Object object) {
-            if (isNull(object)) {
-                return null;
-            }
-
-            if (object instanceof Map) {
-                final Map map = (Map) object;
-                return new VerificationResult(stringOrNull(map.get("code")), stringOrNull(map.get("")));
-            }
-
-            return new VerificationResult(null, object.toString());
-        }
-    }
-
     @XmlElement
     private String id;
 
@@ -87,12 +44,6 @@ public class PushTransaction extends AbstractTransaction {
 
     @XmlElement
     private String message;
-
-    @XmlElement(name = "cvv_result")
-    private VerificationResult cvvResult;
-
-    @XmlElement(name = "avs_result")
-    private VerificationResult avsResult;
 
     public String getId() {
         return id;
@@ -142,21 +93,7 @@ public class PushTransaction extends AbstractTransaction {
         this.message = stringOrNull(message);
     }
 
-    public VerificationResult getCvvResult() {
-        return cvvResult;
-    }
 
-    public void setCvvResult(final Object cvvResult) {
-        this.cvvResult = VerificationResult.as(cvvResult);
-    }
-
-    public VerificationResult getAvsResult() {
-        return avsResult;
-    }
-
-    public void setAvsResult(final Object avsResult) {
-        this.avsResult = VerificationResult.as(avsResult);
-    }
 
     @Override
     public boolean equals(final Object o) {
@@ -172,12 +109,6 @@ public class PushTransaction extends AbstractTransaction {
 
         final PushTransaction that = (PushTransaction) o;
 
-        if (avsResult != null ? !avsResult.equals(that.avsResult) : that.avsResult != null) {
-            return false;
-        }
-        if (cvvResult != null ? !cvvResult.equals(that.cvvResult) : that.cvvResult != null) {
-            return false;
-        }
         if (date != null ? !date.equals(that.date) : that.date != null) {
             return false;
         }
@@ -209,8 +140,6 @@ public class PushTransaction extends AbstractTransaction {
         result = 31 * result + (subscriptionId != null ? subscriptionId.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);
         result = 31 * result + (message != null ? message.hashCode() : 0);
-        result = 31 * result + (cvvResult != null ? cvvResult.hashCode() : 0);
-        result = 31 * result + (avsResult != null ? avsResult.hashCode() : 0);
         return result;
     }
 }

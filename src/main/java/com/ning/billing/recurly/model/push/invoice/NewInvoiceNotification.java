@@ -14,14 +14,16 @@
  * under the License.
  */
 
-package com.ning.billing.recurly.model.push.payment;
+package com.ning.billing.recurly.model.push.invoice;
+
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "void_payment_notification")
-public class VoidedPaymentNotification extends PaymentNotification {
+@XmlRootElement(name = "new_invoice_notification")
+public class NewInvoiceNotification extends InvoiceNotification {
 
-    public static VoidedPaymentNotification read(final String payload) {
-        return read(payload, VoidedPaymentNotification.class);
-    }
+  public static NewInvoiceNotification read(final String payload) {
+    return read(payload, NewInvoiceNotification.class);
+  }
+
 }

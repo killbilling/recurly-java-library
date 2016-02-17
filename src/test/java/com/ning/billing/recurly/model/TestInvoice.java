@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -24,7 +25,7 @@ public class TestInvoice extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/invoices
+        // See https://dev.recurly.com/docs/list-invoices
         final String invoiceData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                                    + "<invoice href=\"https://api.recurly.com/v2/invoices/e3f0a9e084a2468480d00ee61b090d4d\">\n"
                                    + "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"

@@ -1,11 +1,10 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2015 Pierre-Alexandre Meyer
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
+ * (the "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -26,7 +25,7 @@ public class TestAddOns extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/plans/add-ons
+        // See https://dev.recurly.com/docs/list-add-ons-for-a-plan
         final String addOnsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                   "<add_ons type=\"array\">\n" +
                                   "  <add_on href=\"https://your-subdomain.recurly.com/v2/plans/gold/add_ons/ipaddresses\">\n" +

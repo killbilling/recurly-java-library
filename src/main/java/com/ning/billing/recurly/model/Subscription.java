@@ -1,10 +1,10 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2015 Pierre-Alexandre Meyer
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Pierre-Alexandre Meyer licenses this file to you under the Apache License,
- * version 2.0 (the "License"); you may not use this file except in compliance
- * with the License. You may obtain a copy of the License at:
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
+ * (the "License"); you may not use this file except in compliance with the
+ * License.  You may obtain a copy of the License at:
  *
  *    http://www.apache.org/licenses/LICENSE-2.0
  *
@@ -82,9 +82,18 @@ public class Subscription extends AbstractSubscription {
     //Purchase Order Number
     @XmlElement(name = "po_number")
     private String poNumber;
+    
+    @XmlElement(name = "terms_and_conditions")
+    private String termsAndConditions;
+    
+    @XmlElement(name = "customer_notes")
+    private String customerNotes;
 
     @XmlElement(name = "first_renewal_date")
     private DateTime firstRenewalDate;
+    
+    @XmlElement(name = "bulk")
+    private Boolean bulk;
 
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
@@ -208,7 +217,6 @@ public class Subscription extends AbstractSubscription {
         this.startsAt = dateTimeOrNull(startsAt);
     }
 
-
     public String getCollectionMethod() {
         return collectionMethod;
     }
@@ -236,6 +244,22 @@ public class Subscription extends AbstractSubscription {
     public DateTime getFirstRenewalDate() {
         return firstRenewalDate;
     }
+    
+    public String getCustomerNotes() {
+        return customerNotes;
+    }
+
+    public void setCustomerNotes(Object customerNotes) {
+        this.customerNotes = stringOrNull(customerNotes);
+    }
+    
+    public String getTermsAndConditions() {
+        return termsAndConditions;
+    }
+
+    public void setTermsAndConditions(Object termsAndConditions) {
+        this.termsAndConditions = stringOrNull(termsAndConditions);
+    }
 
     public void setFirstRenewalDate(final Object firstRenewalDate) {
         this.firstRenewalDate = dateTimeOrNull(firstRenewalDate);
@@ -243,6 +267,10 @@ public class Subscription extends AbstractSubscription {
 
     public void setCouponCode(final String couponCode) {
         this.couponCode = couponCode;
+    }
+    
+    public void setBulk(final Object bulk) {
+        this.bulk = booleanOrNull(bulk);
     }
 
 	@Override
@@ -267,6 +295,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", addOns=").append(addOns);
         sb.append(", pendingSubscription=").append(pendingSubscription);
         sb.append(", firstRenewalDate=").append(firstRenewalDate);
+        sb.append(", bulk=").append(bulk);
         sb.append('}');
         return sb.toString();
     }
@@ -347,6 +376,10 @@ public class Subscription extends AbstractSubscription {
         }
 
         if (firstRenewalDate != null ? !firstRenewalDate.equals(that.firstRenewalDate) : that.firstRenewalDate != null) {
+            return false;
+        }
+        
+        if (bulk != null ? !bulk.equals(that.bulk) : that.bulk != null) {
             return false;
         }
 

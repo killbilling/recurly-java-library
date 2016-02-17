@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -45,9 +46,6 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "description")
     private String description;
 
-    @XmlElement(name = "source")
-    private String source;
-
     @XmlElement(name = "recurring")
     private Boolean recurring;
 
@@ -56,6 +54,12 @@ public class Transaction extends AbstractTransaction {
 
     @XmlElement(name = "details")
     private TransactionDetails details;
+
+    @XmlElement(name = "payment_method")
+    private String paymentMethod;
+
+    @XmlElement(name = "collected_at")
+    private DateTime collectedAt;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -119,14 +123,6 @@ public class Transaction extends AbstractTransaction {
         this.description = stringOrNull(description);
     }
 
-    public String getSource() {
-        return source;
-    }
-
-    public void setSource(final Object source) {
-        this.source = stringOrNull(source);
-    }
-
     public Boolean getRecurring() {
         return recurring;
     }
@@ -151,6 +147,23 @@ public class Transaction extends AbstractTransaction {
         this.details = details;
     }
 
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(final Object paymentMethod) {
+        this.paymentMethod = stringOrNull(paymentMethod);
+    }
+
+    public DateTime getCollectedAt() {
+        return collectedAt;
+    }
+
+    public void setCollectedAt(final Object collectedAt) {
+        this.collectedAt = dateTimeOrNull(collectedAt);
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Transaction{");
@@ -161,10 +174,11 @@ public class Transaction extends AbstractTransaction {
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", description='").append(description).append('\'');
-        sb.append(", source='").append(source).append('\'');
         sb.append(", recurring=").append(recurring);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", details=").append(details);
+        sb.append(", paymentMethod=").append(paymentMethod);
+        sb.append(", collectedAt=").append(collectedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -204,9 +218,6 @@ public class Transaction extends AbstractTransaction {
         if (recurring != null ? !recurring.equals(that.recurring) : that.recurring != null) {
             return false;
         }
-        if (source != null ? !source.equals(that.source) : that.source != null) {
-            return false;
-        }
         if (subscription != null ? !subscription.equals(that.subscription) : that.subscription != null) {
             return false;
         }
@@ -214,6 +225,12 @@ public class Transaction extends AbstractTransaction {
             return false;
         }
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
+            return false;
+        }
+        if (paymentMethod != null ? !paymentMethod.equals(that.paymentMethod) : that.paymentMethod != null) {
+            return false;
+        }
+        if (collectedAt != null ? !collectedAt.equals(that.collectedAt) : that.collectedAt != null) {
             return false;
         }
 
@@ -230,7 +247,6 @@ public class Transaction extends AbstractTransaction {
         result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
         result = 31 * result + (currency != null ? currency.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (source != null ? source.hashCode() : 0);
         result = 31 * result + (recurring != null ? recurring.hashCode() : 0);
         result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
         result = 31 * result + (details != null ? details.hashCode() : 0);

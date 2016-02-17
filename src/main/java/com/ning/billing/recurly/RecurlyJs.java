@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -40,8 +41,8 @@ public class RecurlyJs {
 
     /**
      * Get Recurly.js Signature
-     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
-     * <p/>
+     * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key
@@ -53,8 +54,8 @@ public class RecurlyJs {
 
     /**
      * Get Recurly.js Signature
-     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
-     * <p/>
+     * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key
@@ -69,8 +70,8 @@ public class RecurlyJs {
 
     /**
      * Get Recurly.js Signature with extra parameter strings in the format "[param]=[value]"
-     * See spec here: http://docs.recurly.com/api/recurlyjs/signatures
-     * <p/>
+     * See spec here: https://docs.recurly.com/deprecated-api-docs/recurlyjs/signatures
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key
@@ -91,7 +92,7 @@ public class RecurlyJs {
 
     /**
      * HMAC-SHA1 Hash Generator - Helper method
-     * <p/>
+     * <p>
      * Returns a signature key for use with recurly.js BuildSubscriptionForm.
      *
      * @param privateJsKey recurly.js private key

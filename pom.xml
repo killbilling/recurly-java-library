@@ -1,7 +1,8 @@
 <!--
-  ~ Copyright 2010-2012 Ning, Inc.
+  ~ Copyright 2010-2014 Ning, Inc.
+  ~ Copyright 2014-2015 The Billing Project, LLC
   ~
-  ~ Ning licenses this file to you under the Apache License, version 2.0
+  ~ The Billing Project licenses this file to you under the Apache License, version 2.0
   ~ (the "License"); you may not use this file except in compliance with the
   ~ License.  You may obtain a copy of the License at:
   ~
@@ -24,7 +25,7 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.3.0</version>
+    <version>0.4.1-SNAPSHOT</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>http://github.com/killbilling/recurly-java-library</url>
@@ -520,6 +521,22 @@
                         <configuration>
                             <useManifestOnlyJar>false</useManifestOnlyJar>
                             <groups>integration</groups>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>enterprise</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <version>2.11</version>
+                        <configuration>
+                            <useManifestOnlyJar>false</useManifestOnlyJar>
+                            <groups>enterprise</groups>
                         </configuration>
                     </plugin>
                 </plugins>

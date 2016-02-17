@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -24,7 +25,7 @@ public class TestAdjustment extends TestModelBase {
 
     @Test(groups = "fast")
     public void testSerialization() throws Exception {
-        // See http://docs.recurly.com/api/adjustments
+        // See https://dev.recurly.com/docs/list-an-accounts-adjustments
         final String adjustmentData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                       "<adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n" +
                                       "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n" +

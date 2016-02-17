@@ -1,7 +1,8 @@
 /*
- * Copyright 2010-2013 Ning, Inc.
+ * Copyright 2010-2014 Ning, Inc.
+ * Copyright 2014-2015 The Billing Project, LLC
  *
- * Ning licenses this file to you under the Apache License, version 2.0
+ * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
  * License.  You may obtain a copy of the License at:
  *
@@ -23,7 +24,7 @@ public class TestSubscriptions extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/subscriptions
+        // See https://dev.recurly.com/docs/list-subscriptions
         final String subscriptionsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                          "<subscriptions type=\"array\">\n" +
                                          "  <subscription href=\"https://your-subdomain.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96\">\n" +
