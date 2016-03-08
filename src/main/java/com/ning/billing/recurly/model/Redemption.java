@@ -34,6 +34,12 @@ public class Redemption extends RecurlyObject {
     @XmlTransient
     public static final String REDEMPTION_RESOURCE = "/redemption";
 
+    @XmlTransient
+    public static final String REDEMPTIONS_RESOURCE = "/redemptions";
+
+    @XmlElement(name = "uuid")
+    private String uuid;
+
     @XmlElement(name = "account_code")
     private String accountCode;
 
@@ -120,6 +126,14 @@ public class Redemption extends RecurlyObject {
         this.state = stringOrNull(state);
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(final Object uuid) {
+        this.uuid = stringOrNull(uuid);
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -135,6 +149,7 @@ public class Redemption extends RecurlyObject {
         sb.append("{accountCode=").append(accountCode);
         sb.append(", coupon=").append(coupon);
         sb.append(", account=").append(account);
+        sb.append(", uuid=").append(uuid);
         sb.append(", single_use=").append(singleUse);
         sb.append(", totalDiscountedInCents=").append(totalDiscountedInCents);
         sb.append(", currency='").append(currency).append('\'');
@@ -176,6 +191,9 @@ public class Redemption extends RecurlyObject {
         if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
+        if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
+            return false;
+        }
 
         return true;
     }
@@ -190,6 +208,7 @@ public class Redemption extends RecurlyObject {
                 totalDiscountedInCents,
                 currency,
                 state,
+                uuid,
                 createdAt
         );
     }
