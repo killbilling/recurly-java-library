@@ -97,7 +97,7 @@ public class TestUtils {
     }
 
     public static String createTestCCYear() {
-        return "2015";
+        return "2020";
     }
 
     /**
