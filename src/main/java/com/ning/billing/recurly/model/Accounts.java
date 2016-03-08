@@ -23,7 +23,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-@XmlRootElement(name = "plans")
+@XmlRootElement(name = "accounts")
 public class Accounts extends RecurlyObjects<Account> {
 
     @XmlTransient
