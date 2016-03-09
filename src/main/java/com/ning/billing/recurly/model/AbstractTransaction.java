@@ -54,6 +54,13 @@ public class AbstractTransaction extends RecurlyObject {
             this.message = message;
         }
 
+        @Override
+        public int hashCode() {
+            int result = code != null ? code.hashCode() : 0;
+            result = 31 * result + (message != null ? message.hashCode() : 0);
+            return result;
+        }
+
         public static VerificationResult as(final Object object) {
             if (isNull(object)) {
                 return null;
