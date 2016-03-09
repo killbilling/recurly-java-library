@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "transaction")
 public class Transaction extends AbstractTransaction {
 
@@ -185,22 +187,15 @@ public class Transaction extends AbstractTransaction {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Transaction that = (Transaction) o;
 
         if (account != null ? !account.equals(that.account) : that.account != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
@@ -230,7 +225,7 @@ public class Transaction extends AbstractTransaction {
         if (paymentMethod != null ? !paymentMethod.equals(that.paymentMethod) : that.paymentMethod != null) {
             return false;
         }
-        if (collectedAt != null ? !collectedAt.equals(that.collectedAt) : that.collectedAt != null) {
+        if (collectedAt != null ? collectedAt.compareTo(that.collectedAt) != 0 : that.collectedAt != null) {
             return false;
         }
 
@@ -239,17 +234,17 @@ public class Transaction extends AbstractTransaction {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (account != null ? account.hashCode() : 0);
-        result = 31 * result + (invoice != null ? invoice.hashCode() : 0);
-        result = 31 * result + (subscription != null ? subscription.hashCode() : 0);
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (recurring != null ? recurring.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (details != null ? details.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                invoice,
+                subscription,
+                uuid,
+                taxInCents,
+                currency,
+                description,
+                recurring,
+                createdAt,
+                details
+        );
     }
 }

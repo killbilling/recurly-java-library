@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.
@@ -221,18 +222,24 @@ public class Coupon extends RecurlyObject {
         return sb.toString();
     }
 
+
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Coupon coupon = (Coupon) o;
 
+        if (appliesForMonths != null ? !appliesForMonths.equals(coupon.appliesForMonths) : coupon.appliesForMonths != null) {
+            return false;
+        }
+        if (appliesToAllPlans != null ? !appliesToAllPlans.equals(coupon.appliesToAllPlans) : coupon.appliesToAllPlans != null) {
+            return false;
+        }
         if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
+            return false;
+        }
+        if (discountInCents != null ? !discountInCents.equals(coupon.discountInCents) : coupon.discountInCents != null) {
             return false;
         }
         if (discountPercent != null ? !discountPercent.equals(coupon.discountPercent) : coupon.discountPercent != null) {
@@ -241,7 +248,16 @@ public class Coupon extends RecurlyObject {
         if (discountType != null ? !discountType.equals(coupon.discountType) : coupon.discountType != null) {
             return false;
         }
+        if (maxRedemptions != null ? !maxRedemptions.equals(coupon.maxRedemptions) : coupon.maxRedemptions != null) {
+            return false;
+        }
         if (name != null ? !name.equals(coupon.name) : coupon.name != null) {
+            return false;
+        }
+        if (redeemByDate != null ? redeemByDate.compareTo(coupon.redeemByDate) != 0 : coupon.redeemByDate != null) {
+            return false;
+        }
+        if (singleUse != null ? singleUse.compareTo(coupon.singleUse) != 0 : coupon.singleUse != null) {
             return false;
         }
 
@@ -250,10 +266,17 @@ public class Coupon extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (couponCode != null ? couponCode.hashCode() : 0);
-        result = 31 * result + (discountType != null ? discountType.hashCode() : 0);
-        result = 31 * result + (discountPercent != null ? discountPercent.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                name,
+                couponCode,
+                discountType,
+                discountPercent,
+                discountInCents,
+                redeemByDate,
+                singleUse,
+                appliesForMonths,
+                appliesToAllPlans,
+                maxRedemptions
+        );
     }
 }

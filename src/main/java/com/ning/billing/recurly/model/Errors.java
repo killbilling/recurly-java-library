@@ -22,6 +22,8 @@ import java.util.Map;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "errors")
 public class Errors extends RecurlyObject {
 
@@ -106,9 +108,10 @@ public class Errors extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = transactionError != null ? transactionError.hashCode() : 0;
-        result = 31 * result + (transaction != null ? transaction.hashCode() : 0);
-        result = 31 * result + (recurlyErrors != null ? recurlyErrors.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                transactionError,
+                transaction,
+                recurlyErrors
+        );
     }
 }

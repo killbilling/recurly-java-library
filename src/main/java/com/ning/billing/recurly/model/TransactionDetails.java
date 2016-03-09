@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "details")
 public class TransactionDetails extends RecurlyObject {
@@ -44,12 +45,8 @@ public class TransactionDetails extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final TransactionDetails that = (TransactionDetails) o;
 
@@ -62,6 +59,6 @@ public class TransactionDetails extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        return account != null ? account.hashCode() : 0;
+        return Objects.hashCode(account);
     }
 }

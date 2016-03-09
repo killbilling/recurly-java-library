@@ -69,6 +69,7 @@ public class TestRecurlyClient {
     public void setUp() throws Exception {
         final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
         String subDomainTemp = System.getProperty(KILLBILL_PAYMENT_RECURLY_SUBDOMAIN);
+
         if (apiKey == null) {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
                         " -Dkillbill.payment.recurly.apiKey=...");

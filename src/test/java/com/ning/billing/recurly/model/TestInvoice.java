@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestInvoice extends TestModelBase {
 
@@ -84,5 +88,16 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
 
         Assert.assertEquals(invoice.getTransactions().size(), 0);
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create invoices of the same value but difference references
+        Invoice invoice = TestUtils.createRandomInvoice(0);
+        Invoice otherInvoice = TestUtils.createRandomInvoice(0);
+
+        assertNotEquals(System.identityHashCode(invoice), System.identityHashCode(otherInvoice));
+        assertEquals(invoice.hashCode(), otherInvoice.hashCode());
+        assertEquals(invoice, otherInvoice);
     }
 }

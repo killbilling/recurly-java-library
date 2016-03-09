@@ -16,9 +16,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestTransaction extends TestModelBase {
 
@@ -106,5 +110,16 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(billingInfo.getCountry(), "US");
         Assert.assertNull(billingInfo.getPhone());
         Assert.assertNull(billingInfo.getVatNumber());
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create transactions of the same value but difference references
+        Transaction transaction = TestUtils.createRandomTransaction(0);
+        Transaction otherTransaction = TestUtils.createRandomTransaction(0);
+
+        assertNotEquals(System.identityHashCode(transaction), System.identityHashCode(otherTransaction));
+        assertEquals(transaction.hashCode(), otherTransaction.hashCode());
+        assertEquals(transaction, otherTransaction);
     }
 }

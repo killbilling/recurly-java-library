@@ -21,6 +21,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "subscription")
 public class AbstractSubscription extends RecurlyObject {
 
@@ -73,12 +75,8 @@ public class AbstractSubscription extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof AbstractSubscription)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final AbstractSubscription that = (AbstractSubscription) o;
 
@@ -100,10 +98,11 @@ public class AbstractSubscription extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = unitAmountInCents != null ? unitAmountInCents.hashCode() : 0;
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        result = 31 * result + (addOns != null ? addOns.hashCode() : 0);
-        result = 31 * result + (planCode != null ? planCode.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                unitAmountInCents,
+                quantity,
+                addOns,
+                planCode
+        );
     }
 }

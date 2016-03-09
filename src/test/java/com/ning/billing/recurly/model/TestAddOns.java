@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestAddOns extends TestModelBase {
 
@@ -49,6 +53,17 @@ public class TestAddOns extends TestModelBase {
         final String addOnsSerialized = xmlMapper.writeValueAsString(addOns);
         final AddOns addOns2 = xmlMapper.readValue(addOnsSerialized, AddOns.class);
         verifyAddOns(addOns2);
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create AddOns of the same value but difference references
+        AddOn addOn = TestUtils.createRandomAddOn(0);
+        AddOn otherAddOn = TestUtils.createRandomAddOn(0);
+
+        assertNotEquals(System.identityHashCode(addOn), System.identityHashCode(otherAddOn));
+        assertEquals(addOn.hashCode(), otherAddOn.hashCode());
+        assertEquals(addOn, otherAddOn);
     }
 
     private void verifyAddOns(final AddOns addOns) {

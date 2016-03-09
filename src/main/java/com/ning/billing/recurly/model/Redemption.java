@@ -23,6 +23,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "redemption")
 public class Redemption extends RecurlyObject {
 
@@ -144,12 +146,9 @@ public class Redemption extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         final Redemption that = (Redemption) o;
 
         if (accountCode != null ? !accountCode.equals(that.accountCode) : that.accountCode != null) {
@@ -174,23 +173,25 @@ public class Redemption extends RecurlyObject {
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = accountCode != null ? accountCode.hashCode() : 0;
-        result = 31 * result + (coupon != null ? coupon.hashCode() : 0);
-        result = 31 * result + (account != null ? account.hashCode() : 0);
-        result = 31 * result + (singleUse != null ? singleUse.hashCode() : 0);
-        result = 31 * result + (totalDiscountedInCents != null ? totalDiscountedInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                accountCode,
+                coupon,
+                account,
+                singleUse,
+                totalDiscountedInCents,
+                currency,
+                state,
+                createdAt
+        );
     }
 
 }
