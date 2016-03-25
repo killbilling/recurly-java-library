@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "account")
 public class Address extends RecurlyObject {
@@ -116,12 +117,8 @@ public class Address extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Address address = (Address) o;
 
@@ -150,15 +147,17 @@ public class Address extends RecurlyObject {
         return true;
     }
 
+
     @Override
     public int hashCode() {
-        int result = address1 != null ? address1.hashCode() : 0;
-        result = 31 * result + (address2 != null ? address2.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (zip != null ? zip.hashCode() : 0);
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                address1,
+                address2,
+                city,
+                state,
+                zip,
+                country,
+                phone
+        );
     }
 }

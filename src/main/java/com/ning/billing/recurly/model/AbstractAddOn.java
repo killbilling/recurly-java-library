@@ -18,6 +18,7 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import com.google.common.base.Objects;
 
 public class AbstractAddOn extends RecurlyObject {
 
@@ -42,12 +43,8 @@ public class AbstractAddOn extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final AbstractAddOn that = (AbstractAddOn) o;
 
@@ -60,6 +57,6 @@ public class AbstractAddOn extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        return addOnCode != null ? addOnCode.hashCode() : 0;
+        return Objects.hashCode(addOnCode);
     }
 }

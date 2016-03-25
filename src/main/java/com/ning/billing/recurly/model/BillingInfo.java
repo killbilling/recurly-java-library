@@ -21,6 +21,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "billing_info")
 public class BillingInfo extends RecurlyObject {
 
@@ -309,12 +311,8 @@ public class BillingInfo extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final BillingInfo that = (BillingInfo) o;
 
@@ -381,25 +379,26 @@ public class BillingInfo extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (company != null ? company.hashCode() : 0);
-        result = 31 * result + (address1 != null ? address1.hashCode() : 0);
-        result = 31 * result + (address2 != null ? address2.hashCode() : 0);
-        result = 31 * result + (city != null ? city.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (zip != null ? zip.hashCode() : 0);
-        result = 31 * result + (country != null ? country.hashCode() : 0);
-        result = 31 * result + (phone != null ? phone.hashCode() : 0);
-        result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
-        result = 31 * result + (ipAddress != null ? ipAddress.hashCode() : 0);
-        result = 31 * result + (ipAddressCountry != null ? ipAddressCountry.hashCode() : 0);
-        result = 31 * result + (cardType != null ? cardType.hashCode() : 0);
-        result = 31 * result + (year != null ? year.hashCode() : 0);
-        result = 31 * result + (month != null ? month.hashCode() : 0);
-        result = 31 * result + (firstSix != null ? firstSix.hashCode() : 0);
-        result = 31 * result + (lastFour != null ? lastFour.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                firstName,
+                lastName,
+                company,
+                address1,
+                address2,
+                city,
+                state,
+                zip,
+                country,
+                phone,
+                vatNumber,
+                ipAddress,
+                ipAddressCountry,
+                cardType,
+                year,
+                month,
+                firstSix,
+                lastFour
+        );
     }
 }

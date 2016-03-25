@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
@@ -220,12 +221,8 @@ public class Invoice extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Invoice invoice = (Invoice) o;
 
@@ -280,21 +277,22 @@ public class Invoice extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (invoiceNumber != null ? invoiceNumber.hashCode() : 0);
-        result = 31 * result + (poNumber != null ? poNumber.hashCode() : 0);
-        result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
-        result = 31 * result + (subtotalInCents != null ? subtotalInCents.hashCode() : 0);
-        result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
-        result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
-        result = 31 * result + (netTerms != null ? netTerms.hashCode() : 0);
-        result = 31 * result + (lineItems != null ? lineItems.hashCode() : 0);
-        result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                uuid,
+                state,
+                invoiceNumber,
+                poNumber,
+                vatNumber,
+                subtotalInCents,
+                totalInCents,
+                taxInCents,
+                currency,
+                createdAt,
+                collectionMethod,
+                netTerms,
+                lineItems,
+                transactions
+        );
     }
 }

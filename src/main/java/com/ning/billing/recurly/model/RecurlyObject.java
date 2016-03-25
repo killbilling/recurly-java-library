@@ -181,4 +181,12 @@ public abstract class RecurlyObject {
     public void setRecurlyClient(final RecurlyClient recurlyClient) {
         this.recurlyClient = recurlyClient;
     }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        return this.hashCode() == o.hashCode();
+    }
 }

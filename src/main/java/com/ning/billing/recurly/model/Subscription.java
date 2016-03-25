@@ -22,6 +22,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "subscription")
 public class Subscription extends AbstractSubscription {
 
@@ -303,37 +305,33 @@ public class Subscription extends AbstractSubscription {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Subscription that = (Subscription) o;
 
         if (account != null ? !account.equals(that.account) : that.account != null) {
             return false;
         }
-        if (activatedAt != null ? !activatedAt.equals(that.activatedAt) : that.activatedAt != null) {
+        if (activatedAt != null ? activatedAt.compareTo(that.activatedAt) != 0 : that.activatedAt != null) {
             return false;
         }
         if (addOns != null ? !addOns.equals(that.addOns) : that.addOns != null) {
             return false;
         }
-        if (canceledAt != null ? !canceledAt.equals(that.canceledAt) : that.canceledAt != null) {
+        if (canceledAt != null ? canceledAt.compareTo(that.canceledAt) != 0 : that.canceledAt != null) {
             return false;
         }
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
             return false;
         }
-        if (currentPeriodEndsAt != null ? !currentPeriodEndsAt.equals(that.currentPeriodEndsAt) : that.currentPeriodEndsAt != null) {
+        if (currentPeriodEndsAt != null ? currentPeriodEndsAt.compareTo(that.currentPeriodEndsAt) != 0 : that.currentPeriodEndsAt != null) {
             return false;
         }
-        if (currentPeriodStartedAt != null ? !currentPeriodStartedAt.equals(that.currentPeriodStartedAt) : that.currentPeriodStartedAt != null) {
+        if (currentPeriodStartedAt != null ? currentPeriodStartedAt.compareTo(that.currentPeriodStartedAt) != 0 : that.currentPeriodStartedAt != null) {
             return false;
         }
-        if (expiresAt != null ? !expiresAt.equals(that.expiresAt) : that.expiresAt != null) {
+        if (expiresAt != null ? expiresAt.compareTo(that.expiresAt) != 0 : that.expiresAt != null) {
             return false;
         }
         if (plan != null ? !plan.equals(that.plan) : that.plan != null) {
@@ -342,14 +340,13 @@ public class Subscription extends AbstractSubscription {
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
             return false;
         }
-
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
-        if (trialEndsAt != null ? !trialEndsAt.equals(that.trialEndsAt) : that.trialEndsAt != null) {
+        if (trialEndsAt != null ? trialEndsAt.compareTo(that.trialEndsAt) != 0 : that.trialEndsAt != null) {
             return false;
         }
-        if (trialStartedAt != null ? !trialStartedAt.equals(that.trialStartedAt) : that.trialStartedAt != null) {
+        if (trialStartedAt != null ? trialStartedAt.compareTo(that.trialStartedAt) != 0 : that.trialStartedAt != null) {
             return false;
         }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(that.unitAmountInCents) : that.unitAmountInCents != null) {
@@ -358,7 +355,7 @@ public class Subscription extends AbstractSubscription {
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
-        if (startsAt != null ? !startsAt.equals(that.startsAt) : that.startsAt != null) {
+        if (startsAt != null ? startsAt.compareTo(that.startsAt) != 0 : that.startsAt != null) {
             return false;
         }
         if (pendingSubscription != null ? !pendingSubscription.equals(that.pendingSubscription) : that.pendingSubscription != null) {
@@ -367,19 +364,16 @@ public class Subscription extends AbstractSubscription {
         if (collectionMethod != null ? !collectionMethod.equals(that.collectionMethod) : that.collectionMethod != null) {
             return false;
         }
-
         if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
             return false;
         }
-
         if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
             return false;
         }
-
-        if (firstRenewalDate != null ? !firstRenewalDate.equals(that.firstRenewalDate) : that.firstRenewalDate != null) {
+        if (firstRenewalDate != null ? firstRenewalDate.compareTo(that.firstRenewalDate) != 0 : that.firstRenewalDate != null) {
             return false;
         }
-        
+
         if (bulk != null ? !bulk.equals(that.bulk) : that.bulk != null) {
             return false;
         }
@@ -389,26 +383,28 @@ public class Subscription extends AbstractSubscription {
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (plan != null ? plan.hashCode() : 0);
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        //result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        result = 31 * result + (activatedAt != null ? activatedAt.hashCode() : 0);
-        result = 31 * result + (canceledAt != null ? canceledAt.hashCode() : 0);
-        result = 31 * result + (expiresAt != null ? expiresAt.hashCode() : 0);
-        result = 31 * result + (currentPeriodStartedAt != null ? currentPeriodStartedAt.hashCode() : 0);
-        result = 31 * result + (currentPeriodEndsAt != null ? currentPeriodEndsAt.hashCode() : 0);
-        result = 31 * result + (trialStartedAt != null ? trialStartedAt.hashCode() : 0);
-        result = 31 * result + (trialEndsAt != null ? trialEndsAt.hashCode() : 0);
-        result = 31 * result + (addOns != null ? addOns.hashCode() : 0);
-        result = 31 * result + (pendingSubscription != null ? pendingSubscription.hashCode() : 0);
-        result = 31 * result + (startsAt != null ? startsAt.hashCode() : 0);
-        result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
-        result = 31 * result + (netTerms != null ? netTerms.hashCode() : 0);
-        result = 31 * result + (poNumber != null ? poNumber.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                plan,
+                uuid,
+                state,
+                unitAmountInCents,
+                currency,
+                quantity,
+                activatedAt,
+                canceledAt,
+                expiresAt,
+                currentPeriodStartedAt,
+                currentPeriodEndsAt,
+                trialStartedAt,
+                trialEndsAt,
+                addOns,
+                pendingSubscription,
+                startsAt,
+                collectionMethod,
+                netTerms,
+                poNumber
+
+        );
     }
 }

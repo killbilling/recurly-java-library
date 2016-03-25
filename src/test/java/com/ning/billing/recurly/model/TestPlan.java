@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestPlan extends TestModelBase {
 
@@ -121,5 +125,16 @@ public class TestPlan extends TestModelBase {
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());
         Assert.assertNull(plan.getAccountingCode());
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create plans of the same value but difference references
+        Plan plan = TestUtils.createRandomPlan(0);
+        Plan otherPlan = TestUtils.createRandomPlan(0);
+
+        assertNotEquals(System.identityHashCode(plan), System.identityHashCode(otherPlan));
+        assertEquals(plan.hashCode(), otherPlan.hashCode());
+        assertEquals(plan, otherPlan);
     }
 }

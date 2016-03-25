@@ -17,10 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.annotations.Test;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertEqualsNoOrder;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestCoupon extends TestModelBase {
 
@@ -100,5 +103,16 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getAppliesForMonths(), new Integer(1));
         assertEquals(coupon.getAppliesToAllPlans(), Boolean.TRUE);
         assertEquals(coupon.getMaxRedemptions(), null);
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create coupons of the same value but difference references
+        Coupon coupon = TestUtils.createRandomCoupon(0);
+        Coupon otherCoupon = TestUtils.createRandomCoupon(0);
+
+        assertNotEquals(System.identityHashCode(coupon), System.identityHashCode(otherCoupon));
+        assertEquals(coupon.hashCode(), otherCoupon.hashCode());
+        assertEquals(coupon, otherCoupon);
     }
 }

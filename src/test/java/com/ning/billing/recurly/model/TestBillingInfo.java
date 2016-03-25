@@ -17,10 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import static com.ning.billing.recurly.TestUtils.randomString;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestBillingInfo extends TestModelBase {
 
@@ -50,5 +53,16 @@ public class TestBillingInfo extends TestModelBase {
 
         final String xml = xmlMapper.writeValueAsString(billingInfo);
         Assert.assertEquals(xmlMapper.readValue(xml, BillingInfo.class), billingInfo);
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create billing infos of the same value but difference references
+        BillingInfo info = TestUtils.createRandomBillingInfo(0);
+        BillingInfo otherInfo = TestUtils.createRandomBillingInfo(0);
+
+        assertNotEquals(System.identityHashCode(info), System.identityHashCode(otherInfo));
+        assertEquals(info.hashCode(), otherInfo.hashCode());
+        assertEquals(info, otherInfo);
     }
 }

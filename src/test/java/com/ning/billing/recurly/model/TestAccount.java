@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestAccount extends TestModelBase {
 
@@ -63,6 +67,17 @@ public class TestAccount extends TestModelBase {
         verifyAccount(account2);
     }
 
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create accounts of the same value but difference references
+        Account account = TestUtils.createRandomAccount(0);
+        Account otherAccount = TestUtils.createRandomAccount(0);
+
+        assertNotEquals(System.identityHashCode(account), System.identityHashCode(otherAccount));
+        assertEquals(account.hashCode(), otherAccount.hashCode());
+        assertEquals(account, otherAccount);
+    }
+
     private void verifyAccount(final Account account) {
         Assert.assertEquals(account.getAccountCode(), "1");
         Assert.assertEquals(account.getState(), "active");
@@ -81,4 +96,5 @@ public class TestAccount extends TestModelBase {
         Assert.assertEquals(account.getAddress().getCountry(), "US");
         Assert.assertNull(account.getAddress().getPhone());
     }
+
 }
