@@ -33,10 +33,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
@@ -55,6 +51,7 @@ import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
 import com.ning.billing.recurly.model.Redemption;
+import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
@@ -62,6 +59,11 @@ import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
+
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
@@ -80,6 +82,7 @@ public class RecurlyClient {
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
+    public static final String RECURLY_API_VERSION = "2.1";
 
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final String PER_PAGE = "per_page=";
@@ -760,7 +763,7 @@ public class RecurlyClient {
     }
 
     /**
-     * Lookup a coupon redemption on an invoice.
+     * Lookup the first coupon redemption on an account.
      *
      * @param accountCode recurly account id
      * @return the coupon redemption for this account on success, null otherwise
@@ -771,23 +774,56 @@ public class RecurlyClient {
     }
 
     /**
-     * Lookup a coupon redemption on an invoice.
+     * Lookup all coupon redemptions on an account.
+     *
+     * @param accountCode recurly account id
+     * @return the coupon redemptions for this account on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsByAccount(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTIONS_RESOURCE,
+                Redemptions.class);
+    }
+
+    /**
+     * Lookup the first coupon redemption on an invoice.
      *
      * @param invoiceNumber invoice number
      * @return the coupon redemption for this invoice on success, null otherwise
      */
     public Redemption getCouponRedemptionByInvoice(final Integer invoiceNumber) {
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
-                     Redemption.class);
+                Redemption.class);
+    }
+
+
+    /**
+     * Lookup all coupon redemptions on an invoice.
+     *
+     * @param invoiceNumber invoice number
+     * @return the coupon redemptions for this invoice on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsByInvoice(final Integer invoiceNumber) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
+                Redemptions.class);
     }
 
     /**
-     * Deletes a coupon from an account.
+     * Deletes a coupon redemption from an account.
      *
      * @param accountCode recurly account id
      */
     public void deleteCouponRedemption(final String accountCode) {
         doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTION_RESOURCE);
+    }
+
+    /**
+     * Deletes a specific redemption.
+     *
+     * @param accountCode recurly account id
+     * @param redemptionUuid recurly coupon redemption uuid
+     */
+    public void deleteCouponRedemption(final String accountCode, final String redemptionUuid) {
+        doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTIONS_RESOURCE + "/" + redemptionUuid);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -930,6 +966,7 @@ public class RecurlyClient {
         final Response response = builder.addHeader("Authorization", "Basic " + key)
                                          .addHeader("Accept", "application/xml")
                                          .addHeader("Content-Type", "application/xml; charset=utf-8")
+                                         .addHeader("X-Api-Version", RECURLY_API_VERSION)
                                          .addHeader(HttpHeaders.USER_AGENT, userAgent)
                                          .setBodyEncoding("UTF-8")
                                          .execute()

@@ -22,14 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Minutes;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
@@ -43,6 +35,7 @@ import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Redemption;
+import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
@@ -51,6 +44,14 @@ import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Minutes;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class TestRecurlyClient {
 
@@ -156,8 +157,8 @@ public class TestRecurlyClient {
             // Refetch the invoice using the getInvoice method
             final int invoiceID = subInvoice.getInvoiceNumber();
             final Invoice gotInvoice = recurlyClient.getInvoice(invoiceID);
-            
-            Assert.assertEquals(subInvoice,gotInvoice);
+
+            Assert.assertEquals(subInvoice.hashCode(), gotInvoice.hashCode());
             
             // Remove all addons
             final SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate();
@@ -313,6 +314,8 @@ public class TestRecurlyClient {
             Assert.assertEquals(accounts.size(), 1);
             accounts = accounts.getPrev();
         }
+
+        System.setProperty(RECURLY_PAGE_SIZE, "50");
     }
 
     @Test(groups = "integration")
@@ -973,11 +976,13 @@ public class TestRecurlyClient {
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan(CURRENCY);
         final Coupon couponData = TestUtils.createRandomCoupon();
+        final Coupon secondCouponData = TestUtils.createRandomCoupon();
 
         try {
             final Account account = recurlyClient.createAccount(accountData);
             final Plan plan = recurlyClient.createPlan(planData);
             final Coupon coupon = recurlyClient.createCoupon(couponData);
+            final Coupon secondCoupon = recurlyClient.createCoupon(secondCouponData);
 
             // Create BillingInfo
             billingInfoData.setAccount(account);
@@ -1020,8 +1025,25 @@ public class TestRecurlyClient {
             Assert.assertEquals(redemption.getCoupon().getCouponCode(), coupon.getCouponCode());
             Assert.assertEquals(redemption.getAccount().getAccountCode(), account.getAccountCode());
 
-            // Remove a coupon
-            recurlyClient.deleteCouponRedemption(account.getAccountCode());
+            // Redeem another coupon
+            final Redemption secondRedemptionData = new Redemption();
+            secondRedemptionData.setAccountCode(account.getAccountCode());
+            secondRedemptionData.setCurrency(CURRENCY);
+            Redemption secondRedemption = recurlyClient.redeemCoupon(secondCoupon.getCouponCode(), secondRedemptionData);
+            Assert.assertNotNull(secondRedemption);
+            Assert.assertEquals(secondRedemption.getCoupon().getCouponCode(), secondCoupon.getCouponCode());
+            Assert.assertEquals(secondRedemption.getAccount().getAccountCode(), account.getAccountCode());
+            Assert.assertFalse(secondRedemption.getSingleUse());
+            Assert.assertEquals(secondRedemption.getTotalDiscountedInCents(), (Integer) 0);
+            Assert.assertEquals(secondRedemption.getState(), "active");
+            Assert.assertEquals(secondRedemption.getCurrency(), CURRENCY);
+
+            Redemptions redemptions = recurlyClient.getCouponRedemptionsByAccount(account.getAccountCode());
+            Assert.assertEquals(redemptions.size(), 2);
+
+            // Remove both coupon redemptions
+            recurlyClient.deleteCouponRedemption(account.getAccountCode(), redemption.getUuid());
+            recurlyClient.deleteCouponRedemption(account.getAccountCode(), secondRedemption.getUuid());
             try {
                 recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
                 Assert.fail("Coupon should be removed.");
