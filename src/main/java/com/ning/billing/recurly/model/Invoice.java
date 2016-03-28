@@ -91,7 +91,7 @@ public class Invoice extends RecurlyObject {
    */
   public void setOriginalInvoice(Invoice originalInvoice) {
         this.originalInvoice = originalInvoice;
-    }
+  }
 
   /**
    * Fetches the original invoice if the href is populated, otherwise return the current original invoice.
@@ -103,7 +103,7 @@ public class Invoice extends RecurlyObject {
             originalInvoice = fetch(originalInvoice, Invoice.class);
         }
         return originalInvoice;
-    }
+  }
 
     public void setAccount(final Account account) {
         this.account = account;
