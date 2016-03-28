@@ -30,6 +30,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "account")
     private Account account;
 
+    @XmlElement(name = "original_invoice")
+    private Invoice originalInvoice;
+
     @XmlElement(name = "uuid")
     private String uuid;
 
@@ -79,6 +82,27 @@ public class Invoice extends RecurlyObject {
             account = fetch(account, Account.class);
         }
         return account;
+    }
+
+  /**
+   * Set this original invoice to the passed in original invoice.
+   *
+   * @param originalInvoice original invoice
+   */
+  public void setOriginalInvoice(Invoice originalInvoice) {
+        this.originalInvoice = originalInvoice;
+    }
+
+  /**
+   * Fetches the original invoice if the href is populated, otherwise return the current original invoice.
+   *
+   * @return fully loaded original invoice
+   */
+  public Invoice getOriginalInvoice() {
+        if (originalInvoice != null && originalInvoice.getHref() != null && !originalInvoice.getHref().isEmpty()) {
+            originalInvoice = fetch(originalInvoice, Invoice.class);
+        }
+        return originalInvoice;
     }
 
     public void setAccount(final Account account) {
@@ -201,6 +225,7 @@ public class Invoice extends RecurlyObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
         sb.append("account=").append(account);
+        sb.append(", originalInvoice='").append(originalInvoice).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
@@ -227,6 +252,9 @@ public class Invoice extends RecurlyObject {
         final Invoice invoice = (Invoice) o;
 
         if (account != null ? !account.equals(invoice.account) : invoice.account != null) {
+            return false;
+        }
+        if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
             return false;
         }
         if (collectionMethod != null ? !collectionMethod.equals(invoice.collectionMethod) : invoice.collectionMethod != null) {
@@ -279,6 +307,7 @@ public class Invoice extends RecurlyObject {
     public int hashCode() {
         return Objects.hashCode(
                 account,
+                originalInvoice,
                 uuid,
                 state,
                 invoiceNumber,
