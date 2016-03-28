@@ -33,6 +33,7 @@ public class TestInvoice extends TestModelBase {
         final String invoiceData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                                    + "<invoice href=\"https://api.recurly.com/v2/invoices/e3f0a9e084a2468480d00ee61b090d4d\">\n"
                                    + "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
+                                   + "  <original_invoice href=\"https://api.recurly.com/v2/invoices/1192\"/>"
                                    + "  <uuid>421f7b7d414e4c6792938e7c49d552e9</uuid>\n"
                                    + "  <state>open</state>\n"
                                    + "  <invoice_number type=\"integer\">1402</invoice_number>\n"
@@ -69,6 +70,7 @@ public class TestInvoice extends TestModelBase {
         final Invoice invoice = xmlMapper.readValue(invoiceData, Invoice.class);
 
         Assert.assertEquals(invoice.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
+        Assert.assertEquals(invoice.getOriginalInvoice().getHref(), "https://api.recurly.com/v2/invoices/1192");
         Assert.assertEquals(invoice.getUuid(), "421f7b7d414e4c6792938e7c49d552e9");
         Assert.assertEquals(invoice.getState(), "open");
         Assert.assertEquals((int) invoice.getInvoiceNumber(), 1402);
