@@ -619,6 +619,17 @@ public class RecurlyClient {
     }
 
     /**
+     * Update a Plan's info
+     * <p>
+     *
+     * @param plan The plan to update on recurly
+     * @return the updated plan object
+     */
+    public Plan updatePlan(final Plan plan) {
+        return doPUT(Plan.PLANS_RESOURCE + "/" + plan.getPlanCode(), plan, Plan.class);
+    }
+
+    /**
      * Get a Plan's details
      * <p>
      *

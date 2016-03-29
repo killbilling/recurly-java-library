@@ -429,6 +429,44 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testUpdatePlan() throws Exception {
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a plan
+            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Plan planChanges = new Plan(); // Start with a fresh plan object for changes
+
+            Assert.assertNotNull(plan);
+
+            // Set the plancode to identify which plan to change
+            planChanges.setPlanCode(planData.getPlanCode());
+
+            // Change some attributes
+            planChanges.setName("A new name");
+            planChanges.setDescription("A new description");
+
+            // Send off the changes and get the updated object
+            final Plan updatedPlan = recurlyClient.updatePlan(planChanges);
+
+            Assert.assertNotNull(updatedPlan);
+            Assert.assertEquals(updatedPlan.getName(), "A new name");
+            Assert.assertEquals(updatedPlan.getDescription(), "A new description");
+        } finally {
+            // Delete the plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+            // Check that we deleted it
+            try {
+                final Plan retrievedPlan2 = recurlyClient.getPlan(planData.getPlanCode());
+                Assert.fail("Failed to delete the Plan");
+            } catch (final RecurlyAPIException e) {
+                // good
+            }
+        }
+    }
+
+    @Test(groups = "integration")
     public void testCreateSubscriptions() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
