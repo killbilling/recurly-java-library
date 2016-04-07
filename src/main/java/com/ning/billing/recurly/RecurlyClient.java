@@ -23,6 +23,7 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.security.GeneralSecurityException;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -60,6 +61,7 @@ import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 
+import com.ning.billing.recurly.util.http.SslUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1061,11 +1063,19 @@ public class RecurlyClient {
     }
 
     private AsyncHttpClient createHttpClient() {
-        // Don't limit the number of connections per host
-        // See https://github.com/ning/async-http-client/issues/issue/28
         final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
-        builder.setMaxConnectionsPerHost(-1);
-        return new AsyncHttpClient(builder.build());
+
+        try {
+            // Don't limit the number of connections per host
+            // See https://github.com/ning/async-http-client/issues/issue/28
+            builder.setMaxConnectionsPerHost(-1);
+            builder.setSSLContext(SslUtils.getInstance().getSSLContext(false));
+        } catch (GeneralSecurityException e) {
+            // throw a recurly exception here?
+            e.printStackTrace();
+        } finally {
+            return new AsyncHttpClient(builder.build());
+        }
     }
 
     @VisibleForTesting
