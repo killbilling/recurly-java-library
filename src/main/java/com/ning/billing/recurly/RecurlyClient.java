@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -1069,8 +1071,11 @@ public class RecurlyClient {
             // Don't limit the number of connections per host
             // See https://github.com/ning/async-http-client/issues/issue/28
             builder.setMaxConnectionsPerHost(-1);
-            builder.setSSLContext(SslUtils.getInstance().getSSLContext(false));
-        } catch (GeneralSecurityException e) {
+            builder.setSSLContext(SslUtils.getInstance().getSSLContext());
+        } catch (NoSuchAlgorithmException e) {
+            // throw a recurly exception here?
+            e.printStackTrace();
+        } catch (KeyManagementException e) {
             // throw a recurly exception here?
             e.printStackTrace();
         } finally {
