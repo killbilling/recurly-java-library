@@ -23,6 +23,9 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.security.GeneralSecurityException;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -60,6 +63,7 @@ import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 
+import com.ning.billing.recurly.util.http.SslUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -150,7 +154,7 @@ public class RecurlyClient {
     /**
      * Open the underlying http client
      */
-    public synchronized void open() {
+    public synchronized void open() throws NoSuchAlgorithmException, KeyManagementException {
         client = createHttpClient();
     }
 
@@ -1071,11 +1075,14 @@ public class RecurlyClient {
         }
     }
 
-    private AsyncHttpClient createHttpClient() {
+    private AsyncHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
+        final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
+
         // Don't limit the number of connections per host
         // See https://github.com/ning/async-http-client/issues/issue/28
-        final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
         builder.setMaxConnectionsPerHost(-1);
+        builder.setSSLContext(SslUtils.getInstance().getSSLContext());
+
         return new AsyncHttpClient(builder.build());
     }
 
