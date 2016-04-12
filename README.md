@@ -1,7 +1,6 @@
 recurly-java-library [![Build Status](https://travis-ci.org/killbilling/recurly-java-library.svg)](https://travis-ci.org/killbilling/recurly-java-library)
 ====================
 
-
 Java library for Recurly, originally developed for [Kill Bill](http://killbill.io), an open-source subscription management and billing system.
 
 Getting started
@@ -35,6 +34,7 @@ Java properties
 * Set `-Drecurly.debug=true` to output debug information in the info log file
 * Set `-Drecurly.page.size=20` to configure the page size for Recurly API calls
 * To run the tests, one can use `-Dkillbill.payment.recurly.currency=EUR` to override the default USD currency used
+* You may optionally pass the TLS protocol used with the setting `-Dkillbill.payment.recurly.tlsProtocol`. Keep in mind that Recurly only supports `TLSv1.1` and above. This setting defaults to `TLSv1.2`.
 
 Push notifications
 ------------------
