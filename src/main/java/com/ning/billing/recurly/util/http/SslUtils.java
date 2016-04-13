@@ -24,8 +24,8 @@ import javax.net.ssl.SSLContext;
 
 public class SslUtils {
 
-    private static final String TLS_PROTCOL_KEY = "killbill.payment.recurly.tlsProtocol";
-    private static final String TLS_PROTCOL_DEFAULT = "TLSv1.2";
+    private static final String TLS_PROTOCOL_KEY = "killbill.payment.recurly.tlsProtocol";
+    private static final String TLS_PROTOCOL_DEFAULT = "TLSv1.2";
     private SSLContext context;
 
     private static class SingletonHolder {
@@ -39,7 +39,7 @@ public class SslUtils {
     public SSLContext getSSLContext() throws NoSuchAlgorithmException, KeyManagementException {
         if (context != null) return this.context;
 
-        final String protocol = System.getProperty(TLS_PROTCOL_KEY, TLS_PROTCOL_DEFAULT);
+        final String protocol = System.getProperty(TLS_PROTOCOL_KEY, TLS_PROTOCOL_DEFAULT);
         context = SSLContext.getInstance(protocol);
         context.init(null, null, null);
 
