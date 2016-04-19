@@ -47,6 +47,7 @@ import com.ning.billing.recurly.model.Transactions;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
 import org.joda.time.Minutes;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -1112,4 +1113,50 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testCreateTrialExtensionCoupon() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final Coupon couponData = TestUtils.createRandomCoupon();
+
+        couponData.setName("apitrialext");
+        couponData.setCouponCode("apitrialext");
+        couponData.setTrialExtensionAmount(3);
+        couponData.setTrialExtensionUnit("month");
+        couponData.setDiscountType("trial_extension");
+
+        final LocalDateTime now = LocalDateTime.now();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Coupon coupon = recurlyClient.createCoupon(couponData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+
+            // Subscribe the user to the plan
+            final Subscription subscriptionData = new Subscription();
+            // set our coupon code
+            subscriptionData.setCouponCode(coupon.getCouponCode());
+
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            Assert.assertNotNull(subscription);
+            Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), now.getMonthOfYear() + 3);  
+        } finally {
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            recurlyClient.deletePlan(planData.getPlanCode());
+            recurlyClient.deleteCoupon(couponData.getCouponCode());
+        }
+    }
 }

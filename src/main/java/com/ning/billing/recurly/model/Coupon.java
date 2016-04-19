@@ -76,6 +76,15 @@ public class Coupon extends RecurlyObject {
     private String discountType;
 
     /**
+     * "day" or "week" or "month"
+     */
+    @XmlElement(name = "trial_extension_unit")
+    private String trialExtensionUnit;
+
+    @XmlElement(name = "trial_extension_amount")
+    private Integer trialExtensionAmount;
+
+    /**
      * Discount percentage if discount_type is "percent"
      */
     @XmlElement(name = "discount_percent")
@@ -210,6 +219,23 @@ public class Coupon extends RecurlyObject {
         this.appliesToAllPlans = booleanOrNull(appliesToAllPlans);
     }
 
+    public String getTrialExtensionUnit() {
+        return trialExtensionUnit;
+    }
+
+    public void setTrialExtensionUnit(final String trialExtensionUnit) {
+        this.trialExtensionUnit = stringOrNull(trialExtensionUnit);
+    }
+
+    public Integer getTrialExtensionAmount() {
+        return trialExtensionAmount;
+    }
+
+    public void setTrialExtensionAmount(final Object trialExtensionAmount) {
+        this.trialExtensionAmount = integerOrNull(trialExtensionAmount);
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -260,6 +286,12 @@ public class Coupon extends RecurlyObject {
         if (singleUse != null ? singleUse.compareTo(coupon.singleUse) != 0 : coupon.singleUse != null) {
             return false;
         }
+        if (trialExtensionUnit != null ? !trialExtensionUnit.equals(coupon.trialExtensionUnit) : coupon.trialExtensionUnit != null) {
+            return false;
+        }
+        if (trialExtensionAmount != null ? !trialExtensionAmount.equals(coupon.trialExtensionAmount) : coupon.trialExtensionAmount != null) {
+            return false;
+        }
 
         return true;
     }
@@ -276,7 +308,9 @@ public class Coupon extends RecurlyObject {
                 singleUse,
                 appliesForMonths,
                 appliesToAllPlans,
-                maxRedemptions
+                maxRedemptions,
+                trialExtensionUnit,
+                trialExtensionAmount
         );
     }
 }
