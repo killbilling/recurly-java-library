@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "error")
 public class RecurlyError extends RecurlyObject {
@@ -68,12 +69,8 @@ public class RecurlyError extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final RecurlyError that = (RecurlyError) o;
 
@@ -92,9 +89,10 @@ public class RecurlyError extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = field != null ? field.hashCode() : 0;
-        result = 31 * result + (symbol != null ? symbol.hashCode() : 0);
-        result = 31 * result + (message != null ? message.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                field,
+                symbol,
+                message
+        );
     }
 }

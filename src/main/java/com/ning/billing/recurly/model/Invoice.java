@@ -22,12 +22,16 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "account")
     private Account account;
+
+    @XmlElement(name = "original_invoice")
+    private Invoice originalInvoice;
 
     @XmlElement(name = "uuid")
     private String uuid;
@@ -79,6 +83,27 @@ public class Invoice extends RecurlyObject {
         }
         return account;
     }
+
+  /**
+   * Set this original invoice to the passed in original invoice.
+   *
+   * @param originalInvoice original invoice
+   */
+  public void setOriginalInvoice(Invoice originalInvoice) {
+        this.originalInvoice = originalInvoice;
+  }
+
+  /**
+   * Fetches the original invoice if the href is populated, otherwise return the current original invoice.
+   *
+   * @return fully loaded original invoice
+   */
+  public Invoice getOriginalInvoice() {
+        if (originalInvoice != null && originalInvoice.getHref() != null && !originalInvoice.getHref().isEmpty()) {
+            originalInvoice = fetch(originalInvoice, Invoice.class);
+        }
+        return originalInvoice;
+  }
 
     public void setAccount(final Account account) {
         this.account = account;
@@ -200,6 +225,7 @@ public class Invoice extends RecurlyObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
         sb.append("account=").append(account);
+        sb.append(", originalInvoice='").append(originalInvoice).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
@@ -220,16 +246,15 @@ public class Invoice extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Invoice invoice = (Invoice) o;
 
         if (account != null ? !account.equals(invoice.account) : invoice.account != null) {
+            return false;
+        }
+        if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
             return false;
         }
         if (collectionMethod != null ? !collectionMethod.equals(invoice.collectionMethod) : invoice.collectionMethod != null) {
@@ -280,21 +305,23 @@ public class Invoice extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (invoiceNumber != null ? invoiceNumber.hashCode() : 0);
-        result = 31 * result + (poNumber != null ? poNumber.hashCode() : 0);
-        result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
-        result = 31 * result + (subtotalInCents != null ? subtotalInCents.hashCode() : 0);
-        result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
-        result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
-        result = 31 * result + (netTerms != null ? netTerms.hashCode() : 0);
-        result = 31 * result + (lineItems != null ? lineItems.hashCode() : 0);
-        result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                originalInvoice,
+                uuid,
+                state,
+                invoiceNumber,
+                poNumber,
+                vatNumber,
+                subtotalInCents,
+                totalInCents,
+                taxInCents,
+                currency,
+                createdAt,
+                collectionMethod,
+                netTerms,
+                lineItems,
+                transactions
+        );
     }
 }

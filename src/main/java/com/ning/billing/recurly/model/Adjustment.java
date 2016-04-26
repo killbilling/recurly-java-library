@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "adjustment")
 public class Adjustment extends RecurlyObject {
@@ -218,12 +219,8 @@ public class Adjustment extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Adjustment that = (Adjustment) o;
 
@@ -233,7 +230,7 @@ public class Adjustment extends RecurlyObject {
         if (accountingCode != null ? !accountingCode.equals(that.accountingCode) : that.accountingCode != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
@@ -278,21 +275,22 @@ public class Adjustment extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (accountingCode != null ? accountingCode.hashCode() : 0);
-        result = 31 * result + (origin != null ? origin.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        result = 31 * result + (discountInCents != null ? discountInCents.hashCode() : 0);
-        result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
-        result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (taxable != null ? taxable.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                uuid,
+                description,
+                accountingCode,
+                origin,
+                unitAmountInCents,
+                quantity,
+                discountInCents,
+                taxInCents,
+                totalInCents,
+                currency,
+                taxable,
+                startDate,
+                endDate,
+                createdAt
+        );
     }
 }

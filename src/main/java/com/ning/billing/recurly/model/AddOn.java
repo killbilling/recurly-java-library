@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "add_on")
 public class AddOn extends AbstractAddOn {
@@ -98,15 +99,8 @@ public class AddOn extends AbstractAddOn {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final AddOn addOn = (AddOn) o;
 
@@ -131,12 +125,12 @@ public class AddOn extends AbstractAddOn {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (displayQuantityOnHostedPage != null ? displayQuantityOnHostedPage.hashCode() : 0);
-        result = 31 * result + (defaultQuantity != null ? defaultQuantity.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                name,
+                displayQuantityOnHostedPage,
+                defaultQuantity,
+                unitAmountInCents,
+                createdAt
+        );
     }
 }

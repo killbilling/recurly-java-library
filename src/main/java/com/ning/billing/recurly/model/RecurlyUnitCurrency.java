@@ -18,6 +18,7 @@
 package com.ning.billing.recurly.model;
 
 import java.util.Map;
+import com.google.common.base.Objects;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlElement;
@@ -266,12 +267,8 @@ public class RecurlyUnitCurrency {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final RecurlyUnitCurrency that = (RecurlyUnitCurrency) o;
 
@@ -326,21 +323,22 @@ public class RecurlyUnitCurrency {
 
     @Override
     public int hashCode() {
-        int result = unitAmountUSD != null ? unitAmountUSD.hashCode() : 0;
-        result = 31 * result + (unitAmountAUD != null ? unitAmountAUD.hashCode() : 0);
-        result = 31 * result + (unitAmountCAD != null ? unitAmountCAD.hashCode() : 0);
-        result = 31 * result + (unitAmountEUR != null ? unitAmountEUR.hashCode() : 0);
-        result = 31 * result + (unitAmountGBP != null ? unitAmountGBP.hashCode() : 0);
-        result = 31 * result + (unitAmountCZK != null ? unitAmountCZK.hashCode() : 0);
-        result = 31 * result + (unitAmountDKK != null ? unitAmountDKK.hashCode() : 0);
-        result = 31 * result + (unitAmountHUF != null ? unitAmountHUF.hashCode() : 0);
-        result = 31 * result + (unitAmountNOK != null ? unitAmountNOK.hashCode() : 0);
-        result = 31 * result + (unitAmountNZD != null ? unitAmountNZD.hashCode() : 0);
-        result = 31 * result + (unitAmountPLN != null ? unitAmountPLN.hashCode() : 0);
-        result = 31 * result + (unitAmountSGD != null ? unitAmountSGD.hashCode() : 0);
-        result = 31 * result + (unitAmountSEK != null ? unitAmountSEK.hashCode() : 0);
-        result = 31 * result + (unitAmountCHF != null ? unitAmountCHF.hashCode() : 0);
-        result = 31 * result + (unitAmountZAR != null ? unitAmountZAR.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                unitAmountUSD,
+                unitAmountCAD,
+                unitAmountAUD,
+                unitAmountEUR,
+                unitAmountGBP,
+                unitAmountCZK,
+                unitAmountDKK,
+                unitAmountHUF,
+                unitAmountNOK,
+                unitAmountNZD,
+                unitAmountPLN,
+                unitAmountSGD,
+                unitAmountSEK,
+                unitAmountCHF,
+                unitAmountZAR
+        );
     }
 }

@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestRedemption extends TestModelBase {
 
@@ -56,5 +60,16 @@ public class TestRedemption extends TestModelBase {
                 "<account_code>1</account_code>" +
                 "<currency>USD</currency>" +
                 "</redemption>");
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create redemptions of the same value but difference references
+        Redemption redemption = TestUtils.createRandomRedemption(0);
+        Redemption otherRedemption = TestUtils.createRandomRedemption(0);
+
+        assertNotEquals(System.identityHashCode(redemption), System.identityHashCode(otherRedemption));
+        assertEquals(redemption.hashCode(), otherRedemption.hashCode());
+        assertEquals(redemption, otherRedemption);
     }
 }

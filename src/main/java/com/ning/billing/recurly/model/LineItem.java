@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "invoice")
 public class LineItem extends RecurlyObject {
@@ -45,12 +46,8 @@ public class LineItem extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final LineItem lineItem = (LineItem) o;
 
@@ -63,6 +60,6 @@ public class LineItem extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        return adjustment != null ? adjustment.hashCode() : 0;
+        return Objects.hashCode(adjustment);
     }
 }

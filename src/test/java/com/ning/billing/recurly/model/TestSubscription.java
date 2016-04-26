@@ -19,9 +19,13 @@ package com.ning.billing.recurly.model;
 
 import java.io.IOException;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestSubscription extends TestModelBase {
 
@@ -127,6 +131,17 @@ public class TestSubscription extends TestModelBase {
         final String subscriptionDataSerialized = xmlMapper.writeValueAsString(subscription);
         final Subscription subscription2 = verifySubscription(subscriptionDataSerialized);
         verifySubscriptionAddons(subscription2);
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create subscriptions of the same value but difference references
+        Subscription subscription = TestUtils.createRandomSubscription(0);
+        Subscription otherSubscription = TestUtils.createRandomSubscription(0);
+
+        assertNotEquals(System.identityHashCode(subscription), System.identityHashCode(otherSubscription));
+        assertEquals(subscription.hashCode(), otherSubscription.hashCode());
+        assertEquals(subscription, otherSubscription);
     }
 
     private void verifySubscriptionAddons(final Subscription subscription) {

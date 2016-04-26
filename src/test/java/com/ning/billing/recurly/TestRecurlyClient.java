@@ -22,14 +22,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
-import org.joda.time.Minutes;
-import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Test;
-
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
@@ -43,6 +35,7 @@ import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Redemption;
+import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
@@ -51,6 +44,15 @@ import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
+
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.LocalDateTime;
+import org.joda.time.Minutes;
+import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 public class TestRecurlyClient {
 
@@ -69,6 +71,7 @@ public class TestRecurlyClient {
     public void setUp() throws Exception {
         final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
         String subDomainTemp = System.getProperty(KILLBILL_PAYMENT_RECURLY_SUBDOMAIN);
+
         if (apiKey == null) {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
                         " -Dkillbill.payment.recurly.apiKey=...");
@@ -155,8 +158,8 @@ public class TestRecurlyClient {
             // Refetch the invoice using the getInvoice method
             final int invoiceID = subInvoice.getInvoiceNumber();
             final Invoice gotInvoice = recurlyClient.getInvoice(invoiceID);
-            
-            Assert.assertEquals(subInvoice,gotInvoice);
+
+            Assert.assertEquals(subInvoice.hashCode(), gotInvoice.hashCode());
             
             // Remove all addons
             final SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate();
@@ -312,6 +315,8 @@ public class TestRecurlyClient {
             Assert.assertEquals(accounts.size(), 1);
             accounts = accounts.getPrev();
         }
+
+        System.setProperty(RECURLY_PAGE_SIZE, "50");
     }
 
     @Test(groups = "integration")
@@ -411,6 +416,44 @@ public class TestRecurlyClient {
             // Check that getting all the plans makes sense
             Assert.assertTrue(recurlyClient.getPlans().size() > 0);
 
+        } finally {
+            // Delete the plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+            // Check that we deleted it
+            try {
+                final Plan retrievedPlan2 = recurlyClient.getPlan(planData.getPlanCode());
+                Assert.fail("Failed to delete the Plan");
+            } catch (final RecurlyAPIException e) {
+                // good
+            }
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testUpdatePlan() throws Exception {
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a plan
+            final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Plan planChanges = new Plan(); // Start with a fresh plan object for changes
+
+            Assert.assertNotNull(plan);
+
+            // Set the plancode to identify which plan to change
+            planChanges.setPlanCode(planData.getPlanCode());
+
+            // Change some attributes
+            planChanges.setName("A new name");
+            planChanges.setDescription("A new description");
+
+            // Send off the changes and get the updated object
+            final Plan updatedPlan = recurlyClient.updatePlan(planChanges);
+
+            Assert.assertNotNull(updatedPlan);
+            Assert.assertEquals(updatedPlan.getName(), "A new name");
+            Assert.assertEquals(updatedPlan.getDescription(), "A new description");
         } finally {
             // Delete the plan
             recurlyClient.deletePlan(planData.getPlanCode());
@@ -972,11 +1015,13 @@ public class TestRecurlyClient {
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan(CURRENCY);
         final Coupon couponData = TestUtils.createRandomCoupon();
+        final Coupon secondCouponData = TestUtils.createRandomCoupon();
 
         try {
             final Account account = recurlyClient.createAccount(accountData);
             final Plan plan = recurlyClient.createPlan(planData);
             final Coupon coupon = recurlyClient.createCoupon(couponData);
+            final Coupon secondCoupon = recurlyClient.createCoupon(secondCouponData);
 
             // Create BillingInfo
             billingInfoData.setAccount(account);
@@ -1019,8 +1064,25 @@ public class TestRecurlyClient {
             Assert.assertEquals(redemption.getCoupon().getCouponCode(), coupon.getCouponCode());
             Assert.assertEquals(redemption.getAccount().getAccountCode(), account.getAccountCode());
 
-            // Remove a coupon
-            recurlyClient.deleteCouponRedemption(account.getAccountCode());
+            // Redeem another coupon
+            final Redemption secondRedemptionData = new Redemption();
+            secondRedemptionData.setAccountCode(account.getAccountCode());
+            secondRedemptionData.setCurrency(CURRENCY);
+            Redemption secondRedemption = recurlyClient.redeemCoupon(secondCoupon.getCouponCode(), secondRedemptionData);
+            Assert.assertNotNull(secondRedemption);
+            Assert.assertEquals(secondRedemption.getCoupon().getCouponCode(), secondCoupon.getCouponCode());
+            Assert.assertEquals(secondRedemption.getAccount().getAccountCode(), account.getAccountCode());
+            Assert.assertFalse(secondRedemption.getSingleUse());
+            Assert.assertEquals(secondRedemption.getTotalDiscountedInCents(), (Integer) 0);
+            Assert.assertEquals(secondRedemption.getState(), "active");
+            Assert.assertEquals(secondRedemption.getCurrency(), CURRENCY);
+
+            Redemptions redemptions = recurlyClient.getCouponRedemptionsByAccount(account.getAccountCode());
+            Assert.assertEquals(redemptions.size(), 2);
+
+            // Remove both coupon redemptions
+            recurlyClient.deleteCouponRedemption(account.getAccountCode(), redemption.getUuid());
+            recurlyClient.deleteCouponRedemption(account.getAccountCode(), secondRedemption.getUuid());
             try {
                 recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
                 Assert.fail("Coupon should be removed.");
@@ -1051,4 +1113,50 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testCreateTrialExtensionCoupon() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final Coupon couponData = TestUtils.createRandomCoupon();
+
+        couponData.setName("apitrialext");
+        couponData.setCouponCode("apitrialext");
+        couponData.setTrialExtensionAmount(3);
+        couponData.setTrialExtensionUnit("month");
+        couponData.setDiscountType("trial_extension");
+
+        final LocalDateTime now = LocalDateTime.now();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Coupon coupon = recurlyClient.createCoupon(couponData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+
+            // Subscribe the user to the plan
+            final Subscription subscriptionData = new Subscription();
+            // set our coupon code
+            subscriptionData.setCouponCode(coupon.getCouponCode());
+
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            Assert.assertNotNull(subscription);
+            Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), now.getMonthOfYear() + 3);  
+        } finally {
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            recurlyClient.deletePlan(planData.getPlanCode());
+            recurlyClient.deleteCoupon(couponData.getCouponCode());
+        }
+    }
 }
