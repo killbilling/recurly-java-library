@@ -1122,9 +1122,9 @@ public class TestRecurlyClient {
 
         couponData.setName("apitrialext");
         couponData.setCouponCode("apitrialext");
-        couponData.setTrialExtensionAmount(3);
-        couponData.setTrialExtensionUnit("month");
-        couponData.setDiscountType("trial_extension");
+        couponData.setFreeTrialAmount(3);
+        couponData.setFreeTrialUnit("month");
+        couponData.setDiscountType("free_trial");
 
         final LocalDateTime now = LocalDateTime.now();
 
@@ -1149,8 +1149,9 @@ public class TestRecurlyClient {
             subscriptionData.setUnitAmountInCents(1242);
 
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+
             Assert.assertNotNull(subscription);
-            Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), now.getMonthOfYear() + 3);  
+            Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), now.getMonthOfYear() + 3);
         } finally {
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
             recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
