@@ -78,11 +78,11 @@ public class Coupon extends RecurlyObject {
     /**
      * "day" or "week" or "month"
      */
-    @XmlElement(name = "trial_extension_unit")
-    private String trialExtensionUnit;
+    @XmlElement(name = "free_trial_unit")
+    private String freeTrialUnit;
 
-    @XmlElement(name = "trial_extension_amount")
-    private Integer trialExtensionAmount;
+    @XmlElement(name = "free_trial_amount")
+    private Integer freeTrialAmount;
 
     /**
      * Discount percentage if discount_type is "percent"
@@ -219,20 +219,20 @@ public class Coupon extends RecurlyObject {
         this.appliesToAllPlans = booleanOrNull(appliesToAllPlans);
     }
 
-    public String getTrialExtensionUnit() {
-        return trialExtensionUnit;
+    public String getFreeTrialUnit() {
+        return freeTrialUnit;
     }
 
-    public void setTrialExtensionUnit(final String trialExtensionUnit) {
-        this.trialExtensionUnit = stringOrNull(trialExtensionUnit);
+    public void setFreeTrialUnit(final String freeTrialUnit) {
+        this.freeTrialUnit = stringOrNull(freeTrialUnit);
     }
 
-    public Integer getTrialExtensionAmount() {
-        return trialExtensionAmount;
+    public Integer getFreeTrialAmount() {
+        return freeTrialAmount;
     }
 
-    public void setTrialExtensionAmount(final Object trialExtensionAmount) {
-        this.trialExtensionAmount = integerOrNull(trialExtensionAmount);
+    public void setFreeTrialAmount(final Object freeTrialAmount) {
+        this.freeTrialAmount = integerOrNull(freeTrialAmount);
     }
 
 
@@ -286,10 +286,10 @@ public class Coupon extends RecurlyObject {
         if (singleUse != null ? singleUse.compareTo(coupon.singleUse) != 0 : coupon.singleUse != null) {
             return false;
         }
-        if (trialExtensionUnit != null ? !trialExtensionUnit.equals(coupon.trialExtensionUnit) : coupon.trialExtensionUnit != null) {
+        if (freeTrialUnit != null ? !freeTrialUnit.equals(coupon.freeTrialUnit) : coupon.freeTrialUnit != null) {
             return false;
         }
-        if (trialExtensionAmount != null ? !trialExtensionAmount.equals(coupon.trialExtensionAmount) : coupon.trialExtensionAmount != null) {
+        if (freeTrialAmount != null ? !freeTrialAmount.equals(coupon.freeTrialAmount) : coupon.freeTrialAmount != null) {
             return false;
         }
 
@@ -309,8 +309,8 @@ public class Coupon extends RecurlyObject {
                 appliesForMonths,
                 appliesToAllPlans,
                 maxRedemptions,
-                trialExtensionUnit,
-                trialExtensionAmount
+                freeTrialUnit,
+                freeTrialAmount
         );
     }
 }
