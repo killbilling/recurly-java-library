@@ -1010,12 +1010,13 @@ public class RecurlyClient {
                     }
                     throw new TransactionErrorException(errors);
                 } else {
-                    RecurlyAPIError recurlyError = null;
+                    RecurlyAPIError recurlyError = new RecurlyAPIError();
                     try {
                         recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
                     } catch (Exception e) {
                         log.debug("Unable to extract error", e);
                     }
+                    recurlyError.setHttpStatusCode(response.getStatusCode());
                     throw new RecurlyAPIException(recurlyError);
                 }
             }
