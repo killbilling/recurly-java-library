@@ -33,6 +33,8 @@ public class RecurlyAPIError extends RecurlyObject {
     @XmlElement(name = "details")
     private String details;
 
+    private int httpStatusCode;
+
     public String getDescription() {
         return description;
     }
@@ -57,12 +59,19 @@ public class RecurlyAPIError extends RecurlyObject {
         this.details = details;
     }
 
+    public void setHttpStatusCode(final int httpStatusCode) {
+      this.httpStatusCode = httpStatusCode;
+    }
+
+    public int getHttpStatusCode() { return this.httpStatusCode; }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("RecurlyAPIError{");
         sb.append("description='").append(description).append('\'');
         sb.append(", symbol='").append(symbol).append('\'');
         sb.append(", details='").append(details).append('\'');
+        sb.append(", httpStatusCode='").append(httpStatusCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -92,7 +101,8 @@ public class RecurlyAPIError extends RecurlyObject {
         return Objects.hashCode(
                 description,
                 symbol,
-                details
+                details,
+                httpStatusCode
         );
     }
 }
