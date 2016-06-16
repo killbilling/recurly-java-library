@@ -18,11 +18,14 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 import com.google.common.base.Objects;
+
+import java.util.List;
 
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.
@@ -95,6 +98,20 @@ public class Coupon extends RecurlyObject {
 
     @XmlElement(name = "state")
     private String state;
+
+    public List<String> getPlanCodes() {
+        return planCodes;
+    }
+
+    public void setPlanCodes(List<String> planCodes) {
+        this.planCodes = planCodes;
+    }
+
+    @XmlElement( name="plan_code" )
+    @XmlElementWrapper( name="plan_codes" )
+    private List<String> planCodes;
+
+
 
     public String getState() {
         return state;
