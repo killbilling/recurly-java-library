@@ -17,10 +17,7 @@
 
 package com.ning.billing.recurly;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Accounts;
@@ -473,6 +470,7 @@ public class TestRecurlyClient {
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan();
         final Coupon couponData = TestUtils.createRandomCoupon();
+        final Coupon couponDataForPlan = TestUtils.createRandomCoupon();
 
         try {
             // Create a user
@@ -490,6 +488,11 @@ public class TestRecurlyClient {
 
             // Create a coupon
             Coupon coupon = recurlyClient.createCoupon(couponData);
+
+            // Create a coupon for the plan
+            couponDataForPlan.setAppliesToAllPlans(false);
+            couponDataForPlan.setPlanCodes(Arrays.asList(plan.getPlanCode()));
+            Coupon couponForPlan = recurlyClient.createCoupon(couponDataForPlan);
 
             // Set up a subscription
             final Subscription subscriptionData = new Subscription();
