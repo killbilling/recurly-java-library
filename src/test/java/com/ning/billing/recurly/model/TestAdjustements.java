@@ -45,6 +45,7 @@ public class TestAdjustements extends TestModelBase {
                                        "    <start_date type=\"datetime\">2011-08-31T03:30:00Z</start_date>\n" +
                                        "    <end_date nil=\"nil\"></end_date>\n" +
                                        "    <created_at type=\"datetime\">2011-08-31T03:30:00Z</created_at>\n" +
+                                       "    <updated_at type=\"datetime\">2011-08-31T03:30:00Z</updated_at>\n" +
                                        "  </adjustment>\n" +
                                        "  <!-- Continued... -->\n" +
                                        "</adjustments>";
@@ -69,5 +70,6 @@ public class TestAdjustements extends TestModelBase {
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertNull(adjustment.getEndDate());
         Assert.assertEquals(adjustment.getCreatedAt(), new DateTime("2011-08-31T03:30:00Z"));
+        Assert.assertEquals(adjustment.getUpdatedAt(), new DateTime("2011-08-31T03:30:00Z"));
     }
 }

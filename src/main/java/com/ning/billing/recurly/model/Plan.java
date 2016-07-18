@@ -83,6 +83,9 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
 
@@ -217,6 +220,14 @@ public class Plan extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     public RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
     }
@@ -262,6 +273,7 @@ public class Plan extends RecurlyObject {
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", setupFeeInCents=").append(setupFeeInCents);
         sb.append('}');
@@ -332,6 +344,9 @@ public class Plan extends RecurlyObject {
         if (unitName != null ? !unitName.equals(plan.unitName) : plan.unitName != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(plan.updatedAt) != 0: plan.updatedAt != null) {
+            return false;
+        }
 
         return true;
     }
@@ -356,6 +371,7 @@ public class Plan extends RecurlyObject {
                 trialIntervalLength,
                 accountingCode,
                 createdAt,
+                updatedAt,
                 unitAmountInCents,
                 setupFeeInCents
         );

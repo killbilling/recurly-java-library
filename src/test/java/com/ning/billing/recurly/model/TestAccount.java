@@ -46,6 +46,7 @@ public class TestAccount extends TestModelBase {
                                    "  <accept_language nil=\"nil\"></accept_language>\n" +
                                    "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
                                    "  <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
+                                   "  <updated_at type=\"datetime\">2011-10-25T12:00:00</updated_at>\n" +
                                    "  <address>\n" +
                                    "      <address1>123 Main St.</address1>\n" +
                                    "      <address2 nil=\"nil\"></address2>\n" +
@@ -88,6 +89,7 @@ public class TestAccount extends TestModelBase {
         Assert.assertNull(account.getAcceptLanguage());
         Assert.assertEquals(account.getHostedLoginToken(), "a92468579e9c4231a6c0031c4716c01d");
         Assert.assertEquals(account.getCreatedAt(), new DateTime("2011-10-25T12:00:00"));
+        Assert.assertEquals(account.getUpdatedAt(), new DateTime("2011-10-25T12:00:00"));
         Assert.assertEquals(account.getAddress().getAddress1(), "123 Main St.");
         Assert.assertNull(account.getAddress().getAddress2());
         Assert.assertEquals(account.getAddress().getCity(), "San Francisco");

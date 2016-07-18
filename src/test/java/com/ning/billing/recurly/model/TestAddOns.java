@@ -42,6 +42,7 @@ public class TestAddOns extends TestModelBase {
                                   "      <USD>200</USD>\n" +
                                   "    </unit_amount_in_cents>\n" +
                                   "    <created_at type=\"datetime\">2011-06-28T12:34:56Z</created_at>\n" +
+                                  "    <updated_at type=\"datetime\">2011-06-28T12:34:56Z</updated_at>\n" +
                                   "  </add_on>\n" +
                                   "  <!-- Continued... -->\n" +
                                   "</add_ons>";
@@ -76,5 +77,6 @@ public class TestAddOns extends TestModelBase {
         Assert.assertEquals((int) addOn.getDefaultQuantity(), 1);
         Assert.assertEquals((int) addOn.getUnitAmountInCents().getUnitAmountUSD(), 200);
         Assert.assertEquals(addOn.getCreatedAt(), new DateTime("2011-06-28T12:34:56Z"));
+        Assert.assertEquals(addOn.getUpdatedAt(), new DateTime("2011-06-28T12:34:56Z"));
     }
 }

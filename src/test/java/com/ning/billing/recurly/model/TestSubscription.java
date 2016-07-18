@@ -45,6 +45,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <currency>EUR</currency>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
                                         "  <activated_at type=\"datetime\">2011-05-27T07:00:00Z</activated_at>\n" +
+                                        "  <updated_at type=\"datetime\">2011-05-27T07:00:00Z</updated_at>\n" +
                                         "  <canceled_at nil=\"nil\"></canceled_at>\n" +
                                         "  <expires_at nil=\"nil\"></expires_at>\n" +
                                         "  <current_period_started_at type=\"datetime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
@@ -95,6 +96,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <currency>EUR</currency>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
                                         "  <activated_at type=\"datetime\">2011-05-27T07:00:00Z</activated_at>\n" +
+                                        "  <updated_at type=\"datetime\">2011-05-27T07:00:00Z</updated_at>\n" +
                                         "  <canceled_at nil=\"nil\"></canceled_at>\n" +
                                         "  <expires_at nil=\"nil\"></expires_at>\n" +
                                         "  <current_period_started_at type=\"datetime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
@@ -162,6 +164,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getCurrency(), "EUR");
         Assert.assertEquals(subscription.getQuantity(), (Integer) 1);
         Assert.assertEquals(subscription.getActivatedAt(), new DateTime("2011-05-27T07:00:00Z"));
+        Assert.assertEquals(subscription.getUpdatedAt(), new DateTime("2011-05-27T07:00:00Z"));
         Assert.assertNull(subscription.getCanceledAt(), "");
         Assert.assertNull(subscription.getExpiresAt(), "");
         Assert.assertEquals(subscription.getCurrentPeriodStartedAt(), new DateTime("2011-06-27T07:00:00Z"));
