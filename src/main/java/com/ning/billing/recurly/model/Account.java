@@ -86,6 +86,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
@@ -223,6 +226,14 @@ public class Account extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     public BillingInfo getBillingInfo() {
         return billingInfo;
     }
@@ -250,6 +261,7 @@ public class Account extends RecurlyObject {
         sb.append(", acceptLanguage='").append(acceptLanguage).append('\'');
         sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", billingInfo=").append(billingInfo);
         sb.append('}');
         return sb.toString();
@@ -310,6 +322,9 @@ public class Account extends RecurlyObject {
         if (transactions != null ? !transactions.equals(account.transactions) : account.transactions != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(account.updatedAt) != 0 : account.updatedAt != null) {
+            return false;
+        }
         if (username != null ? !username.equals(account.username) : account.username != null) {
             return false;
         }
@@ -336,7 +351,8 @@ public class Account extends RecurlyObject {
                 acceptLanguage,
                 hostedLoginToken,
                 createdAt,
-                billingInfo
+                billingInfo,
+                updatedAt
         );
     }
 }

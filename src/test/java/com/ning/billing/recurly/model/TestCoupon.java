@@ -46,6 +46,7 @@ public class TestCoupon extends TestModelBase {
                 "  <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                 "  <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
                 "  <created_at type=\"datetime\">2013-05-08T10:21:52Z</created_at>\n" +
+                "  <updated_at type=\"datetime\">2013-05-08T10:21:52Z</updated_at>\n" +
                 "  <plan_codes type=\"array\">\n" +
                 "  </plan_codes>\n" +
                 "  <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/f8028/redeem\" method=\"post\"/>\n" +
@@ -64,6 +65,8 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getAppliesForMonths(), new Integer(1));
         assertEquals(coupon.getAppliesToAllPlans(), Boolean.TRUE);
         assertEquals(coupon.getMaxRedemptions(), null);
+        assertEquals(coupon.getCreatedAt(), new DateTime("2013-05-08T10:21:52Z"));
+        assertEquals(coupon.getUpdatedAt(), new DateTime("2013-05-08T10:21:52Z"));
     }
 
     @Test(groups = "fast", description = "https://github.com/killbilling/recurly-java-library/issues/57")
@@ -86,6 +89,7 @@ public class TestCoupon extends TestModelBase {
                 "  <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                 "  <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
                 "  <created_at type=\"datetime\">2013-05-08T10:21:52Z</created_at>\n" +
+                "  <updated_at type=\"datetime\">2013-05-08T10:21:52Z</updated_at>\n" +
                 "  <plan_codes type=\"array\">\n" +
                 "  </plan_codes>\n" +
                 "  <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/f8028/redeem\" method=\"post\"/>\n" +
@@ -104,6 +108,8 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getAppliesForMonths(), new Integer(1));
         assertEquals(coupon.getAppliesToAllPlans(), Boolean.TRUE);
         assertEquals(coupon.getMaxRedemptions(), null);
+        assertEquals(coupon.getCreatedAt(), new DateTime("2013-05-08T10:21:52Z"));
+        assertEquals(coupon.getUpdatedAt(), new DateTime("2013-05-08T10:21:52Z"));
     }
 
 
@@ -125,6 +131,7 @@ public class TestCoupon extends TestModelBase {
                         "  <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                         "  <applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>\n" +
                         "  <created_at type=\"datetime\">2013-05-08T10:21:52Z</created_at>\n" +
+                        "  <updated_at type=\"datetime\">2013-05-08T10:21:52Z</updated_at>\n" +
                         "  <plan_codes type=\"array\">\n" +
                         "  <plan_code>silver</plan_code>\n" +
                         "  <plan_code>gold</plan_code>\n" +
@@ -144,6 +151,8 @@ public class TestCoupon extends TestModelBase {
         assertTrue(coupon.getPlanCodes().contains("silver"));
         assertTrue(coupon.getPlanCodes().contains("gold"));
         assertEquals(coupon.getMaxRedemptions(), null);
+        assertEquals(coupon.getCreatedAt(), new DateTime("2013-05-08T10:21:52Z"));
+        assertEquals(coupon.getUpdatedAt(), new DateTime("2013-05-08T10:21:52Z"));
     }
 
     @Test(groups = "fast")

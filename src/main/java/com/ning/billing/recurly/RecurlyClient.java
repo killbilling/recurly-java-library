@@ -86,7 +86,7 @@ public class RecurlyClient {
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
-    public static final String RECURLY_API_VERSION = "2.1";
+    public static final String RECURLY_API_VERSION = "2.2";
 
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final String PER_PAGE = "per_page=";
