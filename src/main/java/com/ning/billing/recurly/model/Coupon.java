@@ -99,6 +99,12 @@ public class Coupon extends RecurlyObject {
     @XmlElement(name = "state")
     private String state;
 
+    @XmlElement(name = "created_at")
+    private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     public List<String> getPlanCodes() {
         return planCodes;
     }
@@ -110,8 +116,6 @@ public class Coupon extends RecurlyObject {
     @XmlElement( name="plan_code" )
     @XmlElementWrapper( name="plan_codes" )
     private List<String> planCodes;
-
-
 
     public String getState() {
         return state;
@@ -252,6 +256,21 @@ public class Coupon extends RecurlyObject {
         this.freeTrialAmount = integerOrNull(freeTrialAmount);
     }
 
+    public DateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
 
     @Override
     public String toString() {
@@ -261,6 +280,8 @@ public class Coupon extends RecurlyObject {
         sb.append(", couponCode='").append(couponCode).append('\'');
         sb.append(", discountType='").append(discountType).append('\'');
         sb.append(", discountPercent='").append(discountPercent).append('\'');
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -280,6 +301,9 @@ public class Coupon extends RecurlyObject {
             return false;
         }
         if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
+            return false;
+        }
+        if (createdAt != null ? createdAt.compareTo(coupon.createdAt) != 0 : coupon.createdAt != null) {
             return false;
         }
         if (discountInCents != null ? !discountInCents.equals(coupon.discountInCents) : coupon.discountInCents != null) {
@@ -309,6 +333,9 @@ public class Coupon extends RecurlyObject {
         if (freeTrialAmount != null ? !freeTrialAmount.equals(coupon.freeTrialAmount) : coupon.freeTrialAmount != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(coupon.updatedAt) != 0 : coupon.updatedAt != null) {
+            return false;
+        }
 
         return true;
     }
@@ -327,7 +354,9 @@ public class Coupon extends RecurlyObject {
                 appliesToAllPlans,
                 maxRedemptions,
                 freeTrialUnit,
-                freeTrialAmount
+                freeTrialAmount,
+                createdAt,
+                updatedAt
         );
     }
 }

@@ -54,6 +54,9 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     @XmlElement(name = "details")
     private TransactionDetails details;
 
@@ -141,6 +144,14 @@ public class Transaction extends AbstractTransaction {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     public TransactionDetails getDetails() {
         return details;
     }
@@ -181,6 +192,7 @@ public class Transaction extends AbstractTransaction {
         sb.append(", details=").append(details);
         sb.append(", paymentMethod=").append(paymentMethod);
         sb.append(", collectedAt=").append(collectedAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -222,6 +234,9 @@ public class Transaction extends AbstractTransaction {
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
         if (paymentMethod != null ? !paymentMethod.equals(that.paymentMethod) : that.paymentMethod != null) {
             return false;
         }
@@ -244,6 +259,7 @@ public class Transaction extends AbstractTransaction {
                 description,
                 recurring,
                 createdAt,
+                updatedAt,
                 details
         );
     }

@@ -45,6 +45,9 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     public String getName() {
         return name;
     }
@@ -85,6 +88,14 @@ public class AddOn extends AbstractAddOn {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
@@ -93,6 +104,7 @@ public class AddOn extends AbstractAddOn {
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -105,6 +117,9 @@ public class AddOn extends AbstractAddOn {
         final AddOn addOn = (AddOn) o;
 
         if (createdAt != null ? createdAt.compareTo(addOn.createdAt) != 0 : addOn.createdAt != null) {
+            return false;
+        }
+        if (updatedAt != null ? updatedAt.compareTo(addOn.updatedAt) != 0 : addOn.updatedAt != null) {
             return false;
         }
         if (defaultQuantity != null ? !defaultQuantity.equals(addOn.defaultQuantity) : addOn.defaultQuantity != null) {
@@ -130,7 +145,8 @@ public class AddOn extends AbstractAddOn {
                 displayQuantityOnHostedPage,
                 defaultQuantity,
                 unitAmountInCents,
-                createdAt
+                createdAt,
+                updatedAt
         );
     }
 }

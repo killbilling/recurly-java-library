@@ -44,6 +44,7 @@ public class TestInvoice extends TestModelBase {
                                    + "  <total_in_cents type=\"integer\">9900</total_in_cents>\n"
                                    + "  <currency>USD</currency>\n"
                                    + "  <created_at type=\"datetime\">2011-08-25T12:00:00Z</created_at>\n"
+                                   + "  <updated_at type=\"datetime\">2011-08-25T12:00:00Z</updated_at>\n"
                                    + "  <line_items type=\"array\">\n"
                                    + "    <adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n"
                                    + "      <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
@@ -81,6 +82,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals((int) invoice.getTotalInCents(), 9900);
         Assert.assertEquals(invoice.getCurrency(), "USD");
         Assert.assertEquals(invoice.getCreatedAt(), new DateTime("2011-08-25T12:00:00Z"));
+        Assert.assertEquals(invoice.getUpdatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertNotNull(invoice.getLineItems());
         Assert.assertEquals(invoice.getLineItems().size(), 1);
 

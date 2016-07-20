@@ -63,6 +63,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     @XmlElement(name = "collection_method")
     private String collectionMethod;
 
@@ -189,6 +192,14 @@ public class Invoice extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     public String getCollectionMethod() {
         return collectionMethod;
     }
@@ -236,6 +247,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", netTerms=").append(netTerms);
         sb.append(", lineItems=").append(lineItems);
@@ -293,6 +305,9 @@ public class Invoice extends RecurlyObject {
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(invoice.updatedAt) != 0 : invoice.updatedAt != null) {
+            return false;
+        }
         if (uuid != null ? !uuid.equals(invoice.uuid) : invoice.uuid != null) {
             return false;
         }
@@ -318,6 +333,7 @@ public class Invoice extends RecurlyObject {
                 taxInCents,
                 currency,
                 createdAt,
+                updatedAt,
                 collectionMethod,
                 netTerms,
                 lineItems,

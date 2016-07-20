@@ -38,6 +38,7 @@ public class TestRedemptions extends TestModelBase {
                 "    <currency>USD</currency>\n" +
                 "    <state>active</state>\n" +
                 "    <created_at type=\"datetime\">2015-09-23T17:13:30Z</created_at>\n" +
+                "    <updated_at type=\"datetime\">2015-09-23T17:13:30Z</updated_at>\n" +
                 "  </redemption>\n" +
                 "  <redemption href=\"https://your-subdomain.recurly.com/v2/accounts/1/redemptions/3169fd6127ff82ccbfa08a442188d575\">\n" +
                 "    <coupon href=\"https://your-subdomain.recurly.com/v2/coupons/special\"/>\n" +
@@ -48,6 +49,7 @@ public class TestRedemptions extends TestModelBase {
                 "    <currency>USD</currency>\n" +
                 "    <state>active</state>\n" +
                 "    <created_at type=\"datetime\">2011-06-27T12:34:56Z</created_at>\n" +
+                "    <updated_at type=\"datetime\">2011-06-27T12:34:56Z</updated_at>\n" +
                 "  </redemption>\n" +
                 "</redemptions>";
 
@@ -61,5 +63,6 @@ public class TestRedemptions extends TestModelBase {
         Assert.assertEquals(redemption.getState(), "active");
         Assert.assertEquals(redemption.getCurrency(), "USD");
         Assert.assertEquals(redemption.getCreatedAt(), new DateTime("2015-09-23T17:13:30Z"));
+        Assert.assertEquals(redemption.getUpdatedAt(), new DateTime("2015-09-23T17:13:30Z"));
     }
 }

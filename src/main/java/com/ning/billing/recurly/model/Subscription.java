@@ -72,6 +72,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "starts_at")
     private DateTime startsAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     @XmlElement(name = "collection_method")
     private String collectionMethod;
 
@@ -275,6 +278,13 @@ public class Subscription extends AbstractSubscription {
         this.bulk = booleanOrNull(bulk);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
 
     @Override
     public String toString() {
@@ -288,6 +298,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", quantity=").append(quantity);
         sb.append(", activatedAt=").append(activatedAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", canceledAt=").append(canceledAt);
         sb.append(", expiresAt=").append(expiresAt);
         sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
@@ -323,6 +334,9 @@ public class Subscription extends AbstractSubscription {
             return false;
         }
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
+            return false;
+        }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
             return false;
         }
         if (currentPeriodEndsAt != null ? currentPeriodEndsAt.compareTo(that.currentPeriodEndsAt) != 0 : that.currentPeriodEndsAt != null) {
@@ -373,7 +387,6 @@ public class Subscription extends AbstractSubscription {
         if (firstRenewalDate != null ? firstRenewalDate.compareTo(that.firstRenewalDate) != 0 : that.firstRenewalDate != null) {
             return false;
         }
-
         if (bulk != null ? !bulk.equals(that.bulk) : that.bulk != null) {
             return false;
         }
@@ -392,6 +405,7 @@ public class Subscription extends AbstractSubscription {
                 currency,
                 quantity,
                 activatedAt,
+                updatedAt,
                 canceledAt,
                 expiresAt,
                 currentPeriodStartedAt,
@@ -404,7 +418,6 @@ public class Subscription extends AbstractSubscription {
                 collectionMethod,
                 netTerms,
                 poNumber
-
         );
     }
 }

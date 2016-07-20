@@ -64,6 +64,9 @@ public class Redemption extends RecurlyObject {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     public String getAccountCode() {
         return accountCode;
     }
@@ -142,6 +145,14 @@ public class Redemption extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -155,6 +166,7 @@ public class Redemption extends RecurlyObject {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -191,6 +203,9 @@ public class Redemption extends RecurlyObject {
         if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
@@ -209,7 +224,8 @@ public class Redemption extends RecurlyObject {
                 currency,
                 state,
                 uuid,
-                createdAt
+                createdAt,
+                updatedAt
         );
     }
 
