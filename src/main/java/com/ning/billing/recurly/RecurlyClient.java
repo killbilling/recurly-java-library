@@ -940,7 +940,7 @@ public class RecurlyClient {
         final Response response;
         final byte[] responseByteArray;
         try {
-            response = builderCommon(client.prepareGet(url))
+            response = clientRequestBuilderCommon(client.prepareGet(url))
                     .addHeader("Accept", "application/pdf")
                     .addHeader("Content-Type", "application/pdf")
                     .execute()
@@ -1035,7 +1035,7 @@ public class RecurlyClient {
 
     private <T> T callRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
-        final Response response = builderCommon(builder)
+        final Response response = clientRequestBuilderCommon(builder)
                 .addHeader("Accept", "application/xml")
                 .addHeader("Content-Type", "application/xml; charset=utf-8")
                 .execute()
@@ -1112,7 +1112,7 @@ public class RecurlyClient {
         }
     }
 
-    private AsyncHttpClient.BoundRequestBuilder builderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
+    private AsyncHttpClient.BoundRequestBuilder clientRequestBuilderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
         return requestBuilder.addHeader("Authorization", "Basic " + key)
                 .addHeader("X-Api-Version", RECURLY_API_VERSION)
                 .addHeader(HttpHeaders.USER_AGENT, userAgent)
