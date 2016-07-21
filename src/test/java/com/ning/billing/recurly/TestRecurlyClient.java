@@ -72,8 +72,8 @@ public class TestRecurlyClient {
 
     @BeforeMethod(groups = {"integration", "enterprise"})
     public void setUp() throws Exception {
-        final String apiKey = "a837af4bb265435490168fb08f4cd4b6";
-        String subDomainTemp = "test-barkly-vanilla";
+        final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
+        String subDomainTemp = System.getProperty(KILLBILL_PAYMENT_RECURLY_SUBDOMAIN);
 
         if (apiKey == null) {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
@@ -723,7 +723,6 @@ public class TestRecurlyClient {
 
         PDDocument pdDocument = null;
         try {
-            String pdfString;
 
             // Create a user
             final Account account = recurlyClient.createAccount(accountData);
@@ -746,7 +745,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(pdfBytes);
 
             pdDocument = PDDocument.load(pdfBytes);
-            pdfString = new PDFTextStripper().getText(pdDocument);
+            String pdfString = new PDFTextStripper().getText(pdDocument);
 
             Assert.assertNotNull(pdfString);
             Assert.assertTrue(pdfString.contains("Invoice # " + invoice.getInvoiceNumber()));
