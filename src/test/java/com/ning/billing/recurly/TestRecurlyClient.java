@@ -46,6 +46,8 @@ import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
@@ -70,8 +72,8 @@ public class TestRecurlyClient {
 
     @BeforeMethod(groups = {"integration", "enterprise"})
     public void setUp() throws Exception {
-        final String apiKey = System.getProperty(KILLBILL_PAYMENT_RECURLY_API_KEY);
-        String subDomainTemp = System.getProperty(KILLBILL_PAYMENT_RECURLY_SUBDOMAIN);
+        final String apiKey = "a837af4bb265435490168fb08f4cd4b6";
+        String subDomainTemp = "test-barkly-vanilla";
 
         if (apiKey == null) {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
@@ -710,6 +712,53 @@ public class TestRecurlyClient {
         } finally {
             // Clear up the BillingInfo
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "enterprise")
+    public void testCreateInvoiceAndRetrieveInvoicePdf() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+
+        PDDocument pdDocument = null;
+        try {
+            String pdfString;
+
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create an Adjustment
+            final Adjustment a = new Adjustment();
+            a.setUnitAmountInCents(150);
+            a.setCurrency(CURRENCY);
+
+            final Adjustment createdA = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), a);
+
+            // Post an invoice/invoice the adjustment
+            final Invoice invoiceData = new Invoice();
+            invoiceData.setCollectionMethod("manual");
+            invoiceData.setLineItems(null);
+            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
+            Assert.assertNotNull(invoice);
+
+            byte[] pdfBytes = recurlyClient.getInvoicePdf(invoice.getInvoiceNumber());
+            Assert.assertNotNull(pdfBytes);
+
+            pdDocument = PDDocument.load(pdfBytes);
+            pdfString = new PDFTextStripper().getText(pdDocument);
+
+            Assert.assertNotNull(pdfString);
+            Assert.assertTrue(pdfString.contains("Invoice # " + invoice.getInvoiceNumber()));
+            Assert.assertTrue(pdfString.contains("Subtotal $" + 1.5));
+            // Attempt to close the invoice
+            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getInvoiceNumber());
+            Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
+
+        } finally {
+            if (pdDocument != null) {
+                pdDocument.close();
+            }
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
         }

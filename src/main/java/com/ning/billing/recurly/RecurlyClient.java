@@ -17,13 +17,10 @@
 
 package com.ning.billing.recurly;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
+import java.io.*;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
@@ -557,6 +554,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Fetch invoice pdf
+     * <p>
+     * Returns the invoice pdf as a byte array
+     *
+     * @param invoiceId Recurly Invoice ID
+     * @return the invoice pdf as a byte array
+     */
+    public byte[] getInvoicePdf(final Integer invoiceId) {
+        return doGETPdf(Invoices.INVOICES_RESOURCE + "/" + invoiceId);
+    }
+
+    /**
      * Lookup an account's invoices
      * <p>
      * Returns the account's invoices
@@ -889,7 +898,16 @@ public class RecurlyClient {
 
     ///////////////////////////////////////////////////////////////////////////
 
+    private byte[] doGETPdf(final String resource) {
+        return doGETPdfWithFullURL(constructGetUrl(resource));
+    }
+
+
     private <T> T doGET(final String resource, final Class<T> clazz) {
+        return doGETWithFullURL(clazz, constructGetUrl(resource));
+    }
+
+    private String constructGetUrl(final String resource) {
         final StringBuffer url = new StringBuffer(baseUrl);
         url.append(resource);
         if (resource != null && !resource.contains("?")) {
@@ -900,14 +918,53 @@ public class RecurlyClient {
         }
         url.append(getPageSizeGetParam());
 
-        return doGETWithFullURL(clazz, url.toString());
+        return url.toString();
     }
 
     public <T> T doGETWithFullURL(final Class<T> clazz, final String url) {
         if (debug()) {
             log.info("Msg to Recurly API [GET] :: URL : {}", url);
         }
-        return callRecurlySafe(client.prepareGet(url), clazz);
+        return callRecurlySafeXml(client.prepareGet(url), clazz);
+    }
+
+    private byte[] doGETPdfWithFullURL(final String url) {
+        if (debug()) {
+            log.info("Msg to Recurly API [GET] :: URL : {}", url);
+        }
+
+        return callRecurlySafeGetPdf(url);
+    }
+
+    private byte[] callRecurlySafeGetPdf(String url) {
+        final Response response;
+        final byte[] responseByteArray;
+        try {
+            response = builderCommon(client.prepareGet(url))
+                    .addHeader("Accept", "application/pdf")
+                    .addHeader("Content-Type", "application/pdf")
+                    .execute()
+                    .get();
+            responseByteArray = response.getResponseBodyAsBytes();
+
+        } catch (InterruptedException e) {
+            log.error("Interrupted while calling recurly", e);
+            return null;
+        } catch (ExecutionException e) {
+            log.error("Execution error", e);
+            return null;
+        } catch (IOException e) {
+            log.error("Error retrieving response body", e);
+            return null;
+        }
+
+        if (response.getStatusCode() != 200) {
+            RecurlyAPIError recurlyAPIError = new RecurlyAPIError();
+            recurlyAPIError.setHttpStatusCode(response.getStatusCode());
+            throw new RecurlyAPIException(recurlyAPIError);
+        }
+
+        return responseByteArray;
     }
 
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {
@@ -923,7 +980,7 @@ public class RecurlyClient {
             return null;
         }
 
-        return callRecurlySafe(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXml(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
     private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz) {
@@ -944,16 +1001,16 @@ public class RecurlyClient {
             return null;
         }
 
-        return callRecurlySafe(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXml(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
     private void doDELETE(final String resource) {
-        callRecurlySafe(client.prepareDelete(baseUrl + resource), null);
+        callRecurlySafeXml(client.prepareDelete(baseUrl + resource), null);
     }
 
-    private <T> T callRecurlySafe(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
+    private <T> T callRecurlySafeXml(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
         try {
-            return callRecurly(builder, clazz);
+            return callRecurlyXml(builder, clazz);
         } catch (IOException e) {
             log.warn("Error while calling Recurly", e);
             return null;
@@ -976,16 +1033,13 @@ public class RecurlyClient {
         }
     }
 
-    private <T> T callRecurly(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
+    private <T> T callRecurlyXml(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
-        final Response response = builder.addHeader("Authorization", "Basic " + key)
-                                         .addHeader("Accept", "application/xml")
-                                         .addHeader("Content-Type", "application/xml; charset=utf-8")
-                                         .addHeader("X-Api-Version", RECURLY_API_VERSION)
-                                         .addHeader(HttpHeaders.USER_AGENT, userAgent)
-                                         .setBodyEncoding("UTF-8")
-                                         .execute()
-                                         .get();
+        final Response response = builderCommon(builder)
+                .addHeader("Accept", "application/xml")
+                .addHeader("Content-Type", "application/xml; charset=utf-8")
+                .execute()
+                .get();
 
         final InputStream in = response.getResponseBodyAsStream();
         try {
@@ -1056,6 +1110,13 @@ public class RecurlyClient {
         } finally {
             closeStream(in);
         }
+    }
+
+    private AsyncHttpClient.BoundRequestBuilder builderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
+        return requestBuilder.addHeader("Authorization", "Basic " + key)
+                .addHeader("X-Api-Version", RECURLY_API_VERSION)
+                .addHeader(HttpHeaders.USER_AGENT, userAgent)
+                .setBodyEncoding("UTF-8");
     }
 
     private String convertStreamToString(final java.io.InputStream is) {
