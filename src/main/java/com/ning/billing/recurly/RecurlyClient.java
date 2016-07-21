@@ -1010,7 +1010,7 @@ public class RecurlyClient {
 
     private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
         try {
-            return callRecurlyXml(builder, clazz);
+            return callRecurlyXmlContent(builder, clazz);
         } catch (IOException e) {
             log.warn("Error while calling Recurly", e);
             return null;
@@ -1033,7 +1033,7 @@ public class RecurlyClient {
         }
     }
 
-    private <T> T callRecurlyXml(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
+    private <T> T callRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
         final Response response = builderCommon(builder)
                 .addHeader("Accept", "application/xml")
