@@ -741,6 +741,7 @@ public class TestRecurlyClient {
             final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
             Assert.assertNotNull(invoice);
 
+            //Get pdf byte array
             byte[] pdfBytes = recurlyClient.getInvoicePdf(invoice.getInvoiceNumber());
             Assert.assertNotNull(pdfBytes);
 
@@ -750,6 +751,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(pdfString);
             Assert.assertTrue(pdfString.contains("Invoice # " + invoice.getInvoiceNumber()));
             Assert.assertTrue(pdfString.contains("Subtotal $" + 1.5));
+
             // Attempt to close the invoice
             final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getInvoiceNumber());
             Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
