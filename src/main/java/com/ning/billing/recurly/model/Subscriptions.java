@@ -44,11 +44,6 @@ public class Subscriptions extends RecurlyObjects<Subscription> {
     }
 
     @JsonIgnore
-    public Subscriptions getPrev() {
-        return getPrev(Subscriptions.class);
-    }
-
-    @JsonIgnore
     public Subscriptions getNext() {
         return getNext(Subscriptions.class);
     }

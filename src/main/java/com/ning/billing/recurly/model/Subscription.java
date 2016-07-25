@@ -100,6 +100,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "bulk")
     private Boolean bulk;
 
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -278,6 +281,14 @@ public class Subscription extends AbstractSubscription {
         this.bulk = booleanOrNull(bulk);
     }
 
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final String revenueScheduleType) {
+        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    }
+
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -310,6 +321,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", pendingSubscription=").append(pendingSubscription);
         sb.append(", firstRenewalDate=").append(firstRenewalDate);
         sb.append(", bulk=").append(bulk);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append('}');
         return sb.toString();
     }
@@ -390,6 +402,9 @@ public class Subscription extends AbstractSubscription {
         if (bulk != null ? !bulk.equals(that.bulk) : that.bulk != null) {
             return false;
         }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -417,7 +432,8 @@ public class Subscription extends AbstractSubscription {
                 startsAt,
                 collectionMethod,
                 netTerms,
-                poNumber
+                poNumber,
+                revenueScheduleType
         );
     }
 }

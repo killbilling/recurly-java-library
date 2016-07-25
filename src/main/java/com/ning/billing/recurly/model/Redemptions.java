@@ -44,11 +44,6 @@ public class Redemptions extends RecurlyObjects<Redemption> {
     }
 
     @JsonIgnore
-    public Redemptions getPrev() {
-        return getPrev(Redemptions.class);
-    }
-
-    @JsonIgnore
     public Redemptions getNext() {
         return getNext(Redemptions.class);
     }

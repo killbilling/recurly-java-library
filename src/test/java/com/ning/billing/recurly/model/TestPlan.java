@@ -104,6 +104,8 @@ public class TestPlan extends TestModelBase {
                                 "  <trial_interval_length type=\"integer\">0</trial_interval_length>\n" +
                                 "  <trial_interval_unit>days</trial_interval_unit>\n" +
                                 "  <accounting_code nil=\"nil\"></accounting_code>\n" +
+                                "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
+                                "  <setup_fee_revenue_schedule_type>evenly</setup_fee_revenue_schedule_type>>\n" +
                                 "  <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
                                 "  <updated_at type=\"datetime\">2011-04-19T07:00:00Z</updated_at>\n" +
                                 "  <unit_amount_in_cents>\n" +
@@ -129,6 +131,8 @@ public class TestPlan extends TestModelBase {
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());
         Assert.assertNull(plan.getAccountingCode());
+        Assert.assertEquals(plan.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
+        Assert.assertEquals(plan.getSetupFeeRevenueScheduleType(), RevenueScheduleType.EVENLY);
     }
 
     @Test(groups = "fast")

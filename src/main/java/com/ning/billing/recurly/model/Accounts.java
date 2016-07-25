@@ -44,11 +44,6 @@ public class Accounts extends RecurlyObjects<Account> {
     }
 
     @JsonIgnore
-    public Accounts getPrev() {
-        return getPrev(Accounts.class);
-    }
-
-    @JsonIgnore
     public Accounts getNext() {
         return getNext(Accounts.class);
     }

@@ -44,11 +44,6 @@ public class AddOns extends RecurlyObjects<AddOn> {
     }
 
     @JsonIgnore
-    public AddOns getPrev() {
-        return getPrev(AddOns.class);
-    }
-
-    @JsonIgnore
     public AddOns getNext() {
         return getNext(AddOns.class);
     }

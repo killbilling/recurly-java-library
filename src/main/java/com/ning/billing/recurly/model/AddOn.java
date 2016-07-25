@@ -42,6 +42,9 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
 
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -70,6 +73,14 @@ public class AddOn extends AbstractAddOn {
 
     public void setDefaultQuantity(final Object defaultQuantity) {
         this.defaultQuantity = integerOrNull(defaultQuantity);
+    }
+
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final String revenueScheduleType) {
+        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
     }
 
     public RecurlyUnitCurrency getUnitAmountInCents() {
@@ -103,6 +114,7 @@ public class AddOn extends AbstractAddOn {
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
@@ -128,6 +140,9 @@ public class AddOn extends AbstractAddOn {
         if (displayQuantityOnHostedPage != null ? !displayQuantityOnHostedPage.equals(addOn.displayQuantityOnHostedPage) : addOn.displayQuantityOnHostedPage != null) {
             return false;
         }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(addOn.revenueScheduleType) : addOn.revenueScheduleType != null) {
+            return false;
+        }
         if (name != null ? !name.equals(addOn.name) : addOn.name != null) {
             return false;
         }
@@ -145,6 +160,7 @@ public class AddOn extends AbstractAddOn {
                 displayQuantityOnHostedPage,
                 defaultQuantity,
                 unitAmountInCents,
+                revenueScheduleType,
                 createdAt,
                 updatedAt
         );

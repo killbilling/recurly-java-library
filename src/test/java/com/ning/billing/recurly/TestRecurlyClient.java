@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountBalance;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
@@ -299,7 +300,7 @@ public class TestRecurlyClient {
 
         final Set<String> accountCodes = new HashSet<String>();
         Accounts accounts = recurlyClient.getAccounts();
-        Assert.assertNull(accounts.getPrevUrl());
+
         for (int i = 0; i < minNumberOfAccounts; i++) {
             // If the environment is used, we will have more than the ones we created
             Assert.assertTrue(accounts.getNbRecords() >= minNumberOfAccounts);
@@ -310,12 +311,6 @@ public class TestRecurlyClient {
             }
         }
         Assert.assertEquals(accountCodes.size(), minNumberOfAccounts);
-
-        for (int i = minNumberOfAccounts - 1; i >= 0; i--) {
-            Assert.assertTrue(accounts.getNbRecords() >= minNumberOfAccounts);
-            Assert.assertEquals(accounts.size(), 1);
-            accounts = accounts.getPrev();
-        }
 
         System.setProperty(RECURLY_PAGE_SIZE, "50");
     }
@@ -399,6 +394,38 @@ public class TestRecurlyClient {
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
+
+    @Test(groups = "integration")
+    public void testGetAccountBalance() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+
+            final Adjustment adjustment = new Adjustment();
+            adjustment.setUnitAmountInCents(150);
+            adjustment.setCurrency(CURRENCY);
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustment);
+            final AccountBalance balance = recurlyClient.getAccountBalance(account.getAccountCode());
+
+            Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), new Integer(150));
+            Assert.assertEquals(balance.getPastDue(), Boolean.FALSE);
+        } finally {
+            // Clean up
+            recurlyClient.clearBillingInfo(accountData.getAccountCode());
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
 
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
