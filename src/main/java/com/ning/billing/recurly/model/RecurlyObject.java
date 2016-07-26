@@ -76,7 +76,7 @@ public abstract class RecurlyObject {
         xmlMapper.setAnnotationIntrospector(pair);
         xmlMapper.registerModule(new JodaModule());
         xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
         m.addSerializer(Accounts.class, new RecurlyObjectsSerializer<Accounts, Account>(Accounts.class, "account"));
