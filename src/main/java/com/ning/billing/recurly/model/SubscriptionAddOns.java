@@ -44,11 +44,6 @@ public class SubscriptionAddOns extends RecurlyObjects<SubscriptionAddOn> {
     }
 
     @JsonIgnore
-    public SubscriptionAddOns getPrev() {
-        return getPrev(SubscriptionAddOns.class);
-    }
-
-    @JsonIgnore
     public SubscriptionAddOns getNext() {
         return getNext(SubscriptionAddOns.class);
     }

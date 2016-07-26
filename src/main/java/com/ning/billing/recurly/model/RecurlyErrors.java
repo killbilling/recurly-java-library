@@ -41,11 +41,6 @@ public class RecurlyErrors extends RecurlyObjects<RecurlyError> {
     }
 
     @JsonIgnore
-    public RecurlyErrors getPrev() {
-        return getPrev(RecurlyErrors.class);
-    }
-
-    @JsonIgnore
     public RecurlyErrors getNext() {
         return getNext(RecurlyErrors.class);
     }

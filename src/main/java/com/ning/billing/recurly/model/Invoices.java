@@ -44,11 +44,6 @@ public class Invoices extends RecurlyObjects<Invoice> {
     }
 
     @JsonIgnore
-    public Invoices getPrev() {
-        return getPrev(Invoices.class);
-    }
-
-    @JsonIgnore
     public Invoices getNext() {
         return getNext(Invoices.class);
     }

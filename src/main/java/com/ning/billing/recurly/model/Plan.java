@@ -80,6 +80,12 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "accounting_code")
     private String accountingCode;
 
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
+    @XmlElement(name = "setup_fee_revenue_schedule_type")
+    private RevenueScheduleType setupFeeRevenueScheduleType;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -252,6 +258,22 @@ public class Plan extends RecurlyObject {
         this.addOns = addOns;
     }
 
+    public RevenueScheduleType getSetupFeeRevenueScheduleType() {
+        return setupFeeRevenueScheduleType;
+    }
+
+    public void setSetupFeeRevenueScheduleType(final String setupFeeRevenueScheduleType) {
+        this.setupFeeRevenueScheduleType = RevenueScheduleType.valueOf(setupFeeRevenueScheduleType.toUpperCase());
+    }
+
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final String revenueScheduleType) {
+        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -276,6 +298,8 @@ public class Plan extends RecurlyObject {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", setupFeeInCents=").append(setupFeeInCents);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
+        sb.append(", setupFeeRevenueScheduleType=").append(setupFeeRevenueScheduleType);
         sb.append('}');
         return sb.toString();
     }
@@ -326,7 +350,13 @@ public class Plan extends RecurlyObject {
         if (planIntervalUnit != null ? !planIntervalUnit.equals(plan.planIntervalUnit) : plan.planIntervalUnit != null) {
             return false;
         }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(plan.revenueScheduleType) : plan.revenueScheduleType != null) {
+            return false;
+        }
         if (setupFeeInCents != null ? !setupFeeInCents.equals(plan.setupFeeInCents) : plan.setupFeeInCents != null) {
+            return false;
+        }
+        if (setupFeeRevenueScheduleType != null ? !setupFeeRevenueScheduleType.equals(plan.setupFeeRevenueScheduleType) : plan.setupFeeRevenueScheduleType != null) {
             return false;
         }
         if (successLink != null ? !successLink.equals(plan.successLink) : plan.successLink != null) {
@@ -373,7 +403,9 @@ public class Plan extends RecurlyObject {
                 createdAt,
                 updatedAt,
                 unitAmountInCents,
-                setupFeeInCents
+                setupFeeInCents,
+                revenueScheduleType,
+                setupFeeRevenueScheduleType
         );
     }
 }

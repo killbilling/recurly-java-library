@@ -44,11 +44,6 @@ public class Transactions extends RecurlyObjects<Transaction> {
     }
 
     @JsonIgnore
-    public Transactions getPrev() {
-        return getPrev(Transactions.class);
-    }
-
-    @JsonIgnore
     public Transactions getNext() {
         return getNext(Transactions.class);
     }

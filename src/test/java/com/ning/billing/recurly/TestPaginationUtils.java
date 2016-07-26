@@ -27,18 +27,15 @@ public class TestPaginationUtils {
         final String linkHeader = "<https://your-subdomain.recurly.com/v2/accounts?cursor=1304958672>; rel=\"next\"";
         final String[] links = PaginationUtils.getLinks(linkHeader);
         Assert.assertNull(links[0]);
-        Assert.assertNull(links[1]);
-        Assert.assertEquals(links[2], "https://your-subdomain.recurly.com/v2/accounts?cursor=1304958672");
+        Assert.assertEquals(links[1], "https://your-subdomain.recurly.com/v2/accounts?cursor=1304958672");
     }
 
     @Test(groups = "fast")
     public void testParserAll() throws Exception {
         final String linkHeader = "<https://your-subdomain.recurly.com/v2/transactions>; rel=\"start\",\n" +
-                                  "  <https://your-subdomain.recurly.com/v2/transactions?cursor=-1318344434>; rel=\"prev\"\n" +
                                   "  <https://your-subdomain.recurly.com/v2/transactions?cursor=1318388868>; rel=\"next\"";
         final String[] links = PaginationUtils.getLinks(linkHeader);
         Assert.assertEquals(links[0], "https://your-subdomain.recurly.com/v2/transactions");
-        Assert.assertEquals(links[1], "https://your-subdomain.recurly.com/v2/transactions?cursor=-1318344434");
-        Assert.assertEquals(links[2], "https://your-subdomain.recurly.com/v2/transactions?cursor=1318388868");
+        Assert.assertEquals(links[1], "https://your-subdomain.recurly.com/v2/transactions?cursor=1318388868");
     }
 }
