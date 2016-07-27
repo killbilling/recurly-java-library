@@ -33,6 +33,7 @@ import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
+import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
@@ -1173,5 +1174,64 @@ public class TestRecurlyClient {
             recurlyClient.deletePlan(planData.getPlanCode());
             recurlyClient.deleteCoupon(couponData.getCouponCode());
         }
+    }
+
+    @Test(groups = "integration")
+    public void testRedeemGiftCardOnSubscription() throws Exception {
+        final GiftCard giftCardData = TestUtils.createRandomGiftCard();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+
+        try {
+            // Purchase a gift card
+            final GiftCard giftCard = recurlyClient.purchaseGiftCard(giftCardData);
+
+            Assert.assertEquals(giftCard.getProductCode(), giftCardData.getProductCode());
+            Assert.assertNull(giftCard.getRedeemedAt());
+
+            // Let's redeem on a subscription
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Account account = giftCard.getGifterAccount();
+            final GiftCard redemptionData = new GiftCard();
+            final Subscription subscriptionData = new Subscription();
+
+            // set our gift card redemption data
+            redemptionData.setRedemptionCode(giftCard.getRedemptionCode());
+            subscriptionData.setGiftCard(redemptionData);
+
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(account);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            Assert.assertNotNull(subscription);
+
+            final GiftCard redeemedCard = recurlyClient.getGiftCard(giftCard.getId());
+
+            Assert.assertNotNull(redeemedCard.getRedeemedAt());
+        } finally {
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testRedeemGiftCardOnAccount() throws Exception {
+        final GiftCard giftCardData = TestUtils.createRandomGiftCard();
+
+        // Purchase a gift card
+        final GiftCard giftCard = recurlyClient.purchaseGiftCard(giftCardData);
+
+        Assert.assertEquals(giftCard.getProductCode(), giftCardData.getProductCode());
+        Assert.assertNull(giftCard.getRedeemedAt());
+
+        // Let's redeem on an account
+        final Account gifterAccount = giftCard.getGifterAccount();
+        Assert.assertNotNull(gifterAccount);
+
+        final String redemptionCode = giftCard.getRedemptionCode();
+        final String gifterAccountCode = gifterAccount.getAccountCode();
+        final GiftCard redeemedCard = recurlyClient.redeemGiftCard(redemptionCode, gifterAccountCode);
+
+        Assert.assertNotNull(redeemedCard.getRedeemedAt());
     }
 }

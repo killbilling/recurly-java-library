@@ -103,6 +103,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "revenue_schedule_type")
     private RevenueScheduleType revenueScheduleType;
 
+    @XmlElement(name = "gift_card")
+    private GiftCard giftCard;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -289,6 +292,14 @@ public class Subscription extends AbstractSubscription {
         this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
     }
 
+    public GiftCard getGiftCard() {
+        return giftCard;
+    }
+
+    public void setGiftCard(final GiftCard giftCard) {
+        this.giftCard = giftCard;
+    }
+
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -322,6 +333,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", firstRenewalDate=").append(firstRenewalDate);
         sb.append(", bulk=").append(bulk);
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
+        sb.append(", giftCard=").append(giftCard);
         sb.append('}');
         return sb.toString();
     }
@@ -405,6 +417,9 @@ public class Subscription extends AbstractSubscription {
         if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
             return false;
         }
+        if (giftCard != null ? !giftCard.equals(that.giftCard) : that.giftCard != null) {
+            return false;
+        }
 
         return true;
     }
@@ -433,7 +448,8 @@ public class Subscription extends AbstractSubscription {
                 collectionMethod,
                 netTerms,
                 poNumber,
-                revenueScheduleType
+                revenueScheduleType,
+                giftCard
         );
     }
 }

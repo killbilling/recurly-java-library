@@ -23,6 +23,8 @@ import java.util.UUID;
 
 import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.Adjustments;
+import com.ning.billing.recurly.model.Delivery;
+import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Transactions;
@@ -738,5 +740,73 @@ public class TestUtils {
         redemption.setTotalDiscountedInCents(randomInteger(1000, seed));
 
         return redemption;
+    }
+
+    /**
+     * Creates a random {@link Delivery} object for use in Tests
+     *
+     * @return The random {@link Delivery} object
+     */
+    public static Delivery createRandomDelivery() {
+        return createRandomDelivery(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Delivery} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Delivery} object
+     */
+    public static Delivery createRandomDelivery(final int seed) {
+        Delivery delivery = new Delivery();
+
+        delivery.setAddress(createRandomAddress(seed));
+        delivery.setEmailAddress(randomAlphaNumericString(10, seed) + "@email.com");
+        delivery.setFirstName(randomAlphaNumericString(5, seed));
+        delivery.setLastName(randomAlphaNumericString(5, seed));
+        delivery.setGifterName(randomAlphaNumericString(5, seed));
+        delivery.setMethod("email");
+        delivery.setPersonalMessage(randomAlphaNumericString(100, seed));
+        delivery.setDeliverAt(new DateTime("2016-12-27T07:00:00Z"));
+
+        return delivery;
+    }
+
+    /**
+     * Creates a random {@link GiftCard} object for use in Tests
+     *
+     * @return The random {@link GiftCard} object
+     */
+    public static GiftCard createRandomGiftCard() {
+        return createRandomGiftCard(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link GiftCard} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link GiftCard} object
+     */
+    public static GiftCard createRandomGiftCard(final int seed) {
+        final GiftCard giftCardData = new GiftCard();
+        final Account accountData = createRandomAccount(seed);
+        final Delivery deliveryData = createRandomDelivery(seed);
+        final BillingInfo billingInfoData = createRandomBillingInfo(seed);
+
+        // need to null out account
+        // TODO - account should not be writeable in XML
+        billingInfoData.setAccount(null);
+        accountData.setBillingInfo(billingInfoData);
+
+        // Gift card product needs to be created on the site with
+        // product code "test_gift_card"
+
+        giftCardData.setGifterAccount(accountData);
+        giftCardData.setDelivery(deliveryData);
+        giftCardData.setCurrency("USD");
+        giftCardData.setProductCode("test_gift_card");
+        giftCardData.setUnitAmountInCents(2000);
+
+        return giftCardData;
     }
 }
