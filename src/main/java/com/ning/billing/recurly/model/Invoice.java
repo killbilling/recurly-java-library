@@ -140,7 +140,7 @@ public class Invoice extends RecurlyObject {
         return poNumber;
     }
 
-    public void setPoNumber(final String poNumber) {
+    public void setPoNumber(final Object poNumber) {
         this.poNumber = stringOrNull(poNumber);
     }
 
