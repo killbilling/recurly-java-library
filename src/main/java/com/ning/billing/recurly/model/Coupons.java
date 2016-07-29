@@ -44,11 +44,6 @@ public class Coupons extends RecurlyObjects<Coupon> {
     }
 
     @JsonIgnore
-    public Coupons getPrev() {
-        return getPrev(Coupons.class);
-    }
-
-    @JsonIgnore
     public Coupons getNext() {
         return getNext(Coupons.class);
     }

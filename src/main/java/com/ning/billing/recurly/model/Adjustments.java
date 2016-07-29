@@ -74,11 +74,6 @@ public class Adjustments extends RecurlyObjects<Adjustment> {
     }
 
     @JsonIgnore
-    public Adjustments getPrev() {
-        return getPrev(Adjustments.class);
-    }
-
-    @JsonIgnore
     public Adjustments getNext() {
         return getNext(Adjustments.class);
     }

@@ -42,7 +42,7 @@ public class TestCloseInvoiceNotification extends TestModelBase {
                                 "    <state>collected</state>\n" +
                                 "    <invoice_number_prefix></invoice_number_prefix>\n" +
                                 "    <invoice_number type=\"integer\">1000</invoice_number>\n" +
-                                "    <po_number></po_number>\n" +
+                                "    <po_number>PO-123</po_number>\n" +
                                 "    <vat_number></vat_number>\n" +
                                 "    <total_in_cents type=\"integer\">1100</total_in_cents>\n" +
                                 "    <currency>USD</currency>\n" +

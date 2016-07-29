@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountBalance;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
@@ -114,8 +115,6 @@ public class TestRecurlyClient {
             final Subscriptions subs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode(), "active");
             Assert.assertEquals(subs.size(), 0);
         } finally {
-            // Clear up the BillingInfo
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
@@ -181,8 +180,6 @@ public class TestRecurlyClient {
                 Assert.assertEquals(subscriptionWithAddons2.getAddOns().get(i).getAddOnCode(), addons.get(i).getAddOnCode());
             }
         } finally {
-            // Clear up the BillingInfo
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
@@ -279,8 +276,6 @@ public class TestRecurlyClient {
             Assert.assertEquals(adjAccountCodeCounter, 1, "An unexpected number of Adjustments were assigned the accountCode [" + adjustmentAccountCode + "]");
 
         } finally {
-            // Clear up the BillingInfo
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
             // Delete the Plan
@@ -301,7 +296,7 @@ public class TestRecurlyClient {
 
         final Set<String> accountCodes = new HashSet<String>();
         Accounts accounts = recurlyClient.getAccounts();
-        Assert.assertNull(accounts.getPrevUrl());
+
         for (int i = 0; i < minNumberOfAccounts; i++) {
             // If the environment is used, we will have more than the ones we created
             Assert.assertTrue(accounts.getNbRecords() >= minNumberOfAccounts);
@@ -312,12 +307,6 @@ public class TestRecurlyClient {
             }
         }
         Assert.assertEquals(accountCodes.size(), minNumberOfAccounts);
-
-        for (int i = minNumberOfAccounts - 1; i >= 0; i--) {
-            Assert.assertTrue(accounts.getNbRecords() >= minNumberOfAccounts);
-            Assert.assertEquals(accounts.size(), 1);
-            accounts = accounts.getPrev();
-        }
 
         System.setProperty(RECURLY_PAGE_SIZE, "50");
     }
@@ -397,10 +386,41 @@ public class TestRecurlyClient {
 
         } finally {
             // Clean up
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testGetAccountBalance() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+
+            final Adjustment adjustment = new Adjustment();
+            adjustment.setUnitAmountInCents(150);
+            adjustment.setCurrency(CURRENCY);
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustment);
+            final AccountBalance balance = recurlyClient.getAccountBalance(account.getAccountCode());
+
+            Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), new Integer(150));
+            Assert.assertEquals(balance.getPastDue(), Boolean.FALSE);
+        } finally {
+            // Clean up
             recurlyClient.clearBillingInfo(accountData.getAccountCode());
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
+
 
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
@@ -597,8 +617,6 @@ public class TestRecurlyClient {
             final Subscription expiredSubscription = recurlyClient.getSubscription(subscription.getUuid());
             Assert.assertEquals(expiredSubscription.getState(), "expired");
         } finally {
-            // Clear up the BillingInfo
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
             // Delete the Plan
@@ -646,8 +664,6 @@ public class TestRecurlyClient {
               Assert.fail("Could not create subscriptions in bulk");
           }
       } finally {
-          // Clear up the BillingInfo
-          recurlyClient.clearBillingInfo(accountData.getAccountCode());
           // Close the account
           recurlyClient.closeAccount(accountData.getAccountCode());
       }
@@ -710,8 +726,6 @@ public class TestRecurlyClient {
             Assert.assertEquals(retrievedAdjustments.size(), 2, "Not all Adjustments marked as invoiced although all should be.");
 
         } finally {
-            // Clear up the BillingInfo
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
@@ -919,8 +933,6 @@ public class TestRecurlyClient {
             Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
             Assert.assertEquals(invoices.get(1).getTotalInCents(), subscriptionData.getUnitAmountInCents(), "Amount in cents is not the same");
         } finally {
-            // Clear up the BillingInfo
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
             // Delete the Plan
@@ -1054,8 +1066,6 @@ public class TestRecurlyClient {
             Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdated.getPlan());
             Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdated.getPlan().getPlanCode());
         } finally {
-            // Clear up the BillingInfo
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
             // Delete the Plans
@@ -1160,7 +1170,6 @@ public class TestRecurlyClient {
             Assert.assertEquals(redemption.getCurrency(), CURRENCY);
 
         } finally {
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
@@ -1176,7 +1185,6 @@ public class TestRecurlyClient {
         final Coupon couponData = TestUtils.createRandomCoupon();
 
         couponData.setName("apitrialext");
-        couponData.setCouponCode("apitrialext");
         couponData.setFreeTrialAmount(3);
         couponData.setFreeTrialUnit("month");
         couponData.setDiscountType("free_trial");
@@ -1208,7 +1216,6 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subscription);
             Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), now.getMonthOfYear() + 3);
         } finally {
-            recurlyClient.clearBillingInfo(accountData.getAccountCode());
             recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());

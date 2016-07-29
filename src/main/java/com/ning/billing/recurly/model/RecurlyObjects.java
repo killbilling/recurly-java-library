@@ -48,9 +48,6 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     private String startUrl;
 
     @XmlTransient
-    private String prevUrl;
-
-    @XmlTransient
     private String nextUrl;
 
     @XmlTransient
@@ -62,14 +59,6 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
             return null;
         }
         return recurlyClient.doGETWithFullURL(clazz, startUrl);
-    }
-
-    @JsonIgnore
-    <U extends RecurlyObjects> U getPrev(final Class<U> clazz) {
-        if (recurlyClient == null || prevUrl == null) {
-            return null;
-        }
-        return recurlyClient.doGETWithFullURL(clazz, prevUrl);
     }
 
     @JsonIgnore
@@ -93,16 +82,6 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     @JsonIgnore
     public void setStartUrl(final String startUrl) {
         this.startUrl = startUrl;
-    }
-
-    @JsonIgnore
-    public String getPrevUrl() {
-        return prevUrl;
-    }
-
-    @JsonIgnore
-    public void setPrevUrl(final String prevUrl) {
-        this.prevUrl = prevUrl;
     }
 
     @JsonIgnore

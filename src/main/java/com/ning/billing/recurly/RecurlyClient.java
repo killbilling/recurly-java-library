@@ -34,6 +34,7 @@ import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountBalance;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
@@ -83,7 +84,7 @@ public class RecurlyClient {
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
-    public static final String RECURLY_API_VERSION = "2.2";
+    public static final String RECURLY_API_VERSION = "2.3";
 
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final String PER_PAGE = "per_page=";
@@ -214,6 +215,18 @@ public class RecurlyClient {
      */
     public Account updateAccount(final String accountCode, final Account account) {
         return doPUT(Account.ACCOUNT_RESOURCE + "/" + accountCode, account, Account.class);
+    }
+
+    /**
+     * Get Account Balance
+     * <p>
+     * Retrieves the remaining balance on the account
+     *
+     * @param accountCode recurly account id
+     * @return the updated AccountBalance if success, null otherwise
+     */
+    public AccountBalance getAccountBalance(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + "/" + AccountBalance.ACCOUNT_BALANCE_RESOURCE, AccountBalance.class);
     }
 
     /**
@@ -1102,8 +1115,7 @@ public class RecurlyClient {
                 if (linkHeader != null) {
                     final String[] links = PaginationUtils.getLinks(linkHeader);
                     recurlyObjects.setStartUrl(links[0]);
-                    recurlyObjects.setPrevUrl(links[1]);
-                    recurlyObjects.setNextUrl(links[2]);
+                    recurlyObjects.setNextUrl(links[1]);
                 }
             }
             return obj;

@@ -24,7 +24,6 @@ public abstract class PaginationUtils {
 
     public static String[] getLinks(final String linkHeader) {
         String start = null;
-        String prev = null;
         String next = null;
 
         final Pattern pattern = Pattern.compile("\\<([^>]+)\\>; rel=\\\"([^\"]+)\\\"");
@@ -32,13 +31,11 @@ public abstract class PaginationUtils {
         while (matcher.find()) {
             if ("start".equals(matcher.group(2))) {
                 start = matcher.group(1);
-            } else if ("prev".equals(matcher.group(2))) {
-                prev = matcher.group(1);
             } else if ("next".equals(matcher.group(2))) {
                 next = matcher.group(1);
             }
         }
 
-        return new String[]{start, prev, next};
+        return new String[]{start, next};
     }
 }
