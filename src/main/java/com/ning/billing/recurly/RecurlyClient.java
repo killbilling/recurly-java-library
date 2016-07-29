@@ -1015,15 +1015,17 @@ public class RecurlyClient {
         }
 
         return callRecurlySafeXml(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
     private void doDELETE(final String resource) {
+        callRecurlySafeXmlContent(client.prepareDelete(baseUrl + resource), null);
         callRecurlySafeXml(client.prepareDelete(baseUrl + resource), null);
     }
 
-    private <T> T callRecurlySafeXml(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
+    private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
         try {
-            return callRecurlyXml(builder, clazz);
+            return callRecurlyXmlContent(builder, clazz);
         } catch (IOException e) {
             log.warn("Error while calling Recurly", e);
             return null;
@@ -1046,9 +1048,9 @@ public class RecurlyClient {
         }
     }
 
-    private <T> T callRecurlyXml(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
+    private <T> T callRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
-        final Response response = builderCommon(builder)
+        final Response response = clientRequestBuilderCommon(builder)
                 .addHeader("Accept", "application/xml")
                 .addHeader("Content-Type", "application/xml; charset=utf-8")
                 .execute()
@@ -1124,7 +1126,7 @@ public class RecurlyClient {
         }
     }
 
-    private AsyncHttpClient.BoundRequestBuilder builderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
+    private AsyncHttpClient.BoundRequestBuilder clientRequestBuilderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
         return requestBuilder.addHeader("Authorization", "Basic " + key)
                 .addHeader("X-Api-Version", RECURLY_API_VERSION)
                 .addHeader(HttpHeaders.USER_AGENT, userAgent)
