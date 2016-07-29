@@ -569,12 +569,12 @@ public class RecurlyClient {
     /**
      * Fetch invoice pdf
      * <p>
-     * Returns the invoice pdf as a byte array
+     * Returns the invoice pdf as an inputStream
      *
      * @param invoiceId Recurly Invoice ID
-     * @return the invoice pdf as a byte array
+     * @return the invoice pdf as an inputStream
      */
-    public byte[] getInvoicePdf(final Integer invoiceId) {
+    public InputStream getInvoicePdf(final Integer invoiceId) {
         return doGETPdf(Invoices.INVOICES_RESOURCE + "/" + invoiceId);
     }
 
@@ -911,7 +911,7 @@ public class RecurlyClient {
 
     ///////////////////////////////////////////////////////////////////////////
 
-    private byte[] doGETPdf(final String resource) {
+    private InputStream doGETPdf(final String resource) {
         return doGETPdfWithFullURL(constructGetUrl(resource));
     }
 
@@ -941,7 +941,7 @@ public class RecurlyClient {
         return callRecurlySafeXml(client.prepareGet(url), clazz);
     }
 
-    private byte[] doGETPdfWithFullURL(final String url) {
+    private InputStream doGETPdfWithFullURL(final String url) {
         if (debug()) {
             log.info("Msg to Recurly API [GET] :: URL : {}", url);
         }
@@ -949,16 +949,16 @@ public class RecurlyClient {
         return callRecurlySafeGetPdf(url);
     }
 
-    private byte[] callRecurlySafeGetPdf(String url) {
+    private InputStream callRecurlySafeGetPdf(String url) {
         final Response response;
-        final byte[] responseByteArray;
+        final InputStream pdfInputStream;
         try {
             response = builderCommon(client.prepareGet(url))
                     .addHeader("Accept", "application/pdf")
                     .addHeader("Content-Type", "application/pdf")
                     .execute()
                     .get();
-            responseByteArray = response.getResponseBodyAsBytes();
+            pdfInputStream = response.getResponseBodyAsStream();
 
         } catch (InterruptedException e) {
             log.error("Interrupted while calling recurly", e);
@@ -977,7 +977,7 @@ public class RecurlyClient {
             throw new RecurlyAPIException(recurlyAPIError);
         }
 
-        return responseByteArray;
+        return pdfInputStream;
     }
 
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {

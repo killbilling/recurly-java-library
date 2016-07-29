@@ -17,6 +17,7 @@
 
 package com.ning.billing.recurly;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -755,10 +756,10 @@ public class TestRecurlyClient {
             final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
             Assert.assertNotNull(invoice);
 
-            byte[] pdfBytes = recurlyClient.getInvoicePdf(invoice.getInvoiceNumber());
-            Assert.assertNotNull(pdfBytes);
+            InputStream pdfInputStream = recurlyClient.getInvoicePdf(invoice.getInvoiceNumber());
+            Assert.assertNotNull(pdfInputStream);
 
-            pdDocument = PDDocument.load(pdfBytes);
+            pdDocument = PDDocument.load(pdfInputStream);
             String pdfString = new PDFTextStripper().getText(pdDocument);
 
             Assert.assertNotNull(pdfString);
