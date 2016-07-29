@@ -732,7 +732,7 @@ public class TestRecurlyClient {
         }
     }
 
-    @Test(groups = "enterprise")
+    @Test(groups = "integration")
     public void testCreateInvoiceAndRetrieveInvoicePdf() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
 
