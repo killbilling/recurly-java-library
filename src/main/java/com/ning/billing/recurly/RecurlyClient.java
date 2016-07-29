@@ -938,7 +938,7 @@ public class RecurlyClient {
         if (debug()) {
             log.info("Msg to Recurly API [GET] :: URL : {}", url);
         }
-        return callRecurlySafeXml(client.prepareGet(url), clazz);
+        return callRecurlySafeXmlContent(client.prepareGet(url), clazz);
     }
 
     private InputStream doGETPdfWithFullURL(final String url) {
@@ -953,7 +953,7 @@ public class RecurlyClient {
         final Response response;
         final InputStream pdfInputStream;
         try {
-            response = builderCommon(client.prepareGet(url))
+            response = clientRequestBuilderCommon(client.prepareGet(url))
                     .addHeader("Accept", "application/pdf")
                     .addHeader("Content-Type", "application/pdf")
                     .execute()
@@ -993,7 +993,7 @@ public class RecurlyClient {
             return null;
         }
 
-        return callRecurlySafeXml(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXmlContent(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
     private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz) {
@@ -1014,13 +1014,11 @@ public class RecurlyClient {
             return null;
         }
 
-        return callRecurlySafeXml(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
         return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
     private void doDELETE(final String resource) {
         callRecurlySafeXmlContent(client.prepareDelete(baseUrl + resource), null);
-        callRecurlySafeXml(client.prepareDelete(baseUrl + resource), null);
     }
 
     private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
