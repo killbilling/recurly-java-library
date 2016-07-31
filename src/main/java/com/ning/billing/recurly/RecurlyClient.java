@@ -23,7 +23,6 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
@@ -157,6 +156,13 @@ public class RecurlyClient {
      */
     public synchronized void open() throws NoSuchAlgorithmException, KeyManagementException {
         client = createHttpClient();
+    }
+
+    /**
+     * Open custom http client
+     */
+    public synchronized void open(AsyncHttpClient asyncHttpClient) {
+        client = asyncHttpClient;
     }
 
     /**
