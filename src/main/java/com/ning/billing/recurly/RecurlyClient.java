@@ -146,8 +146,12 @@ public class RecurlyClient {
     }
 
     public RecurlyClient(final String apiKey, final String host, final int port, final String version) {
+        this(apiKey, "https", host, port, version);
+    }
+
+    public RecurlyClient(final String apiKey, final String scheme, final String host, final int port, final String version) {
         this.key = DatatypeConverter.printBase64Binary(apiKey.getBytes());
-        this.baseUrl = String.format("https://%s:%d/%s", host, port, version);
+        this.baseUrl = String.format("%s://%s:%d/%s", scheme, host, port, version);
         this.xmlMapper = RecurlyObject.newXmlMapper();
         this.userAgent = buildUserAgent();
     }
