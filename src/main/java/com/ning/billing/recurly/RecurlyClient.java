@@ -23,7 +23,6 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
@@ -1092,7 +1091,7 @@ public class RecurlyClient {
         }
     }
 
-    private AsyncHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
+    protected AsyncHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
         final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
 
         // Don't limit the number of connections per host
