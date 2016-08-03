@@ -286,7 +286,6 @@ public class Coupon extends RecurlyObject {
         return sb.toString();
     }
 
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;

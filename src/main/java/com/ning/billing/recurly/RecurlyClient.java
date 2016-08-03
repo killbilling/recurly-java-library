@@ -47,6 +47,8 @@ import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.Errors;
+import com.ning.billing.recurly.model.GiftCard;
+import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
@@ -87,7 +89,7 @@ public class RecurlyClient {
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
-    public static final String RECURLY_API_VERSION = "2.3";
+    public static final String RECURLY_API_VERSION = "2.4";
 
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final String PER_PAGE = "per_page=";
@@ -894,6 +896,54 @@ public class RecurlyClient {
      */
     public Invoice fetchInvoice(final String recurlyToken) {
         return fetch(recurlyToken, Invoice.class);
+    }
+
+    /**
+     * Get Gift Cards
+     * <p>
+     * Returns information about all gift cards.
+     *
+     * @return gitfcards object on success, null otherwise
+     */
+    public GiftCards getGiftCards() {
+        return doGET(GiftCards.GIFT_CARDS_RESOURCE, GiftCards.class);
+    }
+
+    /**
+     * Get a Gift Card
+     * <p>
+     *
+     * @param giftCardId The id for the {@link GiftCard}
+     * @return The {@link GiftCard} object as identified by the passed in id
+     */
+    public GiftCard getGiftCard(final Long giftCardId) {
+        return doGET(GiftCards.GIFT_CARDS_RESOURCE + "/" + Long.toString(giftCardId), GiftCard.class);
+    }
+
+    /**
+     * Redeem a Gift Card
+     * <p>
+     *
+     * @param redemptionCode The redemption code the {@link GiftCard}
+     * @param accountCode The account code for the {@link Account}
+     * @return The updated {@link GiftCard} object as identified by the passed in id
+     */
+    public GiftCard redeemGiftCard(final String redemptionCode, final String accountCode) {
+        final GiftCard.Redemption redemptionData = GiftCard.createRedemption(accountCode);
+        final String url = GiftCards.GIFT_CARDS_RESOURCE + "/" + redemptionCode + "/redeem";
+
+        return doPOST(url, redemptionData, GiftCard.class);
+    }
+
+    /**
+     * Purchase a GiftCard
+     * <p>
+     *
+     * @param giftCard The giftCard data
+     * @return the giftCard object
+     */
+    public GiftCard purchaseGiftCard(final GiftCard giftCard) {
+        return doPOST(GiftCards.GIFT_CARDS_RESOURCE, giftCard, GiftCard.class);
     }
 
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {

@@ -136,6 +136,23 @@ public abstract class RecurlyObject {
         return Integer.valueOf(object.toString());
     }
 
+    public static Long longOrNull(@Nullable final Object object) {
+        if (isNull(object)) {
+            return null;
+        }
+
+        // Ids are represented as objects (e.g. <id type="integer">1988596967980562362</id>), which Jackson
+        // will interpret as an Object (Map), not Longs.
+        if (object instanceof Map) {
+            final Map map = (Map) object;
+            if (map.keySet().size() == 2 && "integer".equals(map.get("type"))) {
+                return Long.valueOf((String) map.get(""));
+            }
+        }
+
+        return Long.valueOf(object.toString());
+    }
+
     public static DateTime dateTimeOrNull(@Nullable final Object object) {
         if (isNull(object)) {
             return null;
