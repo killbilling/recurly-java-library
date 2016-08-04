@@ -1234,4 +1234,19 @@ public class TestRecurlyClient {
 
         Assert.assertNotNull(redeemedCard.getRedeemedAt());
     }
+
+    @Test(groups = "integration")
+    public void testPreviewGiftCardPurchase() throws Exception {
+        final GiftCard giftCardData = TestUtils.createRandomGiftCard();
+
+        // Preview a gift card purchase
+        final GiftCard giftCard = recurlyClient.previewGiftCard(giftCardData);
+
+        // Should be the purchased gift card
+        Assert.assertEquals(giftCard.getProductCode(), giftCardData.getProductCode());
+
+        // But should not be created
+        Assert.assertNull(giftCard.getId());
+        Assert.assertNull(giftCard.getCreatedAt());
+    }
 }
