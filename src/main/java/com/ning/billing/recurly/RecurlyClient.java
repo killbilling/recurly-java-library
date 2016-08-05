@@ -946,6 +946,18 @@ public class RecurlyClient {
         return doPOST(GiftCards.GIFT_CARDS_RESOURCE, giftCard, GiftCard.class);
     }
 
+
+    /**
+     * Preview a GiftCard
+     * <p>
+     *
+     * @param giftCard The giftCard data
+     * @return the giftCard object
+     */
+    public GiftCard previewGiftCard(final GiftCard giftCard) {
+        return doPOST(GiftCards.GIFT_CARDS_RESOURCE + "/preview", giftCard, GiftCard.class);
+    }
+
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {
         return doGET(FETCH_RESOURCE + "/" + recurlyToken, clazz);
     }
