@@ -24,6 +24,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.joda.time.DateTime;
 import com.google.common.base.Objects;
 
+import java.math.BigDecimal;
+
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
 
@@ -59,6 +61,15 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "currency")
     private String currency;
+
+    @XmlElement(name = "tax_region")
+    private String taxRegion;
+
+    @XmlElement(name = "tax_type")
+    private String taxType;
+
+    @XmlElement(name = "tax_rate")
+    private BigDecimal taxRate;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -184,6 +195,30 @@ public class Invoice extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
+    public void setTaxRegion(final Object taxRegion) {
+      this.taxRegion = stringOrNull(taxRegion);
+    }
+
+    public String getTaxRegion() {
+      return taxRegion;
+    }
+
+    public void setTaxRate(final Object taxRate) {
+      this.taxRate = bigDecimalOrNull(taxRate);
+    }
+
+    public BigDecimal getTaxRate() {
+      return taxRate;
+    }
+
+    public void setTaxType(final Object taxType) {
+      this.taxType = stringOrNull(taxType);
+    }
+
+    public String getTaxType() {
+      return taxType;
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -246,6 +281,9 @@ public class Invoice extends RecurlyObject {
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
+        sb.append(", taxRegion=").append(taxRegion);
+        sb.append(", taxType=").append(taxType);
+        sb.append(", taxRate=").append(taxRate);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
@@ -302,6 +340,15 @@ public class Invoice extends RecurlyObject {
         if (totalInCents != null ? !totalInCents.equals(invoice.totalInCents) : invoice.totalInCents != null) {
             return false;
         }
+        if (taxRegion != null ? !taxRegion.equals(invoice.taxRegion) : invoice.taxRegion != null) {
+          return false;
+        }
+        if (taxType != null ? !taxType.equals(invoice.taxType) : invoice.taxType != null) {
+          return false;
+        }
+        if (taxRate != null ? !taxRate.equals(invoice.taxRate) : invoice.taxRate != null) {
+          return false;
+        }
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
             return false;
         }
@@ -331,6 +378,9 @@ public class Invoice extends RecurlyObject {
                 subtotalInCents,
                 totalInCents,
                 taxInCents,
+                taxRegion,
+                taxType,
+                taxRate,
                 currency,
                 createdAt,
                 updatedAt,

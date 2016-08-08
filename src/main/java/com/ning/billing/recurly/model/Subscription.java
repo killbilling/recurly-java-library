@@ -24,6 +24,8 @@ import org.joda.time.DateTime;
 
 import com.google.common.base.Objects;
 
+import java.math.BigDecimal;
+
 @XmlRootElement(name = "subscription")
 public class Subscription extends AbstractSubscription {
 
@@ -41,6 +43,18 @@ public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "state", required = false)
     private String state;
+
+    @XmlElement(name = "tax_in_cents")
+    private Integer taxInCents;
+
+    @XmlElement(name = "tax_region")
+    private String taxRegion;
+
+    @XmlElement(name = "tax_type")
+    private String taxType;
+
+    @XmlElement(name = "tax_rate")
+    private BigDecimal taxRate;
 
     @XmlElement(name = "currency")
     private String currency;
@@ -154,6 +168,38 @@ public class Subscription extends AbstractSubscription {
 
     public void setCurrency(final Object currency) {
         this.currency = stringOrNull(currency);
+    }
+
+    public Integer getTaxInCents() {
+        return taxInCents;
+    }
+
+    public void setTaxInCents(final Object taxInCents) {
+        this.taxInCents = integerOrNull(taxInCents);
+    }
+
+    public void setTaxRegion(final Object taxRegion) {
+        this.taxRegion = stringOrNull(taxRegion);
+    }
+
+    public String getTaxRegion() {
+        return taxRegion;
+    }
+
+    public void setTaxRate(final Object taxRate) {
+        this.taxRate = bigDecimalOrNull(taxRate);
+    }
+
+    public BigDecimal getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxType(final Object taxType) {
+        this.taxType = stringOrNull(taxType);
+    }
+
+    public String getTaxType() {
+        return taxType;
     }
 
     public DateTime getActivatedAt() {
@@ -334,6 +380,10 @@ public class Subscription extends AbstractSubscription {
         sb.append(", bulk=").append(bulk);
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", giftCard=").append(giftCard);
+        sb.append(", taxInCents=").append(taxInCents);
+        sb.append(", taxRegion=").append(taxRegion);
+        sb.append(", taxType=").append(taxType);
+        sb.append(", taxRate=").append(taxRate);
         sb.append('}');
         return sb.toString();
     }
@@ -420,6 +470,18 @@ public class Subscription extends AbstractSubscription {
         if (giftCard != null ? !giftCard.equals(that.giftCard) : that.giftCard != null) {
             return false;
         }
+        if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
+            return false;
+        }
+        if (taxRegion != null ? !taxRegion.equals(that.taxRegion) : that.taxRegion != null) {
+            return false;
+        }
+        if (taxType != null ? !taxType.equals(that.taxType) : that.taxType != null) {
+            return false;
+        }
+        if (taxRate != null ? !taxRate.equals(that.taxRate) : that.taxRate != null) {
+            return false;
+        }
 
         return true;
     }
@@ -449,7 +511,11 @@ public class Subscription extends AbstractSubscription {
                 netTerms,
                 poNumber,
                 revenueScheduleType,
-                giftCard
+                giftCard,
+                taxInCents,
+                taxRegion,
+                taxType,
+                taxRate
         );
     }
 }

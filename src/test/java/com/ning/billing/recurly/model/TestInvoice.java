@@ -22,6 +22,8 @@ import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.math.BigDecimal;
+
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
 
@@ -43,6 +45,9 @@ public class TestInvoice extends TestModelBase {
                                    + "  <tax_in_cents type=\"integer\">0</tax_in_cents>\n"
                                    + "  <total_in_cents type=\"integer\">9900</total_in_cents>\n"
                                    + "  <currency>USD</currency>\n"
+                                   + "  <tax_type>usst</tax_type>\n"
+                                   + "  <tax_region>CA</tax_region>\n"
+                                   + "  <tax_rate type=\"float\">0.0875</tax_rate>\n"
                                    + "  <created_at type=\"datetime\">2011-08-25T12:00:00Z</created_at>\n"
                                    + "  <updated_at type=\"datetime\">2011-08-25T12:00:00Z</updated_at>\n"
                                    + "  <line_items type=\"array\">\n"
@@ -81,6 +86,9 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);
         Assert.assertEquals((int) invoice.getTotalInCents(), 9900);
         Assert.assertEquals(invoice.getCurrency(), "USD");
+        Assert.assertEquals(invoice.getTaxType(), "usst");
+        Assert.assertEquals(invoice.getTaxRegion(), "CA");
+        Assert.assertEquals(invoice.getTaxRate(), new BigDecimal("0.0875"));
         Assert.assertEquals(invoice.getCreatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertEquals(invoice.getUpdatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertNotNull(invoice.getLineItems());

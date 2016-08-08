@@ -18,6 +18,7 @@
 package com.ning.billing.recurly.model;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
 import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
@@ -59,6 +60,10 @@ public class TestSubscription extends TestModelBase {
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
+                                        "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
+                                        "  <tax_type>usst</tax_type>\n" +
+                                        "  <tax_region>CA</tax_region>\n" +
+                                        "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                                         "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
@@ -111,6 +116,10 @@ public class TestSubscription extends TestModelBase {
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
+                                        "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
+                                        "  <tax_type>usst</tax_type>\n" +
+                                        "  <tax_region>CA</tax_region>\n" +
+                                        "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
@@ -179,6 +188,10 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getPoNumber(), "PO19384");
         Assert.assertEquals(subscription.getFirstRenewalDate(), new DateTime("2011-07-01T07:00:00Z"));
         Assert.assertEquals(subscription.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
+        Assert.assertEquals((int) subscription.getTaxInCents(), 394);
+        Assert.assertEquals(subscription.getTaxType(), "usst");
+        Assert.assertEquals(subscription.getTaxRegion(), "CA");
+        Assert.assertEquals(subscription.getTaxRate(), new BigDecimal("0.0875"));
 
         return subscription;
     }
