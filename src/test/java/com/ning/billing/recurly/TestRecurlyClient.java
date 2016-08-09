@@ -17,6 +17,7 @@
 
 package com.ning.billing.recurly;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -48,6 +49,8 @@ import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
@@ -725,6 +728,52 @@ public class TestRecurlyClient {
             Assert.assertEquals(retrievedAdjustments.size(), 2, "Not all Adjustments marked as invoiced although all should be.");
 
         } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCreateInvoiceAndRetrieveInvoicePdf() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+
+        PDDocument pdDocument = null;
+        try {
+
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create an Adjustment
+            final Adjustment a = new Adjustment();
+            a.setUnitAmountInCents(150);
+            a.setCurrency(CURRENCY);
+
+            final Adjustment createdA = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), a);
+
+            // Post an invoice/invoice the adjustment
+            final Invoice invoiceData = new Invoice();
+            invoiceData.setCollectionMethod("manual");
+            invoiceData.setLineItems(null);
+            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
+            Assert.assertNotNull(invoice);
+
+            InputStream pdfInputStream = recurlyClient.getInvoicePdf(invoice.getInvoiceNumber());
+            Assert.assertNotNull(pdfInputStream);
+
+            pdDocument = PDDocument.load(pdfInputStream);
+            String pdfString = new PDFTextStripper().getText(pdDocument);
+
+            Assert.assertNotNull(pdfString);
+            Assert.assertTrue(pdfString.contains("Invoice # " + invoice.getInvoiceNumber()));
+            Assert.assertTrue(pdfString.contains("Subtotal $" + 1.5));
+            // Attempt to close the invoice
+            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getInvoiceNumber());
+            Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
+
+        } finally {
+            if (pdDocument != null) {
+                pdDocument.close();
+            }
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
