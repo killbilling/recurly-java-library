@@ -69,11 +69,13 @@ public class Adjustments extends RecurlyObjects<Adjustment> {
     }
 
     @JsonIgnore
+    @Override
     public Adjustments getStart() {
         return getStart(Adjustments.class);
     }
 
     @JsonIgnore
+    @Override
     public Adjustments getNext() {
         return getNext(Adjustments.class);
     }

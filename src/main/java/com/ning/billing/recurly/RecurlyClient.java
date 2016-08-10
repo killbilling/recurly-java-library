@@ -147,8 +147,12 @@ public class RecurlyClient {
     }
 
     public RecurlyClient(final String apiKey, final String host, final int port, final String version) {
+        this(apiKey, "https", host, port, version);
+    }
+
+    public RecurlyClient(final String apiKey, final String scheme, final String host, final int port, final String version) {
         this.key = DatatypeConverter.printBase64Binary(apiKey.getBytes());
-        this.baseUrl = String.format("https://%s:%d/%s", host, port, version);
+        this.baseUrl = String.format("%s://%s:%d/%s", scheme, host, port, version);
         this.xmlMapper = RecurlyObject.newXmlMapper();
         this.userAgent = buildUserAgent();
     }
@@ -1213,7 +1217,7 @@ public class RecurlyClient {
         }
     }
 
-    private AsyncHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
+    protected AsyncHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
         final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
 
         // Don't limit the number of connections per host

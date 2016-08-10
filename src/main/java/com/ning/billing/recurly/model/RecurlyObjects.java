@@ -61,6 +61,8 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
         return recurlyClient.doGETWithFullURL(clazz, startUrl);
     }
 
+    public abstract RecurlyObjects<T> getStart();
+
     @JsonIgnore
     <U extends RecurlyObjects> U getNext(final Class<U> clazz) {
         if (recurlyClient == null || nextUrl == null) {
@@ -68,6 +70,8 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
         }
         return recurlyClient.doGETWithFullURL(clazz, nextUrl);
     }
+
+    public abstract RecurlyObjects<T> getNext();
 
     @JsonIgnore
     public void setRecurlyClient(final RecurlyClient recurlyClient) {

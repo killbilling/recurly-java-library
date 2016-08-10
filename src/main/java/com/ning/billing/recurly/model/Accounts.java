@@ -39,11 +39,13 @@ public class Accounts extends RecurlyObjects<Account> {
     }
 
     @JsonIgnore
+    @Override
     public Accounts getStart() {
         return getStart(Accounts.class);
     }
 
     @JsonIgnore
+    @Override
     public Accounts getNext() {
         return getNext(Accounts.class);
     }

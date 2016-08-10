@@ -39,11 +39,13 @@ public class Invoices extends RecurlyObjects<Invoice> {
     }
 
     @JsonIgnore
+    @Override
     public Invoices getStart() {
         return getStart(Invoices.class);
     }
 
     @JsonIgnore
+    @Override
     public Invoices getNext() {
         return getNext(Invoices.class);
     }

@@ -39,11 +39,13 @@ public class SubscriptionAddOns extends RecurlyObjects<SubscriptionAddOn> {
     }
 
     @JsonIgnore
+    @Override
     public SubscriptionAddOns getStart() {
         return getStart(SubscriptionAddOns.class);
     }
 
     @JsonIgnore
+    @Override
     public SubscriptionAddOns getNext() {
         return getNext(SubscriptionAddOns.class);
     }

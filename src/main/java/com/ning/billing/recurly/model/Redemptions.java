@@ -39,11 +39,13 @@ public class Redemptions extends RecurlyObjects<Redemption> {
     }
 
     @JsonIgnore
+    @Override
     public Redemptions getStart() {
         return getStart(Redemptions.class);
     }
 
     @JsonIgnore
+    @Override
     public Redemptions getNext() {
         return getNext(Redemptions.class);
     }
