@@ -18,6 +18,7 @@
 package com.ning.billing.recurly.model;
 
 import java.util.Map;
+import com.google.common.base.Objects;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlElement;
@@ -34,6 +35,9 @@ public class RecurlyUnitCurrency {
     // Australian Dollars
     @XmlElement(name = "AUD")
     private Integer unitAmountAUD;
+    
+    @XmlElement(name = "JPY")
+    private Integer unitAmountJPY;
 
     // Canadian Dollars
     @XmlElement(name = "CAD")
@@ -116,6 +120,7 @@ public class RecurlyUnitCurrency {
             recurlyUnitCurrency.setUnitAmountSEK(amounts.get("SEK"));
             recurlyUnitCurrency.setUnitAmountCHF(amounts.get("CHF"));
             recurlyUnitCurrency.setUnitAmountZAR(amounts.get("ZAR"));
+            recurlyUnitCurrency.setUnitAmountJPY(amounts.get("JPY"));
         }
 
         return recurlyUnitCurrency;
@@ -192,7 +197,15 @@ public class RecurlyUnitCurrency {
     public void setUnitAmountNOK(final Object unitAmountNOK) {
         this.unitAmountNOK = RecurlyObject.integerOrNull(unitAmountNOK);
     }
+    
+    public Integer getUnitAmountJPY() {
+        return unitAmountJPY;
+    }
 
+    public void setUnitAmountJPY(final Object unitAmountJPY) {
+        this.unitAmountJPY = RecurlyObject.integerOrNull(unitAmountJPY);
+    }
+    
     public Integer getUnitAmountNZD() {
         return unitAmountNZD;
     }
@@ -260,18 +273,15 @@ public class RecurlyUnitCurrency {
         sb.append(", unitAmountSEK=").append(unitAmountSEK);
         sb.append(", unitAmountCHF=").append(unitAmountCHF);
         sb.append(", unitAmountZAR=").append(unitAmountZAR);
+        sb.append(", unitAmountJPY=").append(unitAmountJPY);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final RecurlyUnitCurrency that = (RecurlyUnitCurrency) o;
 
@@ -320,27 +330,31 @@ public class RecurlyUnitCurrency {
         if (unitAmountZAR != null ? !unitAmountZAR.equals(that.unitAmountZAR) : that.unitAmountZAR != null) {
             return false;
         }
-
+        if (unitAmountJPY != null ? !unitAmountJPY.equals(that.unitAmountJPY) : that.unitAmountJPY != null) {
+            return false;
+        }
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = unitAmountUSD != null ? unitAmountUSD.hashCode() : 0;
-        result = 31 * result + (unitAmountAUD != null ? unitAmountAUD.hashCode() : 0);
-        result = 31 * result + (unitAmountCAD != null ? unitAmountCAD.hashCode() : 0);
-        result = 31 * result + (unitAmountEUR != null ? unitAmountEUR.hashCode() : 0);
-        result = 31 * result + (unitAmountGBP != null ? unitAmountGBP.hashCode() : 0);
-        result = 31 * result + (unitAmountCZK != null ? unitAmountCZK.hashCode() : 0);
-        result = 31 * result + (unitAmountDKK != null ? unitAmountDKK.hashCode() : 0);
-        result = 31 * result + (unitAmountHUF != null ? unitAmountHUF.hashCode() : 0);
-        result = 31 * result + (unitAmountNOK != null ? unitAmountNOK.hashCode() : 0);
-        result = 31 * result + (unitAmountNZD != null ? unitAmountNZD.hashCode() : 0);
-        result = 31 * result + (unitAmountPLN != null ? unitAmountPLN.hashCode() : 0);
-        result = 31 * result + (unitAmountSGD != null ? unitAmountSGD.hashCode() : 0);
-        result = 31 * result + (unitAmountSEK != null ? unitAmountSEK.hashCode() : 0);
-        result = 31 * result + (unitAmountCHF != null ? unitAmountCHF.hashCode() : 0);
-        result = 31 * result + (unitAmountZAR != null ? unitAmountZAR.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                unitAmountUSD,
+                unitAmountCAD,
+                unitAmountAUD,
+                unitAmountEUR,
+                unitAmountGBP,
+                unitAmountCZK,
+                unitAmountDKK,
+                unitAmountHUF,
+                unitAmountNOK,
+                unitAmountNZD,
+                unitAmountPLN,
+                unitAmountSGD,
+                unitAmountSEK,
+                unitAmountCHF,
+                unitAmountZAR,
+                unitAmountJPY
+        );
     }
 }
