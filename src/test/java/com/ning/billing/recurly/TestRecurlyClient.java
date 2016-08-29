@@ -41,6 +41,8 @@ import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
+import com.ning.billing.recurly.model.ShippingAddress;
+import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
@@ -1297,5 +1299,67 @@ public class TestRecurlyClient {
         // But should not be created
         Assert.assertNull(giftCard.getId());
         Assert.assertNull(giftCard.getCreatedAt());
+    }
+
+    @Test(groups = "integration")
+    public void testShippingAddressesOnAccount() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final ShippingAddress shippingAddress1 = TestUtils.createRandomShippingAddress();
+        final ShippingAddress shippingAddress2 = TestUtils.createRandomShippingAddress();
+        final ShippingAddresses shippingAddressesData = new ShippingAddresses();
+
+        try {
+            shippingAddressesData.add(shippingAddress1);
+            shippingAddressesData.add(shippingAddress2);
+
+            accountData.setShippingAddresses(shippingAddressesData);
+
+            final Account account = recurlyClient.createAccount(accountData);
+
+            ShippingAddresses shippingAddresses = recurlyClient.getAccountShippingAddresses(account.getAccountCode());
+
+            Assert.assertEquals(shippingAddresses.size(), 2);
+        } finally {
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testShippingAddressesOnSubscription() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final ShippingAddress shippingAddressData = TestUtils.createRandomShippingAddress();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Subscribe the user to the plan
+            final Subscription subscriptionData = new Subscription();
+
+            // set our shipping address
+            subscriptionData.setShippingAddress(shippingAddressData);
+
+            // set our sub data
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+
+            // attach the account
+            final Account existingAccount = new Account();
+            existingAccount.setAccountCode(account.getAccountCode());
+            subscriptionData.setAccount(existingAccount);
+
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+
+            Assert.assertNotNull(subscription.getHref());
+        } finally {
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
     }
 }

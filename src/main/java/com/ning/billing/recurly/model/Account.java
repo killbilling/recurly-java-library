@@ -95,6 +95,10 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
 
+    @XmlElementWrapper(name = "shipping_addresses")
+    @XmlElement(name = "shipping_address")
+    private ShippingAddresses shippingAddresses;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -253,6 +257,14 @@ public class Account extends RecurlyObject {
         this.taxExempt = booleanOrNull(taxExempt);
     }
 
+    public ShippingAddresses getShippingAddresses() {
+        return shippingAddresses;
+    }
+
+    public void setShippingAddresses(final ShippingAddresses shippingAddresses) {
+        this.shippingAddresses = shippingAddresses;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
@@ -275,6 +287,7 @@ public class Account extends RecurlyObject {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
+        sb.append(", shippingAddresses=").append(shippingAddresses);
         sb.append('}');
         return sb.toString();
     }
@@ -343,6 +356,9 @@ public class Account extends RecurlyObject {
         if (taxExempt != null ? !taxExempt.equals(account.taxExempt) : account.taxExempt != null) {
             return false;
         }
+        if (shippingAddresses != null ? !shippingAddresses.equals(account.shippingAddresses) : account.shippingAddresses != null) {
+            return false;
+        }
 
         return true;
     }
@@ -368,7 +384,8 @@ public class Account extends RecurlyObject {
                 createdAt,
                 billingInfo,
                 updatedAt,
-                taxExempt
+                taxExempt,
+                shippingAddresses
         );
     }
 }
