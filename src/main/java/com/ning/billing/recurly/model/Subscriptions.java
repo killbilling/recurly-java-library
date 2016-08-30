@@ -49,4 +49,25 @@ public class Subscriptions extends RecurlyObjects<Subscription> {
     public Subscriptions getNext() {
         return getNext(Subscriptions.class);
     }
+
+    // see Subscription pagination: https://dev.recurly.com/docs/list-subscriptions
+    public enum State {
+        ACTIVE("active"),
+        CANCELED("canceled"),
+        EXPIRED("expired"),
+        FUTURE("future"),
+        IN_TRIAL("in_trial"),
+        LIVE("live"),
+        PAST_DUE("past_due");
+
+        private final String type;
+
+        private State(final String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
 }

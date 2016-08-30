@@ -546,4 +546,5 @@ public class Subscription extends AbstractSubscription {
                 shippingAddressId
         );
     }
+
 }

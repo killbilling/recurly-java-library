@@ -387,7 +387,7 @@ public class TestUtils {
         info.setCity(randomAlphaNumericString(10, seed));
         info.setState(randomAlphaNumericString(10, seed).toUpperCase());
         info.setZip(randomAlphaNumericString(5, seed));
-        info.setCountry(randomAlphaNumericString(5, seed).toUpperCase());
+        info.setCountry(randomAlphaNumericString(2, seed).toUpperCase());
         info.setPhone(randomInteger(8, seed));
         info.setVatNumber(randomNumericString(8, seed));
         info.setYear(createTestCCYear());
