@@ -35,6 +35,9 @@ public class RecurlyUnitCurrency {
     // Australian Dollars
     @XmlElement(name = "AUD")
     private Integer unitAmountAUD;
+    
+    @XmlElement(name = "JPY")
+    private Integer unitAmountJPY;
 
     // Canadian Dollars
     @XmlElement(name = "CAD")
@@ -117,6 +120,7 @@ public class RecurlyUnitCurrency {
             recurlyUnitCurrency.setUnitAmountSEK(amounts.get("SEK"));
             recurlyUnitCurrency.setUnitAmountCHF(amounts.get("CHF"));
             recurlyUnitCurrency.setUnitAmountZAR(amounts.get("ZAR"));
+            recurlyUnitCurrency.setUnitAmountJPY(amounts.get("JPY"));
         }
 
         return recurlyUnitCurrency;
@@ -193,7 +197,15 @@ public class RecurlyUnitCurrency {
     public void setUnitAmountNOK(final Object unitAmountNOK) {
         this.unitAmountNOK = RecurlyObject.integerOrNull(unitAmountNOK);
     }
+    
+    public Integer getUnitAmountJPY() {
+        return unitAmountJPY;
+    }
 
+    public void setUnitAmountJPY(final Object unitAmountJPY) {
+        this.unitAmountJPY = RecurlyObject.integerOrNull(unitAmountJPY);
+    }
+    
     public Integer getUnitAmountNZD() {
         return unitAmountNZD;
     }
@@ -261,6 +273,7 @@ public class RecurlyUnitCurrency {
         sb.append(", unitAmountSEK=").append(unitAmountSEK);
         sb.append(", unitAmountCHF=").append(unitAmountCHF);
         sb.append(", unitAmountZAR=").append(unitAmountZAR);
+        sb.append(", unitAmountJPY=").append(unitAmountJPY);
         sb.append('}');
         return sb.toString();
     }
@@ -317,7 +330,9 @@ public class RecurlyUnitCurrency {
         if (unitAmountZAR != null ? !unitAmountZAR.equals(that.unitAmountZAR) : that.unitAmountZAR != null) {
             return false;
         }
-
+        if (unitAmountJPY != null ? !unitAmountJPY.equals(that.unitAmountJPY) : that.unitAmountJPY != null) {
+            return false;
+        }
         return true;
     }
 
@@ -338,7 +353,8 @@ public class RecurlyUnitCurrency {
                 unitAmountSGD,
                 unitAmountSEK,
                 unitAmountCHF,
-                unitAmountZAR
+                unitAmountZAR,
+                unitAmountJPY
         );
     }
 }
