@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "add_on")
 public class AddOn extends AbstractAddOn {
@@ -41,8 +42,14 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
 
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     public String getName() {
         return name;
@@ -68,6 +75,14 @@ public class AddOn extends AbstractAddOn {
         this.defaultQuantity = integerOrNull(defaultQuantity);
     }
 
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final String revenueScheduleType) {
+        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    }
+
     public RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
     }
@@ -84,6 +99,14 @@ public class AddOn extends AbstractAddOn {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
@@ -91,32 +114,33 @@ public class AddOn extends AbstractAddOn {
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final AddOn addOn = (AddOn) o;
 
         if (createdAt != null ? createdAt.compareTo(addOn.createdAt) != 0 : addOn.createdAt != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(addOn.updatedAt) != 0 : addOn.updatedAt != null) {
+            return false;
+        }
         if (defaultQuantity != null ? !defaultQuantity.equals(addOn.defaultQuantity) : addOn.defaultQuantity != null) {
             return false;
         }
         if (displayQuantityOnHostedPage != null ? !displayQuantityOnHostedPage.equals(addOn.displayQuantityOnHostedPage) : addOn.displayQuantityOnHostedPage != null) {
+            return false;
+        }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(addOn.revenueScheduleType) : addOn.revenueScheduleType != null) {
             return false;
         }
         if (name != null ? !name.equals(addOn.name) : addOn.name != null) {
@@ -131,12 +155,14 @@ public class AddOn extends AbstractAddOn {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (displayQuantityOnHostedPage != null ? displayQuantityOnHostedPage.hashCode() : 0);
-        result = 31 * result + (defaultQuantity != null ? defaultQuantity.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                name,
+                displayQuantityOnHostedPage,
+                defaultQuantity,
+                unitAmountInCents,
+                revenueScheduleType,
+                createdAt,
+                updatedAt
+        );
     }
 }

@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestAccount extends TestModelBase {
 
@@ -39,9 +43,11 @@ public class TestAccount extends TestModelBase {
                                    "  <email>verena@example.com</email>\n" +
                                    "  <first_name>Verena</first_name>\n" +
                                    "  <last_name>Example</last_name>\n" +
+                                   "  <tax_exempt type=\"boolean\">false</tax_exempt>\n\n" +
                                    "  <accept_language nil=\"nil\"></accept_language>\n" +
                                    "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
                                    "  <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
+                                   "  <updated_at type=\"datetime\">2011-10-25T12:00:00</updated_at>\n" +
                                    "  <address>\n" +
                                    "      <address1>123 Main St.</address1>\n" +
                                    "      <address2 nil=\"nil\"></address2>\n" +
@@ -63,6 +69,17 @@ public class TestAccount extends TestModelBase {
         verifyAccount(account2);
     }
 
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create accounts of the same value but difference references
+        Account account = TestUtils.createRandomAccount(0);
+        Account otherAccount = TestUtils.createRandomAccount(0);
+
+        assertNotEquals(System.identityHashCode(account), System.identityHashCode(otherAccount));
+        assertEquals(account.hashCode(), otherAccount.hashCode());
+        assertEquals(account, otherAccount);
+    }
+
     private void verifyAccount(final Account account) {
         Assert.assertEquals(account.getAccountCode(), "1");
         Assert.assertEquals(account.getState(), "active");
@@ -73,12 +90,15 @@ public class TestAccount extends TestModelBase {
         Assert.assertNull(account.getAcceptLanguage());
         Assert.assertEquals(account.getHostedLoginToken(), "a92468579e9c4231a6c0031c4716c01d");
         Assert.assertEquals(account.getCreatedAt(), new DateTime("2011-10-25T12:00:00"));
+        Assert.assertEquals(account.getUpdatedAt(), new DateTime("2011-10-25T12:00:00"));
         Assert.assertEquals(account.getAddress().getAddress1(), "123 Main St.");
         Assert.assertNull(account.getAddress().getAddress2());
         Assert.assertEquals(account.getAddress().getCity(), "San Francisco");
         Assert.assertEquals(account.getAddress().getState(), "CA");
         Assert.assertEquals(account.getAddress().getZip(), "94105-1804");
         Assert.assertEquals(account.getAddress().getCountry(), "US");
+        Assert.assertFalse(account.getTaxExempt());
         Assert.assertNull(account.getAddress().getPhone());
     }
+
 }

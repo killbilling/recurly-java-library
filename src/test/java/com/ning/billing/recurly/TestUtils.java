@@ -17,8 +17,17 @@
 
 package com.ning.billing.recurly;
 
+import java.util.Date;
+import java.util.Random;
 import java.util.UUID;
 
+import com.ning.billing.recurly.model.Adjustment;
+import com.ning.billing.recurly.model.Adjustments;
+import com.ning.billing.recurly.model.Delivery;
+import com.ning.billing.recurly.model.GiftCard;
+import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.Redemption;
+import com.ning.billing.recurly.model.Transactions;
 import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.model.Account;
@@ -35,43 +44,157 @@ import com.ning.billing.recurly.model.Transaction;
 
 public class TestUtils {
 
+    private static enum StringMode {
+        ALPHA,
+        ALPHA_NUMERIC,
+        NUMERIC,
+    };
+
+    private static final char[] SYMBOLS;
+
+    // Build an array of symbols
+    static {
+        int idx = 0;
+        SYMBOLS = new char[62];
+
+        for (char ch = 'A'; ch <= 'Z'; ++ch) SYMBOLS[idx++] = ch;
+        for (char ch = 'a'; ch <= 'z'; ++ch) SYMBOLS[idx++] = ch;
+        for (char ch = '0'; ch <= '9'; ++ch) SYMBOLS[idx++] = ch;
+    }
+
+    private static final DateTime NOW = new DateTime();
+    private static final DateTime TOMORROW = new DateTime(NOW.toDate().getTime() + (1000 * 60 * 60 * 24));
+
     /**
      * Returns a random {@link String}.
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @param lowerIdx The low index to use on the SYMBOLS table
+     * @param upperIdx The upper index to use on the SYMBOLS table
+     * @param seed The RNG seed
+     * @return The random {@link String}
+     */
+    public static String randomString(final int length, final int lowerIdx, final int upperIdx, final int seed) {
+        Random random = new Random(seed);
+        StringBuilder sb = new StringBuilder();
+        int range = upperIdx - lowerIdx;
+
+        for (int i = 0; i < length; i++)
+            sb.append(SYMBOLS[lowerIdx + random.nextInt(range)]);
+
+        return sb.toString();
+    }
+
+    /**
+     * Returns a random {@link String} but deterministic
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @param mode
+     * @param seed The RNG seed
+     * @return The random {@link String}
+     */
+    public static String randomString(final int length, final StringMode mode, final int seed) {
+        switch (mode) {
+            case ALPHA:
+                return randomString(length, 0, 52, seed);
+            case ALPHA_NUMERIC:
+                return randomString(length, 0, 62, seed);
+            case NUMERIC:
+                return randomString(length, 52, 62, seed);
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Returns a random {@link String}.
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @return The random {@link String}
+     */
+    public static String randomString(final int length, final StringMode mode) {
+        return randomString(length, mode, randomSeed());
+    }
+
+    /**
+     * Returns a random alpha {@link String}.
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @return The random {@link String}
+     */
+    public static String randomAlphaString(final int length) {
+        return randomAlphaString(length, randomSeed());
+    }
+
+    /**
+     * Returns a random alpha {@link String} given a seed
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @param seed The RNG seed
+     * @return The random {@link String}
+     */
+    public static String randomAlphaString(final int length, final int seed) {
+        return randomString(length, StringMode.ALPHA, seed);
+    }
+
+    /**
+     * Returns a random alpha-numeric {@link String} given a seed.
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @param seed The RNG seed
+     * @return The random {@link String}
+     */
+    public static String randomAlphaNumericString(final int length, final int seed) {
+        return randomString(length, StringMode.ALPHA_NUMERIC, seed);
+    }
+
+    /**
+     * Returns a random alpha-numeric {@link String}.
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @return The random {@link String}
+     */
+    public static String randomAlphaNumericString(final int length) {
+        return randomAlphaNumericString(length, randomSeed());
+    }
+
+    /**
+     * Returns a random numeric {@link String}.
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @return The random {@link String}
+     */
+    public static String randomNumericString(final int length) {
+        return randomNumericString(length, randomSeed());
+    }
+
+    /**
+     * Returns a random numeric {@link String} given a seed
+     *
+     * @param length The limit of the upperRange - the random returned value could be upto and including this value
+     * @param seed The RNG seed
+     * @return The random {@link String}
+     */
+    public static String randomNumericString(final int length, final int seed) {
+        return randomString(length, StringMode.NUMERIC, seed);
+    }
+
+    /**
+     * Returns a random alpha-numeric {@link String} with a random length b/w 1 and 30.
      *
      * @return The random {@link String}
      */
     public static String randomString() {
-        return UUID.randomUUID().toString().replace("-", "").substring(0, 5);
+        return randomString(1 + randomInteger(30), StringMode.NUMERIC, randomSeed());
     }
 
     /**
-     * Generates a String comprised of random alpha-numeric
-     * chars upto the length as defined by the input param.
+     * Returns a a big random {@link Integer} to be used as a seed
      *
-     * @param n The length, in number of chars, of the returned
-     *          String
-     * @return A random alpah-numeric String
+     * @return The random {@link Integer}
      */
-    public static String getRandomAlphaNumString(final int n) {
-        int offset = n;
-        final String retValue = UUID.randomUUID().toString().replace("-", "");
-
-        if (retValue.length() <= n) {
-            offset = retValue.length() - 1;
-        }
-        return retValue.substring(0, offset);
-    }
-
-    /**
-     * Generates a String comprised of random numeric
-     * chars upto the length as defined by the input param.
-     *
-     * @param n The length, in number of chars, of the returned
-     *          String
-     * @return A random numeric String
-     */
-    public static String getRandomNumString(final int n) {
-        return "" + new Double(Math.random() * 100).intValue();
+    public static int randomSeed() {
+        return (int) (Math.random() * Integer.MAX_VALUE);
     }
 
     /**
@@ -81,7 +204,19 @@ public class TestUtils {
      * @return The random integer - from within the range 0 to upperRange
      */
     public static Integer randomInteger(final int upperRange) {
-        return (int) (Math.random() * upperRange);
+        return randomInteger(upperRange, randomSeed());
+    }
+
+    /**
+     * Returns a random {@link Integer} within the range 0 to upperRange given a seed
+     *
+     * @param upperRange The limit of the upperRange - the random returned value could be upto and including this value
+     * @param seed The RNG seed
+     * @return The random integer - from within the range 0 to upperRange
+     */
+    public static Integer randomInteger(final int upperRange, final int seed) {
+        Random random = new Random(seed);
+        return random.nextInt(upperRange);
     }
 
     public static String createTestCCNumber() {
@@ -97,8 +232,9 @@ public class TestUtils {
     }
 
     public static String createTestCCYear() {
-        return "2015";
+        return "2020";
     }
+
 
     /**
      * Creates a random {@link com.ning.billing.recurly.model.Account} object for testing use.
@@ -106,26 +242,86 @@ public class TestUtils {
      * @return The random {@link com.ning.billing.recurly.model.Account} object
      */
     public static Account createRandomAccount() {
-        final Account account = new Account();
-        account.setAcceptLanguage("en_US");
-        account.setAccountCode(UUID.randomUUID().toString());
-        account.setCompanyName(getRandomAlphaNumString(10));
-        account.setEmail(getRandomAlphaNumString(4) + "@test.com");
-        account.setFirstName(getRandomAlphaNumString(5));
-        account.setLastName(getRandomAlphaNumString(6));
+        return createRandomAccount(randomSeed());
+    }
 
-        final Address address = new Address();
-        address.setAddress1(UUID.randomUUID().toString());
-        address.setAddress2(UUID.randomUUID().toString());
-        address.setCity(UUID.randomUUID().toString());
-        address.setState(UUID.randomUUID().toString());
-        address.setZip(49302);
-        address.setCountry(UUID.randomUUID().toString());
-        address.setPhone(UUID.randomUUID().toString());
-        account.setAddress(address);
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Account} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Account} object
+     */
+    public static Account createRandomAccount(final int seed) {
+        final Account account = new Account();
+
+        account.setAcceptLanguage("en_US");
+        account.setAccountCode(randomAlphaNumericString(10, seed));
+        account.setCompanyName(randomAlphaNumericString(10, seed));
+        account.setEmail(randomAlphaNumericString(4, seed) + "@test.com");
+        account.setFirstName(randomAlphaNumericString(5, seed));
+        account.setLastName(randomAlphaNumericString(6, seed));
+        account.setAddress(createRandomAddress(seed));
 
         return account;
     }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Address} object for testing use
+     *
+     * @return The random {@link com.ning.billing.recurly.model.Address} object
+     */
+    public static Address createRandomAddress() {
+        return createRandomAddress(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Address} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Address} object
+     */
+    public static Address createRandomAddress(final int seed) {
+        final Address address = new Address();
+
+        address.setAddress1(randomAlphaNumericString(10, seed));
+        address.setAddress2(randomAlphaNumericString(10, seed));
+        address.setCity(randomAlphaNumericString(10, seed));
+        address.setState(randomAlphaString(2, seed));
+        address.setZip(49302);
+        address.setCountry(randomAlphaString(3, seed));
+        address.setPhone(randomNumericString(10, seed));
+
+        return address;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Adjustment} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Adjustment} object
+     */
+    public static Adjustment createRandomAdjustment(final int seed) {
+        final Adjustment adjustment = new Adjustment();
+
+        adjustment.setAccount(createRandomAccount(seed));
+        adjustment.setUuid(randomAlphaNumericString(20, seed));
+        adjustment.setDescription(randomAlphaNumericString(50, seed));
+        adjustment.setAccountingCode(randomAlphaNumericString(10, seed));
+        adjustment.setOrigin(randomAlphaNumericString(10, seed));
+        adjustment.setUnitAmountInCents(randomInteger(1000, seed));
+        adjustment.setQuantity(1 + randomInteger(10, seed));
+        adjustment.setDiscountInCents(randomInteger(1000, seed));
+        adjustment.setTaxInCents(randomInteger(1000, seed));
+        adjustment.setTotalInCents(randomInteger(1000, seed));
+        adjustment.setCurrency(randomCurrency(seed));
+        adjustment.setTaxable(true);
+        adjustment.setStartDate(NOW);
+        adjustment.setStartDate(TOMORROW);
+        adjustment.setCreatedAt(NOW);
+
+        return adjustment;
+    }
+
 
     /**
      * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use.
@@ -133,20 +329,30 @@ public class TestUtils {
      * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
      */
     public static BillingInfo createRandomBillingInfo() {
+        return createRandomBillingInfo(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
+     */
+    public static BillingInfo createRandomBillingInfo(final int seed) {
         final BillingInfo info = new BillingInfo();
-        info.setAccount(createRandomAccount());
-        info.setFirstName(getRandomAlphaNumString(5));
-        info.setLastName(getRandomAlphaNumString(6));
-        info.setCompany(getRandomAlphaNumString(10));
-        info.setAddress1(getRandomAlphaNumString(10));
-        info.setAddress2(getRandomAlphaNumString(10));
-        info.setCity(getRandomAlphaNumString(10));
-        info.setState(getRandomAlphaNumString(10));
-        info.setZip(getRandomAlphaNumString(5));
-        info.setCountry(getRandomAlphaNumString(5));
-        info.setPhone(randomInteger(8));
-        info.setVatNumber(getRandomNumString(8));
-        //info.setIpAddress(LifecycleTest.getRandomAlphaNumString(5));
+
+        info.setAccount(createRandomAccount(seed));
+        info.setFirstName(randomAlphaNumericString(5, seed));
+        info.setLastName(randomAlphaNumericString(6, seed));
+        info.setCompany(randomAlphaNumericString(10, seed));
+        info.setAddress1(randomAlphaNumericString(10, seed));
+        info.setAddress2(randomAlphaNumericString(10, seed));
+        info.setCity(randomAlphaNumericString(10, seed));
+        info.setState(randomAlphaNumericString(10, seed));
+        info.setZip(randomAlphaNumericString(5, seed));
+        info.setCountry(randomAlphaNumericString(5, seed));
+        info.setPhone(randomInteger(8, seed));
+        info.setVatNumber(randomNumericString(8, seed));
         info.setYear(createTestCCYear());
         info.setMonth(createTestCCMonth());
         info.setNumber(createTestCCNumber());
@@ -161,13 +367,28 @@ public class TestUtils {
      * @return The random {@link com.ning.billing.recurly.model.Plan} object
      */
     public static Plan createRandomPlan() {
+        return createRandomPlan(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Plan} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Plan} object
+     */
+    public static Plan createRandomPlan(final int seed) {
         final Plan plan = new Plan();
-        plan.setPlanCode(getRandomAlphaNumString(10));
-        plan.setName(getRandomAlphaNumString(10));
-        plan.setPlanIntervalLength(randomInteger(50) + 1);
+
+        plan.setPlanCode(randomAlphaNumericString(10, seed));
+        plan.setName(randomAlphaNumericString(10, seed));
+        plan.setPlanIntervalLength(randomInteger(50, seed) + 1);
         plan.setPlanIntervalUnit("months");
         plan.setSetupFeeInCents(createRandomPrice());
         plan.setUnitAmountInCents(createRandomPrice());
+        plan.setDisplayDonationAmounts(true);
+        plan.setDisplayPhoneNumber(true);
+        plan.setDisplayQuantity(true);
+        plan.setBypassHostedConfirmation(true);
 
         return plan;
     }
@@ -177,6 +398,7 @@ public class TestUtils {
      */
     public static Plan createRandomPlan(final String currencyCode) {
         final Plan plan = createRandomPlan();
+
         plan.setSetupFeeInCents(createRandomSinglePrice(currencyCode));
         plan.setUnitAmountInCents(createRandomSinglePrice(currencyCode));
 
@@ -242,10 +464,55 @@ public class TestUtils {
      *
      * @return The {@link String} code for the randomly chosen currency
      */
-    public static String createRandomCurrency() {
-        final String[] currencies = {"EUR", "GBP", "USD", "SEK"};
-        return currencies[(int) (Math.random() * currencies.length)];
+    public static String randomCurrency() {
+        return randomCurrency(randomSeed());
     }
+
+    /**
+     * Creates a random currency {@link String} given a seed from the set:
+     * <ul>
+     * <li>EUR</li>
+     * <li>GBP</li>
+     * <li>USD</li>
+     * <li>SEK</li>
+     * </ul>
+     *
+     * @param seed The RNG seed
+     * @return The {@link String} code for the randomly chosen currency
+     */
+    public static String randomCurrency(final int seed) {
+        final String[] currencies = {"EUR", "GBP", "USD", "SEK"};
+        return currencies[randomInteger(currencies.length, seed)];
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Subscription} object for use in tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The {@link com.ning.billing.recurly.model.Subscription} object
+     */
+    public static Subscription createRandomSubscription(final int seed) {
+        final Subscription sub = new Subscription();
+        final Plan plan = createRandomPlan(seed);
+
+        sub.setQuantity(randomInteger(10, seed) + 1);
+        sub.setCurrency(randomCurrency(seed));
+        sub.setPlanCode(plan.getPlanCode());
+        sub.setAccount(createRandomAccount(seed));
+        sub.setUnitAmountInCents(randomInteger(10, seed));
+        sub.setCurrency(randomCurrency(seed));
+
+        final SubscriptionAddOns addOns = new SubscriptionAddOns();
+
+        for (int i = 0; i < 5; i++) {
+            addOns.add(createRandomSubscriptionAddOn("code"+i));
+        }
+
+        sub.setAddOns(addOns);
+
+        return sub;
+    }
+
 
     /**
      * Creates a random {@link com.ning.billing.recurly.model.Subscription} object for use in tests
@@ -258,9 +525,10 @@ public class TestUtils {
      */
     public static Subscription createRandomSubscription(final String currencyCode, final Plan plan, final Account account, final Iterable<AddOn> planAddOns) {
         final Subscription sub = new Subscription();
+
         // Make sure the quantity is > 0
         sub.setQuantity(randomInteger(10) + 1);
-        sub.setCurrency(createRandomCurrency());
+        sub.setCurrency(randomCurrency());
         sub.setPlanCode(plan.getPlanCode());
         sub.setAccount(account);
         sub.setUnitAmountInCents(randomInteger(10));
@@ -280,14 +548,26 @@ public class TestUtils {
      * @return The random {@link Transaction} object
      */
     public static Transaction createRandomTransaction() {
+        return createRandomTransaction(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Transaction} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Transaction} object
+     */
+    public static Transaction createRandomTransaction(final int seed) {
         final Transaction trans = new Transaction();
-        trans.setAccount(createRandomAccount());
-        trans.setAction(getRandomAlphaNumString(5));
-        trans.setAmountInCents(getRandomNumString(100));
-        trans.setTaxInCents(getRandomNumString(100));
-        trans.setCurrency(createRandomCurrency());
-        trans.setStatus(getRandomAlphaNumString(2));
-        trans.setCreatedAt(DateTime.now());
+
+        trans.setAccount(createRandomAccount(seed));
+        trans.setAction(randomAlphaNumericString(5, seed));
+        trans.setAmountInCents(randomInteger(1000, seed));
+        trans.setTaxInCents(randomInteger(10, seed));
+        trans.setDescription(randomAlphaNumericString(50, seed));
+        trans.setCurrency(randomCurrency(seed));
+        trans.setStatus(randomAlphaNumericString(2, seed));
+        trans.setCreatedAt(NOW);
 
         return trans;
     }
@@ -299,11 +579,31 @@ public class TestUtils {
      */
     public static AddOn createRandomAddOn() {
         final AddOn addOn = new AddOn();
-        addOn.setAddOnCode(getRandomAlphaNumString(10));
-        addOn.setName(getRandomAlphaNumString(10));
+
+        addOn.setAddOnCode(randomAlphaNumericString(10));
+        addOn.setName(randomAlphaNumericString(10));
         addOn.setUnitAmountInCents(createRandomPrice());
         addOn.setDefaultQuantity(5);
         addOn.setDisplayQuantityOnHostedPage(false);
+
+        return addOn;
+    }
+
+    /**
+     * Creates a random {@link AddOn} for use in Tests given a seed.
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomAddOn(final int seed) {
+        final AddOn addOn = new AddOn();
+
+        addOn.setAddOnCode(randomAlphaNumericString(10, seed));
+        addOn.setName(randomAlphaNumericString(10, seed));
+        addOn.setUnitAmountInCents(createRandomPrice());
+        addOn.setDefaultQuantity(5);
+        addOn.setDisplayQuantityOnHostedPage(false);
+
         return addOn;
     }
 
@@ -315,9 +615,11 @@ public class TestUtils {
      */
     public static SubscriptionAddOn createRandomSubscriptionAddOn(final String addOnCode) {
         final SubscriptionAddOn addOn = new SubscriptionAddOn();
+
         addOn.setAddOnCode(addOnCode);
         addOn.setUnitAmountInCents(42);
         addOn.setQuantity(5);
+
         return addOn;
     }
 
@@ -330,6 +632,7 @@ public class TestUtils {
      */
     public static AddOn createRandomAddOn(final String currencyCode) {
         final AddOn addOn = createRandomAddOn();
+
         addOn.setUnitAmountInCents(createRandomSinglePrice(currencyCode));
 
         return addOn;
@@ -341,11 +644,169 @@ public class TestUtils {
      * @return The random {@link Coupon} object
      */
     public static Coupon createRandomCoupon() {
+        return createRandomCoupon(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Coupon} object for use in Tests
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Coupon} object
+     */
+    public static Coupon createRandomCoupon(int seed) {
         final Coupon coupon = new Coupon();
-        coupon.setName(TestUtils.randomString());
-        coupon.setCouponCode(TestUtils.randomString());
+
+        coupon.setName(randomAlphaNumericString(10, seed));
+        coupon.setCouponCode(randomAlphaNumericString(10, seed).toLowerCase());
         coupon.setDiscountType("percent");
-        coupon.setDiscountPercent("10");
+        coupon.setDiscountPercent(randomNumericString(2, seed));
+
         return coupon;
+    }
+
+    /**
+     * Creates a random {@link Invoice} object for use in Tests
+     *
+     * @return The random {@link Invoice} object
+     */
+    public static Invoice createRandomInvoice() {
+        return createRandomInvoice(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Invoice} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Invoice} object
+     */
+    public static Invoice createRandomInvoice(final int seed) {
+        final Invoice invoice = new Invoice();
+
+        invoice.setAccount(createRandomAccount(seed));
+        invoice.setUuid(randomAlphaNumericString(20, seed));
+        invoice.setState("open");
+        invoice.setInvoiceNumber(randomInteger(10000, seed));
+        invoice.setPoNumber(randomNumericString(5, seed));
+        invoice.setVatNumber(randomAlphaNumericString(5, seed));
+        invoice.setSubtotalInCents(randomInteger(1000, seed));
+        invoice.setTaxInCents(randomInteger(1000, seed));
+        invoice.setTotalInCents(randomInteger(1000, seed));
+        invoice.setCurrency(randomCurrency(seed));
+        invoice.setCreatedAt(NOW);
+        invoice.setCollectionMethod("credit_card");
+        invoice.setNetTerms(randomInteger(100, seed));
+
+        Adjustments adjustments = new Adjustments();
+        for (int i = 0; i < 3; i++) {
+            adjustments.add(createRandomAdjustment(seed + i));
+        }
+        invoice.setLineItems(adjustments);
+
+        Transactions transactions = new Transactions();
+        for (int i = 0; i < 3; i++) {
+            transactions.add(createRandomTransaction(seed + i));
+        }
+        invoice.setTransactions(transactions);
+
+
+        return invoice;
+    }
+
+    /**
+     * Creates a random {@link Redemption} object for use in Tests
+     *
+     * @return The random {@link Redemption} object
+     */
+    public static Redemption createRandomRedemption() {
+        return createRandomRedemption(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Redemption} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Redemption} object
+     */
+    public static Redemption createRandomRedemption(final int seed) {
+        final Redemption redemption = new Redemption();
+        final Account account = createRandomAccount(seed);
+
+        redemption.setAccount(account);
+        redemption.setAccountCode(account.getAccountCode());
+        redemption.setCoupon(createRandomCoupon(seed));
+        redemption.setSingleUse(true);
+        redemption.setState("redeemed");
+        redemption.setCurrency(randomCurrency(seed));
+        redemption.setTotalDiscountedInCents(randomInteger(1000, seed));
+
+        return redemption;
+    }
+
+    /**
+     * Creates a random {@link Delivery} object for use in Tests
+     *
+     * @return The random {@link Delivery} object
+     */
+    public static Delivery createRandomDelivery() {
+        return createRandomDelivery(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Delivery} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Delivery} object
+     */
+    public static Delivery createRandomDelivery(final int seed) {
+        Delivery delivery = new Delivery();
+
+        delivery.setAddress(createRandomAddress(seed));
+        delivery.setEmailAddress(randomAlphaNumericString(10, seed) + "@email.com");
+        delivery.setFirstName(randomAlphaNumericString(5, seed));
+        delivery.setLastName(randomAlphaNumericString(5, seed));
+        delivery.setGifterName(randomAlphaNumericString(5, seed));
+        delivery.setMethod("email");
+        delivery.setPersonalMessage(randomAlphaNumericString(100, seed));
+        delivery.setDeliverAt(new DateTime("2016-12-27T07:00:00Z"));
+
+        return delivery;
+    }
+
+    /**
+     * Creates a random {@link GiftCard} object for use in Tests
+     *
+     * @return The random {@link GiftCard} object
+     */
+    public static GiftCard createRandomGiftCard() {
+        return createRandomGiftCard(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link GiftCard} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link GiftCard} object
+     */
+    public static GiftCard createRandomGiftCard(final int seed) {
+        final GiftCard giftCardData = new GiftCard();
+        final Account accountData = createRandomAccount(seed);
+        final Delivery deliveryData = createRandomDelivery(seed);
+        final BillingInfo billingInfoData = createRandomBillingInfo(seed);
+
+        // need to null out account
+        // TODO - account should not be writeable in XML
+        billingInfoData.setAccount(null);
+        accountData.setBillingInfo(billingInfoData);
+
+        // Gift card product needs to be created on the site with
+        // product code "test_gift_card"
+
+        giftCardData.setGifterAccount(accountData);
+        giftCardData.setDelivery(deliveryData);
+        giftCardData.setCurrency("USD");
+        giftCardData.setProductCode("test_gift_card");
+        giftCardData.setUnitAmountInCents(2000);
+
+        return giftCardData;
     }
 }

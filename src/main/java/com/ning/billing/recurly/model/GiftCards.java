@@ -23,30 +23,28 @@ import javax.xml.bind.annotation.XmlTransient;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
-@XmlRootElement(name = "subscription_add_on")
-public class SubscriptionAddOns extends RecurlyObjects<SubscriptionAddOn> {
+@XmlRootElement(name = "gift_cards")
+public class GiftCards extends RecurlyObjects<GiftCard> {
 
     @XmlTransient
-    public static final String ADDONS_RESOURCE = "/addons";
+    public static final String GIFT_CARDS_RESOURCE = "/gift_cards";
 
     @XmlTransient
-    private static final String PROPERTY_NAME = "subscription_add_on";
+    private static final String PROPERTY_NAME = "gift_card";
 
     @JsonSetter(value = PROPERTY_NAME)
     @Override
-    public void setRecurlyObject(final SubscriptionAddOn value) {
+    public void setRecurlyObject(final GiftCard value) {
         super.setRecurlyObject(value);
     }
 
     @JsonIgnore
-    @Override
-    public SubscriptionAddOns getStart() {
-        return getStart(SubscriptionAddOns.class);
+    public GiftCards getStart() {
+        return getStart(GiftCards.class);
     }
 
     @JsonIgnore
-    @Override
-    public SubscriptionAddOns getNext() {
-        return getNext(SubscriptionAddOns.class);
+    public GiftCards getNext() {
+        return getNext(GiftCards.class);
     }
 }

@@ -20,6 +20,8 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "subscription_add_on")
 public class SubscriptionAddOn extends AbstractAddOn {
 
@@ -56,15 +58,8 @@ public class SubscriptionAddOn extends AbstractAddOn {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final SubscriptionAddOn addOn = (SubscriptionAddOn) o;
 
@@ -80,9 +75,9 @@ public class SubscriptionAddOn extends AbstractAddOn {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                unitAmountInCents,
+                quantity
+        );
     }
 }

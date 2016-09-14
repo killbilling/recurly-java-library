@@ -17,6 +17,7 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -85,8 +86,14 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
+
+    @XmlElement(name = "tax_exempt")
+    private Boolean taxExempt;
 
     @Override
     public void setHref(final Object href) {
@@ -222,12 +229,28 @@ public class Account extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     public BillingInfo getBillingInfo() {
         return billingInfo;
     }
 
     public void setBillingInfo(final BillingInfo billingInfo) {
         this.billingInfo = billingInfo;
+    }
+
+    public Boolean getTaxExempt() {
+        return taxExempt;
+    }
+
+    public void setTaxExempt(final Object taxExempt) {
+        this.taxExempt = booleanOrNull(taxExempt);
     }
 
     @Override
@@ -249,19 +272,17 @@ public class Account extends RecurlyObject {
         sb.append(", acceptLanguage='").append(acceptLanguage).append('\'');
         sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", billingInfo=").append(billingInfo);
+        sb.append(", taxExempt=").append(taxExempt);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Account account = (Account) o;
 
@@ -283,7 +304,7 @@ public class Account extends RecurlyObject {
         if (companyName != null ? !companyName.equals(account.companyName) : account.companyName != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(account.createdAt) : account.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(account.createdAt) != 0 : account.createdAt != null) {
             return false;
         }
         if (email != null ? !email.equals(account.email) : account.email != null) {
@@ -313,7 +334,13 @@ public class Account extends RecurlyObject {
         if (transactions != null ? !transactions.equals(account.transactions) : account.transactions != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(account.updatedAt) != 0 : account.updatedAt != null) {
+            return false;
+        }
         if (username != null ? !username.equals(account.username) : account.username != null) {
+            return false;
+        }
+        if (taxExempt != null ? !taxExempt.equals(account.taxExempt) : account.taxExempt != null) {
             return false;
         }
 
@@ -322,23 +349,26 @@ public class Account extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = address != null ? address.hashCode() : 0;
-        result = 31 * result + (href != null ? href.hashCode() : 0);
-        result = 31 * result + (adjustments != null ? adjustments.hashCode() : 0);
-        result = 31 * result + (invoices != null ? invoices.hashCode() : 0);
-        result = 31 * result + (subscriptions != null ? subscriptions.hashCode() : 0);
-        result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
-        result = 31 * result + (accountCode != null ? accountCode.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (username != null ? username.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (companyName != null ? companyName.hashCode() : 0);
-        result = 31 * result + (acceptLanguage != null ? acceptLanguage.hashCode() : 0);
-        result = 31 * result + (hostedLoginToken != null ? hostedLoginToken.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (billingInfo != null ? billingInfo.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                address,
+                href,
+                adjustments,
+                invoices,
+                subscriptions,
+                transactions,
+                accountCode,
+                state,
+                username,
+                email,
+                firstName,
+                lastName,
+                companyName,
+                acceptLanguage,
+                hostedLoginToken,
+                createdAt,
+                billingInfo,
+                updatedAt,
+                taxExempt
+        );
     }
 }

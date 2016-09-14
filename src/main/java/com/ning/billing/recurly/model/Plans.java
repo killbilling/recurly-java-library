@@ -39,16 +39,13 @@ public class Plans extends RecurlyObjects<Plan> {
     }
 
     @JsonIgnore
+    @Override
     public Plans getStart() {
         return getStart(Plans.class);
     }
 
     @JsonIgnore
-    public Plans getPrev() {
-        return getPrev(Plans.class);
-    }
-
-    @JsonIgnore
+    @Override
     public Plans getNext() {
         return getNext(Plans.class);
     }

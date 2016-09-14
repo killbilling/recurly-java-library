@@ -22,6 +22,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
 
+import com.google.common.base.Objects;
+
+import java.math.BigDecimal;
+
 @XmlRootElement(name = "subscription")
 public class Subscription extends AbstractSubscription {
 
@@ -39,6 +43,18 @@ public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "state", required = false)
     private String state;
+
+    @XmlElement(name = "tax_in_cents")
+    private Integer taxInCents;
+
+    @XmlElement(name = "tax_region")
+    private String taxRegion;
+
+    @XmlElement(name = "tax_type")
+    private String taxType;
+
+    @XmlElement(name = "tax_rate")
+    private BigDecimal taxRate;
 
     @XmlElement(name = "currency")
     private String currency;
@@ -70,6 +86,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "starts_at")
     private DateTime startsAt;
 
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
     @XmlElement(name = "collection_method")
     private String collectionMethod;
 
@@ -94,6 +113,12 @@ public class Subscription extends AbstractSubscription {
     
     @XmlElement(name = "bulk")
     private Boolean bulk;
+
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
+    @XmlElement(name = "gift_card")
+    private GiftCard giftCard;
 
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
@@ -143,6 +168,38 @@ public class Subscription extends AbstractSubscription {
 
     public void setCurrency(final Object currency) {
         this.currency = stringOrNull(currency);
+    }
+
+    public Integer getTaxInCents() {
+        return taxInCents;
+    }
+
+    public void setTaxInCents(final Object taxInCents) {
+        this.taxInCents = integerOrNull(taxInCents);
+    }
+
+    public void setTaxRegion(final Object taxRegion) {
+        this.taxRegion = stringOrNull(taxRegion);
+    }
+
+    public String getTaxRegion() {
+        return taxRegion;
+    }
+
+    public void setTaxRate(final Object taxRate) {
+        this.taxRate = bigDecimalOrNull(taxRate);
+    }
+
+    public BigDecimal getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxType(final Object taxType) {
+        this.taxType = stringOrNull(taxType);
+    }
+
+    public String getTaxType() {
+        return taxType;
     }
 
     public DateTime getActivatedAt() {
@@ -273,6 +330,29 @@ public class Subscription extends AbstractSubscription {
         this.bulk = booleanOrNull(bulk);
     }
 
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final String revenueScheduleType) {
+        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    }
+
+    public GiftCard getGiftCard() {
+        return giftCard;
+    }
+
+    public void setGiftCard(final GiftCard giftCard) {
+        this.giftCard = giftCard;
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
 
     @Override
     public String toString() {
@@ -286,6 +366,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", quantity=").append(quantity);
         sb.append(", activatedAt=").append(activatedAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", canceledAt=").append(canceledAt);
         sb.append(", expiresAt=").append(expiresAt);
         sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
@@ -297,43 +378,48 @@ public class Subscription extends AbstractSubscription {
         sb.append(", pendingSubscription=").append(pendingSubscription);
         sb.append(", firstRenewalDate=").append(firstRenewalDate);
         sb.append(", bulk=").append(bulk);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
+        sb.append(", giftCard=").append(giftCard);
+        sb.append(", taxInCents=").append(taxInCents);
+        sb.append(", taxRegion=").append(taxRegion);
+        sb.append(", taxType=").append(taxType);
+        sb.append(", taxRate=").append(taxRate);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Subscription that = (Subscription) o;
 
         if (account != null ? !account.equals(that.account) : that.account != null) {
             return false;
         }
-        if (activatedAt != null ? !activatedAt.equals(that.activatedAt) : that.activatedAt != null) {
+        if (activatedAt != null ? activatedAt.compareTo(that.activatedAt) != 0 : that.activatedAt != null) {
             return false;
         }
         if (addOns != null ? !addOns.equals(that.addOns) : that.addOns != null) {
             return false;
         }
-        if (canceledAt != null ? !canceledAt.equals(that.canceledAt) : that.canceledAt != null) {
+        if (canceledAt != null ? canceledAt.compareTo(that.canceledAt) != 0 : that.canceledAt != null) {
             return false;
         }
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
             return false;
         }
-        if (currentPeriodEndsAt != null ? !currentPeriodEndsAt.equals(that.currentPeriodEndsAt) : that.currentPeriodEndsAt != null) {
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
             return false;
         }
-        if (currentPeriodStartedAt != null ? !currentPeriodStartedAt.equals(that.currentPeriodStartedAt) : that.currentPeriodStartedAt != null) {
+        if (currentPeriodEndsAt != null ? currentPeriodEndsAt.compareTo(that.currentPeriodEndsAt) != 0 : that.currentPeriodEndsAt != null) {
             return false;
         }
-        if (expiresAt != null ? !expiresAt.equals(that.expiresAt) : that.expiresAt != null) {
+        if (currentPeriodStartedAt != null ? currentPeriodStartedAt.compareTo(that.currentPeriodStartedAt) != 0 : that.currentPeriodStartedAt != null) {
+            return false;
+        }
+        if (expiresAt != null ? expiresAt.compareTo(that.expiresAt) != 0 : that.expiresAt != null) {
             return false;
         }
         if (plan != null ? !plan.equals(that.plan) : that.plan != null) {
@@ -342,14 +428,13 @@ public class Subscription extends AbstractSubscription {
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
             return false;
         }
-
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
-        if (trialEndsAt != null ? !trialEndsAt.equals(that.trialEndsAt) : that.trialEndsAt != null) {
+        if (trialEndsAt != null ? trialEndsAt.compareTo(that.trialEndsAt) != 0 : that.trialEndsAt != null) {
             return false;
         }
-        if (trialStartedAt != null ? !trialStartedAt.equals(that.trialStartedAt) : that.trialStartedAt != null) {
+        if (trialStartedAt != null ? trialStartedAt.compareTo(that.trialStartedAt) != 0 : that.trialStartedAt != null) {
             return false;
         }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(that.unitAmountInCents) : that.unitAmountInCents != null) {
@@ -358,7 +443,7 @@ public class Subscription extends AbstractSubscription {
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
-        if (startsAt != null ? !startsAt.equals(that.startsAt) : that.startsAt != null) {
+        if (startsAt != null ? startsAt.compareTo(that.startsAt) != 0 : that.startsAt != null) {
             return false;
         }
         if (pendingSubscription != null ? !pendingSubscription.equals(that.pendingSubscription) : that.pendingSubscription != null) {
@@ -367,20 +452,34 @@ public class Subscription extends AbstractSubscription {
         if (collectionMethod != null ? !collectionMethod.equals(that.collectionMethod) : that.collectionMethod != null) {
             return false;
         }
-
         if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
             return false;
         }
-
         if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
             return false;
         }
-
-        if (firstRenewalDate != null ? !firstRenewalDate.equals(that.firstRenewalDate) : that.firstRenewalDate != null) {
+        if (firstRenewalDate != null ? firstRenewalDate.compareTo(that.firstRenewalDate) != 0 : that.firstRenewalDate != null) {
             return false;
         }
-        
         if (bulk != null ? !bulk.equals(that.bulk) : that.bulk != null) {
+            return false;
+        }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
+            return false;
+        }
+        if (giftCard != null ? !giftCard.equals(that.giftCard) : that.giftCard != null) {
+            return false;
+        }
+        if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
+            return false;
+        }
+        if (taxRegion != null ? !taxRegion.equals(that.taxRegion) : that.taxRegion != null) {
+            return false;
+        }
+        if (taxType != null ? !taxType.equals(that.taxType) : that.taxType != null) {
+            return false;
+        }
+        if (taxRate != null ? !taxRate.equals(that.taxRate) : that.taxRate != null) {
             return false;
         }
 
@@ -389,26 +488,34 @@ public class Subscription extends AbstractSubscription {
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (plan != null ? plan.hashCode() : 0);
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        //result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        result = 31 * result + (activatedAt != null ? activatedAt.hashCode() : 0);
-        result = 31 * result + (canceledAt != null ? canceledAt.hashCode() : 0);
-        result = 31 * result + (expiresAt != null ? expiresAt.hashCode() : 0);
-        result = 31 * result + (currentPeriodStartedAt != null ? currentPeriodStartedAt.hashCode() : 0);
-        result = 31 * result + (currentPeriodEndsAt != null ? currentPeriodEndsAt.hashCode() : 0);
-        result = 31 * result + (trialStartedAt != null ? trialStartedAt.hashCode() : 0);
-        result = 31 * result + (trialEndsAt != null ? trialEndsAt.hashCode() : 0);
-        result = 31 * result + (addOns != null ? addOns.hashCode() : 0);
-        result = 31 * result + (pendingSubscription != null ? pendingSubscription.hashCode() : 0);
-        result = 31 * result + (startsAt != null ? startsAt.hashCode() : 0);
-        result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
-        result = 31 * result + (netTerms != null ? netTerms.hashCode() : 0);
-        result = 31 * result + (poNumber != null ? poNumber.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                plan,
+                uuid,
+                state,
+                unitAmountInCents,
+                currency,
+                quantity,
+                activatedAt,
+                updatedAt,
+                canceledAt,
+                expiresAt,
+                currentPeriodStartedAt,
+                currentPeriodEndsAt,
+                trialStartedAt,
+                trialEndsAt,
+                addOns,
+                pendingSubscription,
+                startsAt,
+                collectionMethod,
+                netTerms,
+                poNumber,
+                revenueScheduleType,
+                giftCard,
+                taxInCents,
+                taxRegion,
+                taxType,
+                taxRate
+        );
     }
 }

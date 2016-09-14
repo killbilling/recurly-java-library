@@ -17,9 +17,15 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import java.math.BigDecimal;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestInvoice extends TestModelBase {
 
@@ -29,16 +35,21 @@ public class TestInvoice extends TestModelBase {
         final String invoiceData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
                                    + "<invoice href=\"https://api.recurly.com/v2/invoices/e3f0a9e084a2468480d00ee61b090d4d\">\n"
                                    + "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
+                                   + "  <original_invoice href=\"https://api.recurly.com/v2/invoices/1192\"/>"
                                    + "  <uuid>421f7b7d414e4c6792938e7c49d552e9</uuid>\n"
                                    + "  <state>open</state>\n"
                                    + "  <invoice_number type=\"integer\">1402</invoice_number>\n"
-                                   + "  <po_number nil=\"nil\"></po_number>\n"
+                                   + "  <po_number>abc-123</po_number>\n"
                                    + "  <vat_number></vat_number>\n"
                                    + "  <subtotal_in_cents type=\"integer\">9900</subtotal_in_cents>\n"
                                    + "  <tax_in_cents type=\"integer\">0</tax_in_cents>\n"
                                    + "  <total_in_cents type=\"integer\">9900</total_in_cents>\n"
                                    + "  <currency>USD</currency>\n"
+                                   + "  <tax_type>usst</tax_type>\n"
+                                   + "  <tax_region>CA</tax_region>\n"
+                                   + "  <tax_rate type=\"float\">0.0875</tax_rate>\n"
                                    + "  <created_at type=\"datetime\">2011-08-25T12:00:00Z</created_at>\n"
+                                   + "  <updated_at type=\"datetime\">2011-08-25T12:00:00Z</updated_at>\n"
                                    + "  <line_items type=\"array\">\n"
                                    + "    <adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n"
                                    + "      <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
@@ -65,16 +76,21 @@ public class TestInvoice extends TestModelBase {
         final Invoice invoice = xmlMapper.readValue(invoiceData, Invoice.class);
 
         Assert.assertEquals(invoice.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
+        Assert.assertEquals(invoice.getOriginalInvoice().getHref(), "https://api.recurly.com/v2/invoices/1192");
         Assert.assertEquals(invoice.getUuid(), "421f7b7d414e4c6792938e7c49d552e9");
         Assert.assertEquals(invoice.getState(), "open");
         Assert.assertEquals((int) invoice.getInvoiceNumber(), 1402);
-        Assert.assertNull(invoice.getPoNumber());
+        Assert.assertEquals(invoice.getPoNumber(), "abc-123");
         Assert.assertNull(invoice.getVatNumber());
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 9900);
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);
         Assert.assertEquals((int) invoice.getTotalInCents(), 9900);
         Assert.assertEquals(invoice.getCurrency(), "USD");
+        Assert.assertEquals(invoice.getTaxType(), "usst");
+        Assert.assertEquals(invoice.getTaxRegion(), "CA");
+        Assert.assertEquals(invoice.getTaxRate(), new BigDecimal("0.0875"));
         Assert.assertEquals(invoice.getCreatedAt(), new DateTime("2011-08-25T12:00:00Z"));
+        Assert.assertEquals(invoice.getUpdatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertNotNull(invoice.getLineItems());
         Assert.assertEquals(invoice.getLineItems().size(), 1);
 
@@ -84,5 +100,16 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
 
         Assert.assertEquals(invoice.getTransactions().size(), 0);
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create invoices of the same value but difference references
+        Invoice invoice = TestUtils.createRandomInvoice(0);
+        Invoice otherInvoice = TestUtils.createRandomInvoice(0);
+
+        assertNotEquals(System.identityHashCode(invoice), System.identityHashCode(otherInvoice));
+        assertEquals(invoice.hashCode(), otherInvoice.hashCode());
+        assertEquals(invoice, otherInvoice);
     }
 }

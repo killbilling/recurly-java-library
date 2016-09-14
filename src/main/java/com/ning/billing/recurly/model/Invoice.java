@@ -22,12 +22,18 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
+
+import java.math.BigDecimal;
 
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "account")
     private Account account;
+
+    @XmlElement(name = "original_invoice")
+    private Invoice originalInvoice;
 
     @XmlElement(name = "uuid")
     private String uuid;
@@ -39,7 +45,7 @@ public class Invoice extends RecurlyObject {
     private Integer invoiceNumber;
 
     @XmlElement(name = "po_number")
-    private Integer poNumber;
+    private String poNumber;
 
     @XmlElement(name = "vat_number")
     private String vatNumber;
@@ -56,8 +62,20 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "currency")
     private String currency;
 
+    @XmlElement(name = "tax_region")
+    private String taxRegion;
+
+    @XmlElement(name = "tax_type")
+    private String taxType;
+
+    @XmlElement(name = "tax_rate")
+    private BigDecimal taxRate;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     @XmlElement(name = "collection_method")
     private String collectionMethod;
@@ -79,6 +97,27 @@ public class Invoice extends RecurlyObject {
         }
         return account;
     }
+
+  /**
+   * Set this original invoice to the passed in original invoice.
+   *
+   * @param originalInvoice original invoice
+   */
+  public void setOriginalInvoice(Invoice originalInvoice) {
+        this.originalInvoice = originalInvoice;
+  }
+
+  /**
+   * Fetches the original invoice if the href is populated, otherwise return the current original invoice.
+   *
+   * @return fully loaded original invoice
+   */
+  public Invoice getOriginalInvoice() {
+        if (originalInvoice != null && originalInvoice.getHref() != null && !originalInvoice.getHref().isEmpty()) {
+            originalInvoice = fetch(originalInvoice, Invoice.class);
+        }
+        return originalInvoice;
+  }
 
     public void setAccount(final Account account) {
         this.account = account;
@@ -108,12 +147,12 @@ public class Invoice extends RecurlyObject {
         this.invoiceNumber = integerOrNull(invoiceNumber);
     }
 
-    public Integer getPoNumber() {
+    public String getPoNumber() {
         return poNumber;
     }
 
     public void setPoNumber(final Object poNumber) {
-        this.poNumber = integerOrNull(poNumber);
+        this.poNumber = stringOrNull(poNumber);
     }
 
     public String getVatNumber() {
@@ -156,12 +195,44 @@ public class Invoice extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
+    public void setTaxRegion(final Object taxRegion) {
+      this.taxRegion = stringOrNull(taxRegion);
+    }
+
+    public String getTaxRegion() {
+      return taxRegion;
+    }
+
+    public void setTaxRate(final Object taxRate) {
+      this.taxRate = bigDecimalOrNull(taxRate);
+    }
+
+    public BigDecimal getTaxRate() {
+      return taxRate;
+    }
+
+    public void setTaxType(final Object taxType) {
+      this.taxType = stringOrNull(taxType);
+    }
+
+    public String getTaxType() {
+      return taxType;
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(final Object createdAt) {
         this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
     public String getCollectionMethod() {
@@ -200,6 +271,7 @@ public class Invoice extends RecurlyObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
         sb.append("account=").append(account);
+        sb.append(", originalInvoice='").append(originalInvoice).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
@@ -209,7 +281,11 @@ public class Invoice extends RecurlyObject {
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
+        sb.append(", taxRegion=").append(taxRegion);
+        sb.append(", taxType=").append(taxType);
+        sb.append(", taxRate=").append(taxRate);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", netTerms=").append(netTerms);
         sb.append(", lineItems=").append(lineItems);
@@ -220,16 +296,15 @@ public class Invoice extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Invoice invoice = (Invoice) o;
 
         if (account != null ? !account.equals(invoice.account) : invoice.account != null) {
+            return false;
+        }
+        if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
             return false;
         }
         if (collectionMethod != null ? !collectionMethod.equals(invoice.collectionMethod) : invoice.collectionMethod != null) {
@@ -265,7 +340,19 @@ public class Invoice extends RecurlyObject {
         if (totalInCents != null ? !totalInCents.equals(invoice.totalInCents) : invoice.totalInCents != null) {
             return false;
         }
+        if (taxRegion != null ? !taxRegion.equals(invoice.taxRegion) : invoice.taxRegion != null) {
+          return false;
+        }
+        if (taxType != null ? !taxType.equals(invoice.taxType) : invoice.taxType != null) {
+          return false;
+        }
+        if (taxRate != null ? !taxRate.equals(invoice.taxRate) : invoice.taxRate != null) {
+          return false;
+        }
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
+            return false;
+        }
+        if (updatedAt != null ? updatedAt.compareTo(invoice.updatedAt) != 0 : invoice.updatedAt != null) {
             return false;
         }
         if (uuid != null ? !uuid.equals(invoice.uuid) : invoice.uuid != null) {
@@ -280,21 +367,27 @@ public class Invoice extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (invoiceNumber != null ? invoiceNumber.hashCode() : 0);
-        result = 31 * result + (poNumber != null ? poNumber.hashCode() : 0);
-        result = 31 * result + (vatNumber != null ? vatNumber.hashCode() : 0);
-        result = 31 * result + (subtotalInCents != null ? subtotalInCents.hashCode() : 0);
-        result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
-        result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (collectionMethod != null ? collectionMethod.hashCode() : 0);
-        result = 31 * result + (netTerms != null ? netTerms.hashCode() : 0);
-        result = 31 * result + (lineItems != null ? lineItems.hashCode() : 0);
-        result = 31 * result + (transactions != null ? transactions.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                originalInvoice,
+                uuid,
+                state,
+                invoiceNumber,
+                poNumber,
+                vatNumber,
+                subtotalInCents,
+                totalInCents,
+                taxInCents,
+                taxRegion,
+                taxType,
+                taxRate,
+                currency,
+                createdAt,
+                updatedAt,
+                collectionMethod,
+                netTerms,
+                lineItems,
+                transactions
+        );
     }
 }

@@ -18,10 +18,15 @@
 package com.ning.billing.recurly.model;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestSubscription extends TestModelBase {
 
@@ -41,6 +46,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <currency>EUR</currency>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
                                         "  <activated_at type=\"datetime\">2011-05-27T07:00:00Z</activated_at>\n" +
+                                        "  <updated_at type=\"datetime\">2011-05-27T07:00:00Z</updated_at>\n" +
                                         "  <canceled_at nil=\"nil\"></canceled_at>\n" +
                                         "  <expires_at nil=\"nil\"></expires_at>\n" +
                                         "  <current_period_started_at type=\"datetime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
@@ -54,6 +60,11 @@ public class TestSubscription extends TestModelBase {
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
+                                        "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
+                                        "  <tax_type>usst</tax_type>\n" +
+                                        "  <tax_region>CA</tax_region>\n" +
+                                        "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
+                                        "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
@@ -91,6 +102,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <currency>EUR</currency>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
                                         "  <activated_at type=\"datetime\">2011-05-27T07:00:00Z</activated_at>\n" +
+                                        "  <updated_at type=\"datetime\">2011-05-27T07:00:00Z</updated_at>\n" +
                                         "  <canceled_at nil=\"nil\"></canceled_at>\n" +
                                         "  <expires_at nil=\"nil\"></expires_at>\n" +
                                         "  <current_period_started_at type=\"datetime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
@@ -104,7 +116,12 @@ public class TestSubscription extends TestModelBase {
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
+                                        "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
+                                        "  <tax_type>usst</tax_type>\n" +
+                                        "  <tax_region>CA</tax_region>\n" +
+                                        "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
+                                        "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "    <subscription_add_on>\n" +
                                         "      <add_on_code>extra_users</add_on_code>\n" +
@@ -129,6 +146,17 @@ public class TestSubscription extends TestModelBase {
         verifySubscriptionAddons(subscription2);
     }
 
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create subscriptions of the same value but difference references
+        Subscription subscription = TestUtils.createRandomSubscription(0);
+        Subscription otherSubscription = TestUtils.createRandomSubscription(0);
+
+        assertNotEquals(System.identityHashCode(subscription), System.identityHashCode(otherSubscription));
+        assertEquals(subscription.hashCode(), otherSubscription.hashCode());
+        assertEquals(subscription, otherSubscription);
+    }
+
     private void verifySubscriptionAddons(final Subscription subscription) {
         Assert.assertEquals(subscription.getAddOns().size(), 2);
         Assert.assertEquals(subscription.getAddOns().get(0).getAddOnCode(), "extra_users");
@@ -147,6 +175,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getCurrency(), "EUR");
         Assert.assertEquals(subscription.getQuantity(), (Integer) 1);
         Assert.assertEquals(subscription.getActivatedAt(), new DateTime("2011-05-27T07:00:00Z"));
+        Assert.assertEquals(subscription.getUpdatedAt(), new DateTime("2011-05-27T07:00:00Z"));
         Assert.assertNull(subscription.getCanceledAt(), "");
         Assert.assertNull(subscription.getExpiresAt(), "");
         Assert.assertEquals(subscription.getCurrentPeriodStartedAt(), new DateTime("2011-06-27T07:00:00Z"));
@@ -158,6 +187,11 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getNetTerms(), (Integer) 10);
         Assert.assertEquals(subscription.getPoNumber(), "PO19384");
         Assert.assertEquals(subscription.getFirstRenewalDate(), new DateTime("2011-07-01T07:00:00Z"));
+        Assert.assertEquals(subscription.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
+        Assert.assertEquals((int) subscription.getTaxInCents(), 394);
+        Assert.assertEquals(subscription.getTaxType(), "usst");
+        Assert.assertEquals(subscription.getTaxRegion(), "CA");
+        Assert.assertEquals(subscription.getTaxRate(), new BigDecimal("0.0875"));
 
         return subscription;
     }

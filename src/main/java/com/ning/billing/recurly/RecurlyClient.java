@@ -23,6 +23,8 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -33,11 +35,8 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import javax.xml.bind.DatatypeConverter;
 
-import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountBalance;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
@@ -47,6 +46,8 @@ import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.Errors;
+import com.ning.billing.recurly.model.GiftCard;
+import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
@@ -55,6 +56,7 @@ import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
 import com.ning.billing.recurly.model.Redemption;
+import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
@@ -62,6 +64,12 @@ import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
+
+import com.ning.billing.recurly.util.http.SslUtils;
+import org.joda.time.DateTime;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.ning.http.client.AsyncHttpClient;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.Response;
@@ -80,6 +88,7 @@ public class RecurlyClient {
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
+    public static final String RECURLY_API_VERSION = "2.4";
 
     private static final Integer DEFAULT_PAGE_SIZE = 20;
     private static final String PER_PAGE = "per_page=";
@@ -138,8 +147,12 @@ public class RecurlyClient {
     }
 
     public RecurlyClient(final String apiKey, final String host, final int port, final String version) {
+        this(apiKey, "https", host, port, version);
+    }
+
+    public RecurlyClient(final String apiKey, final String scheme, final String host, final int port, final String version) {
         this.key = DatatypeConverter.printBase64Binary(apiKey.getBytes());
-        this.baseUrl = String.format("https://%s:%d/%s", host, port, version);
+        this.baseUrl = String.format("%s://%s:%d/%s", scheme, host, port, version);
         this.xmlMapper = RecurlyObject.newXmlMapper();
         this.userAgent = buildUserAgent();
     }
@@ -147,7 +160,7 @@ public class RecurlyClient {
     /**
      * Open the underlying http client
      */
-    public synchronized void open() {
+    public synchronized void open() throws NoSuchAlgorithmException, KeyManagementException {
         client = createHttpClient();
     }
 
@@ -210,6 +223,18 @@ public class RecurlyClient {
      */
     public Account updateAccount(final String accountCode, final Account account) {
         return doPUT(Account.ACCOUNT_RESOURCE + "/" + accountCode, account, Account.class);
+    }
+
+    /**
+     * Get Account Balance
+     * <p>
+     * Retrieves the remaining balance on the account
+     *
+     * @param accountCode recurly account id
+     * @return the updated AccountBalance if success, null otherwise
+     */
+    public AccountBalance getAccountBalance(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + "/" + AccountBalance.ACCOUNT_BALANCE_RESOURCE, AccountBalance.class);
     }
 
     /**
@@ -550,6 +575,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Fetch invoice pdf
+     * <p>
+     * Returns the invoice pdf as an inputStream
+     *
+     * @param invoiceId Recurly Invoice ID
+     * @return the invoice pdf as an inputStream
+     */
+    public InputStream getInvoicePdf(final Integer invoiceId) {
+        return doGETPdf(Invoices.INVOICES_RESOURCE + "/" + invoiceId);
+    }
+
+    /**
      * Lookup an account's invoices
      * <p>
      * Returns the account's invoices
@@ -613,6 +650,17 @@ public class RecurlyClient {
      */
     public Plan createPlan(final Plan plan) {
         return doPOST(Plan.PLANS_RESOURCE, plan, Plan.class);
+    }
+
+    /**
+     * Update a Plan's info
+     * <p>
+     *
+     * @param plan The plan to update on recurly
+     * @return the updated plan object
+     */
+    public Plan updatePlan(final Plan plan) {
+        return doPUT(Plan.PLANS_RESOURCE + "/" + plan.getPlanCode(), plan, Plan.class);
     }
 
     /**
@@ -760,7 +808,7 @@ public class RecurlyClient {
     }
 
     /**
-     * Lookup a coupon redemption on an invoice.
+     * Lookup the first coupon redemption on an account.
      *
      * @param accountCode recurly account id
      * @return the coupon redemption for this account on success, null otherwise
@@ -771,23 +819,56 @@ public class RecurlyClient {
     }
 
     /**
-     * Lookup a coupon redemption on an invoice.
+     * Lookup all coupon redemptions on an account.
+     *
+     * @param accountCode recurly account id
+     * @return the coupon redemptions for this account on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsByAccount(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTIONS_RESOURCE,
+                Redemptions.class);
+    }
+
+    /**
+     * Lookup the first coupon redemption on an invoice.
      *
      * @param invoiceNumber invoice number
      * @return the coupon redemption for this invoice on success, null otherwise
      */
     public Redemption getCouponRedemptionByInvoice(final Integer invoiceNumber) {
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
-                     Redemption.class);
+                Redemption.class);
+    }
+
+
+    /**
+     * Lookup all coupon redemptions on an invoice.
+     *
+     * @param invoiceNumber invoice number
+     * @return the coupon redemptions for this invoice on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsByInvoice(final Integer invoiceNumber) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
+                Redemptions.class);
     }
 
     /**
-     * Deletes a coupon from an account.
+     * Deletes a coupon redemption from an account.
      *
      * @param accountCode recurly account id
      */
     public void deleteCouponRedemption(final String accountCode) {
         doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTION_RESOURCE);
+    }
+
+    /**
+     * Deletes a specific redemption.
+     *
+     * @param accountCode recurly account id
+     * @param redemptionUuid recurly coupon redemption uuid
+     */
+    public void deleteCouponRedemption(final String accountCode, final String redemptionUuid) {
+        doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTIONS_RESOURCE + "/" + redemptionUuid);
     }
 
     ///////////////////////////////////////////////////////////////////////////
@@ -832,13 +913,82 @@ public class RecurlyClient {
         return fetch(recurlyToken, Invoice.class);
     }
 
+    /**
+     * Get Gift Cards
+     * <p>
+     * Returns information about all gift cards.
+     *
+     * @return gitfcards object on success, null otherwise
+     */
+    public GiftCards getGiftCards() {
+        return doGET(GiftCards.GIFT_CARDS_RESOURCE, GiftCards.class);
+    }
+
+    /**
+     * Get a Gift Card
+     * <p>
+     *
+     * @param giftCardId The id for the {@link GiftCard}
+     * @return The {@link GiftCard} object as identified by the passed in id
+     */
+    public GiftCard getGiftCard(final Long giftCardId) {
+        return doGET(GiftCards.GIFT_CARDS_RESOURCE + "/" + Long.toString(giftCardId), GiftCard.class);
+    }
+
+    /**
+     * Redeem a Gift Card
+     * <p>
+     *
+     * @param redemptionCode The redemption code the {@link GiftCard}
+     * @param accountCode The account code for the {@link Account}
+     * @return The updated {@link GiftCard} object as identified by the passed in id
+     */
+    public GiftCard redeemGiftCard(final String redemptionCode, final String accountCode) {
+        final GiftCard.Redemption redemptionData = GiftCard.createRedemption(accountCode);
+        final String url = GiftCards.GIFT_CARDS_RESOURCE + "/" + redemptionCode + "/redeem";
+
+        return doPOST(url, redemptionData, GiftCard.class);
+    }
+
+    /**
+     * Purchase a GiftCard
+     * <p>
+     *
+     * @param giftCard The giftCard data
+     * @return the giftCard object
+     */
+    public GiftCard purchaseGiftCard(final GiftCard giftCard) {
+        return doPOST(GiftCards.GIFT_CARDS_RESOURCE, giftCard, GiftCard.class);
+    }
+
+
+    /**
+     * Preview a GiftCard
+     * <p>
+     *
+     * @param giftCard The giftCard data
+     * @return the giftCard object
+     */
+    public GiftCard previewGiftCard(final GiftCard giftCard) {
+        return doPOST(GiftCards.GIFT_CARDS_RESOURCE + "/preview", giftCard, GiftCard.class);
+    }
+
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {
         return doGET(FETCH_RESOURCE + "/" + recurlyToken, clazz);
     }
 
     ///////////////////////////////////////////////////////////////////////////
 
+    private InputStream doGETPdf(final String resource) {
+        return doGETPdfWithFullURL(constructGetUrl(resource));
+    }
+
+
     private <T> T doGET(final String resource, final Class<T> clazz) {
+        return doGETWithFullURL(clazz, constructGetUrl(resource));
+    }
+
+    private String constructGetUrl(final String resource) {
         final StringBuffer url = new StringBuffer(baseUrl);
         url.append(resource);
         if (resource != null && !resource.contains("?")) {
@@ -849,14 +999,53 @@ public class RecurlyClient {
         }
         url.append(getPageSizeGetParam());
 
-        return doGETWithFullURL(clazz, url.toString());
+        return url.toString();
     }
 
     public <T> T doGETWithFullURL(final Class<T> clazz, final String url) {
         if (debug()) {
             log.info("Msg to Recurly API [GET] :: URL : {}", url);
         }
-        return callRecurlySafe(client.prepareGet(url), clazz);
+        return callRecurlySafeXmlContent(client.prepareGet(url), clazz);
+    }
+
+    private InputStream doGETPdfWithFullURL(final String url) {
+        if (debug()) {
+            log.info("Msg to Recurly API [GET] :: URL : {}", url);
+        }
+
+        return callRecurlySafeGetPdf(url);
+    }
+
+    private InputStream callRecurlySafeGetPdf(String url) {
+        final Response response;
+        final InputStream pdfInputStream;
+        try {
+            response = clientRequestBuilderCommon(client.prepareGet(url))
+                    .addHeader("Accept", "application/pdf")
+                    .addHeader("Content-Type", "application/pdf")
+                    .execute()
+                    .get();
+            pdfInputStream = response.getResponseBodyAsStream();
+
+        } catch (InterruptedException e) {
+            log.error("Interrupted while calling recurly", e);
+            return null;
+        } catch (ExecutionException e) {
+            log.error("Execution error", e);
+            return null;
+        } catch (IOException e) {
+            log.error("Error retrieving response body", e);
+            return null;
+        }
+
+        if (response.getStatusCode() != 200) {
+            RecurlyAPIError recurlyAPIError = new RecurlyAPIError();
+            recurlyAPIError.setHttpStatusCode(response.getStatusCode());
+            throw new RecurlyAPIException(recurlyAPIError);
+        }
+
+        return pdfInputStream;
     }
 
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {
@@ -872,7 +1061,7 @@ public class RecurlyClient {
             return null;
         }
 
-        return callRecurlySafe(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXmlContent(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
     private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz) {
@@ -893,16 +1082,16 @@ public class RecurlyClient {
             return null;
         }
 
-        return callRecurlySafe(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
     private void doDELETE(final String resource) {
-        callRecurlySafe(client.prepareDelete(baseUrl + resource), null);
+        callRecurlySafeXmlContent(client.prepareDelete(baseUrl + resource), null);
     }
 
-    private <T> T callRecurlySafe(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
+    private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
         try {
-            return callRecurly(builder, clazz);
+            return callRecurlyXmlContent(builder, clazz);
         } catch (IOException e) {
             log.warn("Error while calling Recurly", e);
             return null;
@@ -925,15 +1114,13 @@ public class RecurlyClient {
         }
     }
 
-    private <T> T callRecurly(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
+    private <T> T callRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
-        final Response response = builder.addHeader("Authorization", "Basic " + key)
-                                         .addHeader("Accept", "application/xml")
-                                         .addHeader("Content-Type", "application/xml; charset=utf-8")
-                                         .addHeader(HttpHeaders.USER_AGENT, userAgent)
-                                         .setBodyEncoding("UTF-8")
-                                         .execute()
-                                         .get();
+        final Response response = clientRequestBuilderCommon(builder)
+                .addHeader("Accept", "application/xml")
+                .addHeader("Content-Type", "application/xml; charset=utf-8")
+                .execute()
+                .get();
 
         final InputStream in = response.getResponseBodyAsStream();
         try {
@@ -958,12 +1145,13 @@ public class RecurlyClient {
                     }
                     throw new TransactionErrorException(errors);
                 } else {
-                    RecurlyAPIError recurlyError = null;
+                    RecurlyAPIError recurlyError = new RecurlyAPIError();
                     try {
                         recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
                     } catch (Exception e) {
                         log.debug("Unable to extract error", e);
                     }
+                    recurlyError.setHttpStatusCode(response.getStatusCode());
                     throw new RecurlyAPIException(recurlyError);
                 }
             }
@@ -995,14 +1183,20 @@ public class RecurlyClient {
                 if (linkHeader != null) {
                     final String[] links = PaginationUtils.getLinks(linkHeader);
                     recurlyObjects.setStartUrl(links[0]);
-                    recurlyObjects.setPrevUrl(links[1]);
-                    recurlyObjects.setNextUrl(links[2]);
+                    recurlyObjects.setNextUrl(links[1]);
                 }
             }
             return obj;
         } finally {
             closeStream(in);
         }
+    }
+
+    private AsyncHttpClient.BoundRequestBuilder clientRequestBuilderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
+        return requestBuilder.addHeader("Authorization", "Basic " + key)
+                .addHeader("X-Api-Version", RECURLY_API_VERSION)
+                .addHeader(HttpHeaders.USER_AGENT, userAgent)
+                .setBodyEncoding("UTF-8");
     }
 
     private String convertStreamToString(final java.io.InputStream is) {
@@ -1023,11 +1217,14 @@ public class RecurlyClient {
         }
     }
 
-    private AsyncHttpClient createHttpClient() {
+    protected AsyncHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
+        final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
+
         // Don't limit the number of connections per host
         // See https://github.com/ning/async-http-client/issues/issue/28
-        final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
         builder.setMaxConnectionsPerHost(-1);
+        builder.setSSLContext(SslUtils.getInstance().getSSLContext());
+
         return new AsyncHttpClient(builder.build());
     }
 

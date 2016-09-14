@@ -16,9 +16,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestTransaction extends TestModelBase {
 
@@ -48,6 +52,7 @@ public class TestTransaction extends TestModelBase {
                                        "  <avs_result_street nil=\"nil\"></avs_result_street>" +
                                        "  <avs_result_postal nil=\"nil\"></avs_result_postal>" +
                                        "  <created_at type=\"datetime\">2015-06-19T03:01:33Z</created_at>\n" +
+                                       "  <updated_at type=\"datetime\">2015-06-19T03:01:33Z</updated_at>\n" +
                                        "  <details>\n" +
                                        "    <account>\n" +
                                        "      <account_code>1</account_code>\n" +
@@ -88,6 +93,7 @@ public class TestTransaction extends TestModelBase {
         Assert.assertNull(transaction.getAvsResultStreet());
         Assert.assertNull(transaction.getCvvResult());
         Assert.assertEquals(transaction.getCreatedAt(), new DateTime("2015-06-19T03:01:33Z"));
+        Assert.assertEquals(transaction.getUpdatedAt(), new DateTime("2015-06-19T03:01:33Z"));
 
         final Account account = transaction.getDetails().getAccount();
         Assert.assertEquals(account.getAccountCode(), "1");
@@ -106,5 +112,16 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(billingInfo.getCountry(), "US");
         Assert.assertNull(billingInfo.getPhone());
         Assert.assertNull(billingInfo.getVatNumber());
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create transactions of the same value but difference references
+        Transaction transaction = TestUtils.createRandomTransaction(0);
+        Transaction otherTransaction = TestUtils.createRandomTransaction(0);
+
+        assertNotEquals(System.identityHashCode(transaction), System.identityHashCode(otherTransaction));
+        assertEquals(transaction.hashCode(), otherTransaction.hashCode());
+        assertEquals(transaction, otherTransaction);
     }
 }

@@ -17,6 +17,7 @@
 
 package com.ning.billing.recurly.model;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public abstract class RecurlyObject {
         xmlMapper.setAnnotationIntrospector(pair);
         xmlMapper.registerModule(new JodaModule());
         xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+        xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
         m.addSerializer(Accounts.class, new RecurlyObjectsSerializer<Accounts, Account>(Accounts.class, "account"));
@@ -136,6 +137,40 @@ public abstract class RecurlyObject {
         return Integer.valueOf(object.toString());
     }
 
+    public static Long longOrNull(@Nullable final Object object) {
+        if (isNull(object)) {
+            return null;
+        }
+
+        // Ids are represented as objects (e.g. <id type="integer">1988596967980562362</id>), which Jackson
+        // will interpret as an Object (Map), not Longs.
+        if (object instanceof Map) {
+            final Map map = (Map) object;
+            if (map.keySet().size() == 2 && "integer".equals(map.get("type"))) {
+                return Long.valueOf((String) map.get(""));
+            }
+        }
+
+        return Long.valueOf(object.toString());
+    }
+
+    public static BigDecimal bigDecimalOrNull(@Nullable final Object object) {
+        if (isNull(object)) {
+            return null;
+        }
+
+        // BigDecimals are represented as objects (e.g. <tax_rate type="float">0.0875</tax_rate>), which Jackson
+        // will interpret as an Object (Map), not Longs.
+        if (object instanceof Map) {
+            final Map map = (Map) object;
+            if (map.keySet().size() == 2 && "float".equals(map.get("type"))) {
+                return new BigDecimal((String) map.get(""));
+            }
+        }
+
+        return new BigDecimal(object.toString());
+    }
+
     public static DateTime dateTimeOrNull(@Nullable final Object object) {
         if (isNull(object)) {
             return null;
@@ -180,5 +215,13 @@ public abstract class RecurlyObject {
 
     public void setRecurlyClient(final RecurlyClient recurlyClient) {
         this.recurlyClient = recurlyClient;
+    }
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        return this.hashCode() == o.hashCode();
     }
 }

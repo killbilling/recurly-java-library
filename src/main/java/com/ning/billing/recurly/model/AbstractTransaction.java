@@ -20,6 +20,7 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Map;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "transaction")
 public class AbstractTransaction extends RecurlyObject {
@@ -224,12 +225,8 @@ public class AbstractTransaction extends RecurlyObject {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final AbstractTransaction that = (AbstractTransaction) o;
 
@@ -281,20 +278,21 @@ public class AbstractTransaction extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = action != null ? action.hashCode() : 0;
-        result = 31 * result + (amountInCents != null ? amountInCents.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (reference != null ? reference.hashCode() : 0);
-        result = 31 * result + (test != null ? test.hashCode() : 0);
-        result = 31 * result + (voidable != null ? voidable.hashCode() : 0);
-        result = 31 * result + (refundable != null ? refundable.hashCode() : 0);
-        result = 31 * result + (transactionError != null ? transactionError.hashCode() : 0);
-        result = 31 * result + (source != null ? source.hashCode() : 0);
-        result = 31 * result + (ipAddress != null ? ipAddress.hashCode() : 0);
-        result = 31 * result + (cvvResult != null ? cvvResult.hashCode() : 0);
-        result = 31 * result + (avsResult != null ? avsResult.hashCode() : 0);
-        result = 31 * result + (avsResultStreet != null ? avsResultStreet.hashCode() : 0);
-        result = 31 * result + (avsResultPostal != null ? avsResultPostal.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                action,
+                amountInCents,
+                status,
+                reference,
+                test,
+                voidable,
+                refundable,
+                transactionError,
+                source,
+                ipAddress,
+                cvvResult,
+                avsResult,
+                avsResultStreet,
+                avsResultPostal
+        );
     }
 }

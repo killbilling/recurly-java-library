@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestPlan extends TestModelBase {
 
@@ -46,6 +50,7 @@ public class TestPlan extends TestModelBase {
                                 "  <trial_interval_unit>days</trial_interval_unit>\n" +
                                 "  <accounting_code nil=\"nil\"></accounting_code>\n" +
                                 "  <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                "  <updated_at type=\"datetime\">2011-04-19T07:00:00Z</updated_at>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "    <USD type=\"integer\">1000</USD>\n" +
                                 "    <EUR type=\"integer\">800</EUR>\n" +
@@ -66,6 +71,7 @@ public class TestPlan extends TestModelBase {
         Assert.assertFalse(plan.getDisplayDonationAmounts());
         Assert.assertFalse(plan.getDisplayQuantity());
         Assert.assertEquals(plan.getCreatedAt(), new DateTime("2011-04-19T07:00:00Z"));
+        Assert.assertEquals(plan.getUpdatedAt(), new DateTime("2011-04-19T07:00:00Z"));
         Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountUSD(), new Integer(1000));
         Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountEUR(), new Integer(800));
         Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountUSD(), new Integer(6000));
@@ -98,7 +104,10 @@ public class TestPlan extends TestModelBase {
                                 "  <trial_interval_length type=\"integer\">0</trial_interval_length>\n" +
                                 "  <trial_interval_unit>days</trial_interval_unit>\n" +
                                 "  <accounting_code nil=\"nil\"></accounting_code>\n" +
+                                "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
+                                "  <setup_fee_revenue_schedule_type>evenly</setup_fee_revenue_schedule_type>>\n" +
                                 "  <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                "  <updated_at type=\"datetime\">2011-04-19T07:00:00Z</updated_at>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "  </unit_amount_in_cents>\n" +
                                 "  <setup_fee_in_cents>\n" +
@@ -115,11 +124,25 @@ public class TestPlan extends TestModelBase {
         Assert.assertFalse(plan.getDisplayDonationAmounts());
         Assert.assertFalse(plan.getDisplayQuantity());
         Assert.assertEquals(plan.getCreatedAt(), new DateTime("2011-04-19T07:00:00Z"));
+        Assert.assertEquals(plan.getUpdatedAt(), new DateTime("2011-04-19T07:00:00Z"));
         Assert.assertNull(plan.getUnitAmountInCents().getUnitAmountUSD());
         Assert.assertNull(plan.getSetupFeeInCents().getUnitAmountUSD());
         Assert.assertNull(plan.getDescription());
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());
         Assert.assertNull(plan.getAccountingCode());
+        Assert.assertEquals(plan.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
+        Assert.assertEquals(plan.getSetupFeeRevenueScheduleType(), RevenueScheduleType.EVENLY);
+    }
+
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create plans of the same value but difference references
+        Plan plan = TestUtils.createRandomPlan(0);
+        Plan otherPlan = TestUtils.createRandomPlan(0);
+
+        assertNotEquals(System.identityHashCode(plan), System.identityHashCode(otherPlan));
+        assertEquals(plan.hashCode(), otherPlan.hashCode());
+        assertEquals(plan, otherPlan);
     }
 }

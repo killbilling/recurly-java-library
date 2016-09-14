@@ -108,7 +108,7 @@ public class TestNotification extends TestModelBase {
                                               "  <state>collected</state>\n" +
                                               "  <invoice_number_prefix></invoice_number_prefix>\n" +
                                               "  <invoice_number type=\"integer\">1000</invoice_number>\n" +
-                                              "  <po_number></po_number>\n" +
+                                              "  <po_number>PO-12345</po_number>\n" +
                                               "  <vat_number></vat_number>\n" +
                                               "  <total_in_cents type=\"integer\">1100</total_in_cents>\n" +
                                               "  <currency>USD</currency>\n" +
@@ -244,7 +244,7 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(invoice.getState(), "collected");
         Assert.assertNull(invoice.getInvoiceNumberPrefix());
         Assert.assertEquals(invoice.getInvoiceNumber(), new Integer(1000));
-        Assert.assertNull(invoice.getPoNumber());
+        Assert.assertEquals(invoice.getPoNumber(), "PO-12345");
         Assert.assertNull(invoice.getVatNumber());
         Assert.assertEquals(invoice.getTotalInCents(), new Integer(1100));
         Assert.assertEquals(invoice.getCurrency(), "USD");

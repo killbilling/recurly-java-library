@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "plan")
 public class Plan extends RecurlyObject {
@@ -79,8 +80,17 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "accounting_code")
     private String accountingCode;
 
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
+    @XmlElement(name = "setup_fee_revenue_schedule_type")
+    private RevenueScheduleType setupFeeRevenueScheduleType;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
@@ -216,6 +226,14 @@ public class Plan extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     public RecurlyUnitCurrency getUnitAmountInCents() {
         return unitAmountInCents;
     }
@@ -240,6 +258,22 @@ public class Plan extends RecurlyObject {
         this.addOns = addOns;
     }
 
+    public RevenueScheduleType getSetupFeeRevenueScheduleType() {
+        return setupFeeRevenueScheduleType;
+    }
+
+    public void setSetupFeeRevenueScheduleType(final String setupFeeRevenueScheduleType) {
+        this.setupFeeRevenueScheduleType = RevenueScheduleType.valueOf(setupFeeRevenueScheduleType.toUpperCase());
+    }
+
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final String revenueScheduleType) {
+        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -261,20 +295,19 @@ public class Plan extends RecurlyObject {
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", setupFeeInCents=").append(setupFeeInCents);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
+        sb.append(", setupFeeRevenueScheduleType=").append(setupFeeRevenueScheduleType);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Plan plan = (Plan) o;
 
@@ -293,7 +326,7 @@ public class Plan extends RecurlyObject {
         if (cancelLink != null ? !cancelLink.equals(plan.cancelLink) : plan.cancelLink != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(plan.createdAt) : plan.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(plan.createdAt) != 0: plan.createdAt != null) {
             return false;
         }
         if (description != null ? !description.equals(plan.description) : plan.description != null) {
@@ -317,7 +350,13 @@ public class Plan extends RecurlyObject {
         if (planIntervalUnit != null ? !planIntervalUnit.equals(plan.planIntervalUnit) : plan.planIntervalUnit != null) {
             return false;
         }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(plan.revenueScheduleType) : plan.revenueScheduleType != null) {
+            return false;
+        }
         if (setupFeeInCents != null ? !setupFeeInCents.equals(plan.setupFeeInCents) : plan.setupFeeInCents != null) {
+            return false;
+        }
+        if (setupFeeRevenueScheduleType != null ? !setupFeeRevenueScheduleType.equals(plan.setupFeeRevenueScheduleType) : plan.setupFeeRevenueScheduleType != null) {
             return false;
         }
         if (successLink != null ? !successLink.equals(plan.successLink) : plan.successLink != null) {
@@ -335,31 +374,38 @@ public class Plan extends RecurlyObject {
         if (unitName != null ? !unitName.equals(plan.unitName) : plan.unitName != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(plan.updatedAt) != 0: plan.updatedAt != null) {
+            return false;
+        }
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = addOns != null ? addOns.hashCode() : 0;
-        result = 31 * result + (planCode != null ? planCode.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (successLink != null ? successLink.hashCode() : 0);
-        result = 31 * result + (cancelLink != null ? cancelLink.hashCode() : 0);
-        result = 31 * result + (displayDonationAmounts != null ? displayDonationAmounts.hashCode() : 0);
-        result = 31 * result + (displayQuantity != null ? displayQuantity.hashCode() : 0);
-        result = 31 * result + (displayPhoneNumber ? 1 : 0);
-        result = 31 * result + (bypassHostedConfirmation ? 1 : 0);
-        result = 31 * result + (unitName != null ? unitName.hashCode() : 0);
-        result = 31 * result + (planIntervalUnit != null ? planIntervalUnit.hashCode() : 0);
-        result = 31 * result + (planIntervalLength != null ? planIntervalLength.hashCode() : 0);
-        result = 31 * result + (trialIntervalLength != null ? trialIntervalLength.hashCode() : 0);
-        result = 31 * result + (trialIntervalUnit != null ? trialIntervalUnit.hashCode() : 0);
-        result = 31 * result + (accountingCode != null ? accountingCode.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (setupFeeInCents != null ? setupFeeInCents.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                addOns,
+                planCode,
+                name,
+                description,
+                successLink,
+                cancelLink,
+                displayDonationAmounts,
+                displayQuantity,
+                displayPhoneNumber,
+                bypassHostedConfirmation,
+                unitName,
+                planIntervalUnit,
+                planIntervalLength,
+                trialIntervalUnit,
+                trialIntervalLength,
+                accountingCode,
+                createdAt,
+                updatedAt,
+                unitAmountInCents,
+                setupFeeInCents,
+                revenueScheduleType,
+                setupFeeRevenueScheduleType
+        );
     }
 }

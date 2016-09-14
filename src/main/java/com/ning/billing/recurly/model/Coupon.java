@@ -18,10 +18,14 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
+
+import java.util.List;
 
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.
@@ -75,6 +79,15 @@ public class Coupon extends RecurlyObject {
     private String discountType;
 
     /**
+     * "day" or "week" or "month"
+     */
+    @XmlElement(name = "free_trial_unit")
+    private String freeTrialUnit;
+
+    @XmlElement(name = "free_trial_amount")
+    private Integer freeTrialAmount;
+
+    /**
      * Discount percentage if discount_type is "percent"
      */
     @XmlElement(name = "discount_percent")
@@ -85,6 +98,24 @@ public class Coupon extends RecurlyObject {
 
     @XmlElement(name = "state")
     private String state;
+
+    @XmlElement(name = "created_at")
+    private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
+    public List<String> getPlanCodes() {
+        return planCodes;
+    }
+
+    public void setPlanCodes(List<String> planCodes) {
+        this.planCodes = planCodes;
+    }
+
+    @XmlElement( name="plan_code" )
+    @XmlElementWrapper( name="plan_codes" )
+    private List<String> planCodes;
 
     public String getState() {
         return state;
@@ -209,6 +240,38 @@ public class Coupon extends RecurlyObject {
         this.appliesToAllPlans = booleanOrNull(appliesToAllPlans);
     }
 
+    public String getFreeTrialUnit() {
+        return freeTrialUnit;
+    }
+
+    public void setFreeTrialUnit(final String freeTrialUnit) {
+        this.freeTrialUnit = stringOrNull(freeTrialUnit);
+    }
+
+    public Integer getFreeTrialAmount() {
+        return freeTrialAmount;
+    }
+
+    public void setFreeTrialAmount(final Object freeTrialAmount) {
+        this.freeTrialAmount = integerOrNull(freeTrialAmount);
+    }
+
+    public DateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -217,22 +280,32 @@ public class Coupon extends RecurlyObject {
         sb.append(", couponCode='").append(couponCode).append('\'');
         sb.append(", discountType='").append(discountType).append('\'');
         sb.append(", discountPercent='").append(discountPercent).append('\'');
+        sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Coupon coupon = (Coupon) o;
 
+        if (appliesForMonths != null ? !appliesForMonths.equals(coupon.appliesForMonths) : coupon.appliesForMonths != null) {
+            return false;
+        }
+        if (appliesToAllPlans != null ? !appliesToAllPlans.equals(coupon.appliesToAllPlans) : coupon.appliesToAllPlans != null) {
+            return false;
+        }
         if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
+            return false;
+        }
+        if (createdAt != null ? createdAt.compareTo(coupon.createdAt) != 0 : coupon.createdAt != null) {
+            return false;
+        }
+        if (discountInCents != null ? !discountInCents.equals(coupon.discountInCents) : coupon.discountInCents != null) {
             return false;
         }
         if (discountPercent != null ? !discountPercent.equals(coupon.discountPercent) : coupon.discountPercent != null) {
@@ -241,7 +314,25 @@ public class Coupon extends RecurlyObject {
         if (discountType != null ? !discountType.equals(coupon.discountType) : coupon.discountType != null) {
             return false;
         }
+        if (maxRedemptions != null ? !maxRedemptions.equals(coupon.maxRedemptions) : coupon.maxRedemptions != null) {
+            return false;
+        }
         if (name != null ? !name.equals(coupon.name) : coupon.name != null) {
+            return false;
+        }
+        if (redeemByDate != null ? redeemByDate.compareTo(coupon.redeemByDate) != 0 : coupon.redeemByDate != null) {
+            return false;
+        }
+        if (singleUse != null ? singleUse.compareTo(coupon.singleUse) != 0 : coupon.singleUse != null) {
+            return false;
+        }
+        if (freeTrialUnit != null ? !freeTrialUnit.equals(coupon.freeTrialUnit) : coupon.freeTrialUnit != null) {
+            return false;
+        }
+        if (freeTrialAmount != null ? !freeTrialAmount.equals(coupon.freeTrialAmount) : coupon.freeTrialAmount != null) {
+            return false;
+        }
+        if (updatedAt != null ? updatedAt.compareTo(coupon.updatedAt) != 0 : coupon.updatedAt != null) {
             return false;
         }
 
@@ -250,10 +341,21 @@ public class Coupon extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (couponCode != null ? couponCode.hashCode() : 0);
-        result = 31 * result + (discountType != null ? discountType.hashCode() : 0);
-        result = 31 * result + (discountPercent != null ? discountPercent.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                name,
+                couponCode,
+                discountType,
+                discountPercent,
+                discountInCents,
+                redeemByDate,
+                singleUse,
+                appliesForMonths,
+                appliesToAllPlans,
+                maxRedemptions,
+                freeTrialUnit,
+                freeTrialAmount,
+                createdAt,
+                updatedAt
+        );
     }
 }

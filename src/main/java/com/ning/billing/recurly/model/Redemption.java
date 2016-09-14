@@ -23,6 +23,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import com.google.common.base.Objects;
+
 @XmlRootElement(name = "redemption")
 public class Redemption extends RecurlyObject {
 
@@ -31,6 +33,12 @@ public class Redemption extends RecurlyObject {
 
     @XmlTransient
     public static final String REDEMPTION_RESOURCE = "/redemption";
+
+    @XmlTransient
+    public static final String REDEMPTIONS_RESOURCE = "/redemptions";
+
+    @XmlElement(name = "uuid")
+    private String uuid;
 
     @XmlElement(name = "account_code")
     private String accountCode;
@@ -55,6 +63,9 @@ public class Redemption extends RecurlyObject {
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     public String getAccountCode() {
         return accountCode;
@@ -118,12 +129,28 @@ public class Redemption extends RecurlyObject {
         this.state = stringOrNull(state);
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(final Object uuid) {
+        this.uuid = stringOrNull(uuid);
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
 
     public void setCreatedAt(final Object createdAt) {
         this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
     @Override
@@ -133,23 +160,22 @@ public class Redemption extends RecurlyObject {
         sb.append("{accountCode=").append(accountCode);
         sb.append(", coupon=").append(coupon);
         sb.append(", account=").append(account);
+        sb.append(", uuid=").append(uuid);
         sb.append(", single_use=").append(singleUse);
         sb.append(", totalDiscountedInCents=").append(totalDiscountedInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
         final Redemption that = (Redemption) o;
 
         if (accountCode != null ? !accountCode.equals(that.accountCode) : that.accountCode != null) {
@@ -174,23 +200,33 @@ public class Redemption extends RecurlyObject {
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
+        if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = accountCode != null ? accountCode.hashCode() : 0;
-        result = 31 * result + (coupon != null ? coupon.hashCode() : 0);
-        result = 31 * result + (account != null ? account.hashCode() : 0);
-        result = 31 * result + (singleUse != null ? singleUse.hashCode() : 0);
-        result = 31 * result + (totalDiscountedInCents != null ? totalDiscountedInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (state != null ? state.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                accountCode,
+                coupon,
+                account,
+                singleUse,
+                totalDiscountedInCents,
+                currency,
+                state,
+                uuid,
+                createdAt,
+                updatedAt
+        );
     }
 
 }

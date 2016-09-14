@@ -17,9 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 public class TestAddOns extends TestModelBase {
 
@@ -37,7 +41,9 @@ public class TestAddOns extends TestModelBase {
                                   "    <unit_amount_in_cents>\n" +
                                   "      <USD>200</USD>\n" +
                                   "    </unit_amount_in_cents>\n" +
+                                  "    <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                   "    <created_at type=\"datetime\">2011-06-28T12:34:56Z</created_at>\n" +
+                                  "    <updated_at type=\"datetime\">2011-06-28T12:34:56Z</updated_at>\n" +
                                   "  </add_on>\n" +
                                   "  <!-- Continued... -->\n" +
                                   "</add_ons>";
@@ -51,6 +57,17 @@ public class TestAddOns extends TestModelBase {
         verifyAddOns(addOns2);
     }
 
+    @Test(groups = "fast")
+    public void testHashCodeAndEquality() throws Exception {
+        // create AddOns of the same value but difference references
+        AddOn addOn = TestUtils.createRandomAddOn(0);
+        AddOn otherAddOn = TestUtils.createRandomAddOn(0);
+
+        assertNotEquals(System.identityHashCode(addOn), System.identityHashCode(otherAddOn));
+        assertEquals(addOn.hashCode(), otherAddOn.hashCode());
+        assertEquals(addOn, otherAddOn);
+    }
+
     private void verifyAddOns(final AddOns addOns) {
         Assert.assertEquals(addOns.size(), 1);
 
@@ -60,6 +77,8 @@ public class TestAddOns extends TestModelBase {
         Assert.assertEquals((boolean) addOn.getDisplayQuantityOnHostedPage(), false);
         Assert.assertEquals((int) addOn.getDefaultQuantity(), 1);
         Assert.assertEquals((int) addOn.getUnitAmountInCents().getUnitAmountUSD(), 200);
+        Assert.assertEquals(addOn.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
         Assert.assertEquals(addOn.getCreatedAt(), new DateTime("2011-06-28T12:34:56Z"));
+        Assert.assertEquals(addOn.getUpdatedAt(), new DateTime("2011-06-28T12:34:56Z"));
     }
 }

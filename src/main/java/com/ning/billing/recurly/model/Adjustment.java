@@ -21,6 +21,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
+import com.google.common.base.Objects;
 
 @XmlRootElement(name = "adjustment")
 public class Adjustment extends RecurlyObject {
@@ -61,6 +62,9 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "taxable")
     private Boolean taxable;
 
+    @XmlElement(name = "tax_exempt")
+    private Boolean taxExempt;
+
     @XmlElement(name = "start_date")
     private DateTime startDate;
 
@@ -69,6 +73,9 @@ public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -169,6 +176,14 @@ public class Adjustment extends RecurlyObject {
         this.taxable = booleanOrNull(taxable);
     }
 
+    public Boolean getTaxExempt() {
+        return taxExempt;
+    }
+
+    public void setTaxExempt(final Object taxExempt) {
+        this.taxExempt = booleanOrNull(taxExempt);
+    }
+
     public DateTime getStartDate() {
         return startDate;
     }
@@ -193,6 +208,14 @@ public class Adjustment extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -206,24 +229,22 @@ public class Adjustment extends RecurlyObject {
         sb.append(", quantity=").append(quantity);
         sb.append(", discountInCents=").append(discountInCents);
         sb.append(", taxInCents=").append(taxInCents);
+        sb.append(", taxExempt=").append(taxExempt);
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", taxable=").append(taxable);
         sb.append(", startDate=").append(startDate);
         sb.append(", endDate=").append(endDate);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
         return sb.toString();
     }
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final Adjustment that = (Adjustment) o;
 
@@ -233,7 +254,7 @@ public class Adjustment extends RecurlyObject {
         if (accountingCode != null ? !accountingCode.equals(that.accountingCode) : that.accountingCode != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(that.createdAt) : that.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
@@ -263,6 +284,9 @@ public class Adjustment extends RecurlyObject {
         if (taxable != null ? !taxable.equals(that.taxable) : that.taxable != null) {
             return false;
         }
+        if (taxExempt != null ? !taxExempt.equals(that.taxExempt) : that.taxExempt != null) {
+            return false;
+        }
         if (totalInCents != null ? !totalInCents.equals(that.totalInCents) : that.totalInCents != null) {
             return false;
         }
@@ -272,27 +296,33 @@ public class Adjustment extends RecurlyObject {
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = account != null ? account.hashCode() : 0;
-        result = 31 * result + (uuid != null ? uuid.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (accountingCode != null ? accountingCode.hashCode() : 0);
-        result = 31 * result + (origin != null ? origin.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (quantity != null ? quantity.hashCode() : 0);
-        result = 31 * result + (discountInCents != null ? discountInCents.hashCode() : 0);
-        result = 31 * result + (taxInCents != null ? taxInCents.hashCode() : 0);
-        result = 31 * result + (totalInCents != null ? totalInCents.hashCode() : 0);
-        result = 31 * result + (currency != null ? currency.hashCode() : 0);
-        result = 31 * result + (taxable != null ? taxable.hashCode() : 0);
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                account,
+                uuid,
+                description,
+                accountingCode,
+                origin,
+                unitAmountInCents,
+                quantity,
+                discountInCents,
+                taxInCents,
+                totalInCents,
+                currency,
+                taxable,
+                taxExempt,
+                startDate,
+                endDate,
+                createdAt,
+                updatedAt
+        );
     }
 }

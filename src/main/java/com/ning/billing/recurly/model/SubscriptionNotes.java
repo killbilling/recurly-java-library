@@ -18,7 +18,8 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
+
+import com.google.common.base.Objects;
 
 public class SubscriptionNotes extends AbstractSubscription {
 
@@ -67,26 +68,17 @@ public class SubscriptionNotes extends AbstractSubscription {
 
     @Override
     public boolean equals(final Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        if (!super.equals(o)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
         final SubscriptionNotes that = (SubscriptionNotes) o;
 
         if (termsAndConditions != null ? !termsAndConditions.equals(that.termsAndConditions) : that.termsAndConditions != null) {
             return false;
         }
-        
         if (customerNotes != null ? !customerNotes.equals(that.customerNotes) : that.customerNotes != null) {
             return false;
         }
-        
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(that.vatReverseChargeNotes) : that.vatReverseChargeNotes != null) {
             return false;
         }
@@ -96,10 +88,10 @@ public class SubscriptionNotes extends AbstractSubscription {
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (termsAndConditions != null ? termsAndConditions.hashCode() : 0);
-        result = 31 * result + (customerNotes != null ? customerNotes.hashCode() : 0);
-        result = 31 * result + (vatReverseChargeNotes != null ? vatReverseChargeNotes.hashCode() : 0);             
-        return result;
+        return Objects.hashCode(
+                termsAndConditions,
+                customerNotes,
+                vatReverseChargeNotes
+        );
     }
 }
