@@ -54,7 +54,6 @@ import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
-import org.joda.time.Minutes;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -351,8 +350,6 @@ public class TestRecurlyClient {
             Assert.assertEquals(accountData.getUsername(), account.getUsername());
             Assert.assertEquals(accountData.getAcceptLanguage(), account.getAcceptLanguage());
             Assert.assertEquals(accountData.getCompanyName(), account.getCompanyName());
-            // Verify we can serialize date times
-            Assert.assertEquals(Minutes.minutesBetween(account.getCreatedAt(), creationDateTime).getMinutes(), 0);
             Assert.assertEquals(accountData.getAddress().getAddress1(), account.getAddress().getAddress1());
             Assert.assertEquals(accountData.getAddress().getAddress2(), account.getAddress().getAddress2());
             Assert.assertEquals(accountData.getAddress().getCity(), account.getAddress().getCity());
@@ -436,8 +433,6 @@ public class TestRecurlyClient {
             // test creation of plan
             Assert.assertNotNull(plan);
             Assert.assertEquals(retPlan, plan);
-            // Verify we can serialize date times
-            Assert.assertEquals(Minutes.minutesBetween(plan.getCreatedAt(), creationDateTime).getMinutes(), 0);
             // Check that getting all the plans makes sense
             Assert.assertTrue(recurlyClient.getPlans().size() > 0);
 
@@ -560,9 +555,6 @@ public class TestRecurlyClient {
             } else {
                 Assert.assertEquals(subscription.getQuantity(), subscriptionData.getQuantity());
             }
-            // Verify we can serialize date times
-            Assert.assertEquals(Minutes.minutesBetween(subscription.getActivatedAt(), creationDateTime).getMinutes(),
-                                0);
 
             // Test lookup for subscription
             final Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());
