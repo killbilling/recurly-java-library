@@ -58,6 +58,8 @@ import com.ning.billing.recurly.model.RecurlyObjects;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
+import com.ning.billing.recurly.model.ShippingAddress;
+import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.SubscriptionNotes;
@@ -597,6 +599,19 @@ public class RecurlyClient {
     public Invoices getAccountInvoices(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
                      Invoices.class);
+    }
+
+    /**
+     * Lookup an account's shipping addresses
+     * <p>
+     * Returns the account's shipping addresses
+     *
+     * @param accountCode recurly account id
+     * @return the shipping addresses associated with this account on success, null otherwise
+     */
+    public ShippingAddresses getAccountShippingAddresses(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + ShippingAddresses.SHIPPING_ADDRESSES_RESOURCE,
+                ShippingAddresses.class);
     }
 
     /**

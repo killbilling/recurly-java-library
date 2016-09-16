@@ -27,6 +27,7 @@ import com.ning.billing.recurly.model.Delivery;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Redemption;
+import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.Transactions;
 import org.joda.time.DateTime;
 
@@ -288,8 +289,43 @@ public class TestUtils {
         address.setCity(randomAlphaNumericString(10, seed));
         address.setState(randomAlphaString(2, seed));
         address.setZip(49302);
-        address.setCountry(randomAlphaString(3, seed));
+        address.setCountry(randomAlphaString(2, seed).toUpperCase());
         address.setPhone(randomNumericString(10, seed));
+
+        return address;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.ShippingAddress} object for testing use
+     *
+     * @return The random {@link com.ning.billing.recurly.model.ShippingAddress} object
+     */
+    public static ShippingAddress createRandomShippingAddress() {
+        return createRandomShippingAddress(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.ShippingAddress} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.ShippingAddress} object
+     */
+    public static ShippingAddress createRandomShippingAddress(final int seed) {
+        final ShippingAddress address = new ShippingAddress();
+
+        address.setAddress1(randomAlphaNumericString(10, seed));
+        address.setAddress2(randomAlphaNumericString(10, seed));
+        address.setCity(randomAlphaNumericString(10, seed));
+        address.setState(randomAlphaString(2, seed));
+        address.setZip(49302);
+        address.setCountry(randomAlphaString(2, seed).toUpperCase());
+        address.setPhone(randomNumericString(10, seed));
+        address.setNickname(randomAlphaNumericString(10, seed));
+        address.setFirstName(randomAlphaNumericString(10, seed));
+        address.setLastName(randomAlphaNumericString(10, seed));
+        address.setCompany(randomAlphaNumericString(10, seed));
+        address.setEmail(randomAlphaNumericString(10, seed) + "@email.com");
+
 
         return address;
     }

@@ -120,6 +120,12 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "gift_card")
     private GiftCard giftCard;
 
+    @XmlElement(name = "shipping_address")
+    private ShippingAddress shippingAddress;
+
+    @XmlElement(name = "shipping_address_id")
+    private Long shippingAddressId;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -346,6 +352,18 @@ public class Subscription extends AbstractSubscription {
         this.giftCard = giftCard;
     }
 
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(final ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public void setShippingAddressId(final Object shippingAddressId) {
+        this.shippingAddressId = longOrNull(shippingAddressId);
+    }
+
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -384,6 +402,8 @@ public class Subscription extends AbstractSubscription {
         sb.append(", taxRegion=").append(taxRegion);
         sb.append(", taxType=").append(taxType);
         sb.append(", taxRate=").append(taxRate);
+        sb.append(", shippingAddress=").append(shippingAddress);
+        sb.append(", shippingAddressId=").append(shippingAddressId);
         sb.append('}');
         return sb.toString();
     }
@@ -482,6 +502,12 @@ public class Subscription extends AbstractSubscription {
         if (taxRate != null ? !taxRate.equals(that.taxRate) : that.taxRate != null) {
             return false;
         }
+        if (shippingAddress != null ? !shippingAddress.equals(that.shippingAddress) : that.shippingAddress != null) {
+            return false;
+        }
+        if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
+            return false;
+        }
 
         return true;
     }
@@ -515,7 +541,9 @@ public class Subscription extends AbstractSubscription {
                 taxInCents,
                 taxRegion,
                 taxType,
-                taxRate
+                taxRate,
+                shippingAddress,
+                shippingAddressId
         );
     }
 }
