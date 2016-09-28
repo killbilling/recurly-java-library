@@ -1212,7 +1212,6 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subscription);
             Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), now.getMonthOfYear() + 3);
         } finally {
-            recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
             recurlyClient.deleteCoupon(couponData.getCouponCode());

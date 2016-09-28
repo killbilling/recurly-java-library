@@ -1,3 +1,2 @@
 language: java
-script:
-  - mvn clean test -Pintegration -Dkillbill.payment.recurly.apiKey=$API_KEY -Dkillbill.payment.recurly.subDomain=$SUBDOMAIN
+script: ./travis-test.sh
