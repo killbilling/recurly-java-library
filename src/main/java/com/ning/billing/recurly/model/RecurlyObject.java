@@ -120,7 +120,6 @@ public abstract class RecurlyObject {
 
         return object.toString().trim();
     }
-
     public static Integer integerOrNull(@Nullable final Object object) {
         if (isNull(object)) {
             return null;
