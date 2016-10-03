@@ -567,12 +567,27 @@ public class RecurlyClient {
     /**
      * Lookup an invoice
      * <p>
-     * Returns the invoice
+     * Returns the invoice given an integer id
      *
      * @param invoiceId Recurly Invoice ID
      * @return the invoice
      */
     public Invoice getInvoice(final Integer invoiceId) {
+        return getInvoice(invoiceId.toString());
+    }
+
+    /**
+     * Lookup an invoice (with or without prefix)
+     * <p>
+     * Returns the invoice given a string id.
+     * The invoice may or may not have acountry code prefix (ex: IE1023).
+     * Use this if you ever expect to use invoice prefixes:
+     * https://docs.recurly.com/docs/site-settings#section-invoice-prefixing
+     *
+     * @param invoiceId String Recurly Invoice ID
+     * @return the invoice
+     */
+    public Invoice getInvoice(final String invoiceId) {
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId, Invoice.class);
     }
 
