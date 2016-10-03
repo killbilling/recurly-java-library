@@ -1210,7 +1210,9 @@ public class TestRecurlyClient {
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
             Assert.assertNotNull(subscription);
-            Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), now.getMonthOfYear() + 3);
+
+            final int expectedMonth = (now.getMonthOfYear() + 3) % 12;
+            Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), expectedMonth);
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
