@@ -1072,6 +1072,7 @@ public class RecurlyClient {
         if (response.getStatusCode() != 200) {
             RecurlyAPIError recurlyAPIError = new RecurlyAPIError();
             recurlyAPIError.setHttpStatusCode(response.getStatusCode());
+
             throw new RecurlyAPIException(recurlyAPIError);
         }
 
@@ -1162,6 +1163,7 @@ public class RecurlyClient {
             // Handle errors payload
             if (response.getStatusCode() >= 300) {
                 log.warn("Recurly error whilst calling: {}\n{}", response.getUri(), payload);
+                RecurlyAPIError recurlyError = new RecurlyAPIError();
 
                 if (response.getStatusCode() == 422) {
                     final Errors errors;
@@ -1174,13 +1176,18 @@ public class RecurlyClient {
                         return null;
                     }
                     throw new TransactionErrorException(errors);
+                } else if (response.getStatusCode() == 401) {
+                    recurlyError.setSymbol("unauthorized");
+                    recurlyError.setDescription("We could not authenticate your request. Either your subdomain and private key are not set or incorrect");
+
+                    throw new RecurlyAPIException(recurlyError);
                 } else {
-                    RecurlyAPIError recurlyError = new RecurlyAPIError();
                     try {
                         recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
                     } catch (Exception e) {
                         log.debug("Unable to extract error", e);
                     }
+
                     recurlyError.setHttpStatusCode(response.getStatusCode());
                     throw new RecurlyAPIException(recurlyError);
                 }
