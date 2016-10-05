@@ -278,6 +278,10 @@ public class RecurlyClient {
         return doGET(url, Adjustments.class);
     }
 
+    public Adjustment getAdjustment(final String adjustmentUuid) {
+        return doGET(Adjustments.ADJUSTMENTS_RESOURCE + "/" + adjustmentUuid, Adjustment.class);
+    }
+
     public Adjustment createAccountAdjustment(final String accountCode, final Adjustment adjustment) {
         return doPOST(Account.ACCOUNT_RESOURCE + "/" + accountCode + Adjustments.ADJUSTMENTS_RESOURCE,
                       adjustment,
@@ -286,6 +290,10 @@ public class RecurlyClient {
 
     public void deleteAccountAdjustment(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + Adjustments.ADJUSTMENTS_RESOURCE);
+    }
+
+    public void deleteAdjustment(final String adjustmentUuid) {
+        doDELETE(Adjustments.ADJUSTMENTS_RESOURCE + "/" + adjustmentUuid);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
