@@ -287,7 +287,7 @@ public class TestUtils {
         address.setAddress1(randomAlphaNumericString(10, seed));
         address.setAddress2(randomAlphaNumericString(10, seed));
         address.setCity(randomAlphaNumericString(10, seed));
-        address.setState(randomAlphaString(2, seed));
+        address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setZip(49302);
         address.setCountry(randomAlphaString(2, seed).toUpperCase());
         address.setPhone(randomNumericString(10, seed));
@@ -316,7 +316,8 @@ public class TestUtils {
         address.setAddress1(randomAlphaNumericString(10, seed));
         address.setAddress2(randomAlphaNumericString(10, seed));
         address.setCity(randomAlphaNumericString(10, seed));
-        address.setState(randomAlphaString(2, seed));
+        address.setState(randomAlphaString(2, seed).toUpperCase());
+        address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setZip(49302);
         address.setCountry(randomAlphaString(2, seed).toUpperCase());
         address.setPhone(randomNumericString(10, seed));
@@ -384,9 +385,9 @@ public class TestUtils {
         info.setAddress1(randomAlphaNumericString(10, seed));
         info.setAddress2(randomAlphaNumericString(10, seed));
         info.setCity(randomAlphaNumericString(10, seed));
-        info.setState(randomAlphaNumericString(10, seed));
+        info.setState(randomAlphaNumericString(10, seed).toUpperCase());
         info.setZip(randomAlphaNumericString(5, seed));
-        info.setCountry(randomAlphaNumericString(5, seed));
+        info.setCountry(randomAlphaNumericString(5, seed).toUpperCase());
         info.setPhone(randomInteger(8, seed));
         info.setVatNumber(randomNumericString(8, seed));
         info.setYear(createTestCCYear());
