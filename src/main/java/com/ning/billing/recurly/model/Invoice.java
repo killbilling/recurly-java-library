@@ -77,6 +77,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
+    @XmlElement(name = "closed_at")
+    private DateTime closedAt;
+
     @XmlElement(name = "collection_method")
     private String collectionMethod;
 
@@ -223,6 +226,14 @@ public class Invoice extends RecurlyObject {
         return createdAt;
     }
 
+    public void setClosedAt(final Object closedAt) {
+        this.closedAt = dateTimeOrNull(closedAt);
+    }
+
+    public DateTime getClosedAt() {
+        return closedAt;
+    }
+
     public void setCreatedAt(final Object createdAt) {
         this.createdAt = dateTimeOrNull(createdAt);
     }
@@ -286,6 +297,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", taxRate=").append(taxRate);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", closedAt=").append(closedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", netTerms=").append(netTerms);
         sb.append(", lineItems=").append(lineItems);
@@ -307,10 +319,13 @@ public class Invoice extends RecurlyObject {
         if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
             return false;
         }
+        if (closedAt != null ? closedAt.compareTo(invoice.closedAt) != 0 : invoice.closedAt != null) {
+            return false;
+        }
         if (collectionMethod != null ? !collectionMethod.equals(invoice.collectionMethod) : invoice.collectionMethod != null) {
             return false;
         }
-        if (createdAt != null ? !createdAt.equals(invoice.createdAt) : invoice.createdAt != null) {
+        if (createdAt != null ? createdAt.compareTo(invoice.createdAt) != 0 : invoice.createdAt != null) {
             return false;
         }
         if (currency != null ? !currency.equals(invoice.currency) : invoice.currency != null) {
@@ -384,6 +399,7 @@ public class Invoice extends RecurlyObject {
                 currency,
                 createdAt,
                 updatedAt,
+                closedAt,
                 collectionMethod,
                 netTerms,
                 lineItems,
