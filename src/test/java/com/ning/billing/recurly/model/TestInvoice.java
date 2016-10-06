@@ -50,6 +50,7 @@ public class TestInvoice extends TestModelBase {
                                    + "  <tax_rate type=\"float\">0.0875</tax_rate>\n"
                                    + "  <created_at type=\"datetime\">2011-08-25T12:00:00Z</created_at>\n"
                                    + "  <updated_at type=\"datetime\">2011-08-25T12:00:00Z</updated_at>\n"
+                                   + "  <closed_at type=\"datetime\">2011-08-25T12:00:00Z</closed_at>\n"
                                    + "  <line_items type=\"array\">\n"
                                    + "    <adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n"
                                    + "      <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
@@ -91,6 +92,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getTaxRate(), new BigDecimal("0.0875"));
         Assert.assertEquals(invoice.getCreatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertEquals(invoice.getUpdatedAt(), new DateTime("2011-08-25T12:00:00Z"));
+        Assert.assertEquals(invoice.getClosedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertNotNull(invoice.getLineItems());
         Assert.assertEquals(invoice.getLineItems().size(), 1);
 
