@@ -210,6 +210,58 @@ public class TestRecurlyClient {
         Assert.assertTrue(retrievedCoupons.size() >= 0);
     }
 
+    @Test(groups="integration")
+    public void testGetAndDeleteAdjustment() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Subscribe the user to the plan
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+
+            //Add some adjustments to the account's open invoice
+            final Adjustment adjustmentData = new Adjustment();
+            adjustmentData.setCurrency("USD");
+            adjustmentData.setUnitAmountInCents("100");
+            adjustmentData.setDescription("A description of an account adjustment");
+
+            Adjustment adjustment = recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData);
+            final String uuid = adjustment.getUuid();
+
+            adjustment = recurlyClient.getAdjustment(uuid);
+
+            Assert.assertEquals(adjustment.getUuid(), uuid);
+
+            recurlyClient.deleteAdjustment(uuid);
+
+            // Check that we deleted it
+            try {
+                recurlyClient.getAdjustment(uuid);
+                Assert.fail("Failed to delete the Adjustment");
+            } catch (final RecurlyAPIException e) {
+                Assert.assertEquals(e.getRecurlyError().getHttpStatusCode(), 404);
+            }
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
     @Test(groups = "integration")
     public void testGetAdjustments() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
