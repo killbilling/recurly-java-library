@@ -99,6 +99,20 @@ public class TestRecurlyClient {
         recurlyClient.close();
     }
 
+    @Test(groups = "integration")
+    public void testUnauthorizedException() throws Exception {
+        final String subdomain = System.getProperty(KILLBILL_PAYMENT_RECURLY_SUBDOMAIN);
+        RecurlyClient unauthorizedRecurlyClient = new RecurlyClient("invalid-api-key", subdomain);
+        unauthorizedRecurlyClient.open();
+
+        try {
+            unauthorizedRecurlyClient.getAccounts();
+            Assert.fail("getAccounts call should not succeed with invalid credentials.");
+        } catch (RecurlyAPIException expected) {
+            Assert.assertEquals(expected.getRecurlyError().getSymbol(), "unauthorized");
+        }
+    }
+
     @Test(groups = "integration", description = "See https://github.com/killbilling/recurly-java-library/issues/21")
     public void testGetEmptySubscriptions() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
