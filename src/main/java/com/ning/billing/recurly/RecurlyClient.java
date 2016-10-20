@@ -17,7 +17,6 @@
 
 package com.ning.billing.recurly;
 
-import java.awt.font.TransformAttribute;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
@@ -50,6 +49,7 @@ import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.InvoiceState;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
@@ -62,10 +62,13 @@ import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionState;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.TransactionState;
+import com.ning.billing.recurly.model.TransactionType;
 import com.ning.billing.recurly.model.Transactions;
 
 import com.ning.billing.recurly.util.http.SslUtils;
@@ -496,11 +499,11 @@ public class RecurlyClient {
      * Returns subscriptions associated with an account
      *
      * @param accountCode recurly account id
-     * @param state {@link Subscriptions.State}
+     * @param state {@link SubscriptionState}
      * @param params {@link QueryParams}
      * @return Subscriptions on the account
      */
-    public Subscriptions getAccountSubscriptions(final String accountCode, final Subscriptions.State state, final QueryParams params) {
+    public Subscriptions getAccountSubscriptions(final String accountCode, final SubscriptionState state, final QueryParams params) {
         if (state != null) params.put("state", state.getType());
 
         return doGET(Account.ACCOUNT_RESOURCE
@@ -604,12 +607,12 @@ public class RecurlyClient {
      * Returns the account's transaction history
      *
      * @param accountCode recurly account id
-     * @param state {@link Transactions.State}
-     * @param type {@link Transactions.Type}
+     * @param state {@link TransactionState}
+     * @param type {@link TransactionType}
      * @param params {@link QueryParams}
      * @return the transaction history associated with this account on success, null otherwise
      */
-    public Transactions getAccountTransactions(final String accountCode, final Transactions.State state, final Transactions.Type type, final QueryParams params) {
+    public Transactions getAccountTransactions(final String accountCode, final TransactionState state, final TransactionType type, final QueryParams params) {
         if (state != null) params.put("state", state.getType());
         if (type != null) params.put("type", type.getType());
 
@@ -633,12 +636,12 @@ public class RecurlyClient {
      * <p>
      * All transactions on the site
      *
-     * @param state {@link Transactions.State}
-     * @param type {@link Transactions.Type}
+     * @param state {@link TransactionState}
+     * @param type {@link TransactionType}
      * @param params {@link QueryParams}
      * @return the transaction history of the site on success, null otherwise
      */
-    public Transactions getTransactions(final Transactions.State state, final Transactions.Type type, final QueryParams params) {
+    public Transactions getTransactions(final TransactionState state, final TransactionType type, final QueryParams params) {
         if (state != null) params.put("state", state.getType());
         if (type != null) params.put("type", type.getType());
 
@@ -756,11 +759,11 @@ public class RecurlyClient {
      * Returns the account's invoices
      *
      * @param accountCode recurly account id
-     * @param state {@link Invoices.State} state of the invoices
+     * @param state {@link InvoiceState} state of the invoices
      * @param params {@link QueryParams}
      * @return the invoices associated with this account on success, null otherwise
      */
-    public Invoices getAccountInvoices(final String accountCode, final Invoices.State state, final QueryParams params) {
+    public Invoices getAccountInvoices(final String accountCode, final InvoiceState state, final QueryParams params) {
         if (state != null) params.put("state", state.getType());
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
                 Invoices.class, params);

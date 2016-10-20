@@ -49,38 +49,4 @@ public class Transactions extends RecurlyObjects<Transaction> {
     public Transactions getNext() {
         return getNext(Transactions.class);
     }
-
-    // see Transaction pagination: https://dev.recurly.com/docs/list-transactions
-    public enum State {
-        SUCCESSFUL("successful"),
-        FAILED("failed"),
-        VOIDED("voided");
-
-        private final String type;
-
-        private State(final String type) {
-            this.type = type;
-        }
-
-        public String getType() {
-            return type;
-        }
-    }
-
-    // see Transaction pagination: https://dev.recurly.com/docs/list-transactions
-    public enum Type {
-        AUTHORIZATION("authorization"),
-        PURCHASE("purchase"),
-        REFUND("refund");
-
-        private final String type;
-
-        private Type(final String type) {
-            this.type = type;
-        }
-
-        public String getType() {
-            return type;
-        }
-    }
 }

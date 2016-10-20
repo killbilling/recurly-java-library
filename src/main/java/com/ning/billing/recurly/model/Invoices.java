@@ -50,21 +50,4 @@ public class Invoices extends RecurlyObjects<Invoice> {
         return getNext(Invoices.class);
     }
 
-    // see Transaction pagination: https://dev.recurly.com/docs/list-invoices
-    public enum State {
-        OPEN("open"),
-        FAILED("failed"),
-        COLLECTED("collected"),
-        PAST_DUE("past_due");
-
-        private final String type;
-
-        private State(final String type) {
-            this.type = type;
-        }
-
-        public String getType() {
-            return type;
-        }
-    }
 }

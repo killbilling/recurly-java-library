@@ -16,16 +16,16 @@
  */
 package com.ning.billing.recurly.model;
 
-public enum RevenueScheduleType {
-    NEVER("never"),
-    EVENLY("evenly"),
-    AT_INVOICE("at_invoice"),
-    AT_RANGE_END("at_range_end"),
-    AT_RANGE_START("at_range_start");
+
+// see Transaction pagination: https://dev.recurly.com/docs/list-transactions
+public enum TransactionState {
+    SUCCESSFUL("successful"),
+    FAILED("failed"),
+    VOIDED("voided");
 
     private final String type;
 
-    private RevenueScheduleType(final String type) {
+    private TransactionState(final String type) {
         this.type = type;
     }
 
