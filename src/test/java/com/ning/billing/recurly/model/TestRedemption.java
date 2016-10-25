@@ -56,7 +56,7 @@ public class TestRedemption extends TestModelBase {
         redemption.setCurrency("USD");
 
         final String xml = xmlMapper.writeValueAsString(redemption);
-        Assert.assertEquals(xml, "<redemption xmlns=\"\">" +
+        Assert.assertEquals(xml, "<redemption>" +
                 "<account_code>1</account_code>" +
                 "<currency>USD</currency>" +
                 "</redemption>");

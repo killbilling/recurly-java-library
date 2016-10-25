@@ -16,16 +16,16 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
+    <!--  <parent>
         <groupId>org.sonatype.oss</groupId>
         <artifactId>oss-parent</artifactId>
         <version>5</version>
-    </parent>
+    </parent> -->
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.6.3-SNAPSHOT</version>
+    <version>0.6.4-mjgp2</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>http://github.com/killbilling/recurly-java-library</url>
@@ -64,7 +64,7 @@
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.5.0</jackson.version>
+        <jackson.version>2.8.3</jackson.version>
         <guava.version>18.0</guava.version>
         <slf4j.version>1.7.10</slf4j.version>
     </properties>
@@ -584,4 +584,11 @@
         <system>Github</system>
         <url>http://github.com/killbilling/recurly-java-library</url>
     </issueManagement>
+    
+    <distributionManagement>
+          <repository>
+              <id>importio</id>
+              <url>https://importio.artifactoryonline.com/importio/ext-release-local</url>
+          </repository>
+    </distributionManagement>
 </project>

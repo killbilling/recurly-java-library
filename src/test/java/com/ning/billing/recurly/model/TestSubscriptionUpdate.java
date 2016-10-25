@@ -52,7 +52,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
         subscription.setQuantity(1);
 
         final String xml = xmlMapper.writeValueAsString(subscription);
-        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+        Assert.assertEquals(xml, "<subscription>" +
                                  "<timeframe>now</timeframe>" +
                                  "<unit_amount_in_cents>800</unit_amount_in_cents>" +
                                  "<quantity>1</quantity>" +
@@ -70,11 +70,11 @@ public class TestSubscriptionUpdate extends TestModelBase {
         subscription.setAddOns(new SubscriptionAddOns());
 
         final String xml = xmlMapper.writeValueAsString(subscription);
-        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+        Assert.assertEquals(xml, "<subscription>" +
                                  "<timeframe>now</timeframe>" +
                                  "<unit_amount_in_cents>800</unit_amount_in_cents>" +
                                  "<quantity>1</quantity>" +
-                                 "<subscription_add_ons></subscription_add_ons>" +
+                                 "<subscription_add_ons/>" +
                                  "<plan_code>gold</plan_code>" +
                                  "</subscription>");
     }
@@ -95,7 +95,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
         subscription.setAddOns(addOns);
 
         final String xml = xmlMapper.writeValueAsString(subscription);
-        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+        Assert.assertEquals(xml, "<subscription>" +
                                  "<timeframe>now</timeframe>" +
                                  "<unit_amount_in_cents>800</unit_amount_in_cents>" +
                                  "<quantity>1</quantity>" +
