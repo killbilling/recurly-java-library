@@ -341,7 +341,9 @@ public class Subscription extends AbstractSubscription {
     }
 
     public void setRevenueScheduleType(final String revenueScheduleType) {
-        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    	if( revenueScheduleType != null ){
+    		this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    	}
     }
 
     public GiftCard getGiftCard() {
