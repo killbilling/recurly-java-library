@@ -177,7 +177,7 @@ public class TestSubscription extends TestModelBase {
     	try{
         	//we expect an exception here
         	subscription.setRevenueScheduleType( invalidValue );
-        	assertEquals(true, false );
+        	Assert.fail();
         }
         catch( IllegalArgumentException iae ){
         	//iae.printStackTrace();
