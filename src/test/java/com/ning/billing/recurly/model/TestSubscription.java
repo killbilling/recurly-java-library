@@ -156,6 +156,40 @@ public class TestSubscription extends TestModelBase {
         assertEquals(subscription.hashCode(), otherSubscription.hashCode());
         assertEquals(subscription, otherSubscription);
     }
+    
+    @Test(groups = "fast")
+    public void testSetRevenueScheduleType() throws Exception {
+        Subscription subscription = new Subscription();
+        subscription.setRevenueScheduleType(null);
+        assertEquals(subscription.getRevenueScheduleType(), null );
+        
+        verifyRevenueScheduleTypeWithInvalidValue("INVALID_STRING");
+        verifyRevenueScheduleTypeWithInvalidValue("");
+        verifyRevenueScheduleTypeWithInvalidValue(" ");
+        
+        for(RevenueScheduleType revenueScheduleType : RevenueScheduleType.values() ){
+        	verifyRevenueScheduleType( revenueScheduleType );
+        }
+    }
+    
+    private void verifyRevenueScheduleTypeWithInvalidValue( String invalidValue ){
+    	Subscription subscription = new Subscription();
+    	try{
+        	//we expect an exception here
+        	subscription.setRevenueScheduleType( invalidValue );
+        	assertEquals(true, false );
+        }
+        catch( IllegalArgumentException iae ){
+        	//iae.printStackTrace();
+        }
+    }
+    
+    private void verifyRevenueScheduleType(RevenueScheduleType revenueScheduleType){
+    	Subscription subscription = new Subscription();
+    	subscription.setRevenueScheduleType(revenueScheduleType.getType());
+    	assertEquals(subscription.getRevenueScheduleType(), revenueScheduleType );
+    	
+    }
 
     private void verifySubscriptionAddons(final Subscription subscription) {
         Assert.assertEquals(subscription.getAddOns().size(), 2);
