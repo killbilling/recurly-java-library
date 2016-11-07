@@ -95,6 +95,9 @@ public class RecurlyClient {
     public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
     public static final String RECURLY_API_VERSION = "2.5";
 
+    private static final Integer DEFAULT_PAGE_SIZE = 20;
+    private static final String PER_PAGE = "per_page=";
+
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
 
