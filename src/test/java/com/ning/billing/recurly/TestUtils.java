@@ -327,7 +327,6 @@ public class TestUtils {
         address.setCompany(randomAlphaNumericString(10, seed));
         address.setEmail(randomAlphaNumericString(10, seed) + "@email.com");
 
-
         return address;
     }
 
