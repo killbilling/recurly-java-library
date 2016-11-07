@@ -95,7 +95,8 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.4";
+    public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
+    public static final String RECURLY_API_VERSION = "2.5";
 
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
