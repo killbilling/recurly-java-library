@@ -45,6 +45,9 @@ public class Address extends RecurlyObject {
     @XmlElement(name = "phone")
     private String phone;
 
+    @XmlElement(name = "geo_code")
+    private String geoCode;
+
     public String getAddress1() {
         return address1;
     }
@@ -101,6 +104,10 @@ public class Address extends RecurlyObject {
         this.phone = stringOrNull(phone);
     }
 
+    public String getGeoCode() { return geoCode; }
+
+    public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Address{");
@@ -111,6 +118,7 @@ public class Address extends RecurlyObject {
         sb.append(", zip=").append(zip);
         sb.append(", country='").append(country).append('\'');
         sb.append(", phone='").append(phone).append('\'');
+        sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -143,6 +151,9 @@ public class Address extends RecurlyObject {
         if (zip != null ? !zip.equals(address.zip) : address.zip != null) {
             return false;
         }
+        if (geoCode != null ? !geoCode.equals(address.geoCode) : address.geoCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -157,7 +168,8 @@ public class Address extends RecurlyObject {
                 state,
                 zip,
                 country,
-                phone
+                phone,
+                geoCode
         );
     }
 }
