@@ -167,28 +167,27 @@ public class TestSubscription extends TestModelBase {
         verifyRevenueScheduleTypeWithInvalidValue("");
         verifyRevenueScheduleTypeWithInvalidValue(" ");
         
-        for(RevenueScheduleType revenueScheduleType : RevenueScheduleType.values() ){
-        	verifyRevenueScheduleType( revenueScheduleType );
+        for (RevenueScheduleType revenueScheduleType : RevenueScheduleType.values()) {
+            verifyRevenueScheduleType(revenueScheduleType);
         }
     }
     
-    private void verifyRevenueScheduleTypeWithInvalidValue( String invalidValue ){
+    private void verifyRevenueScheduleTypeWithInvalidValue(String invalidValue){
     	Subscription subscription = new Subscription();
-    	try{
-        	//we expect an exception here
-        	subscription.setRevenueScheduleType( invalidValue );
-        	Assert.fail();
-        }
-        catch( IllegalArgumentException iae ){
-        	//iae.printStackTrace();
+
+        try {
+            //we expect an exception here
+            subscription.setRevenueScheduleType(invalidValue);
+            Assert.fail();
+        } catch (IllegalArgumentException iae) {
+            //iae.printStackTrace();
         }
     }
     
     private void verifyRevenueScheduleType(RevenueScheduleType revenueScheduleType){
-    	Subscription subscription = new Subscription();
-    	subscription.setRevenueScheduleType(revenueScheduleType.getType());
-    	assertEquals(subscription.getRevenueScheduleType(), revenueScheduleType );
-    	
+        Subscription subscription = new Subscription();
+        subscription.setRevenueScheduleType(revenueScheduleType.getType());
+        assertEquals(subscription.getRevenueScheduleType(), revenueScheduleType);
     }
 
     private void verifySubscriptionAddons(final Subscription subscription) {
