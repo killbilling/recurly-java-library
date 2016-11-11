@@ -49,6 +49,7 @@ import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.InvoiceState;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
@@ -61,10 +62,13 @@ import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionState;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.TransactionState;
+import com.ning.billing.recurly.model.TransactionType;
 import com.ning.billing.recurly.model.Transactions;
 
 import com.ning.billing.recurly.util.http.SslUtils;
@@ -89,11 +93,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_PAGE_SIZE_KEY = "recurly.page.size";
     public static final String RECURLY_API_VERSION = "2.4";
-
-    private static final Integer DEFAULT_PAGE_SIZE = 20;
-    private static final String PER_PAGE = "per_page=";
 
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
@@ -112,24 +112,6 @@ public class RecurlyClient {
      */
     private static boolean debug() {
         return Boolean.getBoolean(RECURLY_DEBUG_KEY);
-    }
-
-    /**
-     * Returns the page Size to use when querying. The page size
-     * is set as System.property: recurly.page.size
-     */
-    public static Integer getPageSize() {
-        Integer pageSize;
-        try {
-            pageSize = new Integer(System.getProperty(RECURLY_PAGE_SIZE_KEY));
-        } catch (NumberFormatException nfex) {
-            pageSize = DEFAULT_PAGE_SIZE;
-        }
-        return pageSize;
-    }
-
-    public static String getPageSizeGetParam() {
-        return PER_PAGE + getPageSize().toString();
     }
 
     // TODO: should we make it static?
@@ -192,14 +174,45 @@ public class RecurlyClient {
      * <p>
      * Returns information about all accounts.
      *
-     * @return account object on success, null otherwise
+     * @return Accounts on success, null otherwise
      */
     public Accounts getAccounts() {
         return doGET(Accounts.ACCOUNTS_RESOURCE, Accounts.class);
     }
 
+    /**
+     * Get Accounts given query params
+     * <p>
+     * Returns information about all accounts.
+     *
+     * @param params {@link QueryParams}
+     * @return Accounts on success, null otherwise
+     */
+    public Accounts getAccounts(final QueryParams params) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE, Accounts.class, params);
+    }
+
+    /**
+     * Get Coupons
+     * <p>
+     * Returns information about all accounts.
+     *
+     * @return Coupons on success, null otherwise
+     */
     public Coupons getCoupons() {
         return doGET(Coupons.COUPONS_RESOURCE, Coupons.class);
+    }
+
+    /**
+     * Get Coupons given query params
+     * <p>
+     * Returns information about all accounts.
+     *
+     * @param params {@link QueryParams}
+     * @return Coupons on success, null otherwise
+     */
+    public Coupons getCoupons(final QueryParams params) {
+        return doGET(Coupons.COUPONS_RESOURCE, Coupons.class, params);
     }
 
     /**
@@ -254,28 +267,59 @@ public class RecurlyClient {
     ////////////////////////////////////////////////////////////////////////////////////////
     // Account adjustments
 
-    public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type) {
-        return getAccountAdjustments(accountCode, type, null);
+    /**
+     * Get Account Adjustments
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @return the adjustments on the account
+     */
+    public Adjustments getAccountAdjustments(final String accountCode) {
+        return getAccountAdjustments(accountCode, null, null, new QueryParams());
     }
 
+    /**
+     * Get Account Adjustments
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @param type {@link Adjustments.AdjustmentType}
+     * @return the adjustments on the account
+     */
+    public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type) {
+        return getAccountAdjustments(accountCode, type, null, new QueryParams());
+    }
+
+    /**
+     * Get Account Adjustments
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @param type {@link Adjustments.AdjustmentType}
+     * @param state {@link Adjustments.AdjustmentState}
+     * @return the adjustments on the account
+     */
     public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type, final Adjustments.AdjustmentState state) {
-        String url = Account.ACCOUNT_RESOURCE + "/" + accountCode + Adjustments.ADJUSTMENTS_RESOURCE;
-        if (type != null || state != null) {
-            url += "?";
-        }
+        return getAccountAdjustments(accountCode, type, state, new QueryParams());
+    }
 
-        if (type != null) {
-            url += "type=" + type.getType();
-            if (state != null) {
-                url += "&";
-            }
-        }
+    /**
+     * Get Account Adjustments
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @param type {@link Adjustments.AdjustmentType}
+     * @param state {@link Adjustments.AdjustmentState}
+     * @param params {@link QueryParams}
+     * @return the adjustments on the account
+     */
+    public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type, final Adjustments.AdjustmentState state, final QueryParams params) {
+        final String url = Account.ACCOUNT_RESOURCE + "/" + accountCode + Adjustments.ADJUSTMENTS_RESOURCE;
 
-        if (state != null) {
-            url += "state=" + state.getState();
-        }
+        if (type != null) params.put("type", type.getType());
+        if (state != null) params.put("state", state.getState());
 
-        return doGET(url, Adjustments.class);
+        return doGET(url, Adjustments.class, params);
     }
 
     public Adjustment getAdjustment(final String adjustmentUuid) {
@@ -437,10 +481,10 @@ public class RecurlyClient {
     /**
      * Get the subscriptions for an {@link Account}.
      * <p>
-     * Returns information about a single {@link Account}.
+     * Returns subscriptions associated with an account
      *
      * @param accountCode recurly account id
-     * @return Subscriptions for the specified user
+     * @return Subscriptions on the account
      */
     public Subscriptions getAccountSubscriptions(final String accountCode) {
         return doGET(Account.ACCOUNT_RESOURCE
@@ -450,21 +494,44 @@ public class RecurlyClient {
     }
 
     /**
+     * Get the subscriptions for an {@link Account} given query params
+     * <p>
+     * Returns subscriptions associated with an account
+     *
+     * @param accountCode recurly account id
+     * @param state {@link SubscriptionState}
+     * @param params {@link QueryParams}
+     * @return Subscriptions on the account
+     */
+    public Subscriptions getAccountSubscriptions(final String accountCode, final SubscriptionState state, final QueryParams params) {
+        if (state != null) params.put("state", state.getType());
+
+        return doGET(Account.ACCOUNT_RESOURCE
+                        + "/" + accountCode
+                        + Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                Subscriptions.class,
+                params);
+    }
+
+    /**
      * Get the subscriptions for an account.
+     * This is deprecated. Please use getAccountSubscriptions(String, Subscriptions.State, QueryParams)
      * <p>
      * Returns information about a single account.
      *
      * @param accountCode recurly account id
      * @param status      Only accounts in this status will be returned
-     * @return Subscriptions for the specified user
+     * @return Subscriptions on the account
      */
+    @Deprecated
     public Subscriptions getAccountSubscriptions(final String accountCode, final String status) {
+        final QueryParams params = new QueryParams();
+        if (status != null) params.put("state", status);
+
         return doGET(Account.ACCOUNT_RESOURCE
-                     + "/" + accountCode
-                     + Subscriptions.SUBSCRIPTIONS_RESOURCE
-                     + "?state="
-                     + status,
-                     Subscriptions.class);
+                        + "/" + accountCode
+                        + Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                Subscriptions.class, params);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -532,6 +599,55 @@ public class RecurlyClient {
     public Transactions getAccountTransactions(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Transactions.TRANSACTIONS_RESOURCE,
                      Transactions.class);
+    }
+
+    /**
+     * Lookup an account's transactions history given query params
+     * <p>
+     * Returns the account's transaction history
+     *
+     * @param accountCode recurly account id
+     * @param state {@link TransactionState}
+     * @param type {@link TransactionType}
+     * @param params {@link QueryParams}
+     * @return the transaction history associated with this account on success, null otherwise
+     */
+    public Transactions getAccountTransactions(final String accountCode, final TransactionState state, final TransactionType type, final QueryParams params) {
+        if (state != null) params.put("state", state.getType());
+        if (type != null) params.put("type", type.getType());
+
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Transactions.TRANSACTIONS_RESOURCE,
+                Transactions.class, params);
+    }
+
+    /**
+     * Get site's transaction history
+     * <p>
+     * All transactions on the site
+     *
+     * @return the transaction history of the site on success, null otherwise
+     */
+    public Transactions getTransactions() {
+        return doGET(Transactions.TRANSACTIONS_RESOURCE, Transactions.class);
+    }
+
+    /**
+     * Get site's transaction history
+     * <p>
+     * All transactions on the site
+     *
+     * @param state {@link TransactionState}
+     * @param type {@link TransactionType}
+     * @param params {@link QueryParams}
+     * @return the transaction history of the site on success, null otherwise
+     */
+    public Transactions getTransactions(final TransactionState state, final TransactionType type, final QueryParams params) {
+        if (state != null) params.put("state", state.getType());
+        if (type != null) params.put("type", type.getType());
+
+        final String pathAndQuery = Transactions.TRANSACTIONS_RESOURCE + params.toString();
+
+        return doGET(pathAndQuery, Transactions.class);
     }
 
     /**
@@ -638,6 +754,22 @@ public class RecurlyClient {
     }
 
     /**
+     * Lookup an account's invoices given query params
+     * <p>
+     * Returns the account's invoices
+     *
+     * @param accountCode recurly account id
+     * @param state {@link InvoiceState} state of the invoices
+     * @param params {@link QueryParams}
+     * @return the invoices associated with this account on success, null otherwise
+     */
+    public Invoices getAccountInvoices(final String accountCode, final InvoiceState state, final QueryParams params) {
+        if (state != null) params.put("state", state.getType());
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
+                Invoices.class, params);
+    }
+
+    /**
      * Post an invoice: invoice pending charges on an account
      * <p>
      * Returns an invoice
@@ -723,6 +855,17 @@ public class RecurlyClient {
     }
 
     /**
+     * Return all the plans given query params
+     * <p>
+     *
+     * @param params {@link QueryParams}
+     * @return the plan object as identified by the passed in ID
+     */
+    public Plans getPlans(final QueryParams params) {
+        return doGET(Plans.PLANS_RESOURCE, Plans.class, params);
+    }
+
+    /**
      * Deletes a {@link Plan}
      * <p>
      *
@@ -773,13 +916,32 @@ public class RecurlyClient {
      * Return all the {@link AddOn} for a {@link Plan}
      * <p>
      *
+     * @param planCode
      * @return the {@link AddOn} objects as identified by the passed plan ID
      */
     public AddOns getAddOns(final String planCode) {
         return doGET(Plan.PLANS_RESOURCE +
-                     "/" +
-                     planCode +
-                     AddOn.ADDONS_RESOURCE, AddOns.class);
+                "/" +
+                planCode +
+                AddOn.ADDONS_RESOURCE,
+                AddOns.class);
+    }
+
+    /**
+     * Return all the {@link AddOn} for a {@link Plan}
+     * <p>
+     *
+     * @param planCode
+     * @param params {@link QueryParams}
+     * @return the {@link AddOn} objects as identified by the passed plan ID
+     */
+    public AddOns getAddOns(final String planCode, final QueryParams params) {
+        return doGET(Plan.PLANS_RESOURCE +
+                "/" +
+                planCode +
+                AddOn.ADDONS_RESOURCE,
+                AddOns.class,
+                params);
     }
 
     /**
@@ -868,6 +1030,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Lookup all coupon redemptions on an account given query params.
+     *
+     * @param accountCode recurly account id
+     * @param params {@link QueryParams}
+     * @return the coupon redemptions for this account on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsByAccount(final String accountCode, final QueryParams params) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTIONS_RESOURCE,
+                Redemptions.class, params);
+    }
+
+    /**
      * Lookup the first coupon redemption on an invoice.
      *
      * @param invoiceNumber invoice number
@@ -878,7 +1052,6 @@ public class RecurlyClient {
                 Redemption.class);
     }
 
-
     /**
      * Lookup all coupon redemptions on an invoice.
      *
@@ -886,8 +1059,19 @@ public class RecurlyClient {
      * @return the coupon redemptions for this invoice on success, null otherwise
      */
     public Redemptions getCouponRedemptionsByInvoice(final Integer invoiceNumber) {
+        return getCouponRedemptionsByInvoice(invoiceNumber, new QueryParams());
+    }
+
+    /**
+     * Lookup all coupon redemptions on an invoice given query params.
+     *
+     * @param invoiceNumber invoice number
+     * @param params {@link QueryParams}
+     * @return the coupon redemptions for this invoice on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsByInvoice(final Integer invoiceNumber, final QueryParams params) {
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
-                Redemptions.class);
+                Redemptions.class, params);
     }
 
     /**
@@ -952,6 +1136,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Get Gift Cards given query params
+     * <p>
+     * Returns information about all gift cards.
+     *
+     * @param params {@link QueryParams}
+     * @return gitfcards object on success, null otherwise
+     */
+    public GiftCards getGiftCards(final QueryParams params) {
+        return doGET(GiftCards.GIFT_CARDS_RESOURCE, GiftCards.class, params);
+    }
+
+    /**
      * Get Gift Cards
      * <p>
      * Returns information about all gift cards.
@@ -999,7 +1195,6 @@ public class RecurlyClient {
         return doPOST(GiftCards.GIFT_CARDS_RESOURCE, giftCard, GiftCard.class);
     }
 
-
     /**
      * Preview a GiftCard
      * <p>
@@ -1018,26 +1213,19 @@ public class RecurlyClient {
     ///////////////////////////////////////////////////////////////////////////
 
     private InputStream doGETPdf(final String resource) {
-        return doGETPdfWithFullURL(constructGetUrl(resource));
+        return doGETPdfWithFullURL(baseUrl + resource);
     }
-
 
     private <T> T doGET(final String resource, final Class<T> clazz) {
-        return doGETWithFullURL(clazz, constructGetUrl(resource));
+        return doGETWithFullURL(clazz, constructGetUrl(resource, new QueryParams()));
     }
 
-    private String constructGetUrl(final String resource) {
-        final StringBuffer url = new StringBuffer(baseUrl);
-        url.append(resource);
-        if (resource != null && !resource.contains("?")) {
-            url.append("?");
-        } else {
-            url.append("&");
-            url.append("&");
-        }
-        url.append(getPageSizeGetParam());
+    private <T> T doGET(final String resource, final Class<T> clazz, QueryParams params) {
+        return doGETWithFullURL(clazz, constructGetUrl(resource, params));
+    }
 
-        return url.toString();
+    private String constructGetUrl(final String resource, QueryParams params) {
+        return baseUrl + resource + params.toString();
     }
 
     public <T> T doGETWithFullURL(final Class<T> clazz, final String url) {

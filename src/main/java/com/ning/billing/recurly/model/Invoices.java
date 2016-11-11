@@ -49,4 +49,5 @@ public class Invoices extends RecurlyObjects<Invoice> {
     public Invoices getNext() {
         return getNext(Invoices.class);
     }
+
 }

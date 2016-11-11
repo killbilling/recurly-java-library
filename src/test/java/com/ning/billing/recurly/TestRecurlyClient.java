@@ -203,22 +203,6 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
-    public void testGetPageSize() throws Exception {
-        System.setProperty(RECURLY_PAGE_SIZE, "");
-        Assert.assertEquals(new Integer("20"), RecurlyClient.getPageSize());
-        System.setProperty(RECURLY_PAGE_SIZE, "350");
-        Assert.assertEquals(new Integer("350"), RecurlyClient.getPageSize());
-    }
-
-    @Test(groups = "integration")
-    public void testGetPageSizeGetParam() throws Exception {
-        System.setProperty(RECURLY_PAGE_SIZE, "");
-        Assert.assertEquals("per_page=20", RecurlyClient.getPageSizeGetParam());
-        System.setProperty(RECURLY_PAGE_SIZE, "350");
-        Assert.assertEquals("per_page=350", RecurlyClient.getPageSizeGetParam());
-    }
-
-    @Test(groups = "integration")
     public void testGetCoupons() throws Exception {
         final Coupons retrievedCoupons = recurlyClient.getCoupons();
         Assert.assertTrue(retrievedCoupons.size() >= 0);
@@ -451,7 +435,10 @@ public class TestRecurlyClient {
             final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
             Assert.assertEquals(retrievedBillingInfo, billingInfo);
 
+        } catch(Exception e) {
+          System.out.print(e.getMessage());
         } finally {
+
             // Clean up
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
@@ -651,15 +638,15 @@ public class TestRecurlyClient {
             final Redemption redemption = recurlyClient.getCouponRedemptionByAccount(account.getAccountCode());
             Assert.assertNotNull(redemption);
             Assert.assertEquals(redemption.getCoupon().getCouponCode(), couponData.getCouponCode());
-            
+
             // Update the subscription's notes
             final SubscriptionNotes subscriptionNotesData = new SubscriptionNotes();
             subscriptionNotesData.setTermsAndConditions("New Terms and Conditions");
             subscriptionNotesData.setCustomerNotes("New Customer Notes");
-                      
+
             recurlyClient.updateSubscriptionNotes(subscription.getUuid(), subscriptionNotesData);
             final Subscription subscriptionWithNotes = recurlyClient.getSubscription(subscription.getUuid());
-              
+
             // Verify that the notes were updated
             Assert.assertNotNull(subscriptionWithNotes);
             Assert.assertEquals(subscriptionWithNotes.getTermsAndConditions(), subscriptionNotesData.getTermsAndConditions());
@@ -685,12 +672,12 @@ public class TestRecurlyClient {
             recurlyClient.deletePlan(planData.getPlanCode());
         }
     }
-    
+
     @Test(groups = "integration")
     public void testCreateBulkSubscriptions() throws Exception {
       final Account accountData = TestUtils.createRandomAccount();
       final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
-      try {        
+      try {
           final Account account = recurlyClient.createAccount(accountData);
           // Create BillingInfo
           billingInfoData.setAccount(account);
@@ -705,23 +692,23 @@ public class TestRecurlyClient {
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
             subscriptionData.setBulk(true);
-            
+
             //create the subscription
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
-            
+
             // Delete the Plan
             recurlyClient.deletePlan(planData.getPlanCode());
-            
+
           }
           // Check that the newly created subs are in the list
           final Subscriptions bulkSubs = recurlyClient.getAccountSubscriptions(accountData.getAccountCode());
 
           int count = 0;
-          
+
           for (final Subscription s : bulkSubs) {
             count++;
           }
-          
+
           if (count != 3) {
               Assert.fail("Could not create subscriptions in bulk");
           }
@@ -1232,7 +1219,6 @@ public class TestRecurlyClient {
             Assert.assertEquals(redemption.getCurrency(), CURRENCY);
 
         } finally {
-            recurlyClient.deleteCouponRedemption(accountData.getAccountCode());
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
             recurlyClient.deleteCoupon(couponData.getCouponCode());
