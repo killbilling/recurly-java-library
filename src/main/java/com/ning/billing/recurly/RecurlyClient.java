@@ -493,6 +493,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Get all the subscriptions on the site
+     * <p>
+     * Returns all the subscriptions on the site
+     *
+     * @return Subscriptions on the site
+     */
+    public Subscriptions getSubscriptions() {
+        return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                Subscriptions.class);
+    }
+
+    /**
      * Get the subscriptions for an {@link Account} given query params
      * <p>
      * Returns subscriptions associated with an account
