@@ -59,7 +59,6 @@ import com.ning.billing.recurly.model.RecurlyObjects;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
-import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionState;
@@ -491,6 +490,18 @@ public class RecurlyClient {
                      + "/" + accountCode
                      + Subscriptions.SUBSCRIPTIONS_RESOURCE,
                      Subscriptions.class);
+    }
+
+    /**
+     * Get all the subscriptions on the site
+     * <p>
+     * Returns all the subscriptions on the site
+     *
+     * @return Subscriptions on the site
+     */
+    public Subscriptions getSubscriptions() {
+        return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                Subscriptions.class);
     }
 
     /**
