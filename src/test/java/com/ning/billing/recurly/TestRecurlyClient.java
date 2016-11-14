@@ -220,7 +220,7 @@ public class TestRecurlyClient {
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
 
-            // makes sure we have at least on subscription
+            // makes sure we have at least one subscription
             recurlyClient.createSubscription(subscriptionData);
 
             // make sure we return more than one subscription
@@ -998,7 +998,7 @@ public class TestRecurlyClient {
 
             // Verify we can retrieve it
             Assert.assertEquals(recurlyClient.getTransaction(found.getUuid()).getUuid(), found.getUuid());
-            
+
             // Test Invoices retrieval
             final Invoices invoices = recurlyClient.getAccountInvoices(account.getAccountCode());
             // 2 Invoices are present (the first one is for the transaction, the second for the subscription)
