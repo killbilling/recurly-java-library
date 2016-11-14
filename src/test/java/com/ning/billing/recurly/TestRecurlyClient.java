@@ -203,6 +203,35 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testGetSiteSubscriptions() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+
+            // makes sure we have at least on subscription
+            recurlyClient.createSubscription(subscriptionData);
+
+            // make sure we return more than one subscription
+            Assert.assertTrue(recurlyClient.getSubscriptions().size() > 0);
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
     public void testGetCoupons() throws Exception {
         final Coupons retrievedCoupons = recurlyClient.getCoupons();
         Assert.assertTrue(retrievedCoupons.size() >= 0);
