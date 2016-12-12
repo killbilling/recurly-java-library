@@ -68,6 +68,10 @@ public class TestSubscription extends TestModelBase {
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
+                                        "  <coupon_codes type=\"array\">\n" +
+                                        "    <coupon_code>123</coupon_code>\n" +
+                                        "    <coupon_code>abc</coupon_code>\n" +
+                                        "  </coupon_codes>\n" +
                                         "  <pending_subscription type=\"subscription\">\n" +
                                         "    <plan href=\"https://api.recurly.com/v2/plans/silver\">\n" +
                                         "      <plan_code>silver</plan_code>\n" +
