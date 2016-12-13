@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
@@ -93,6 +94,15 @@ public class Invoice extends RecurlyObject {
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
     private Transactions transactions;
+
+    @XmlElement(name = "refund_tax_date")
+    private DateTime refundTaxDate;
+
+    @XmlElement(name = "refund_geo_code")
+    private String refundGeoCode;
+
+    @XmlElementWrapper(name = "tax_types")
+    private TaxTypes taxTypes;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -278,6 +288,26 @@ public class Invoice extends RecurlyObject {
         this.transactions = transactions;
     }
 
+    public DateTime getRefundTaxDate() {
+        return refundTaxDate;
+    }
+
+    public void setRefundTaxDate(final Object refundTaxDate) {
+        this.refundTaxDate = dateTimeOrNull(refundTaxDate);
+    }
+
+    public String getRefundGeoCode() {
+        return refundGeoCode;
+    }
+
+    public void setRefundGeoCode(Object refundGeoCode) {
+        this.refundGeoCode = stringOrNull(refundGeoCode);
+    }
+
+    public TaxTypes getTaxTypes() { return taxTypes; }
+
+    public void setTaxTypes(final TaxTypes taxTypes) { this.taxTypes = taxTypes; }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
@@ -302,6 +332,9 @@ public class Invoice extends RecurlyObject {
         sb.append(", netTerms=").append(netTerms);
         sb.append(", lineItems=").append(lineItems);
         sb.append(", transactions=").append(transactions);
+        sb.append(", refundTaxDate=").append(refundTaxDate);
+        sb.append(", refundGeoCode=").append(refundGeoCode);
+        sb.append(", taxTypes=").append(taxTypes);
         sb.append('}');
         return sb.toString();
     }
@@ -376,6 +409,15 @@ public class Invoice extends RecurlyObject {
         if (vatNumber != null ? !vatNumber.equals(invoice.vatNumber) : invoice.vatNumber != null) {
             return false;
         }
+        if (refundTaxDate != null ? refundTaxDate.compareTo(invoice.refundTaxDate) != 0 : invoice.refundTaxDate != null) {
+            return false;
+        }
+        if (refundGeoCode != null ? !refundGeoCode.equals(invoice.refundGeoCode) : invoice.refundGeoCode != null) {
+            return false;
+        }
+        if (taxTypes != null ? !taxTypes.equals(invoice.taxTypes) : invoice.taxTypes != null) {
+            return false;
+        }
 
         return true;
     }
@@ -403,7 +445,10 @@ public class Invoice extends RecurlyObject {
                 collectionMethod,
                 netTerms,
                 lineItems,
-                transactions
+                transactions,
+                refundGeoCode,
+                refundTaxDate,
+                taxTypes
         );
     }
 }

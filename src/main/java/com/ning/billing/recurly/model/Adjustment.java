@@ -18,6 +18,7 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
@@ -64,6 +65,9 @@ public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
+
+    @XmlElementWrapper(name = "tax_types")
+    private TaxTypes taxTypes;
 
     @XmlElement(name = "start_date")
     private DateTime startDate;
@@ -184,6 +188,10 @@ public class Adjustment extends RecurlyObject {
         this.taxExempt = booleanOrNull(taxExempt);
     }
 
+    public TaxTypes getTaxTypes() { return taxTypes; }
+
+    public void setTaxTypes(final TaxTypes taxTypes) { this.taxTypes = taxTypes; }
+
     public DateTime getStartDate() {
         return startDate;
     }
@@ -233,6 +241,7 @@ public class Adjustment extends RecurlyObject {
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", taxable=").append(taxable);
+        sb.append(", taxTypes=").append(taxTypes);
         sb.append(", startDate=").append(startDate);
         sb.append(", endDate=").append(endDate);
         sb.append(", createdAt=").append(createdAt);
@@ -287,6 +296,9 @@ public class Adjustment extends RecurlyObject {
         if (taxExempt != null ? !taxExempt.equals(that.taxExempt) : that.taxExempt != null) {
             return false;
         }
+        if (taxTypes != null ? !taxTypes.equals(that.taxTypes) : that.taxTypes != null) {
+            return false;
+        }
         if (totalInCents != null ? !totalInCents.equals(that.totalInCents) : that.totalInCents != null) {
             return false;
         }
@@ -319,6 +331,7 @@ public class Adjustment extends RecurlyObject {
                 currency,
                 taxable,
                 taxExempt,
+                taxTypes,
                 startDate,
                 endDate,
                 createdAt,

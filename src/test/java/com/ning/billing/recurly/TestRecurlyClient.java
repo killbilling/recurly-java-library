@@ -38,6 +38,8 @@ import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.RecurlyAPIError;
+import com.ning.billing.recurly.model.RecurlyError;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundOption;
@@ -1429,6 +1431,27 @@ public class TestRecurlyClient {
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+
+    @Test(groups = "integration")
+    public void testUsingVertexFieldsShouldThrowFeatureError() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final ShippingAddress shippingAddressData = TestUtils.createRandomShippingAddress();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setGeoCode("ABC123"); // set a vertex field
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            recurlyClient.createAccount(accountData);
+            Assert.fail("Should not be able to use vertex fields");
+        } catch (RecurlyAPIException ex) {
+            final RecurlyAPIError error = ex.getRecurlyError();
+            Assert.assertEquals(error.getSymbol(), "feature_not_enabled");
         }
     }
 }
