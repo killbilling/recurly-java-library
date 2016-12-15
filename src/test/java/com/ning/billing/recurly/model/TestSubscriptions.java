@@ -20,6 +20,10 @@ package com.ning.billing.recurly.model;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class TestSubscriptions extends TestModelBase {
 
     @Test(groups = "fast")
@@ -47,6 +51,10 @@ public class TestSubscriptions extends TestModelBase {
                                          "    <trial_ends_at nil=\"nil\"></trial_ends_at>\n" +
                                          "    <subscription_add_ons type=\"array\">\n" +
                                          "    </subscription_add_ons>\n" +
+                                         "    <coupon_codes>\n" +
+                                         "      <coupon_code>abc</coupon_code>\n" +
+                                         "      <coupon_code>123</coupon_code>\n" +
+                                         "    </coupon_codes>\n" +
                                          "    <a name=\"cancel\" href=\"https://your-subdomain.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/cancel\" method=\"put\"/>\n" +
                                          "    <a name=\"terminate\" href=\"https://your-subdomain.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/terminate\" method=\"put\"/>\n" +
                                          "    <a name=\"postpone\" href=\"https://your-subdomain.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/postpone\" method=\"put\"/>\n" +
@@ -56,7 +64,6 @@ public class TestSubscriptions extends TestModelBase {
 
         final Subscriptions subscriptions = xmlMapper.readValue(subscriptionsData, Subscriptions.class);
         verifySubscriptions(subscriptions);
-
 
         // Verify serialization
         final String subscriptionsSerialized = xmlMapper.writeValueAsString(subscriptions);
@@ -70,5 +77,8 @@ public class TestSubscriptions extends TestModelBase {
         final Subscription subscription = subscriptions.get(0);
         Assert.assertEquals(subscription.getUuid(), "44f83d7cba354d5b84812419f923ea96");
         Assert.assertEquals(subscription.getCurrency(), "EUR");
+
+        List<String> coupons = new ArrayList<String>(Arrays.asList("abc", "123"));
+        Assert.assertEquals(subscription.getCouponCodes(), coupons);
     }
 }

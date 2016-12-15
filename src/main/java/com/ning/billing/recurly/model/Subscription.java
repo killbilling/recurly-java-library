@@ -18,6 +18,8 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.joda.time.DateTime;
@@ -25,6 +27,7 @@ import org.joda.time.DateTime;
 import com.google.common.base.Objects;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @XmlRootElement(name = "subscription")
 public class Subscription extends AbstractSubscription {
@@ -97,6 +100,10 @@ public class Subscription extends AbstractSubscription {
 
     @XmlElement(name = "coupon_code")
     private String couponCode;
+
+    @XmlList
+    @XmlElementWrapper(name = "coupon_codes")
+    private List<String> couponCodes;
 
     //Purchase Order Number
     @XmlElement(name = "po_number")
@@ -331,7 +338,15 @@ public class Subscription extends AbstractSubscription {
     public void setCouponCode(final String couponCode) {
         this.couponCode = couponCode;
     }
-    
+
+    public void setCouponCodes(final List<String> couponCodes) {
+        this.couponCodes = couponCodes;
+    }
+
+    public List<String> getCouponCodes() {
+        return this.couponCodes;
+    }
+
     public void setBulk(final Object bulk) {
         this.bulk = booleanOrNull(bulk);
     }
@@ -385,6 +400,8 @@ public class Subscription extends AbstractSubscription {
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", quantity=").append(quantity);
+        sb.append(", couponCode=").append(couponCode);
+        sb.append(", couponCodes=").append(couponCodes);
         sb.append(", activatedAt=").append(activatedAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", canceledAt=").append(canceledAt);
@@ -545,7 +562,9 @@ public class Subscription extends AbstractSubscription {
                 taxType,
                 taxRate,
                 shippingAddress,
-                shippingAddressId
+                shippingAddressId,
+                couponCode,
+                couponCodes
         );
     }
 
