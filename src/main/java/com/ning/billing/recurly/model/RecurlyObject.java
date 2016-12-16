@@ -121,6 +121,17 @@ public abstract class RecurlyObject {
         return object.toString().trim();
     }
 
+    @SuppressWarnings("unchecked")
+    public static <E extends Enum<E>> E enumOrNull(Class<E> enumClass, @Nullable final Object object) {
+        if (isNull(object)) {
+            return null;
+        } else if (enumClass.isAssignableFrom(object.getClass())) {
+            return (E) object;
+        }
+
+        return (E) Enum.valueOf(enumClass, object.toString().trim());
+    }
+
     public static Integer integerOrNull(@Nullable final Object object) {
         if (isNull(object)) {
             return null;

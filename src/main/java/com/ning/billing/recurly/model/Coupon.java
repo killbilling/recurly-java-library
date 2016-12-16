@@ -32,6 +32,29 @@ import java.util.List;
  */
 @XmlRootElement(name = "coupon")
 public class Coupon extends RecurlyObject {
+    public enum DiscountType {
+        percent, dollars, free_trial
+    }
+
+    public enum Duration {
+        forever, single_use, temporal
+    }
+
+    public enum FreeTrialUnit {
+        day, week, month
+    }
+
+    public enum RedemptionResource {
+        account, subscription
+    }
+
+    public enum TemporalUnit {
+        day, week, month, year;
+    }
+
+    public enum Type {
+        single_code, bulk
+    }
 
     @XmlTransient
     public static final String COUPON_RESOURCE = "/coupons";
@@ -43,6 +66,18 @@ public class Coupon extends RecurlyObject {
     private String couponCode;
 
     /**
+     * Description of the coupon on the hosted payment pages.
+     */
+    @XmlElement(name = "description")
+    private String description;
+
+    /**
+     * Description of the coupon on the invoice.
+     */
+    @XmlElement(name = "invoice_description")
+    private String invoiceDescription;
+
+    /**
      * Last date to redeem the coupon, defaults to no date
      */
     @XmlElement(name = "redeem_by_date")
@@ -50,6 +85,7 @@ public class Coupon extends RecurlyObject {
 
     /**
      * Number of months after redemption that the coupon is valid, defaults to no date
+     * @deprecated Please use temporal_unit and temporal_amount
      */
     @XmlElement(name = "applies_for_months")
     private Integer appliesForMonths;
@@ -68,21 +104,16 @@ public class Coupon extends RecurlyObject {
 
     /**
      * If true, the coupon applies to the first invoice only
+     * @deprecated Please use duration
      */
     @XmlElement(name = "single_use")
     private Boolean singleUse;
 
-    /**
-     * "percent" or "dollars"
-     */
     @XmlElement(name = "discount_type")
-    private String discountType;
+    private DiscountType discountType;
 
-    /**
-     * "day" or "week" or "month"
-     */
     @XmlElement(name = "free_trial_unit")
-    private String freeTrialUnit;
+    private FreeTrialUnit freeTrialUnit;
 
     @XmlElement(name = "free_trial_amount")
     private Integer freeTrialAmount;
@@ -116,6 +147,68 @@ public class Coupon extends RecurlyObject {
     @XmlElement( name="plan_code" )
     @XmlElementWrapper( name="plan_codes" )
     private List<String> planCodes;
+
+    /**
+     * forever, single_use, or temporal. If single_use, the coupon applies to
+     * the first invoice only. If temporal the coupon will apply to invoices for
+     * the duration determined by the temporal_unit and temporal_amount
+     * attributes.
+     */
+    @XmlElement(name = "duration")
+    private Duration duration;
+
+    /**
+     * day, week, month, or year. If duration is temporal then temporal_unit is
+     * multiplied by temporal_amount to define the duration that the coupon will
+     * be applied to invoices for.
+     */
+    @XmlElement(name = "temporal_unit")
+    private TemporalUnit temporalUnit;
+
+    /**
+     * If duration is temporal then temporal_amount is an integer which is
+     * multiplied by temporal_unit to define the duration that the coupon will
+     * be applied to invoices for.
+     */
+    @XmlElement(name = "temporal_amount")
+    private Integer temporalAmount;
+
+    /**
+     * The coupon is valid for one-time, non-plan charges if true, defaults to
+     * false.
+     */
+    @XmlElement(name = "applies_to_non_plan_charges")
+    private Boolean appliesToNonPlanCharges;
+
+    /**
+     * Whether the discount is for all eligible charges on the account, or only
+     * a specific subscription. Values are account or subscription.
+     */
+    @XmlElement(name = "redemption_resource")
+    private RedemptionResource redemptionResource;
+
+    /**
+     * The number of times the coupon can be redeemed on a specific account
+     */
+    @XmlElement(name = "max_redemptions_per_account")
+    private Integer maxRedemptionsPerAccount;
+
+    /**
+     * Whether the coupon is single_code or bulk. Bulk coupons will require a
+     * unique_code_template and will generate unique codes through the generate
+     * endpoint.
+     */
+    @XmlElement(name = "coupon_type")
+    private Type type;
+
+    /**
+     * The template for generating unique codes.
+     * 
+     * @see <a href=
+     *      "https://dev.recurly.com/docs/create-coupon">https://dev.recurly.com/docs/create-coupon</a>
+     */
+    @XmlElement(name = "unique_code_template")
+    private String uniqueCodeTemplate;
 
     public String getState() {
         return state;
@@ -164,18 +257,18 @@ public class Coupon extends RecurlyObject {
     /**
      * Sets the discount type for a {@link Coupon}
      *
-     * @param discountType A String of: 'percent'; 'dollars';
+     * @param discountType
      */
     public void setDiscountType(final Object discountType) {
-        this.discountType = stringOrNull(discountType);
+        this.discountType = enumOrNull(DiscountType.class, discountType);
     }
 
     /**
      * Gets the discount type associated with the {@link Coupon}
      *
-     * @return A String defining the discount type: 'percent' or 'dollars'.
+     * @return the DiscountType
      */
-    public String getDiscountType() {
+    public DiscountType getDiscountType() {
         return discountType;
     }
 
@@ -240,12 +333,12 @@ public class Coupon extends RecurlyObject {
         this.appliesToAllPlans = booleanOrNull(appliesToAllPlans);
     }
 
-    public String getFreeTrialUnit() {
+    public FreeTrialUnit getFreeTrialUnit() {
         return freeTrialUnit;
     }
 
-    public void setFreeTrialUnit(final String freeTrialUnit) {
-        this.freeTrialUnit = stringOrNull(freeTrialUnit);
+    public void setFreeTrialUnit(final Object freeTrialUnit) {
+        this.freeTrialUnit = enumOrNull(FreeTrialUnit.class, freeTrialUnit);
     }
 
     public Integer getFreeTrialAmount() {
@@ -272,6 +365,86 @@ public class Coupon extends RecurlyObject {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public String getDescription() {
+      return description;
+    }
+
+    public void setDescription(Object description) {
+      this.description = stringOrNull(description);
+    }
+
+    public String getInvoiceDescription() {
+      return invoiceDescription;
+    }
+
+    public void setInvoiceDescription(Object invoiceDescription) {
+      this.invoiceDescription = stringOrNull(invoiceDescription);
+    }
+
+    public Duration getDuration() {
+      return duration;
+    }
+
+    public void setDuration(Object duration) {
+      this.duration = enumOrNull(Duration.class, duration);
+    }
+
+    public TemporalUnit getTemporalUnit() {
+      return temporalUnit;
+    }
+
+    public void setTemporalUnit(Object temporalUnit) {
+      this.temporalUnit = enumOrNull(TemporalUnit.class, temporalUnit);
+    }
+
+    public Integer getTemporalAmount() {
+      return temporalAmount;
+    }
+
+    public void setTemporalAmount(Object temporalAmount) {
+      this.temporalAmount = integerOrNull(temporalAmount);
+    }
+
+    public Boolean getAppliesToNonPlanCharges() {
+      return appliesToNonPlanCharges;
+    }
+
+    public void setAppliesToNonPlanCharges(Object appliesToNonPlanCharges) {
+      this.appliesToNonPlanCharges = booleanOrNull(appliesToNonPlanCharges);
+    }
+
+    public RedemptionResource getRedemptionResource() {
+      return redemptionResource;
+    }
+
+    public void setRedemptionResource(Object redemptionResource) {
+      this.redemptionResource = enumOrNull(RedemptionResource.class, redemptionResource);
+    }
+
+    public Integer getMaxRedemptionsPerAccount() {
+      return maxRedemptionsPerAccount;
+    }
+
+    public void setMaxRedemptionsPerAccount(Object maxRedemptionsPerAccount) {
+      this.maxRedemptionsPerAccount = integerOrNull(maxRedemptionsPerAccount);
+    }
+
+    public Type getType() {
+      return type;
+    }
+
+    public void setType(Type type) {
+      this.type = enumOrNull(Type.class, type);
+    }
+
+    public String getUniqueCodeTemplate() {
+      return uniqueCodeTemplate;
+    }
+
+    public void setUniqueCodeTemplate(Object uniqueCodeTemplate) {
+      this.uniqueCodeTemplate = stringOrNull(uniqueCodeTemplate);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -296,6 +469,9 @@ public class Coupon extends RecurlyObject {
         if (appliesForMonths != null ? !appliesForMonths.equals(coupon.appliesForMonths) : coupon.appliesForMonths != null) {
             return false;
         }
+        if (appliesToNonPlanCharges != null ? !appliesToNonPlanCharges.equals(coupon.appliesToNonPlanCharges) : coupon.appliesToNonPlanCharges != null) {
+            return false;
+        }
         if (appliesToAllPlans != null ? !appliesToAllPlans.equals(coupon.appliesToAllPlans) : coupon.appliesToAllPlans != null) {
             return false;
         }
@@ -303,6 +479,9 @@ public class Coupon extends RecurlyObject {
             return false;
         }
         if (createdAt != null ? createdAt.compareTo(coupon.createdAt) != 0 : coupon.createdAt != null) {
+            return false;
+        }
+        if (description != null ? !description.equals(coupon.description) : coupon.description != null) {
             return false;
         }
         if (discountInCents != null ? !discountInCents.equals(coupon.discountInCents) : coupon.discountInCents != null) {
@@ -314,6 +493,12 @@ public class Coupon extends RecurlyObject {
         if (discountType != null ? !discountType.equals(coupon.discountType) : coupon.discountType != null) {
             return false;
         }
+        if (duration != null ? !duration.equals(coupon.duration) : coupon.duration != null) {
+            return false;
+        }
+        if (invoiceDescription != null ? !invoiceDescription.equals(coupon.invoiceDescription) : coupon.invoiceDescription != null) {
+            return false;
+        }
         if (maxRedemptions != null ? !maxRedemptions.equals(coupon.maxRedemptions) : coupon.maxRedemptions != null) {
             return false;
         }
@@ -323,7 +508,22 @@ public class Coupon extends RecurlyObject {
         if (redeemByDate != null ? redeemByDate.compareTo(coupon.redeemByDate) != 0 : coupon.redeemByDate != null) {
             return false;
         }
+        if (redemptionResource != null ? redemptionResource.compareTo(coupon.redemptionResource) != 0 : coupon.redemptionResource != null) {
+            return false;
+        }
         if (singleUse != null ? singleUse.compareTo(coupon.singleUse) != 0 : coupon.singleUse != null) {
+            return false;
+        }
+        if (temporalAmount != null ? temporalAmount.compareTo(coupon.temporalAmount) != 0 : coupon.temporalAmount != null) {
+            return false;
+        }
+        if (temporalUnit != null ? temporalUnit.compareTo(coupon.temporalUnit) != 0 : coupon.temporalUnit != null) {
+            return false;
+        }
+        if (type != null ? type.compareTo(coupon.type) != 0 : coupon.type != null) {
+            return false;
+        }
+        if (uniqueCodeTemplate != null ? uniqueCodeTemplate.compareTo(coupon.uniqueCodeTemplate) != 0 : coupon.uniqueCodeTemplate != null) {
             return false;
         }
         if (freeTrialUnit != null ? !freeTrialUnit.equals(coupon.freeTrialUnit) : coupon.freeTrialUnit != null) {
@@ -342,19 +542,28 @@ public class Coupon extends RecurlyObject {
     @Override
     public int hashCode() {
         return Objects.hashCode(
+                appliesForMonths,
+                appliesToAllPlans,
+                appliesToNonPlanCharges,
                 name,
                 couponCode,
+                description,
                 discountType,
                 discountPercent,
                 discountInCents,
+                duration,
+                invoiceDescription,
                 redeemByDate,
                 singleUse,
-                appliesForMonths,
-                appliesToAllPlans,
                 maxRedemptions,
                 freeTrialUnit,
                 freeTrialAmount,
                 createdAt,
+                redemptionResource,
+                temporalAmount,
+                temporalUnit,
+                type,
+                uniqueCodeTemplate,
                 updatedAt
         );
     }
