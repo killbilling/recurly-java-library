@@ -20,6 +20,7 @@ test-output/*
 .settings/*
 .project
 .classpath
+bin
 
 .DS_Store
 
