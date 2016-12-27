@@ -29,6 +29,7 @@ import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.Transactions;
+import com.ning.billing.recurly.model.Usage;
 import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.model.Account;
@@ -845,5 +846,34 @@ public class TestUtils {
         giftCardData.setUnitAmountInCents(2000);
 
         return giftCardData;
+    }
+
+
+    /**
+     * Creates a random {@link Usage} object for use in Tests
+     *
+     * @return The random {@link Usage} object
+     */
+    public static Usage createRandomUsage() {
+        return createRandomUsage(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Usage} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Usage} object
+     */
+    public static Usage createRandomUsage(final int seed) {
+        final Usage usage = new Usage();
+
+        usage.setAmount(randomInteger(1000, seed));
+        usage.setMerchantTag("merchant");
+        usage.setUsagePercentage(randomInteger(100, seed));
+        usage.setUsageType("price");
+        usage.setUnitAmountInCents(randomInteger(1000, seed));
+        usage.setUsageAt(NOW);
+
+        return usage;
     }
 }
