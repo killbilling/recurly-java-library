@@ -16,6 +16,7 @@
  */
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -97,24 +98,25 @@ public class Usage extends RecurlyObject{
 
     @Override
     public int hashCode() {
-        int result = amount.hashCode();
-        result = 31 * result + (merchantTag != null ? merchantTag.hashCode() : 0);
-        result = 31 * result + (recordingAt != null ? recordingAt.hashCode() : 0);
-        result = 31 * result + usageAt.hashCode();
-        result = 31 * result + (createdAt != null ? createdAt.hashCode() : 0);
-        result = 31 * result + (updatedAt != null ? updatedAt.hashCode() : 0);
-        result = 31 * result + (billedAt != null ? billedAt.hashCode() : 0);
-        result = 31 * result + (usageType != null ? usageType.hashCode() : 0);
-        result = 31 * result + (unitAmountInCents != null ? unitAmountInCents.hashCode() : 0);
-        result = 31 * result + (usagePercentage != null ? usagePercentage.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+                amount,
+                merchantTag,
+                recordingAt,
+                usageAt,
+                createdAt,
+                updatedAt,
+                billedAt,
+                usageType,
+                unitAmountInCents,
+                usagePercentage
+        );
     }
 
     public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(Object amount) {
+    public void setAmount(final Object amount) {
         this.amount = integerOrNull(amount);
     }
 
@@ -122,7 +124,7 @@ public class Usage extends RecurlyObject{
         return merchantTag;
     }
 
-    public void setMerchantTag(Object merchantTag) {
+    public void setMerchantTag(final Object merchantTag) {
         this.merchantTag = stringOrNull(merchantTag);
     }
 
@@ -130,7 +132,7 @@ public class Usage extends RecurlyObject{
         return recordingAt;
     }
 
-    public void setRecordingAt(Object recordingAt) {
+    public void setRecordingAt(final Object recordingAt) {
         this.recordingAt = dateTimeOrNull(recordingAt);
     }
 
@@ -138,7 +140,7 @@ public class Usage extends RecurlyObject{
         return usageAt;
     }
 
-    public void setUsageAt(Object usageAt) {
+    public void setUsageAt(final Object usageAt) {
         this.usageAt = dateTimeOrNull(usageAt);
     }
 
@@ -146,7 +148,7 @@ public class Usage extends RecurlyObject{
         return createdAt;
     }
 
-    public void setCreatedAt(Object createdAt) {
+    public void setCreatedAt(final Object createdAt) {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
@@ -154,7 +156,7 @@ public class Usage extends RecurlyObject{
         return updatedAt;
     }
 
-    public void setUpdatedAt(Object updatedAt) {
+    public void setUpdatedAt(final Object updatedAt) {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
@@ -162,7 +164,7 @@ public class Usage extends RecurlyObject{
         return billedAt;
     }
 
-    public void setBilledAt(Object billedAt) {
+    public void setBilledAt(final Object billedAt) {
         this.billedAt = dateTimeOrNull(billedAt);
     }
 
@@ -170,7 +172,7 @@ public class Usage extends RecurlyObject{
         return usageType;
     }
 
-    public void setUsageType(Object usageType) {
+    public void setUsageType(final Object usageType) {
         this.usageType = stringOrNull(usageType);
     }
 
@@ -178,7 +180,7 @@ public class Usage extends RecurlyObject{
         return unitAmountInCents;
     }
 
-    public void setUnitAmountInCents(Object unitAmountInCents) {
+    public void setUnitAmountInCents(final Object unitAmountInCents) {
         this.unitAmountInCents = integerOrNull(unitAmountInCents);
     }
 
@@ -186,7 +188,7 @@ public class Usage extends RecurlyObject{
         return usagePercentage;
     }
 
-    public void setUsagePercentage(Object usagePercentage) {
+    public void setUsagePercentage(final Object usagePercentage) {
         this.usagePercentage = integerOrNull(usagePercentage);
     }
 }
