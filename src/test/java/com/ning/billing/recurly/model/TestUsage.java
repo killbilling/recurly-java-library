@@ -28,7 +28,7 @@ public class TestUsage extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See http://docs.recurly.com/api/invoices
+        // See https://dev.recurly.com/docs/log-usage
         final String transactionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n <usage href=\"https://your-subdomain.recurly.com/v2/subscriptions/3aaf63884971dbc5414bc845678a3593/add_ons/CD_USAGE_DATA_USAGE/usage/570702996069942457\">\n" +
                 "  <measured_unit href=\"https://your-subdomain.recurly.com/v2/measured_units/556493119596529478\"/>\n" +
                 "  <id type=\"integer\">570702996069942457</id>\n" +
