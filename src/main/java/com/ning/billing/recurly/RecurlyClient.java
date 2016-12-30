@@ -69,6 +69,7 @@ import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.TransactionState;
 import com.ning.billing.recurly.model.TransactionType;
 import com.ning.billing.recurly.model.Transactions;
+import com.ning.billing.recurly.model.Usage;
 
 import com.ning.billing.recurly.util.http.SslUtils;
 import org.joda.time.DateTime;
@@ -522,6 +523,26 @@ public class RecurlyClient {
                         + Subscriptions.SUBSCRIPTIONS_RESOURCE,
                 Subscriptions.class,
                 params);
+    }
+
+    /**
+     * Post usage to subscription
+     * <p>
+     *
+     * @param subscriptionCode The recurly id of the {@link Subscription }
+     * @param addOnCode recurly id of {@link AddOn}
+     * @param usage the usage to post on recurly
+     * @return the {@link Usage} object as identified by the passed in object
+     */
+    public Usage postSubscriptionUsage(final String subscriptionCode, final String addOnCode, final Usage usage) {
+        return doPOST(Subscription.SUBSCRIPTION_RESOURCE +
+                        "/" +
+                        subscriptionCode +
+                        AddOn.ADDONS_RESOURCE +
+                        "/" +
+                        addOnCode +
+                        Usage.USAGE_RESOURCE,
+                usage, Usage.class);
     }
 
     /**
