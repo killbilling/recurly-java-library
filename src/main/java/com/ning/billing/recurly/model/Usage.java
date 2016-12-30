@@ -85,10 +85,10 @@ public class Usage extends RecurlyObject{
 
         if (!amount.equals(usage.amount)) return false;
         if (merchantTag != null ? !merchantTag.equals(usage.merchantTag) : usage.merchantTag != null) return false;
-        if (recordingAt != null ? !recordingAt.equals(usage.recordingAt) : usage.recordingAt != null) return false;
+        if (recordingAt != null ? recordingAt.compareTo(usage.recordingAt) != 0 : usage.recordingAt != null) return false;
         if (!usageAt.equals(usage.usageAt)) return false;
         if (createdAt != null ? createdAt.compareTo(usage.createdAt) != 0 : usage.createdAt != null) return false;
-        if (updatedAt != null ? updatedAt.compareTo(usage.updatedAt) != 0: usage.updatedAt != null) return false;
+        if (updatedAt != null ? updatedAt.compareTo(usage.updatedAt) != 0 : usage.updatedAt != null) return false;
         if (billedAt != null ? billedAt.compareTo(usage.billedAt) != 0 : usage.billedAt != null) return false;
         if (usageType != null ? !usageType.equals(usage.usageType) : usage.usageType != null) return false;
         if (unitAmountInCents != null ? !unitAmountInCents.equals(usage.unitAmountInCents) : usage.unitAmountInCents != null)
