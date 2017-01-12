@@ -805,7 +805,7 @@ public class TestUtils {
         delivery.setGifterName(randomAlphaNumericString(5, seed));
         delivery.setMethod("email");
         delivery.setPersonalMessage(randomAlphaNumericString(100, seed));
-        delivery.setDeliverAt(new DateTime("2016-12-27T07:00:00Z"));
+        delivery.setDeliverAt(new DateTime().plusDays(5)); // needs to be at least 1 hour in future
 
         return delivery;
     }
