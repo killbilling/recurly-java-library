@@ -175,7 +175,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subInvoice);
             
             // Refetch the invoice using the getInvoice method
-            final int invoiceID = subInvoice.getInvoiceNumber();
+            final String invoiceID = subInvoice.getId();
             final Invoice gotInvoice = recurlyClient.getInvoice(invoiceID);
 
             Assert.assertEquals(subInvoice.hashCode(), gotInvoice.hashCode());
@@ -833,17 +833,17 @@ public class TestRecurlyClient {
             final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
             Assert.assertNotNull(invoice);
 
-            InputStream pdfInputStream = recurlyClient.getInvoicePdf(invoice.getInvoiceNumber());
+            InputStream pdfInputStream = recurlyClient.getInvoicePdf(invoice.getId());
             Assert.assertNotNull(pdfInputStream);
 
             pdDocument = PDDocument.load(pdfInputStream);
             String pdfString = new PDFTextStripper().getText(pdDocument);
 
             Assert.assertNotNull(pdfString);
-            Assert.assertTrue(pdfString.contains("Invoice # " + invoice.getInvoiceNumber()));
+            Assert.assertTrue(pdfString.contains("Invoice # " + invoice.getId()));
             Assert.assertTrue(pdfString.contains("Subtotal $" + 1.5));
             // Attempt to close the invoice
-            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getInvoiceNumber());
+            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getId());
             Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
 
         } finally {
@@ -878,7 +878,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(invoice);
 
             // Attempt to close the invoice
-            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getInvoiceNumber());
+            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getId());
             Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
 
             // Create an Adjustment
@@ -896,7 +896,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(invoiceFail);
 
             // Attempt to fail the invoice
-            final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getInvoiceNumber());
+            final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getId());
             Assert.assertEquals(failedInvoice.getState(), "failed", "Invoice not failed successfully");
 
             // Create an Adjustment
@@ -920,7 +920,7 @@ public class TestRecurlyClient {
             externalPaymentData.setCollectedAt(collectionDateTime);
             externalPaymentData.setAmountInCents(450);
 
-            final Transaction externalPayment = recurlyClient.enterOfflinePayment(invoiceExternal.getInvoiceNumber(), externalPaymentData);
+            final Transaction externalPayment = recurlyClient.enterOfflinePayment(invoiceExternal.getId(), externalPaymentData);
             Assert.assertNotNull(externalPayment);
             Assert.assertEquals(externalPayment.getInvoice().getState(), "collected", "Invoice not closed successfully");
 

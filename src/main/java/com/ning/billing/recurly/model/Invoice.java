@@ -44,6 +44,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "invoice_number")
     private Integer invoiceNumber;
 
+    @XmlElement(name = "invoice_number_prefix")
+    private String invoiceNumberPrefix;
+
     @XmlElement(name = "po_number")
     private String poNumber;
 
@@ -101,26 +104,33 @@ public class Invoice extends RecurlyObject {
         return account;
     }
 
-  /**
-   * Set this original invoice to the passed in original invoice.
-   *
-   * @param originalInvoice original invoice
-   */
-  public void setOriginalInvoice(Invoice originalInvoice) {
+    /**
+     * Set this original invoice to the passed in original invoice.
+     *
+     * @param originalInvoice original invoice
+     *
+     */
+    public void setOriginalInvoice(Invoice originalInvoice) {
         this.originalInvoice = originalInvoice;
-  }
+    }
 
-  /**
-   * Fetches the original invoice if the href is populated, otherwise return the current original invoice.
-   *
-   * @return fully loaded original invoice
-   */
-  public Invoice getOriginalInvoice() {
+    /**
+     * Fetches the original invoice if the href is populated, otherwise return the current original invoice.
+     *
+     * @return fully loaded original invoice
+     */
+    public Invoice getOriginalInvoice() {
         if (originalInvoice != null && originalInvoice.getHref() != null && !originalInvoice.getHref().isEmpty()) {
             originalInvoice = fetch(originalInvoice, Invoice.class);
         }
         return originalInvoice;
-  }
+    }
+
+    public String getId() {
+        if (invoiceNumber == null) return null;
+        if (invoiceNumberPrefix == null) return invoiceNumber.toString();
+        return invoiceNumberPrefix + invoiceNumber.toString();
+    }
 
     public void setAccount(final Account account) {
         this.account = account;
@@ -148,6 +158,14 @@ public class Invoice extends RecurlyObject {
 
     public void setInvoiceNumber(final Object invoiceNumber) {
         this.invoiceNumber = integerOrNull(invoiceNumber);
+    }
+
+    public String getInvoiceNumberPrefix() {
+        return invoiceNumberPrefix;
+    }
+
+    public void setInvoiceNumberPrefix(final Object invoiceNumberPrefix) {
+        this.invoiceNumberPrefix = stringOrNull(invoiceNumberPrefix);
     }
 
     public String getPoNumber() {
@@ -286,6 +304,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
+        sb.append(", invoiceNumberPrefix=").append(invoiceNumberPrefix);
         sb.append(", poNumber=").append(poNumber);
         sb.append(", vatNumber='").append(vatNumber).append('\'');
         sb.append(", subtotalInCents=").append(subtotalInCents);
@@ -332,6 +351,9 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (invoiceNumber != null ? !invoiceNumber.equals(invoice.invoiceNumber) : invoice.invoiceNumber != null) {
+            return false;
+        }
+        if (invoiceNumberPrefix != null ? !invoiceNumberPrefix.equals(invoice.invoiceNumberPrefix) : invoice.invoiceNumberPrefix != null) {
             return false;
         }
         if (lineItems != null ? !lineItems.equals(invoice.lineItems) : invoice.lineItems != null) {
@@ -388,6 +410,7 @@ public class Invoice extends RecurlyObject {
                 uuid,
                 state,
                 invoiceNumber,
+                invoiceNumberPrefix,
                 poNumber,
                 vatNumber,
                 subtotalInCents,
