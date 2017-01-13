@@ -268,7 +268,7 @@ public class Invoice extends RecurlyObject {
         return collectionMethod;
     }
 
-    public void setCollectionMethod(Object collectionMethod) {
+    public void setCollectionMethod(final Object collectionMethod) {
         this.collectionMethod = stringOrNull(collectionMethod);
     }
 

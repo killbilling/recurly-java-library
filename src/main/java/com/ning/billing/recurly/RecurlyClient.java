@@ -49,6 +49,7 @@ import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.InvoiceState;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
@@ -58,6 +59,7 @@ import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
+import com.ning.billing.recurly.model.RefundApplyOrder;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
@@ -789,6 +791,24 @@ public class RecurlyClient {
     public Invoices getAccountInvoices(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
                      Invoices.class);
+    }
+
+    /**
+     * Refund an invoice given some adjustments
+     * <p/>
+     * Returns the refunded invoice
+     *
+     * @param invoiceId The id of the invoice to refund
+     * @param amountInCents The open amount to refund
+     * @param order If credit line items exist on the invoice, this parameter specifies which refund method to use first
+     * @return the refunded invoice
+     */
+    public Invoice refundInvoice(final String invoiceId, final Integer amountInCents, final RefundApplyOrder order) {
+        final InvoiceRefund invoiceRefund = new InvoiceRefund();
+        invoiceRefund.setRefundApplyOrder(order);
+        invoiceRefund.setAmountInCents(amountInCents);
+
+        return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/refund", invoiceRefund, Invoice.class);
     }
 
     /**
