@@ -56,7 +56,6 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
-import org.joda.time.Interval;
 import org.joda.time.LocalDateTime;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -156,6 +155,7 @@ public class TestRecurlyClient {
 
             // Create a plan with addons
             final Plan plan = recurlyClient.createPlan(planData);
+            Thread.sleep(1000);  // TODO - can remove after Jan 18th 2017
             final List<AddOn> addons = new ArrayList<AddOn>();
             final int nbAddOns = 5;
             for (int i = 0; i < nbAddOns; i++) {
@@ -1024,6 +1024,7 @@ public class TestRecurlyClient {
         try {
             // Create an AddOn
             final Plan plan = recurlyClient.createPlan(planData);
+            Thread.sleep(1000);  // TODO - can remove after Jan 18th 2017
             AddOn addOnRecurly = recurlyClient.createPlanAddOn(plan.getPlanCode(), addOn);
 
             // Test the creation
@@ -1471,7 +1472,7 @@ public class TestRecurlyClient {
 
             // wait for the invoice to be marked paid
             // has to happen asynchronously on the server
-            Thread.sleep(3000);
+            Thread.sleep(5000);
 
             final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), 100, RefundApplyOrder.transaction);
 
