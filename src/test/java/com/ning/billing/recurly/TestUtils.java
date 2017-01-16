@@ -289,7 +289,7 @@ public class TestUtils {
         address.setAddress2(randomAlphaNumericString(10, seed));
         address.setCity(randomAlphaNumericString(10, seed));
         address.setState(randomAlphaString(2, seed).toUpperCase());
-        address.setZip(49302);
+        address.setZip("94110");
         address.setCountry(randomAlphaString(2, seed).toUpperCase());
         address.setPhone(randomNumericString(10, seed));
 
@@ -319,7 +319,7 @@ public class TestUtils {
         address.setCity(randomAlphaNumericString(10, seed));
         address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setState(randomAlphaString(2, seed).toUpperCase());
-        address.setZip(49302);
+        address.setZip("94110");
         address.setCountry(randomAlphaString(2, seed).toUpperCase());
         address.setPhone(randomNumericString(10, seed));
         address.setNickname(randomAlphaNumericString(10, seed));
@@ -387,7 +387,7 @@ public class TestUtils {
         info.setAddress2(randomAlphaNumericString(10, seed));
         info.setCity(randomAlphaNumericString(10, seed));
         info.setState(randomAlphaNumericString(10, seed).toUpperCase());
-        info.setZip(randomAlphaNumericString(5, seed));
+        info.setZip("94110");
         info.setCountry(randomAlphaNumericString(2, seed).toUpperCase());
         info.setPhone(randomInteger(8, seed));
         info.setVatNumber(randomNumericString(8, seed));
@@ -805,7 +805,11 @@ public class TestUtils {
         delivery.setGifterName(randomAlphaNumericString(5, seed));
         delivery.setMethod("email");
         delivery.setPersonalMessage(randomAlphaNumericString(100, seed));
-        delivery.setDeliverAt(new DateTime().plusDays(5)); // needs to be at least 1 hour in future
+        if (seed == 0) { // we want it to be deterministic
+            delivery.setDeliverAt(new DateTime("2020-01-01T00:00:00Z"));
+        } else {
+            delivery.setDeliverAt(new DateTime().plusDays(5)); // needs to be at least 1 hour in future
+        }
 
         return delivery;
     }

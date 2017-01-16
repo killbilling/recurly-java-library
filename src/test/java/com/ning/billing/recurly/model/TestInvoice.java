@@ -39,6 +39,7 @@ public class TestInvoice extends TestModelBase {
                                    + "  <uuid>421f7b7d414e4c6792938e7c49d552e9</uuid>\n"
                                    + "  <state>open</state>\n"
                                    + "  <invoice_number type=\"integer\">1402</invoice_number>\n"
+                                   + "  <invoice_number_prefix>FR</invoice_number_prefix>\n"
                                    + "  <po_number>abc-123</po_number>\n"
                                    + "  <vat_number></vat_number>\n"
                                    + "  <subtotal_in_cents type=\"integer\">9900</subtotal_in_cents>\n"
@@ -95,6 +96,8 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getClosedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertNotNull(invoice.getLineItems());
         Assert.assertEquals(invoice.getLineItems().size(), 1);
+        Assert.assertEquals(invoice.getInvoiceNumberPrefix(), "FR");
+        Assert.assertEquals(invoice.getId(), "FR1402");
 
         final Adjustment adjustment = invoice.getLineItems().get(0);
         Assert.assertEquals(adjustment.getDescription(), "Charge for extra bandwidth");
@@ -102,6 +105,16 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
 
         Assert.assertEquals(invoice.getTransactions().size(), 0);
+    }
+
+    @Test(groups = "fast")
+    public void testGetId() throws Exception {
+        final Invoice invoice = new Invoice();
+        Assert.assertNull(invoice.getId());
+        invoice.setInvoiceNumber(9999);
+        Assert.assertEquals(invoice.getId(), "9999");
+        invoice.setInvoiceNumberPrefix("FR");
+        Assert.assertEquals(invoice.getId(), "FR9999");
     }
 
     @Test(groups = "fast")

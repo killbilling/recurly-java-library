@@ -723,19 +723,23 @@ public class RecurlyClient {
      * <p>
      * Returns the invoice given an integer id
      *
+     * @deprecated Please switch to using a string for invoice ids
+     *
      * @param invoiceId Recurly Invoice ID
      * @return the invoice
      */
+    @Deprecated
     public Invoice getInvoice(final Integer invoiceId) {
         return getInvoice(invoiceId.toString());
     }
 
     /**
-     * Lookup an invoice (with or without prefix)
+     * Lookup an invoice given an invoice id
+     *
      * <p>
      * Returns the invoice given a string id.
      * The invoice may or may not have acountry code prefix (ex: IE1023).
-     * Use this if you ever expect to use invoice prefixes:
+     * For more information on invoicing and prefixes, see:
      * https://docs.recurly.com/docs/site-settings#section-invoice-prefixing
      *
      * @param invoiceId String Recurly Invoice ID
@@ -750,10 +754,25 @@ public class RecurlyClient {
      * <p>
      * Returns the invoice pdf as an inputStream
      *
+     * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
+     *
      * @param invoiceId Recurly Invoice ID
      * @return the invoice pdf as an inputStream
      */
+    @Deprecated
     public InputStream getInvoicePdf(final Integer invoiceId) {
+        return getInvoicePdf(invoiceId.toString());
+    }
+
+    /**
+     * Fetch invoice pdf
+     * <p>
+     * Returns the invoice pdf as an inputStream
+     *
+     * @param invoiceId String Recurly Invoice ID
+     * @return the invoice pdf as an inputStream
+     */
+    public InputStream getInvoicePdf(final String invoiceId) {
         return doGETPdf(Invoices.INVOICES_RESOURCE + "/" + invoiceId);
     }
 
@@ -814,28 +833,65 @@ public class RecurlyClient {
     /**
      * Mark an invoice as paid successfully - Recurly Enterprise Feature
      *
+     * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
+     *
      * @param invoiceId Recurly Invoice ID
      */
+    @Deprecated
     public Invoice markInvoiceSuccessful(final Integer invoiceId) {
+        return markInvoiceSuccessful(invoiceId.toString());
+    }
+
+    /**
+     * Mark an invoice as paid successfully - Recurly Enterprise Feature
+     *
+     * @param invoiceId String Recurly Invoice ID
+     */
+    public Invoice markInvoiceSuccessful(final String invoiceId) {
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful", null, Invoice.class);
     }
 
     /**
      * Mark an invoice as failed collection
      *
+     * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
+     *
      * @param invoiceId Recurly Invoice ID
      */
+    @Deprecated
     public Invoice markInvoiceFailed(final Integer invoiceId) {
+        return markInvoiceFailed(invoiceId.toString());
+    }
+
+    /**
+     * Mark an invoice as failed collection
+     *
+     * @param invoiceId String Recurly Invoice ID
+     */
+    public Invoice markInvoiceFailed(final String invoiceId) {
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, Invoice.class);
     }
 
     /**
      * Enter an offline payment for a manual invoice (beta) - Recurly Enterprise Feature
      *
+     * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
+     *
      * @param invoiceId Recurly Invoice ID
      * @param payment   The external payment
      */
+    @Deprecated
     public Transaction enterOfflinePayment(final Integer invoiceId, final Transaction payment) {
+        return enterOfflinePayment(invoiceId.toString(), payment);
+    }
+
+    /**
+     * Enter an offline payment for a manual invoice (beta) - Recurly Enterprise Feature
+     *
+     * @param invoiceId String Recurly Invoice ID
+     * @param payment   The external payment
+     */
+    public Transaction enterOfflinePayment(final String invoiceId, final Transaction payment) {
         return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/transactions", payment, Transaction.class);
     }
 
@@ -1074,33 +1130,74 @@ public class RecurlyClient {
     /**
      * Lookup the first coupon redemption on an invoice.
      *
+     * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
+     *
      * @param invoiceNumber invoice number
      * @return the coupon redemption for this invoice on success, null otherwise
      */
+    @Deprecated
     public Redemption getCouponRedemptionByInvoice(final Integer invoiceNumber) {
-        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
+        return getCouponRedemptionByInvoice(invoiceNumber.toString());
+    }
+
+    /**
+     * Lookup the first coupon redemption on an invoice.
+     *
+     * @param invoiceId String invoice id
+     * @return the coupon redemption for this invoice on success, null otherwise
+     */
+    public Redemption getCouponRedemptionByInvoice(final String invoiceId) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + Redemption.REDEMPTION_RESOURCE,
                 Redemption.class);
+    }
+
+
+    /**
+     * Lookup all coupon redemptions on an invoice.
+     *
+     * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
+     *
+     * @param invoiceNumber invoice number
+     * @return the coupon redemptions for this invoice on success, null otherwise
+     */
+    @Deprecated
+    public Redemptions getCouponRedemptionsByInvoice(final Integer invoiceNumber) {
+        return getCouponRedemptionsByInvoice(invoiceNumber.toString(), new QueryParams());
     }
 
     /**
      * Lookup all coupon redemptions on an invoice.
      *
-     * @param invoiceNumber invoice number
+     * @param invoiceId String invoice id
      * @return the coupon redemptions for this invoice on success, null otherwise
      */
-    public Redemptions getCouponRedemptionsByInvoice(final Integer invoiceNumber) {
-        return getCouponRedemptionsByInvoice(invoiceNumber, new QueryParams());
+    public Redemptions getCouponRedemptionsByInvoice(final String invoiceId) {
+        return getCouponRedemptionsByInvoice(invoiceId, new QueryParams());
     }
 
     /**
      * Lookup all coupon redemptions on an invoice given query params.
      *
+     * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
+     *
      * @param invoiceNumber invoice number
      * @param params {@link QueryParams}
      * @return the coupon redemptions for this invoice on success, null otherwise
      */
+    @Deprecated
     public Redemptions getCouponRedemptionsByInvoice(final Integer invoiceNumber, final QueryParams params) {
-        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceNumber + Redemption.REDEMPTION_RESOURCE,
+        return getCouponRedemptionsByInvoice(invoiceNumber.toString(), params);
+    }
+
+    /**
+     * Lookup all coupon redemptions on an invoice given query params.
+     *
+     * @param invoiceId String invoice id
+     * @param params {@link QueryParams}
+     * @return the coupon redemptions for this invoice on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsByInvoice(final String invoiceId, final QueryParams params) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + Redemption.REDEMPTION_RESOURCE,
                 Redemptions.class, params);
     }
 
