@@ -677,9 +677,7 @@ public class RecurlyClient {
         if (state != null) params.put("state", state.getType());
         if (type != null) params.put("type", type.getType());
 
-        final String pathAndQuery = Transactions.TRANSACTIONS_RESOURCE + params.toString();
-
-        return doGET(pathAndQuery, Transactions.class);
+        return doGET(Transactions.TRANSACTIONS_RESOURCE, Transactions.class, params);
     }
 
     /**
