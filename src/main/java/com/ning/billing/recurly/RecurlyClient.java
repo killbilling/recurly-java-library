@@ -82,7 +82,7 @@ import com.ning.http.client.Response;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.io.CharSource;
 import com.google.common.io.Resources;
@@ -1612,8 +1612,8 @@ public class RecurlyClient {
                 }
             }
 
-            final String version = Objects.firstNonNull(getVersionFromGitRepositoryState(gitRepositoryState), defaultVersion);
-            final String javaVersion = Objects.firstNonNull(StandardSystemProperty.JAVA_VERSION.value(), defaultJavaVersion);
+            final String version = MoreObjects.firstNonNull(getVersionFromGitRepositoryState(gitRepositoryState), defaultVersion);
+            final String javaVersion = MoreObjects.firstNonNull(StandardSystemProperty.JAVA_VERSION.value(), defaultJavaVersion);
             return String.format("KillBill/%s; %s", version, javaVersion);
         } catch (final Exception e) {
             return String.format("KillBill/%s; %s", defaultVersion, defaultJavaVersion);
