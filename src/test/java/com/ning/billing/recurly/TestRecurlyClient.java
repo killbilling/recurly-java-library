@@ -30,6 +30,7 @@ import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
 import com.ning.billing.recurly.model.Adjustment;
+import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
@@ -1479,6 +1480,74 @@ public class TestRecurlyClient {
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
+        } finally {
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testLineItemInvoiceRefund() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Add some adjustments to the account
+            final Adjustment adjustmentData1 = new Adjustment();
+            adjustmentData1.setCurrency("USD");
+            adjustmentData1.setUnitAmountInCents(100);
+            adjustmentData1.setDescription("A description of an account adjustment1");
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData1);
+
+            final Adjustment adjustmentData2 = new Adjustment();
+            adjustmentData2.setCurrency("USD");
+            adjustmentData2.setUnitAmountInCents(100);
+            adjustmentData2.setDescription("A description of an account adjustment2");
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData2);
+
+            final Invoice invoiceData = new Invoice();
+            invoiceData.setCollectionMethod("automatic");
+
+            Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData);
+
+            Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
+
+            // wait for the invoice to be marked paid
+            // has to happen asynchronously on the server
+            Thread.sleep(5000);
+
+            // refetch the invoice
+            invoice = recurlyClient.getInvoice(invoice.getId());
+
+            final ArrayList<AdjustmentRefund> lineItems = new ArrayList<AdjustmentRefund>();
+
+            // let's just refund the first adjustment
+            // we can use "toAdjustmentRefund" on the adjustment to turn it
+            // into an AdjustmentRefund
+            final AdjustmentRefund adjustmentRefund = invoice.getLineItems().get(0).toAdjustmentRefund();
+
+            // we could change the quantity here or the prorating settings if we want, defaults to full quantity
+            // adjustmentRefund.setQuantity(1);
+            lineItems.add(adjustmentRefund);
+
+            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), lineItems, RefundApplyOrder.transaction);
+
+            Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
+
+            Assert.assertEquals(refundInvoice.getLineItems().size(), 1);
+            final Adjustment lineItem = refundInvoice.getLineItems().get(0);
+            Assert.assertEquals(lineItem.getQuantity(), new Integer(-1));
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
