@@ -794,7 +794,7 @@ public class RecurlyClient {
     }
 
     /**
-     * Refund an invoice given some adjustments
+     * Refund an invoice given an open amount
      * <p/>
      * Returns the refunded invoice
      *
