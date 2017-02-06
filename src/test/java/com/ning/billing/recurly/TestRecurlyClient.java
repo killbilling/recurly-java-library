@@ -40,6 +40,7 @@ import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
+import com.ning.billing.recurly.model.RefundApplyOrder;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
@@ -154,6 +155,7 @@ public class TestRecurlyClient {
 
             // Create a plan with addons
             final Plan plan = recurlyClient.createPlan(planData);
+            Thread.sleep(1000);  // TODO - can remove after Jan 18th 2017
             final List<AddOn> addons = new ArrayList<AddOn>();
             final int nbAddOns = 5;
             for (int i = 0; i < nbAddOns; i++) {
@@ -1022,6 +1024,7 @@ public class TestRecurlyClient {
         try {
             // Create an AddOn
             final Plan plan = recurlyClient.createPlan(planData);
+            Thread.sleep(1000);  // TODO - can remove after Jan 18th 2017
             AddOn addOnRecurly = recurlyClient.createPlanAddOn(plan.getPlanCode(), addOn);
 
             // Test the creation
@@ -1426,6 +1429,56 @@ public class TestRecurlyClient {
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
             Assert.assertNotNull(subscription.getHref());
+        } finally {
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testInvoiceRefund() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Add some adjustments to the account
+            final Adjustment adjustmentData1 = new Adjustment();
+            adjustmentData1.setCurrency("USD");
+            adjustmentData1.setUnitAmountInCents(100);
+            adjustmentData1.setDescription("A description of an account adjustment1");
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData1);
+
+            final Adjustment adjustmentData2 = new Adjustment();
+            adjustmentData2.setCurrency("USD");
+            adjustmentData2.setUnitAmountInCents(100);
+            adjustmentData2.setDescription("A description of an account adjustment2");
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData2);
+
+            final Invoice invoiceData = new Invoice();
+            invoiceData.setCollectionMethod("automatic");
+
+            final Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData);
+
+            Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
+
+            // wait for the invoice to be marked paid
+            // has to happen asynchronously on the server
+            Thread.sleep(5000);
+
+            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), 100, RefundApplyOrder.transaction);
+
+            Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
