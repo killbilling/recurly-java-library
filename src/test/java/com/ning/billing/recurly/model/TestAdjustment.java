@@ -39,6 +39,7 @@ public class TestAdjustment extends TestModelBase {
                                       "  <tax_in_cents type=\"integer\">0</tax_in_cents>\n" +
                                       "  <total_in_cents type=\"integer\">5000</total_in_cents>\n" +
                                       "  <currency>USD</currency>\n" +
+                                      "  <product_code>product123</product_code>\n" +
                                       "  <taxable type=\"boolean\">false</taxable>\n" +
                                       "  <start_date type=\"datetime\">2011-08-31T03:30:00Z</start_date>\n" +
                                       "  <end_date nil=\"nil\"></end_date>\n" +
@@ -58,6 +59,7 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals((int) adjustment.getTotalInCents(), 5000);
         Assert.assertEquals(adjustment.getCurrency(), "USD");
         Assert.assertEquals((boolean) adjustment.getTaxable(), false);
+        Assert.assertEquals(adjustment.getProductCode(), "product123");
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertNull(adjustment.getEndDate());
         Assert.assertEquals(adjustment.getCreatedAt(), new DateTime("2011-08-31T03:30:00Z"));

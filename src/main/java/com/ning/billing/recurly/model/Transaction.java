@@ -51,6 +51,9 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "recurring")
     private Boolean recurring;
 
+    @XmlElement(name = "product_code")
+    private String productCode;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -132,9 +135,11 @@ public class Transaction extends AbstractTransaction {
         return recurring;
     }
 
-    public void setRecurring(final Object recurring) {
-        this.recurring = booleanOrNull(recurring);
-    }
+    public void setRecurring(final Object recurring) { this.recurring = booleanOrNull(recurring); }
+
+    public String getProductCode() { return productCode; }
+
+    public void setProductCode(final Object productCode) { this.productCode = stringOrNull(productCode); }
 
     public DateTime getCreatedAt() {
         return createdAt;
@@ -188,6 +193,7 @@ public class Transaction extends AbstractTransaction {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", recurring=").append(recurring);
+        sb.append(", productCode=").append(productCode);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", details=").append(details);
         sb.append(", paymentMethod=").append(paymentMethod);
@@ -225,6 +231,9 @@ public class Transaction extends AbstractTransaction {
         if (recurring != null ? !recurring.equals(that.recurring) : that.recurring != null) {
             return false;
         }
+        if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
+            return false;
+        }
         if (subscription != null ? !subscription.equals(that.subscription) : that.subscription != null) {
             return false;
         }
@@ -257,6 +266,7 @@ public class Transaction extends AbstractTransaction {
                 taxInCents,
                 currency,
                 description,
+                productCode,
                 recurring,
                 createdAt,
                 updatedAt,
