@@ -65,6 +65,9 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
 
+    @XmlElement(name = "product_code")
+    private String productCode;
+
     @XmlElement(name = "start_date")
     private DateTime startDate;
 
@@ -184,6 +187,10 @@ public class Adjustment extends RecurlyObject {
         this.taxExempt = booleanOrNull(taxExempt);
     }
 
+    public String getProductCode() { return productCode; }
+
+    public void setProductCode(final Object productCode) { this.productCode = stringOrNull(productCode); }
+
     public DateTime getStartDate() {
         return startDate;
     }
@@ -241,6 +248,7 @@ public class Adjustment extends RecurlyObject {
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", taxable=").append(taxable);
+        sb.append(", productCode=").append(productCode);
         sb.append(", startDate=").append(startDate);
         sb.append(", endDate=").append(endDate);
         sb.append(", createdAt=").append(createdAt);
@@ -278,6 +286,9 @@ public class Adjustment extends RecurlyObject {
             return false;
         }
         if (origin != null ? !origin.equals(that.origin) : that.origin != null) {
+            return false;
+        }
+        if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
             return false;
         }
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
@@ -321,6 +332,7 @@ public class Adjustment extends RecurlyObject {
                 origin,
                 unitAmountInCents,
                 quantity,
+                productCode,
                 discountInCents,
                 taxInCents,
                 totalInCents,
