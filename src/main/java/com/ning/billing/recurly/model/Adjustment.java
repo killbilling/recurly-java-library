@@ -216,6 +216,14 @@ public class Adjustment extends RecurlyObject {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public AdjustmentRefund toAdjustmentRefund() {
+        final AdjustmentRefund adjustmentRefund = new AdjustmentRefund();
+        adjustmentRefund.setUuid(uuid);
+        adjustmentRefund.setQuantity(quantity);
+        adjustmentRefund.setProrate(false);
+        return adjustmentRefund;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();

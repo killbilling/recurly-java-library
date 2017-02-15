@@ -20,7 +20,9 @@ package com.ning.billing.recurly.model;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.List;
 
 @XmlRootElement(name = "invoice")
 public class InvoiceRefund extends RecurlyObject {
@@ -29,6 +31,10 @@ public class InvoiceRefund extends RecurlyObject {
 
     @XmlElement(name = "amount_in_cents")
     private Integer amountInCents;
+
+    @XmlElementWrapper(name = "line_items")
+    @XmlElement(name = "adjustment")
+    private List<AdjustmentRefund> lineItems;
 
     public void setRefundApplyOrder(final RefundApplyOrder refundApplyOrder) {
         this.refundApplyOrder = refundApplyOrder;
@@ -44,6 +50,14 @@ public class InvoiceRefund extends RecurlyObject {
 
     public Integer getAmountInCents() {
         return this.amountInCents;
+    }
+
+    public void setLineItems(final List<AdjustmentRefund> lineItems) {
+        this.lineItems = lineItems;
+    }
+
+    public List<AdjustmentRefund> getLineItems() {
+        return this.lineItems;
     }
 
     @Override

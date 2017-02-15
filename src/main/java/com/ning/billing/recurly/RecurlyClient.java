@@ -25,6 +25,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
@@ -41,6 +42,7 @@ import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
 import com.ning.billing.recurly.model.Adjustment;
+import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
@@ -805,6 +807,24 @@ public class RecurlyClient {
         final InvoiceRefund invoiceRefund = new InvoiceRefund();
         invoiceRefund.setRefundApplyOrder(order);
         invoiceRefund.setAmountInCents(amountInCents);
+
+        return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/refund", invoiceRefund, Invoice.class);
+    }
+
+    /**
+     * Refund an invoice given some line items
+     * <p/>
+     * Returns the refunded invoice
+     *
+     * @param invoiceId The id of the invoice to refund
+     * @param lineItems The list of adjustment refund objects
+     * @param order If credit line items exist on the invoice, this parameter specifies which refund method to use first
+     * @return the refunded invoice
+     */
+    public Invoice refundInvoice(final String invoiceId, List<AdjustmentRefund> lineItems, final RefundApplyOrder order) {
+        final InvoiceRefund invoiceRefund = new InvoiceRefund();
+        invoiceRefund.setRefundApplyOrder(order);
+        invoiceRefund.setLineItems(lineItems);
 
         return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/refund", invoiceRefund, Invoice.class);
     }
