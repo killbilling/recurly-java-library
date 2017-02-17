@@ -51,7 +51,6 @@ public class TestTransaction extends TestModelBase {
                                        "  <avs_result code=\"\" nil=\"nil\"></avs_result>" +
                                        "  <avs_result_street nil=\"nil\"></avs_result_street>" +
                                        "  <avs_result_postal nil=\"nil\"></avs_result_postal>" +
-                                       "  <product_code>product123</product_code>" +
                                        "  <created_at type=\"datetime\">2015-06-19T03:01:33Z</created_at>\n" +
                                        "  <updated_at type=\"datetime\">2015-06-19T03:01:33Z</updated_at>\n" +
                                        "  <details>\n" +
@@ -88,7 +87,6 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(transaction.getTest(), new Boolean(true));
         Assert.assertEquals(transaction.getVoidable(), new Boolean(true));
         Assert.assertEquals(transaction.getRefundable(), new Boolean(true));
-        Assert.assertEquals(transaction.getProductCode(), "product123");
         Assert.assertNull(transaction.getIpAddress());
         Assert.assertNull(transaction.getAvsResult());
         Assert.assertNull(transaction.getAvsResultPostal());

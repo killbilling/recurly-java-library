@@ -137,7 +137,7 @@ public class Transaction extends AbstractTransaction {
 
     public void setRecurring(final Object recurring) { this.recurring = booleanOrNull(recurring); }
 
-    public String getProductCode() { return productCode; }
+    protected String getProductCode() { return productCode; }
 
     public void setProductCode(final Object productCode) { this.productCode = stringOrNull(productCode); }
 
