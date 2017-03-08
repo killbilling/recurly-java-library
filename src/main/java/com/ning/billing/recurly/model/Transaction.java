@@ -69,6 +69,9 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "collected_at")
     private DateTime collectedAt;
 
+    @XmlElement(name = "gateway_type")
+    private String gatewayType;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);

@@ -99,6 +99,21 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "shipping_address")
     private ShippingAddresses shippingAddresses;
 
+    @XmlElement(name = "has_live_subscription")
+    private Boolean hasLiveSubscription;
+
+    @XmlElement(name = "has_active_subscription")
+    private Boolean hasActiveSubscription;
+
+    @XmlElement(name = "has_future_subscription")
+    private Boolean hasFutureSubscription;
+
+    @XmlElement(name = "has_canceled_subscription")
+    private Boolean hasCanceledSubscription;
+
+    @XmlElement(name = "has_past_due_invoice")
+    private Boolean hasPastDueInvoice;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -255,6 +270,46 @@ public class Account extends RecurlyObject {
 
     public void setTaxExempt(final Object taxExempt) {
         this.taxExempt = booleanOrNull(taxExempt);
+    }
+
+    public Boolean getHasLiveSubscription() {
+        return hasLiveSubscription;
+    }
+
+    protected void setHasLiveSubscription(final Object hasLiveSubscription) {
+        this.hasLiveSubscription = booleanOrNull(hasLiveSubscription);
+    }
+
+    public Boolean getHasActiveSubscription() {
+        return hasActiveSubscription;
+    }
+
+    protected void setHasActiveSubscription(final Object hasActiveSubscription) {
+        this.hasActiveSubscription = booleanOrNull(hasActiveSubscription);
+    }
+
+    public Boolean getHasFutureSubscription() {
+        return hasFutureSubscription;
+    }
+
+    protected void setHasFutureSubscription(final Object hasFutureSubscription) {
+        this.hasFutureSubscription = booleanOrNull(hasFutureSubscription);
+    }
+
+    public Boolean getHasCanceledSubscription() {
+        return hasCanceledSubscription;
+    }
+
+    protected void setHasCanceledSubscription(final Object hasCanceledSubscription) {
+        this.hasCanceledSubscription = booleanOrNull(hasCanceledSubscription);
+    }
+
+    public Boolean getHasPastDueInvoice() {
+        return hasPastDueInvoice;
+    }
+
+    protected void setHasPastDueInvoice(final Object hasPastDueInvoice) {
+        this.hasPastDueInvoice = booleanOrNull(hasPastDueInvoice);
     }
 
     public ShippingAddresses getShippingAddresses() {

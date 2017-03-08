@@ -77,6 +77,9 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "trial_interval_unit")
     private String trialIntervalUnit;
 
+    @XmlElement(name = "trial_requires_billing_info")
+    private Boolean trialRequiresBillingInfo;
+
     @XmlElement(name = "accounting_code")
     private String accountingCode;
 
@@ -200,6 +203,14 @@ public class Plan extends RecurlyObject {
 
     public void setTrialIntervalUnit(final Object trialIntervalUnit) {
         this.trialIntervalUnit = stringOrNull(trialIntervalUnit);
+    }
+
+    public Boolean getTrialRequiresBillingInfo() {
+        return this.trialRequiresBillingInfo;
+    }
+
+    public void setTrialRequiresBillingInfo(final Object trialRequiresBillingInfo) {
+        this.trialRequiresBillingInfo = booleanOrNull(trialRequiresBillingInfo);
     }
 
     public Integer getTrialIntervalLength() {

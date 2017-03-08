@@ -130,6 +130,12 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "gift_card")
     private GiftCard giftCard;
 
+    @XmlElement(name = "started_with_gift")
+    private Boolean startedWithGift;
+
+    @XmlElement(name = "converted_at")
+    private DateTime convertedAt;
+
     @XmlElement(name = "shipping_address")
     private ShippingAddress shippingAddress;
 
@@ -400,6 +406,22 @@ public class Subscription extends AbstractSubscription {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public Boolean getStartedWithGift() {
+        return this.startedWithGift;
+    }
+
+    public void setStartedWithGift(final Object startedWithGift) {
+        this.startedWithGift = booleanOrNull(startedWithGift);
+    }
+
+    public DateTime getConvertedAt() {
+        return this.getConvertedAt();
+    }
+
+    public void setConvertedAt(final Object convertedAt) {
+        this.convertedAt = dateTimeOrNull(convertedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -435,6 +457,8 @@ public class Subscription extends AbstractSubscription {
         sb.append(", taxRate=").append(taxRate);
         sb.append(", shippingAddress=").append(shippingAddress);
         sb.append(", shippingAddressId=").append(shippingAddressId);
+        sb.append(", startedWithGift=").append(startedWithGift);
+        sb.append(", convertedAt=").append(convertedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -456,6 +480,9 @@ public class Subscription extends AbstractSubscription {
             return false;
         }
         if (canceledAt != null ? canceledAt.compareTo(that.canceledAt) != 0 : that.canceledAt != null) {
+            return false;
+        }
+        if (convertedAt != null ? convertedAt.compareTo(that.convertedAt) != 0 : that.convertedAt != null) {
             return false;
         }
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
@@ -480,6 +507,9 @@ public class Subscription extends AbstractSubscription {
             return false;
         }
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
+            return false;
+        }
+        if (startedWithGift != null ? !startedWithGift.equals(that.startedWithGift) : that.startedWithGift != null) {
             return false;
         }
         if (state != null ? !state.equals(that.state) : that.state != null) {
@@ -580,7 +610,9 @@ public class Subscription extends AbstractSubscription {
                 shippingAddress,
                 shippingAddressId,
                 couponCode,
-                couponCodes
+                couponCodes,
+                convertedAt,
+                startedWithGift
         );
     }
 

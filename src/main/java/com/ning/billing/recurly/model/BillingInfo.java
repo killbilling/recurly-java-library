@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.common.base.Objects;
+import org.joda.time.DateTime;
 
 @XmlRootElement(name = "billing_info")
 public class BillingInfo extends RecurlyObject {
@@ -97,6 +98,12 @@ public class BillingInfo extends RecurlyObject {
 
     @XmlElement(name = "geo_code")
     private String geoCode;
+
+    @XmlElement(name = "created_at")
+    private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     /**
      * Account object associated to this BillingInfo
@@ -288,6 +295,22 @@ public class BillingInfo extends RecurlyObject {
 
     public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
 
+    public DateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(final Object createdAt) {
+        this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -312,6 +335,8 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", firstSix='").append(firstSix).append('\'');
         sb.append(", lastFour='").append(lastFour).append('\'');
         sb.append(", geoCode='").append(geoCode).append('\'');
+        sb.append(", createdAt='").append(createdAt).append('\'');
+        sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append('}');
         return sb.toString();
     }
