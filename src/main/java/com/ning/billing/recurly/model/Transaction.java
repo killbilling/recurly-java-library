@@ -72,6 +72,18 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "gateway_type")
     private String gatewayType;
 
+    @XmlElement(name = "origin")
+    private String origin;
+
+    @XmlElement(name = "approval_code")
+    private String approvalCode;
+
+    @XmlElement(name = "failure_type")
+    private String failureType;
+
+    @XmlElement(name = "gateway_error_codes")
+    private String gatewayErrorCodes;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -184,6 +196,45 @@ public class Transaction extends AbstractTransaction {
         this.collectedAt = dateTimeOrNull(collectedAt);
     }
 
+    public String getGatewayType() {
+        return this.gatewayType;
+    }
+
+    protected void setGatewayType(final Object gatewayType) {
+        this.gatewayType = stringOrNull(gatewayType);
+    }
+
+    public String getOrigin() {
+        return this.origin;
+    }
+
+    protected void setOrigin(final Object origin) {
+        this.origin = stringOrNull(origin);
+    }
+
+    public String getApprovalCode() {
+        return this.approvalCode;
+    }
+
+    protected void setApprovalCode(final Object approvalCode) {
+        this.approvalCode = stringOrNull(approvalCode);
+    }
+
+    public String getFailureType() {
+        return this.failureType;
+    }
+
+    protected void setFailureType(final Object failureType) {
+        this.failureType = stringOrNull(failureType);
+    }
+
+    public String getGatewayErrorCodes() {
+        return this.gatewayErrorCodes;
+    }
+
+    protected void setGatewayErrorCodes(final Object gatewayErrorCodes) {
+        this.gatewayErrorCodes = stringOrNull(gatewayErrorCodes);
+    }
 
     @Override
     public String toString() {

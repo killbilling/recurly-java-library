@@ -99,9 +99,6 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "geo_code")
     private String geoCode;
 
-    @XmlElement(name = "created_at")
-    private DateTime createdAt;
-
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
@@ -295,14 +292,6 @@ public class BillingInfo extends RecurlyObject {
 
     public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
 
-    public DateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(final Object createdAt) {
-        this.createdAt = dateTimeOrNull(createdAt);
-    }
-
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -335,7 +324,6 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", firstSix='").append(firstSix).append('\'');
         sb.append(", lastFour='").append(lastFour).append('\'');
         sb.append(", geoCode='").append(geoCode).append('\'');
-        sb.append(", createdAt='").append(createdAt).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append('}');
         return sb.toString();
@@ -408,6 +396,9 @@ public class BillingInfo extends RecurlyObject {
         if (geoCode != null ? !geoCode.equals(that.geoCode) : that.geoCode != null) {
             return false;
         }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
 
         return true;
     }
@@ -433,7 +424,8 @@ public class BillingInfo extends RecurlyObject {
                 year,
                 month,
                 firstSix,
-                lastFour
+                lastFour,
+                updatedAt
         );
     }
 }

@@ -343,6 +343,11 @@ public class Account extends RecurlyObject {
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", shippingAddresses=").append(shippingAddresses);
+        sb.append(", has_live_subscription=").append(hasLiveSubscription);
+        sb.append(", has_active_subscription=").append(hasActiveSubscription);
+        sb.append(", has_future_subscription=").append(hasFutureSubscription);
+        sb.append(", has_canceled_subscription=").append(hasCanceledSubscription);
+        sb.append(", has_past_due_invoice=").append(hasPastDueInvoice);
         sb.append('}');
         return sb.toString();
     }
@@ -379,6 +384,18 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (firstName != null ? !firstName.equals(account.firstName) : account.firstName != null) {
+            return false;
+        }
+        if (hasLiveSubscription != null ? !hasLiveSubscription.equals(account.hasLiveSubscription) : account.hasLiveSubscription != null) {
+            return false;
+        }
+        if (hasActiveSubscription != null ? !hasActiveSubscription.equals(account.hasActiveSubscription) : account.hasActiveSubscription != null) {
+            return false;
+        }
+        if (hasFutureSubscription != null ? !hasFutureSubscription.equals(account.hasFutureSubscription) : account.hasFutureSubscription != null) {
+            return false;
+        }
+        if (hasCanceledSubscription != null ? !hasCanceledSubscription.equals(account.hasCanceledSubscription) : account.hasCanceledSubscription != null) {
             return false;
         }
         if (href != null ? !href.equals(account.href) : account.href != null) {
@@ -432,6 +449,12 @@ public class Account extends RecurlyObject {
                 username,
                 email,
                 firstName,
+                hasLiveSubscription,
+                hasActiveSubscription,
+                hasCanceledSubscription,
+                hasFutureSubscription,
+                hasCanceledSubscription,
+                hasPastDueInvoice,
                 lastName,
                 companyName,
                 acceptLanguage,
