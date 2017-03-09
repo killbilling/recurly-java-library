@@ -415,7 +415,7 @@ public class Subscription extends AbstractSubscription {
     }
 
     public DateTime getConvertedAt() {
-        return this.getConvertedAt();
+        return this.convertedAt;
     }
 
     public void setConvertedAt(final Object convertedAt) {

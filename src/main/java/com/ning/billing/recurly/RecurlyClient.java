@@ -913,6 +913,15 @@ public class RecurlyClient {
     }
 
     /**
+     * Force collect an invoice
+     *
+     * @param invoiceId String Recurly Invoice ID
+     */
+    public Invoice forceCollectInvoice(final String invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/collect", null, Invoice.class);
+    }
+
+    /**
      * Enter an offline payment for a manual invoice (beta) - Recurly Enterprise Feature
      *
      * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
