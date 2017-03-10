@@ -222,6 +222,7 @@ public class TestRecurlyClient {
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setRemainingBillingCycles(0);
 
             // makes sure we have at least one subscription
             recurlyClient.createSubscription(subscriptionData);
@@ -263,6 +264,7 @@ public class TestRecurlyClient {
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setRemainingBillingCycles(null);
 
             //Add some adjustments to the account's open invoice
             final Adjustment adjustmentData = new Adjustment();
@@ -610,6 +612,7 @@ public class TestRecurlyClient {
             subscriptionData.setAccount(accountData);
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setRemainingBillingCycles(2);
             // Apply a coupon at the time of subscription creation
             subscriptionData.setCouponCode(couponData.getCouponCode());
             // Create some notes on the subscription
@@ -628,6 +631,7 @@ public class TestRecurlyClient {
             } else {
                 Assert.assertEquals(subscriptionPreview.getQuantity(), subscriptionData.getQuantity());
             }
+            Assert.assertEquals(subscriptionPreview.getRemainingBillingCycles(), subscriptionData.getRemainingBillingCycles());
 
             // Subscribe the user to the plan
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
@@ -642,6 +646,7 @@ public class TestRecurlyClient {
             } else {
                 Assert.assertEquals(subscription.getQuantity(), subscriptionData.getQuantity());
             }
+            Assert.assertEquals(subscription.getRemainingBillingCycles(), subscriptionData.getRemainingBillingCycles());
 
             // Test lookup for subscription
             final Subscription sub1 = recurlyClient.getSubscription(subscription.getUuid());

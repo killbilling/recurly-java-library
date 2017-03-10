@@ -71,6 +71,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "expires_at")
     private DateTime expiresAt;
 
+    @XmlElement(name = "remaining_billing_cycles")
+    private Integer remainingBillingCycles;
+
     @XmlElement(name = "current_period_started_at")
     private DateTime currentPeriodStartedAt;
 
@@ -243,6 +246,14 @@ public class Subscription extends AbstractSubscription {
         return currentPeriodStartedAt;
     }
 
+    public Integer getRemainingBillingCycles() {
+        return remainingBillingCycles;
+    }
+
+    public void setRemainingBillingCycles(Integer remainingBillingCycles) {
+        this.remainingBillingCycles = remainingBillingCycles;
+    }
+
     public void setCurrentPeriodStartedAt(final Object currentPeriodStartedAt) {
         this.currentPeriodStartedAt = dateTimeOrNull(currentPeriodStartedAt);
     }
@@ -314,7 +325,7 @@ public class Subscription extends AbstractSubscription {
     public DateTime getFirstRenewalDate() {
         return firstRenewalDate;
     }
-    
+
     public String getCustomerNotes() {
         return customerNotes;
     }
@@ -322,7 +333,7 @@ public class Subscription extends AbstractSubscription {
     public void setCustomerNotes(Object customerNotes) {
         this.customerNotes = stringOrNull(customerNotes);
     }
-    
+
     public String getTermsAndConditions() {
         return termsAndConditions;
     }
@@ -406,6 +417,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", canceledAt=").append(canceledAt);
         sb.append(", expiresAt=").append(expiresAt);
+        sb.append(", remainingBillingCycles=").append(remainingBillingCycles);
         sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
         sb.append(", currentPeriodEndsAt=").append(currentPeriodEndsAt);
         sb.append(", trialStartedAt=").append(trialStartedAt);
@@ -459,6 +471,9 @@ public class Subscription extends AbstractSubscription {
             return false;
         }
         if (expiresAt != null ? expiresAt.compareTo(that.expiresAt) != 0 : that.expiresAt != null) {
+            return false;
+        }
+        if (remainingBillingCycles != null ? remainingBillingCycles.compareTo(that.remainingBillingCycles) != 0 : that.remainingBillingCycles != null) {
             return false;
         }
         if (plan != null ? !plan.equals(that.plan) : that.plan != null) {
@@ -545,6 +560,7 @@ public class Subscription extends AbstractSubscription {
                 updatedAt,
                 canceledAt,
                 expiresAt,
+                remainingBillingCycles,
                 currentPeriodStartedAt,
                 currentPeriodEndsAt,
                 trialStartedAt,
