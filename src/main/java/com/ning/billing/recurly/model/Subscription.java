@@ -250,8 +250,8 @@ public class Subscription extends AbstractSubscription {
         return remainingBillingCycles;
     }
 
-    public void setRemainingBillingCycles(Integer remainingBillingCycles) {
-        this.remainingBillingCycles = remainingBillingCycles;
+    public void setRemainingBillingCycles(final Object remainingBillingCycles) {
+        this.remainingBillingCycles = integerOrNull(remainingBillingCycles);
     }
 
     public void setCurrentPeriodStartedAt(final Object currentPeriodStartedAt) {
