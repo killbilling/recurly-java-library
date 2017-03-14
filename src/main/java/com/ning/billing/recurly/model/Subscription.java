@@ -473,7 +473,7 @@ public class Subscription extends AbstractSubscription {
         if (expiresAt != null ? expiresAt.compareTo(that.expiresAt) != 0 : that.expiresAt != null) {
             return false;
         }
-        if (remainingBillingCycles != null ? remainingBillingCycles.compareTo(that.remainingBillingCycles) != 0 : that.remainingBillingCycles != null) {
+        if (remainingBillingCycles != null ? !remainingBillingCycles.equals(that.remainingBillingCycles) : that.remainingBillingCycles != null) {
             return false;
         }
         if (plan != null ? !plan.equals(that.plan) : that.plan != null) {
