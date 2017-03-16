@@ -75,6 +75,9 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "origin")
     private String origin;
 
+    @XmlElement(name = "message")
+    private String message;
+
     @XmlElement(name = "approval_code")
     private String approvalCode;
 
@@ -212,6 +215,12 @@ public class Transaction extends AbstractTransaction {
         this.origin = stringOrNull(origin);
     }
 
+    public String getMessage() { return this.message; }
+
+    protected void setMessage(final Object message) {
+        this.message = stringOrNull(message);
+    }
+
     public String getApprovalCode() {
         return this.approvalCode;
     }
@@ -253,6 +262,11 @@ public class Transaction extends AbstractTransaction {
         sb.append(", paymentMethod=").append(paymentMethod);
         sb.append(", collectedAt=").append(collectedAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", origin=").append(origin);
+        sb.append(", gatewayType=").append(gatewayType);
+        sb.append(", message=").append(message);
+        sb.append(", failureType=").append(failureType);
+        sb.append(", approvalCode=").append(approvalCode);
         sb.append('}');
         return sb.toString();
     }
@@ -304,6 +318,21 @@ public class Transaction extends AbstractTransaction {
             return false;
         }
         if (collectedAt != null ? collectedAt.compareTo(that.collectedAt) != 0 : that.collectedAt != null) {
+            return false;
+        }
+        if (origin != null ? !origin.equals(that.origin) : that.origin != null) {
+            return false;
+        }
+        if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) {
+            return false;
+        }
+        if (failureType != null ? !failureType.equals(that.failureType) : that.failureType != null) {
+            return false;
+        }
+        if (gatewayType != null ? !gatewayType.equals(that.gatewayType) : that.gatewayType != null) {
+            return false;
+        }
+        if (gatewayErrorCodes != null ? !gatewayErrorCodes.equals(that.gatewayErrorCodes) : that.gatewayErrorCodes != null) {
             return false;
         }
 

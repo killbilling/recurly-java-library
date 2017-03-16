@@ -343,11 +343,11 @@ public class Account extends RecurlyObject {
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", shippingAddresses=").append(shippingAddresses);
-        sb.append(", has_live_subscription=").append(hasLiveSubscription);
-        sb.append(", has_active_subscription=").append(hasActiveSubscription);
-        sb.append(", has_future_subscription=").append(hasFutureSubscription);
-        sb.append(", has_canceled_subscription=").append(hasCanceledSubscription);
-        sb.append(", has_past_due_invoice=").append(hasPastDueInvoice);
+        sb.append(", hasLiveSubscription=").append(hasLiveSubscription);
+        sb.append(", hasActiveSubscription=").append(hasActiveSubscription);
+        sb.append(", hasFutureSubscription=").append(hasFutureSubscription);
+        sb.append(", hasCanceledSubscription=").append(hasCanceledSubscription);
+        sb.append(", hasPastDueInvoice=").append(hasPastDueInvoice);
         sb.append('}');
         return sb.toString();
     }
@@ -453,7 +453,6 @@ public class Account extends RecurlyObject {
                 hasActiveSubscription,
                 hasCanceledSubscription,
                 hasFutureSubscription,
-                hasCanceledSubscription,
                 hasPastDueInvoice,
                 lastName,
                 companyName,

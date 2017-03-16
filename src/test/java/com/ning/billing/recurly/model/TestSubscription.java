@@ -66,6 +66,8 @@ public class TestSubscription extends TestModelBase {
                                         "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                                         "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
+                                        "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
+                                        "  <converted_at type=\"datetime\">2017-06-27T00:00:00Z</converted_at>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
                                         "  <coupon_codes type=\"array\">\n" +
@@ -126,6 +128,8 @@ public class TestSubscription extends TestModelBase {
                                         "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
+                                        "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
+                                        "  <converted_at type=\"datetime\">2017-06-27T00:00:00Z</converted_at>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "    <subscription_add_on>\n" +
                                         "      <add_on_code>extra_users</add_on_code>\n" +
@@ -229,6 +233,8 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getTaxType(), "usst");
         Assert.assertEquals(subscription.getTaxRegion(), "CA");
         Assert.assertEquals(subscription.getTaxRate(), new BigDecimal("0.0875"));
+        Assert.assertEquals(subscription.getConvertedAt(), new DateTime("2017-06-27T00:00:00Z"));
+        Assert.assertTrue(subscription.getStartedWithGift());
 
         return subscription;
     }

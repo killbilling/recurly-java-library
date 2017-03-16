@@ -39,6 +39,7 @@ public class TestCoupon extends TestModelBase {
         final String couponData = 
                 "<coupon href=\"https://api.recurly.com/v2/coupons/f8028\">" +
                     "<redemptions href=\"https://api.recurly.com/v2/coupons/f8028/redemptions\"/>" +
+                    "<id type=\"integer\">1234567890</id>" +
                     "<coupon_code>f8028</coupon_code>" +
                     "<name>t</name>" +
                     "<state>redeemable</state>" +
@@ -91,6 +92,7 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getRedemptionResource(), RedemptionResource.account);
         assertEquals(coupon.getMaxRedemptionsPerAccount().intValue(), 1);
         assertEquals(coupon.getType(), Type.single_code);
+        assertEquals(coupon.getId(), new Long(1234567890));
     }
 
     @Test(groups = "fast", description = "https://github.com/killbilling/recurly-java-library/issues/162")
