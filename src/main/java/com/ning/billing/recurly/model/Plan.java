@@ -304,6 +304,7 @@ public class Plan extends RecurlyObject {
         sb.append(", planIntervalLength=").append(planIntervalLength);
         sb.append(", trialIntervalLength=").append(trialIntervalLength);
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
+        sb.append(", trialRequiresBillingInfo='").append(trialRequiresBillingInfo).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
@@ -379,6 +380,9 @@ public class Plan extends RecurlyObject {
         if (trialIntervalUnit != null ? !trialIntervalUnit.equals(plan.trialIntervalUnit) : plan.trialIntervalUnit != null) {
             return false;
         }
+        if (trialRequiresBillingInfo != null ? !trialRequiresBillingInfo.equals(plan.trialRequiresBillingInfo) : plan.trialRequiresBillingInfo != null) {
+            return false;
+        }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(plan.unitAmountInCents) : plan.unitAmountInCents != null) {
             return false;
         }
@@ -416,7 +420,8 @@ public class Plan extends RecurlyObject {
                 unitAmountInCents,
                 setupFeeInCents,
                 revenueScheduleType,
-                setupFeeRevenueScheduleType
+                setupFeeRevenueScheduleType,
+                trialRequiresBillingInfo
         );
     }
 }

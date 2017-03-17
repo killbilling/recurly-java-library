@@ -425,7 +425,8 @@ public class BillingInfo extends RecurlyObject {
                 month,
                 firstSix,
                 lastFour,
-                updatedAt
+                updatedAt,
+                geoCode
         );
     }
 }

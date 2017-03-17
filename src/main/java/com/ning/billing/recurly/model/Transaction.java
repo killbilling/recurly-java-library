@@ -267,6 +267,7 @@ public class Transaction extends AbstractTransaction {
         sb.append(", message=").append(message);
         sb.append(", failureType=").append(failureType);
         sb.append(", approvalCode=").append(approvalCode);
+        sb.append(", gatewayErrorCodes=").append(gatewayErrorCodes);
         sb.append('}');
         return sb.toString();
     }
@@ -335,6 +336,9 @@ public class Transaction extends AbstractTransaction {
         if (gatewayErrorCodes != null ? !gatewayErrorCodes.equals(that.gatewayErrorCodes) : that.gatewayErrorCodes != null) {
             return false;
         }
+        if (message != null ? !message.equals(that.message) : that.message != null) {
+            return false;
+        }
 
         return true;
     }
@@ -353,7 +357,13 @@ public class Transaction extends AbstractTransaction {
                 recurring,
                 createdAt,
                 updatedAt,
-                details
+                details,
+                message,
+                gatewayType,
+                gatewayErrorCodes,
+                origin,
+                approvalCode,
+                failureType
         );
     }
 }
