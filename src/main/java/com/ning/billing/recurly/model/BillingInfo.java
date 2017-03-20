@@ -22,6 +22,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.google.common.base.Objects;
+import org.joda.time.DateTime;
 
 @XmlRootElement(name = "billing_info")
 public class BillingInfo extends RecurlyObject {
@@ -95,6 +96,11 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "token_id")
     private String tokenId;
 
+    @XmlElement(name = "geo_code")
+    private String geoCode;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     /**
      * Account object associated to this BillingInfo
@@ -282,6 +288,18 @@ public class BillingInfo extends RecurlyObject {
         this.tokenId = tokenId;
     }
 
+    public String getGeoCode() { return geoCode; }
+
+    public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -305,6 +323,8 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", month=").append(month);
         sb.append(", firstSix='").append(firstSix).append('\'');
         sb.append(", lastFour='").append(lastFour).append('\'');
+        sb.append(", geoCode='").append(geoCode).append('\'');
+        sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -373,6 +393,12 @@ public class BillingInfo extends RecurlyObject {
         if (zip != null ? !zip.equals(that.zip) : that.zip != null) {
             return false;
         }
+        if (geoCode != null ? !geoCode.equals(that.geoCode) : that.geoCode != null) {
+            return false;
+        }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
 
         return true;
     }
@@ -398,7 +424,9 @@ public class BillingInfo extends RecurlyObject {
                 year,
                 month,
                 firstSix,
-                lastFour
+                lastFour,
+                updatedAt,
+                geoCode
         );
     }
 }

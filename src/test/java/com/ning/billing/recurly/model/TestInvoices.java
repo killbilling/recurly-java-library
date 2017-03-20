@@ -39,6 +39,10 @@ public class TestInvoices extends TestModelBase {
                                     + "    <tax_in_cents type=\"integer\">0</tax_in_cents>\n"
                                     + "    <total_in_cents type=\"integer\">1200</total_in_cents>\n"
                                     + "    <currency>USD</currency>\n"
+                                    + "    <subtotal_after_discount_in_cents type=\"integer\">300</subtotal_after_discount_in_cents>\n"
+                                    + "    <attempt_next_collection_at type=\"datetime\">2017-08-31T00:00:00Z</attempt_next_collection_at>\n"
+                                    + "    <recovery_reason>Reason</recovery_reason>\n"
+                                    + "    <tax_types nil=\"nil\"></tax_types>"
                                     + "    <created_at type=\"datetime\">2011-08-25T12:00:00Z</created_at>\n"
                                     + "    <line_items type=\"array\">\n"
                                     + "      <adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n"
@@ -83,5 +87,9 @@ public class TestInvoices extends TestModelBase {
         Assert.assertNotNull(invoice.getLineItems());
         Assert.assertEquals(invoice.getLineItems().size(), 1);
         Assert.assertEquals(invoice.getTransactions().size(), 0);
+        Assert.assertEquals(invoice.getSubtotalAfterDiscountInCents(), new Integer(300));
+        Assert.assertEquals(invoice.getAttemptNextCollectionAt(), new DateTime("2017-08-31T00:00:00Z"));
+        Assert.assertEquals(invoice.getRecoveryReason(), "Reason");
+        Assert.assertNull(invoice.getTaxType());
     }
 }

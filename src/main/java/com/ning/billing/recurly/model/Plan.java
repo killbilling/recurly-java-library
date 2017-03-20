@@ -77,6 +77,9 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "trial_interval_unit")
     private String trialIntervalUnit;
 
+    @XmlElement(name = "trial_requires_billing_info")
+    private Boolean trialRequiresBillingInfo;
+
     @XmlElement(name = "accounting_code")
     private String accountingCode;
 
@@ -202,6 +205,14 @@ public class Plan extends RecurlyObject {
         this.trialIntervalUnit = stringOrNull(trialIntervalUnit);
     }
 
+    public Boolean getTrialRequiresBillingInfo() {
+        return this.trialRequiresBillingInfo;
+    }
+
+    public void setTrialRequiresBillingInfo(final Object trialRequiresBillingInfo) {
+        this.trialRequiresBillingInfo = booleanOrNull(trialRequiresBillingInfo);
+    }
+
     public Integer getTrialIntervalLength() {
         return trialIntervalLength;
     }
@@ -293,6 +304,7 @@ public class Plan extends RecurlyObject {
         sb.append(", planIntervalLength=").append(planIntervalLength);
         sb.append(", trialIntervalLength=").append(trialIntervalLength);
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
+        sb.append(", trialRequiresBillingInfo='").append(trialRequiresBillingInfo).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
@@ -368,6 +380,9 @@ public class Plan extends RecurlyObject {
         if (trialIntervalUnit != null ? !trialIntervalUnit.equals(plan.trialIntervalUnit) : plan.trialIntervalUnit != null) {
             return false;
         }
+        if (trialRequiresBillingInfo != null ? !trialRequiresBillingInfo.equals(plan.trialRequiresBillingInfo) : plan.trialRequiresBillingInfo != null) {
+            return false;
+        }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(plan.unitAmountInCents) : plan.unitAmountInCents != null) {
             return false;
         }
@@ -405,7 +420,8 @@ public class Plan extends RecurlyObject {
                 unitAmountInCents,
                 setupFeeInCents,
                 revenueScheduleType,
-                setupFeeRevenueScheduleType
+                setupFeeRevenueScheduleType,
+                trialRequiresBillingInfo
         );
     }
 }

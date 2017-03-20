@@ -48,6 +48,11 @@ public class TestAccount extends TestModelBase {
                                    "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
                                    "  <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
                                    "  <updated_at type=\"datetime\">2011-10-25T12:00:00</updated_at>\n" +
+                                   "  <has_live_subscription type=\"boolean\">true</has_live_subscription>\n" +
+                                   "  <has_active_subscription type=\"boolean\">true</has_active_subscription>\n" +
+                                   "  <has_future_subscription type=\"boolean\">false</has_future_subscription>\n" +
+                                   "  <has_canceled_subscription type=\"boolean\">false</has_canceled_subscription>\n" +
+                                   "  <has_past_due_invoice type=\"boolean\">false</has_past_due_invoice>\n" +
                                    "  <address>\n" +
                                    "      <address1>123 Main St.</address1>\n" +
                                    "      <address2 nil=\"nil\"></address2>\n" +
@@ -99,6 +104,11 @@ public class TestAccount extends TestModelBase {
         Assert.assertEquals(account.getAddress().getCountry(), "US");
         Assert.assertFalse(account.getTaxExempt());
         Assert.assertNull(account.getAddress().getPhone());
+        Assert.assertTrue(account.getHasLiveSubscription());
+        Assert.assertTrue(account.getHasActiveSubscription());
+        Assert.assertFalse(account.getHasFutureSubscription());
+        Assert.assertFalse(account.getHasCanceledSubscription());
+        Assert.assertFalse(account.getHasPastDueInvoice());
     }
 
 }

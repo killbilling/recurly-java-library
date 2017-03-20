@@ -89,6 +89,15 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
+    @XmlElement(name = "subtotal_after_discount_in_cents")
+    private Integer subtotalAfterDiscountInCents;
+
+    @XmlElement(name = "attempt_next_collection_at")
+    private DateTime attemptNextCollectionAt;
+
+    @XmlElement(name = "recovery_reason")
+    private String recoveryReason;
+
     @XmlElementWrapper(name = "line_items")
     @XmlElement(name = "adjustment")
     private Adjustments lineItems;
@@ -280,6 +289,30 @@ public class Invoice extends RecurlyObject {
         this.netTerms = integerOrNull(netTerms);
     }
 
+    public Integer getSubtotalAfterDiscountInCents() {
+        return this.subtotalAfterDiscountInCents;
+    }
+
+    public void setSubtotalAfterDiscountInCents(final Object subtotalAfterDiscountInCents) {
+        this.subtotalAfterDiscountInCents = integerOrNull(subtotalAfterDiscountInCents);
+    }
+
+    public DateTime getAttemptNextCollectionAt() {
+        return this.attemptNextCollectionAt;
+    }
+
+    public void setAttemptNextCollectionAt(final Object attemptNextCollectionAt) {
+        this.attemptNextCollectionAt = dateTimeOrNull(attemptNextCollectionAt);
+    }
+
+    public String getRecoveryReason() {
+        return this.recoveryReason;
+    }
+
+    public void setRecoveryReason(final Object recoveryReason) {
+        this.recoveryReason = stringOrNull(recoveryReason);
+    }
+
     public Adjustments getLineItems() {
         return lineItems;
     }
@@ -319,6 +352,9 @@ public class Invoice extends RecurlyObject {
         sb.append(", closedAt=").append(closedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", netTerms=").append(netTerms);
+        sb.append(", subtotalAfterDiscountInCents=").append(subtotalAfterDiscountInCents);
+        sb.append(", attemptNextCollectionAt=").append(attemptNextCollectionAt);
+        sb.append(", recoveryReason=").append(recoveryReason);
         sb.append(", lineItems=").append(lineItems);
         sb.append(", transactions=").append(transactions);
         sb.append('}');
@@ -333,6 +369,9 @@ public class Invoice extends RecurlyObject {
         final Invoice invoice = (Invoice) o;
 
         if (account != null ? !account.equals(invoice.account) : invoice.account != null) {
+            return false;
+        }
+        if (attemptNextCollectionAt != null ? attemptNextCollectionAt.compareTo(invoice.attemptNextCollectionAt) != 0 : invoice.attemptNextCollectionAt != null) {
             return false;
         }
         if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
@@ -365,7 +404,13 @@ public class Invoice extends RecurlyObject {
         if (poNumber != null ? !poNumber.equals(invoice.poNumber) : invoice.poNumber != null) {
             return false;
         }
+        if (recoveryReason != null ? !recoveryReason.equals(invoice.recoveryReason) : invoice.recoveryReason != null) {
+            return false;
+        }
         if (state != null ? !state.equals(invoice.state) : invoice.state != null) {
+            return false;
+        }
+        if (subtotalAfterDiscountInCents != null ? !subtotalAfterDiscountInCents.equals(invoice.subtotalAfterDiscountInCents) : invoice.subtotalAfterDiscountInCents != null) {
             return false;
         }
         if (subtotalInCents != null ? !subtotalInCents.equals(invoice.subtotalInCents) : invoice.subtotalInCents != null) {
@@ -425,6 +470,9 @@ public class Invoice extends RecurlyObject {
                 closedAt,
                 collectionMethod,
                 netTerms,
+                subtotalAfterDiscountInCents,
+                attemptNextCollectionAt,
+                recoveryReason,
                 lineItems,
                 transactions
         );

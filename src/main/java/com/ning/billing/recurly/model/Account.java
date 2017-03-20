@@ -99,6 +99,21 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "shipping_address")
     private ShippingAddresses shippingAddresses;
 
+    @XmlElement(name = "has_live_subscription")
+    private Boolean hasLiveSubscription;
+
+    @XmlElement(name = "has_active_subscription")
+    private Boolean hasActiveSubscription;
+
+    @XmlElement(name = "has_future_subscription")
+    private Boolean hasFutureSubscription;
+
+    @XmlElement(name = "has_canceled_subscription")
+    private Boolean hasCanceledSubscription;
+
+    @XmlElement(name = "has_past_due_invoice")
+    private Boolean hasPastDueInvoice;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -257,6 +272,46 @@ public class Account extends RecurlyObject {
         this.taxExempt = booleanOrNull(taxExempt);
     }
 
+    public Boolean getHasLiveSubscription() {
+        return hasLiveSubscription;
+    }
+
+    protected void setHasLiveSubscription(final Object hasLiveSubscription) {
+        this.hasLiveSubscription = booleanOrNull(hasLiveSubscription);
+    }
+
+    public Boolean getHasActiveSubscription() {
+        return hasActiveSubscription;
+    }
+
+    protected void setHasActiveSubscription(final Object hasActiveSubscription) {
+        this.hasActiveSubscription = booleanOrNull(hasActiveSubscription);
+    }
+
+    public Boolean getHasFutureSubscription() {
+        return hasFutureSubscription;
+    }
+
+    protected void setHasFutureSubscription(final Object hasFutureSubscription) {
+        this.hasFutureSubscription = booleanOrNull(hasFutureSubscription);
+    }
+
+    public Boolean getHasCanceledSubscription() {
+        return hasCanceledSubscription;
+    }
+
+    protected void setHasCanceledSubscription(final Object hasCanceledSubscription) {
+        this.hasCanceledSubscription = booleanOrNull(hasCanceledSubscription);
+    }
+
+    public Boolean getHasPastDueInvoice() {
+        return hasPastDueInvoice;
+    }
+
+    protected void setHasPastDueInvoice(final Object hasPastDueInvoice) {
+        this.hasPastDueInvoice = booleanOrNull(hasPastDueInvoice);
+    }
+
     public ShippingAddresses getShippingAddresses() {
         return shippingAddresses;
     }
@@ -288,6 +343,11 @@ public class Account extends RecurlyObject {
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", shippingAddresses=").append(shippingAddresses);
+        sb.append(", hasLiveSubscription=").append(hasLiveSubscription);
+        sb.append(", hasActiveSubscription=").append(hasActiveSubscription);
+        sb.append(", hasFutureSubscription=").append(hasFutureSubscription);
+        sb.append(", hasCanceledSubscription=").append(hasCanceledSubscription);
+        sb.append(", hasPastDueInvoice=").append(hasPastDueInvoice);
         sb.append('}');
         return sb.toString();
     }
@@ -324,6 +384,18 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (firstName != null ? !firstName.equals(account.firstName) : account.firstName != null) {
+            return false;
+        }
+        if (hasLiveSubscription != null ? !hasLiveSubscription.equals(account.hasLiveSubscription) : account.hasLiveSubscription != null) {
+            return false;
+        }
+        if (hasActiveSubscription != null ? !hasActiveSubscription.equals(account.hasActiveSubscription) : account.hasActiveSubscription != null) {
+            return false;
+        }
+        if (hasFutureSubscription != null ? !hasFutureSubscription.equals(account.hasFutureSubscription) : account.hasFutureSubscription != null) {
+            return false;
+        }
+        if (hasCanceledSubscription != null ? !hasCanceledSubscription.equals(account.hasCanceledSubscription) : account.hasCanceledSubscription != null) {
             return false;
         }
         if (href != null ? !href.equals(account.href) : account.href != null) {
@@ -377,6 +449,11 @@ public class Account extends RecurlyObject {
                 username,
                 email,
                 firstName,
+                hasLiveSubscription,
+                hasActiveSubscription,
+                hasCanceledSubscription,
+                hasFutureSubscription,
+                hasPastDueInvoice,
                 lastName,
                 companyName,
                 acceptLanguage,

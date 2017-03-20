@@ -66,6 +66,9 @@ public class ShippingAddress extends RecurlyObject {
     @XmlElement(name = "phone")
     private String phone;
 
+    @XmlElement(name = "geo_code")
+    private String geoCode;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -176,6 +179,10 @@ public class ShippingAddress extends RecurlyObject {
         this.email = stringOrNull(email);
     }
 
+    public String getGeoCode() { return geoCode; }
+
+    public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -210,6 +217,7 @@ public class ShippingAddress extends RecurlyObject {
         sb.append(", state=").append(state);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", zip=").append(zip);
+        sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -263,6 +271,9 @@ public class ShippingAddress extends RecurlyObject {
         if (zip != null ? !zip.equals(that.zip) : that.zip != null) {
             return false;
         }
+        if (geoCode != null ? !geoCode.equals(that.geoCode) : that.geoCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -283,7 +294,8 @@ public class ShippingAddress extends RecurlyObject {
                 nickname,
                 phone,
                 state,
-                zip
+                zip,
+                geoCode
         );
     }
 }

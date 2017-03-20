@@ -59,6 +59,9 @@ public class Coupon extends RecurlyObject {
     @XmlTransient
     public static final String COUPON_RESOURCE = "/coupons";
 
+    @XmlElement(name = "id")
+    private Long id;
+
     @XmlElement(name = "name")
     private String name;
 
@@ -209,6 +212,14 @@ public class Coupon extends RecurlyObject {
      */
     @XmlElement(name = "unique_code_template")
     private String uniqueCodeTemplate;
+
+    public void setId(final Object id) {
+        this.id = longOrNull(id);
+    }
+
+    public Long getId() {
+        return this.id;
+    }
 
     public String getState() {
         return state;
@@ -450,6 +461,7 @@ public class Coupon extends RecurlyObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("Coupon");
         sb.append("{name='").append(name).append('\'');
+        sb.append(", id=").append(id);
         sb.append(", couponCode='").append(couponCode).append('\'');
         sb.append(", discountType='").append(discountType).append('\'');
         sb.append(", discountPercent='").append(discountPercent).append('\'');
@@ -494,6 +506,9 @@ public class Coupon extends RecurlyObject {
             return false;
         }
         if (duration != null ? !duration.equals(coupon.duration) : coupon.duration != null) {
+            return false;
+        }
+        if (id != null ? !id.equals(coupon.id) : coupon.id != null) {
             return false;
         }
         if (invoiceDescription != null ? !invoiceDescription.equals(coupon.invoiceDescription) : coupon.invoiceDescription != null) {
@@ -552,6 +567,7 @@ public class Coupon extends RecurlyObject {
                 discountPercent,
                 discountInCents,
                 duration,
+                id,
                 invoiceDescription,
                 redeemByDate,
                 singleUse,
