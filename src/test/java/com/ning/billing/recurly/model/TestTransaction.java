@@ -55,8 +55,6 @@ public class TestTransaction extends TestModelBase {
                                        "  <origin>api</origin>\n" +
                                        "  <message>Successful test transaction</message>\n" +
                                        "  <approval_code>P1234577Q</approval_code>\n" +
-                                       "  <failure_type nil=\"nil\"></failure_type>\n" +
-                                       "  <gateway_error_codes nil=\"nil\"></gateway_error_codes>" +
                                        "  <created_at type=\"datetime\">2015-06-19T03:01:33Z</created_at>\n" +
                                        "  <updated_at type=\"datetime\">2015-06-19T03:01:33Z</updated_at>\n" +
                                        "  <details>\n" +
@@ -103,8 +101,6 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(transaction.getGatewayType(), "test");
         Assert.assertEquals(transaction.getOrigin(), "api");
         Assert.assertEquals(transaction.getApprovalCode(), "P1234577Q");
-        Assert.assertNull(transaction.getFailureType());
-        Assert.assertNull(transaction.getGatewayErrorCodes());
 
         final Account account = transaction.getDetails().getAccount();
         Assert.assertEquals(account.getAccountCode(), "1");

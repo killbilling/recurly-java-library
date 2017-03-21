@@ -81,12 +81,6 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "approval_code")
     private String approvalCode;
 
-    @XmlElement(name = "failure_type")
-    private String failureType;
-
-    @XmlElement(name = "gateway_error_codes")
-    private String gatewayErrorCodes;
-
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -229,22 +223,6 @@ public class Transaction extends AbstractTransaction {
         this.approvalCode = stringOrNull(approvalCode);
     }
 
-    public String getFailureType() {
-        return this.failureType;
-    }
-
-    protected void setFailureType(final Object failureType) {
-        this.failureType = stringOrNull(failureType);
-    }
-
-    public String getGatewayErrorCodes() {
-        return this.gatewayErrorCodes;
-    }
-
-    protected void setGatewayErrorCodes(final Object gatewayErrorCodes) {
-        this.gatewayErrorCodes = stringOrNull(gatewayErrorCodes);
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Transaction{");
@@ -265,9 +243,7 @@ public class Transaction extends AbstractTransaction {
         sb.append(", origin=").append(origin);
         sb.append(", gatewayType=").append(gatewayType);
         sb.append(", message=").append(message);
-        sb.append(", failureType=").append(failureType);
         sb.append(", approvalCode=").append(approvalCode);
-        sb.append(", gatewayErrorCodes=").append(gatewayErrorCodes);
         sb.append('}');
         return sb.toString();
     }
@@ -327,13 +303,7 @@ public class Transaction extends AbstractTransaction {
         if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) {
             return false;
         }
-        if (failureType != null ? !failureType.equals(that.failureType) : that.failureType != null) {
-            return false;
-        }
         if (gatewayType != null ? !gatewayType.equals(that.gatewayType) : that.gatewayType != null) {
-            return false;
-        }
-        if (gatewayErrorCodes != null ? !gatewayErrorCodes.equals(that.gatewayErrorCodes) : that.gatewayErrorCodes != null) {
             return false;
         }
         if (message != null ? !message.equals(that.message) : that.message != null) {
@@ -360,10 +330,8 @@ public class Transaction extends AbstractTransaction {
                 details,
                 message,
                 gatewayType,
-                gatewayErrorCodes,
                 origin,
-                approvalCode,
-                failureType
+                approvalCode
         );
     }
 }
