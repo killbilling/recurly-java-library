@@ -68,6 +68,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
                                         "  <converted_at type=\"datetime\">2017-06-27T00:00:00Z</converted_at>" +
+                                        "  <no_billing_info_reason>plan_free_trial</no_billing_info_reason>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
                                         "  <coupon_codes type=\"array\">\n" +
@@ -130,6 +131,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
                                         "  <converted_at type=\"datetime\">2017-06-27T00:00:00Z</converted_at>" +
+                                        "  <no_billing_info_reason>plan_free_trial</no_billing_info_reason>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "    <subscription_add_on>\n" +
                                         "      <add_on_code>extra_users</add_on_code>\n" +
@@ -235,6 +237,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getTaxRate(), new BigDecimal("0.0875"));
         Assert.assertEquals(subscription.getConvertedAt(), new DateTime("2017-06-27T00:00:00Z"));
         Assert.assertTrue(subscription.getStartedWithGift());
+        Assert.assertEquals(subscription.getNoBillingInfoReason(), "plan_free_trial");
 
         return subscription;
     }
