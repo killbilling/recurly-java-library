@@ -386,7 +386,6 @@ public class TestRecurlyClient {
 
         for (int i = 0; i < minNumberOfAccounts; i++) {
             // If the environment is used, we will have more than the ones we created
-            Assert.assertTrue(accounts.getNbRecords() >= minNumberOfAccounts);
             Assert.assertEquals(accounts.size(), 1);
             accountCodes.add(accounts.get(0).getAccountCode());
             if (i < minNumberOfAccounts - 1) {
@@ -1553,5 +1552,22 @@ public class TestRecurlyClient {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
         }
+    }
+
+    @Test(groups = "integration")
+    public void testCounts() throws Exception {
+        final QueryParams qp = new QueryParams();
+        qp.setBeginTime(new DateTime("2017-01-01T00:00:00Z"));
+
+        Integer accountCount = recurlyClient.getAccountsCount(qp);
+        Assert.assertNotNull(accountCount);
+        Integer couponsCount = recurlyClient.getCouponsCount(qp);
+        Assert.assertNotNull(couponsCount);
+        Integer transactionsCount = recurlyClient.getTransactionsCount(qp);
+        Assert.assertNotNull(transactionsCount);
+        Integer plansCount = recurlyClient.getPlansCount(qp);
+        Assert.assertNotNull(plansCount);
+        Integer giftCardsCount = recurlyClient.getGiftCardsCount(qp);
+        Assert.assertNotNull(giftCardsCount);
     }
 }
