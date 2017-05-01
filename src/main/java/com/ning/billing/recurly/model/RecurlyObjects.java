@@ -50,8 +50,6 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     @XmlTransient
     private String nextUrl;
 
-    @XmlTransient
-    private Integer nbRecords;
 
     @JsonIgnore
     <U extends RecurlyObjects> U getStart(final Class<U> clazz) {
@@ -96,16 +94,6 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     @JsonIgnore
     public void setNextUrl(final String nextUrl) {
         this.nextUrl = nextUrl;
-    }
-
-    @JsonIgnore
-    public Integer getNbRecords() {
-        return nbRecords;
-    }
-
-    @JsonIgnore
-    public void setNbRecords(final Integer nbRecords) {
-        this.nbRecords = nbRecords;
     }
 
     @Override
