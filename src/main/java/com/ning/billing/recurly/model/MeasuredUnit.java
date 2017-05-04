@@ -75,10 +75,10 @@ public class MeasuredUnit extends RecurlyObject{
         if (o == null || getClass() != o.getClass()) return false;
 
         MeasuredUnit measuredUnit = (MeasuredUnit) o;
-
+        if (id != null ? !id.equals(measuredUnit.id) : measuredUnit.id != null) return false;
         if (name != null ? !name.equals(measuredUnit.name) : measuredUnit.name != null) return false;
         if (displayName != null ? !displayName.equals(measuredUnit.displayName) : measuredUnit.displayName != null) return false;
-        if  (description != null ? !description.equals(measuredUnit.description) : measuredUnit.description != null) return false;
+        if (description != null ? !description.equals(measuredUnit.description) : measuredUnit.description != null) return false;
         return true;
     }
 
