@@ -17,9 +17,7 @@
 
 package com.ning.billing.recurly;
 
-import java.util.Date;
 import java.util.Random;
-import java.util.UUID;
 
 import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.Adjustments;
@@ -43,6 +41,7 @@ import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOn;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.MeasuredUnit;
 
 public class TestUtils {
 
@@ -878,5 +877,21 @@ public class TestUtils {
         usage.setUsageAt(NOW);
 
         return usage;
+    }
+
+    /**
+     * Creates a random {@link MeasuredUnit} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link MeasuredUnit} object
+     */
+    public static MeasuredUnit createRandomMeasuredUnit(final int seed) {
+        final MeasuredUnit measuredUnit = new MeasuredUnit();
+
+        measuredUnit.setName(randomAlphaNumericString(10, seed));
+        measuredUnit.setDisplayName(randomAlphaNumericString(10, seed));
+        measuredUnit.setDescription(randomAlphaNumericString(50, seed));
+
+        return measuredUnit;
     }
 }

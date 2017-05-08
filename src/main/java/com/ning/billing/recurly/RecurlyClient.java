@@ -74,6 +74,8 @@ import com.ning.billing.recurly.model.TransactionState;
 import com.ning.billing.recurly.model.TransactionType;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
+import com.ning.billing.recurly.model.MeasuredUnit;
+import com.ning.billing.recurly.model.MeasuredUnits;
 
 import com.ning.billing.recurly.util.http.SslUtils;
 import org.joda.time.DateTime;
@@ -1380,6 +1382,28 @@ public class RecurlyClient {
      */
     public GiftCard previewGiftCard(final GiftCard giftCard) {
         return doPOST(GiftCards.GIFT_CARDS_RESOURCE + "/preview", giftCard, GiftCard.class);
+    }
+
+    /**
+     * Return all the MeasuredUnits
+     * <p>
+     *
+     * @return the MeasuredUnits object as identified by the passed in ID
+     */
+    public MeasuredUnits getMeasuredUnits() {
+        return doGET(MeasuredUnits.MEASURED_UNITS_RESOURCE, MeasuredUnits.class);
+    }
+
+
+    /**
+     * Create a MeasuredUnit's info
+     * <p>
+     *
+     * @param measuredUnit The measuredUnit to create on recurly
+     * @return the measuredUnit object as identified by the passed in ID
+     */
+    public MeasuredUnit createMeasuredUnit(final MeasuredUnit measuredUnit) {
+        return doPOST(MeasuredUnit.MEASURED_UNITS_RESOURCE, measuredUnit, MeasuredUnit.class);
     }
 
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {

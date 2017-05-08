@@ -51,6 +51,12 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
+    @XmlElement(name = "measured_unit")
+    private MeasuredUnit measuredUnit;
+
+    @XmlElement(name = "add_on_type")
+    private String addOnType;
+
     public String getName() {
         return name;
     }
@@ -107,10 +113,31 @@ public class AddOn extends AbstractAddOn {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public MeasuredUnit getMeasuredUnit() {
+        if (measuredUnit != null && measuredUnit.getHref() != null && !measuredUnit.getHref().isEmpty()) {
+            measuredUnit = fetch(measuredUnit, MeasuredUnit.class);
+        }
+        return measuredUnit;
+    }
+
+    public void setMeasuredUnit(final MeasuredUnit measuredUnit) {
+        this.measuredUnit = measuredUnit;
+    }
+
+    public String getAddOnType() {
+        return addOnType;
+    }
+
+    public void setAddOnType(final Object addOnType) {
+        this.addOnType = stringOrNull(addOnType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
         sb.append("name='").append(name).append('\'');
+        sb.append(", measuredUnit='").append(measuredUnit).append('\'');
+        sb.append(", addOnType='").append(addOnType).append('\'');
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
@@ -129,6 +156,12 @@ public class AddOn extends AbstractAddOn {
         final AddOn addOn = (AddOn) o;
 
         if (createdAt != null ? createdAt.compareTo(addOn.createdAt) != 0 : addOn.createdAt != null) {
+            return false;
+        }
+        if (measuredUnit != null ? !measuredUnit.equals(addOn.measuredUnit) : addOn.measuredUnit != null) {
+            return false;
+        }
+        if (addOnType != null ? !addOnType.equals(addOn.addOnType) : addOn.addOnType != null) {
             return false;
         }
         if (updatedAt != null ? updatedAt.compareTo(addOn.updatedAt) != 0 : addOn.updatedAt != null) {
@@ -157,6 +190,8 @@ public class AddOn extends AbstractAddOn {
     public int hashCode() {
         return Objects.hashCode(
                 name,
+                measuredUnit,
+                addOnType,
                 displayQuantityOnHostedPage,
                 defaultQuantity,
                 unitAmountInCents,
