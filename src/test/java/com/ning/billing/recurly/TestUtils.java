@@ -384,9 +384,9 @@ public class TestUtils {
         info.setAddress1(randomAlphaNumericString(10, seed));
         info.setAddress2(randomAlphaNumericString(10, seed));
         info.setCity(randomAlphaNumericString(10, seed));
-        info.setState(randomAlphaNumericString(10, seed).toUpperCase());
+        info.setState("CA");
         info.setZip("94110");
-        info.setCountry(randomAlphaNumericString(2, seed).toUpperCase());
+        info.setCountry("US");
         info.setPhone(randomInteger(8, seed));
         info.setVatNumber(randomNumericString(8, seed));
         info.setYear(createTestCCYear());
@@ -695,7 +695,7 @@ public class TestUtils {
         coupon.setName(randomAlphaNumericString(10, seed));
         coupon.setCouponCode(randomAlphaNumericString(10, seed).toLowerCase());
         coupon.setDiscountType("percent");
-        coupon.setDiscountPercent(randomNumericString(2, seed));
+        coupon.setDiscountPercent(randomInteger(90, seed) + 1);
 
         return coupon;
     }
