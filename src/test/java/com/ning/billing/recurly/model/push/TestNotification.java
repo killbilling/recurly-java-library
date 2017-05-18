@@ -91,6 +91,8 @@ public class TestNotification extends TestModelBase {
                                                   "  <amount_in_cents type=\"integer\">1000</amount_in_cents>\n" +
                                                   "  <status>Success</status>\n" +
                                                   "  <message>Bogus Gateway: Forced success</message>\n" +
+                                                  "  <gateway_error_codes>00</gateway_error_codes>\n" +
+                                                  "  <failure_type>Declined by the gateway</failure_type>\n" +
                                                   "  <reference></reference>\n" +
                                                   "  <cvv_result code=\"\"></cvv_result>\n" +
                                                   "  <avs_result code=\"D\">Street address and postal code match.</avs_result>\n" +
@@ -217,6 +219,8 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(transaction.getAmountInCents(), new Integer(1000));
         Assert.assertEquals(transaction.getStatus(), "Success");
         Assert.assertEquals(transaction.getMessage(), "Bogus Gateway: Forced success");
+        Assert.assertEquals(transaction.getFailureType(), "Declined by the gateway");
+        Assert.assertEquals(transaction.getGatewayErrorCodes(), "00");
         Assert.assertNull(transaction.getReference());
         Assert.assertTrue(transaction.getTest());
         Assert.assertTrue(transaction.getRefundable());
