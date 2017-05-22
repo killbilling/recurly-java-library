@@ -262,6 +262,7 @@ public class TestUtils {
         account.setFirstName(randomAlphaNumericString(5, seed));
         account.setLastName(randomAlphaNumericString(6, seed));
         account.setAddress(createRandomAddress(seed));
+        account.setVatNumber(randomAlphaNumericString(15, seed));
 
         return account;
     }

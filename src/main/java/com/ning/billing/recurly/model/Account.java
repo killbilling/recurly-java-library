@@ -114,6 +114,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "has_past_due_invoice")
     private Boolean hasPastDueInvoice;
 
+    @XmlElement(name = "vat_number")
+    private String vatNumber;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -320,6 +323,14 @@ public class Account extends RecurlyObject {
         this.shippingAddresses = shippingAddresses;
     }
 
+    public String getVatNumber() {
+        return vatNumber;
+    }
+
+    public void setVatNumber(final Object vatNumber) {
+        this.vatNumber = stringOrNull(vatNumber);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
@@ -348,6 +359,7 @@ public class Account extends RecurlyObject {
         sb.append(", hasFutureSubscription=").append(hasFutureSubscription);
         sb.append(", hasCanceledSubscription=").append(hasCanceledSubscription);
         sb.append(", hasPastDueInvoice=").append(hasPastDueInvoice);
+        sb.append(", vatNumber=").append(vatNumber);
         sb.append('}');
         return sb.toString();
     }
@@ -431,6 +443,9 @@ public class Account extends RecurlyObject {
         if (shippingAddresses != null ? !shippingAddresses.equals(account.shippingAddresses) : account.shippingAddresses != null) {
             return false;
         }
+        if (vatNumber != null ? !vatNumber.equals(account.vatNumber) : account.vatNumber != null) {
+            return false;
+        }
 
         return true;
     }
@@ -462,7 +477,8 @@ public class Account extends RecurlyObject {
                 billingInfo,
                 updatedAt,
                 taxExempt,
-                shippingAddresses
+                shippingAddresses,
+                vatNumber
         );
     }
 }
