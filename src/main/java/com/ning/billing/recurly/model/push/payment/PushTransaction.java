@@ -103,7 +103,7 @@ public class PushTransaction extends AbstractTransaction {
         return failureType;
     }
 
-    public void setFailureType(Object failureType) {
+    public void setFailureType(final Object failureType) {
         this.failureType = stringOrNull(failureType);
     }
 
@@ -111,7 +111,7 @@ public class PushTransaction extends AbstractTransaction {
         return gatewayErrorCodes;
     }
 
-    public void setGatewayErrorCodes(Object gatewayErrorCodes) {
+    public void setGatewayErrorCodes(final Object gatewayErrorCodes) {
         this.gatewayErrorCodes = stringOrNull(gatewayErrorCodes);
     }
 
