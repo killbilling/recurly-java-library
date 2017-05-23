@@ -53,6 +53,7 @@ public class TestAccount extends TestModelBase {
                                    "  <has_future_subscription type=\"boolean\">false</has_future_subscription>\n" +
                                    "  <has_canceled_subscription type=\"boolean\">false</has_canceled_subscription>\n" +
                                    "  <has_past_due_invoice type=\"boolean\">false</has_past_due_invoice>\n" +
+                                   "  <vat_number>U12345678</vat_number>\n" +
                                    "  <address>\n" +
                                    "      <address1>123 Main St.</address1>\n" +
                                    "      <address2 nil=\"nil\"></address2>\n" +
@@ -109,6 +110,7 @@ public class TestAccount extends TestModelBase {
         Assert.assertFalse(account.getHasFutureSubscription());
         Assert.assertFalse(account.getHasCanceledSubscription());
         Assert.assertFalse(account.getHasPastDueInvoice());
+        Assert.assertEquals(account.getVatNumber(), "U12345678");
     }
 
 }
