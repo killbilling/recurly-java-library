@@ -155,6 +155,13 @@ public class RecurlyClient {
     }
 
     /**
+     * Open custom http client
+     */
+    public synchronized void open(AsyncHttpClient asyncHttpClient) {
+        client = asyncHttpClient;
+    }
+
+    /**
      * Close the underlying http client
      */
     public synchronized void close() {
