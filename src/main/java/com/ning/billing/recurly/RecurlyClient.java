@@ -56,6 +56,7 @@ import com.ning.billing.recurly.model.InvoiceState;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
+import com.ning.billing.recurly.model.Purchase;
 import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
@@ -1461,7 +1462,6 @@ public class RecurlyClient {
         return doGET(MeasuredUnits.MEASURED_UNITS_RESOURCE, MeasuredUnits.class);
     }
 
-
     /**
      * Create a MeasuredUnit's info
      * <p>
@@ -1471,6 +1471,30 @@ public class RecurlyClient {
      */
     public MeasuredUnit createMeasuredUnit(final MeasuredUnit measuredUnit) {
         return doPOST(MeasuredUnit.MEASURED_UNITS_RESOURCE, measuredUnit, MeasuredUnit.class);
+    }
+
+    /**
+     * Purchases endpoint
+     * <p>
+     * https://dev.recurly.com/docs/create-purchase
+     *
+     * @param purchase The purchase data
+     * @return The created invoice
+     */
+    public Invoice purchase(final Purchase purchase) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT, purchase, Invoice.class);
+    }
+
+    /**
+     * Purchases preview endpoint
+     * <p>
+     * https://dev.recurly.com/docs/preview-purchase
+     *
+     * @param purchase The purchase data
+     * @return The preview invoice
+     */
+    public Invoice previewPurchase(final Purchase purchase) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT + "/preview", purchase, Invoice.class);
     }
 
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {

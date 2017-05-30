@@ -39,6 +39,7 @@ import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Purchase;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundApplyOrder;
@@ -52,6 +53,7 @@ import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
+
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -1569,5 +1571,32 @@ public class TestRecurlyClient {
         Assert.assertNotNull(plansCount);
         Integer giftCardsCount = recurlyClient.getGiftCardsCount(qp);
         Assert.assertNotNull(giftCardsCount);
+    }
+
+    @Test(groups = "integration")
+    public void testPurchase() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Adjustments adjustmentsData = new Adjustments();
+        final Adjustment adjustmentData = TestUtils.createRandomAdjustment();
+        adjustmentData.setCurrency(null); // this one accepted by site
+        adjustmentsData.add(adjustmentData);
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setAdjustments(adjustmentsData);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setAdjustments(adjustmentsData);
+            purchaseData.setCurrency("USD");
+
+            final Invoice invoice = recurlyClient.purchase(purchaseData);
+            Assert.assertEquals(invoice.getLineItems().get(0).getProductCode(), adjustmentData.getProductCode());
+        } finally {
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
     }
 }
