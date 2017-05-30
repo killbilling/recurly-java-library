@@ -38,8 +38,8 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "po_number")
     private String poNumber;
 
-    @XmlElement(name = "terms")
-    private String terms;
+    @XmlElement(name = "net_terms")
+    private String netTerms;
 
     @XmlElement(name = "account")
     private Account account;
@@ -72,12 +72,12 @@ public class Purchase extends RecurlyObject {
         this.collectionMethod = stringOrNull(collectionMethod);
     }
 
-    public String getTerms() {
-        return terms;
+    public String getNetTerms() {
+        return netTerms;
     }
 
-    public void setTerms(final Object terms) {
-        this.terms = stringOrNull(terms);
+    public void setNetTerms(final Object terms) {
+        this.netTerms = stringOrNull(terms);
     }
 
     public String getPoNumber() {
@@ -105,7 +105,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", poNumber='").append(poNumber).append('\'');
-        sb.append(", terms='").append(terms).append('\'');
+        sb.append(", netTerms='").append(netTerms).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -132,7 +132,7 @@ public class Purchase extends RecurlyObject {
         if (poNumber != null ? !poNumber.equals(purchase.poNumber) : purchase.poNumber != null) {
             return false;
         }
-        if (terms != null ? !terms.equals(purchase.terms) : purchase.terms != null) {
+        if (netTerms != null ? !netTerms.equals(purchase.netTerms) : purchase.netTerms != null) {
             return false;
         }
 
@@ -147,7 +147,7 @@ public class Purchase extends RecurlyObject {
                 collectionMethod,
                 currency,
                 poNumber,
-                terms
+                netTerms
         );
     }
 

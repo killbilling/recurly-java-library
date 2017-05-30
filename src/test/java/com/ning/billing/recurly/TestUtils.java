@@ -921,7 +921,7 @@ public class TestUtils {
         purchase.setCurrency("USD");
         purchase.setCollectionMethod("automatic");
         purchase.setPoNumber("PO12345");
-        purchase.setTerms(30);
+        purchase.setNetTerms(30);
 
         return purchase;
     }

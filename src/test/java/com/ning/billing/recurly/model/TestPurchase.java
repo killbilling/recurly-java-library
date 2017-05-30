@@ -32,6 +32,8 @@ public class TestPurchase extends TestModelBase {
         final String purchaseData = "<purchase xmlns=\"\">" +
                 "<currency>USD</currency>" +
                 "  <collection_method>automatic</collection_method>" +
+                "  <net_terms>30</net_terms>" +
+                "  <currency>USD</currency>" +
                 "  <account>" +
                 "    <account_code>test</account_code>" +
                 "    <billing_info>" +
@@ -60,6 +62,7 @@ public class TestPurchase extends TestModelBase {
         final Purchase purchase = new Purchase();
         purchase.setCollectionMethod("automatic");
         purchase.setCurrency("USD");
+        purchase.setNetTerms(30);
 
         final Account account = new Account();
         account.setAccountCode("test");
