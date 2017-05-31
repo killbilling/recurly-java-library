@@ -142,6 +142,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
+    @XmlElement(name = "no_billing_info_reason")
+    public String noBillingInfoReason;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -422,6 +425,14 @@ public class Subscription extends AbstractSubscription {
         this.convertedAt = dateTimeOrNull(convertedAt);
     }
 
+    public String getNoBillingInfoReason() {
+        return this.noBillingInfoReason;
+    }
+
+    public void setNoBillingInfoReason(final Object noBillingInfoReason) {
+        this.noBillingInfoReason = stringOrNull(noBillingInfoReason);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -459,6 +470,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", shippingAddressId=").append(shippingAddressId);
         sb.append(", startedWithGift=").append(startedWithGift);
         sb.append(", convertedAt=").append(convertedAt);
+        sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
         sb.append('}');
         return sb.toString();
     }
@@ -572,6 +584,9 @@ public class Subscription extends AbstractSubscription {
         if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
             return false;
         }
+        if (noBillingInfoReason != null ? !noBillingInfoReason.equals(that.noBillingInfoReason) : that.noBillingInfoReason != null) {
+            return false;
+        }
 
         return true;
     }
@@ -612,7 +627,8 @@ public class Subscription extends AbstractSubscription {
                 couponCode,
                 couponCodes,
                 convertedAt,
-                startedWithGift
+                startedWithGift,
+                noBillingInfoReason
         );
     }
 

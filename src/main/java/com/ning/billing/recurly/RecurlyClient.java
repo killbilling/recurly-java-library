@@ -56,6 +56,7 @@ import com.ning.billing.recurly.model.InvoiceState;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
+import com.ning.billing.recurly.model.Purchase;
 import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.RecurlyObjects;
@@ -78,6 +79,7 @@ import com.ning.billing.recurly.model.MeasuredUnit;
 import com.ning.billing.recurly.model.MeasuredUnits;
 
 import com.ning.billing.recurly.util.http.SslUtils;
+import com.ning.http.client.FluentCaseInsensitiveStringsMap;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -99,7 +101,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.5";
+    public static final String RECURLY_API_VERSION = "2.6";
 
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
@@ -199,6 +201,17 @@ public class RecurlyClient {
     }
 
     /**
+     * Get number of Accounts matching the query params
+     *
+     * @param params {@link QueryParams}
+     * @return Integer on success, null otherwise
+     */
+    public Integer getAccountsCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(Accounts.ACCOUNTS_RESOURCE, params);
+        return Integer.parseInt(map.getFirstValue("X-Records"));
+    }
+
+    /**
      * Get Coupons
      * <p>
      * Returns information about all accounts.
@@ -219,6 +232,17 @@ public class RecurlyClient {
      */
     public Coupons getCoupons(final QueryParams params) {
         return doGET(Coupons.COUPONS_RESOURCE, Coupons.class, params);
+    }
+
+    /**
+     * Get number of Coupons matching the query params
+     *
+     * @param params {@link QueryParams}
+     * @return Integer on success, null otherwise
+     */
+    public Integer getCouponsCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(Coupons.COUPONS_RESOURCE, params);
+        return Integer.parseInt(map.getFirstValue("X-Records"));
     }
 
     /**
@@ -512,6 +536,17 @@ public class RecurlyClient {
     }
 
     /**
+     * Get number of Subscriptions matching the query params
+     *
+     * @param params {@link QueryParams}
+     * @return Integer on success, null otherwise
+     */
+    public Integer getSubscriptionsCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(Subscription.SUBSCRIPTION_RESOURCE,  params);
+        return Integer.parseInt(map.getFirstValue("X-Records"));
+    }
+
+    /**
      * Get the subscriptions for an {@link Account} given query params
      * <p>
      * Returns subscriptions associated with an account
@@ -684,6 +719,17 @@ public class RecurlyClient {
         if (type != null) params.put("type", type.getType());
 
         return doGET(Transactions.TRANSACTIONS_RESOURCE, Transactions.class, params);
+    }
+
+    /**
+     * Get number of Transactions matching the query params
+     *
+     * @param params {@link QueryParams}
+     * @return Integer on success, null otherwise
+     */
+    public Integer getTransactionsCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(Transactions.TRANSACTIONS_RESOURCE, params);
+        return Integer.parseInt(map.getFirstValue("X-Records"));
     }
 
     /**
@@ -1000,6 +1046,17 @@ public class RecurlyClient {
      */
     public Plans getPlans(final QueryParams params) {
         return doGET(Plans.PLANS_RESOURCE, Plans.class, params);
+    }
+
+    /**
+     * Get number of Plans matching the query params
+     *
+     * @param params {@link QueryParams}
+     * @return Integer on success, null otherwise
+     */
+    public Integer getPlansCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(Plans.PLANS_RESOURCE, params);
+        return Integer.parseInt(map.getFirstValue("X-Records"));
     }
 
     /**
@@ -1337,6 +1394,17 @@ public class RecurlyClient {
     }
 
     /**
+     * Get number of GiftCards matching the query params
+     *
+     * @param params {@link QueryParams}
+     * @return Integer on success, null otherwise
+     */
+    public Integer getGiftCardsCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(GiftCards.GIFT_CARDS_RESOURCE, params);
+        return Integer.parseInt(map.getFirstValue("X-Records"));
+    }
+
+    /**
      * Get a Gift Card
      * <p>
      *
@@ -1394,7 +1462,6 @@ public class RecurlyClient {
         return doGET(MeasuredUnits.MEASURED_UNITS_RESOURCE, MeasuredUnits.class);
     }
 
-
     /**
      * Create a MeasuredUnit's info
      * <p>
@@ -1404,6 +1471,30 @@ public class RecurlyClient {
      */
     public MeasuredUnit createMeasuredUnit(final MeasuredUnit measuredUnit) {
         return doPOST(MeasuredUnit.MEASURED_UNITS_RESOURCE, measuredUnit, MeasuredUnit.class);
+    }
+
+    /**
+     * Purchases endpoint
+     * <p>
+     * https://dev.recurly.com/docs/create-purchase
+     *
+     * @param purchase The purchase data
+     * @return The created invoice
+     */
+    public Invoice purchase(final Purchase purchase) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT, purchase, Invoice.class);
+    }
+
+    /**
+     * Purchases preview endpoint
+     * <p>
+     * https://dev.recurly.com/docs/preview-purchase
+     *
+     * @param purchase The purchase data
+     * @return The preview invoice
+     */
+    public Invoice previewPurchase(final Purchase purchase) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT + "/preview", purchase, Invoice.class);
     }
 
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {
@@ -1512,8 +1603,35 @@ public class RecurlyClient {
         return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
+    private FluentCaseInsensitiveStringsMap doHEAD(final String resource, QueryParams params) {
+        final String url = constructGetUrl(resource, params);
+        if (debug()) {
+            log.info("Msg to Recurly API [HEAD]:: URL : {}", url);
+        }
+        return callRecurlyNoContent(client.prepareHead(url));
+    }
+
     private void doDELETE(final String resource) {
         callRecurlySafeXmlContent(client.prepareDelete(baseUrl + resource), null);
+    }
+
+    private FluentCaseInsensitiveStringsMap callRecurlyNoContent(final AsyncHttpClient.BoundRequestBuilder builder) {
+        try {
+            final Response response = clientRequestBuilderCommon(builder)
+                    .addHeader("Accept", "application/xml")
+                    .addHeader("Content-Type", "application/xml; charset=utf-8")
+                    .execute()
+                    .get();
+
+            return response.getHeaders();
+        } catch (ExecutionException e) {
+            log.error("Execution error", e);
+            return null;
+        }
+        catch (InterruptedException e) {
+            log.error("Interrupted while calling Recurly", e);
+            return null;
+        }
     }
 
     private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
@@ -1603,12 +1721,6 @@ public class RecurlyClient {
                 // Set the RecurlyClient on all objects for later use
                 for (final Object object : recurlyObjects) {
                     ((RecurlyObject) object).setRecurlyClient(this);
-                }
-
-                // Set the total number of records
-                final String xRecords = response.getHeader(X_RECORDS_HEADER_NAME);
-                if (xRecords != null) {
-                    recurlyObjects.setNbRecords(Integer.valueOf(xRecords));
                 }
 
                 // Set links for pagination
