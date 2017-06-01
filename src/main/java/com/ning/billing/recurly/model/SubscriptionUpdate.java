@@ -54,6 +54,17 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.collectionMethod = stringOrNull(collectionMethod);
     }
 
+    @XmlElement(name = "coupon_code")
+    private String couponCode;
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(String couponCode) {
+        this.couponCode = couponCode;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -67,6 +78,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (timeframe != that.timeframe) {
             return false;
         }
+        if (couponCode != null ? !couponCode.equals(that.couponCode) : that.couponCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -75,6 +89,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
     public int hashCode() {
         return Objects.hashCode(
                 timeframe,
+                couponCode,
                 collectionMethod
         );
     }
