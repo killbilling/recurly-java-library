@@ -109,4 +109,23 @@ public class TestSubscriptionUpdate extends TestModelBase {
                                  "<plan_code>gold</plan_code>" +
                                  "</subscription>");
     }
+
+    @Test(groups = "fast")
+    public void testSerializationWithCoupons() throws Exception {
+        final SubscriptionUpdate subscription = new SubscriptionUpdate();
+        subscription.setPlanCode("gold");
+        subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
+        subscription.setUnitAmountInCents(800);
+        subscription.setQuantity(1);
+        subscription.setCouponCode("my_coupon");
+
+        final String xml = xmlMapper.writeValueAsString(subscription);
+        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+                                 "<timeframe>now</timeframe>" +
+                                 "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                                 "<quantity>1</quantity>" +
+                                 "<plan_code>gold</plan_code>" +
+                                 "<coupon_code>my_coupon</coupon_code>" +
+                                 "</subscription>");
+    }
 }
