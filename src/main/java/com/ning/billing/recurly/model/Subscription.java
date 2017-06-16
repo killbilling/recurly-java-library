@@ -352,6 +352,10 @@ public class Subscription extends AbstractSubscription {
         this.firstRenewalDate = dateTimeOrNull(firstRenewalDate);
     }
 
+    public String getCouponCode() {
+        return couponCode;
+    }
+
     public void setCouponCode(final String couponCode) {
         this.couponCode = couponCode;
     }
