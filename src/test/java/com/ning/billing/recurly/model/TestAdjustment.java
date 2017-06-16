@@ -42,6 +42,7 @@ public class TestAdjustment extends TestModelBase {
                                       "  <product_code>product123</product_code>\n" +
                                       "  <taxable type=\"boolean\">false</taxable>\n" +
                                       "  <start_date type=\"datetime\">2011-08-31T03:30:00Z</start_date>\n" +
+                                      "  <revenue_schedule_type>at_invoice</revenue_schedule_type>\n" +
                                       "  <end_date nil=\"nil\"></end_date>\n" +
                                       "  <created_at type=\"datetime\">2011-08-31T03:30:00Z</created_at>\n" +
                                       "</adjustment>";
@@ -63,6 +64,7 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertNull(adjustment.getEndDate());
         Assert.assertEquals(adjustment.getCreatedAt(), new DateTime("2011-08-31T03:30:00Z"));
+        Assert.assertEquals(adjustment.getRevenueScheduleType(), RevenueScheduleType.AT_INVOICE);
 
         // Test Serialization
         final String xml = xmlMapper.writeValueAsString(adjustment);
@@ -81,5 +83,6 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals(readValue.getStartDate(), adjustment.getStartDate());
         Assert.assertEquals(readValue.getEndDate(), adjustment.getEndDate());
         Assert.assertEquals(readValue.getCreatedAt(), adjustment.getCreatedAt());
+        Assert.assertEquals(readValue.getRevenueScheduleType(), adjustment.getRevenueScheduleType());
     }
 }

@@ -80,6 +80,9 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -229,6 +232,14 @@ public class Adjustment extends RecurlyObject {
         adjustmentRefund.setQuantity(quantity);
         adjustmentRefund.setProrate(false);
         return adjustmentRefund;
+    }
+
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(String revenueScheduleType) {
+        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
     }
 
     @Override
