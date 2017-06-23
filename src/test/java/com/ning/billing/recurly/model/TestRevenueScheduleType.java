@@ -17,6 +17,14 @@ public class TestRevenueScheduleType extends TestModelBase {
         }
     }
 
+
+    @Test(groups = "fast")
+    public void testDeserializationAllValues() throws Exception {
+        for (RevenueScheduleType revenueScheduleType : RevenueScheduleType.values()) {
+            testDeserializationCommon(revenueScheduleType, revenueScheduleType.name().toLowerCase());
+        }
+    }
+
     @Test(groups = "fast")
     public void testSerializationNullValue() throws Exception {
         Adjustment adjustment = TestUtils.createRandomAdjustment();
@@ -59,5 +67,15 @@ public class TestRevenueScheduleType extends TestModelBase {
         adjustment.setRevenueScheduleType(revenueScheduleType);
         String xml = xmlMapper.writeValueAsString(adjustment);
         assert(xml.contains("<revenue_schedule_type>"+ expectedSerializedValue +"</revenue_schedule_type>"));
+    }
+
+     private void testDeserializationCommon(RevenueScheduleType revenueScheduleType, String value) throws Exception {
+        String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                                      "<adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n" +
+                                        "<revenue_schedule_type>" + value + "</revenue_schedule_type>\n" +
+                                      "</adjustment>";
+
+        Adjustment adjustment = xmlMapper.readValue(xml, Adjustment.class);
+        assertEquals(adjustment.getRevenueScheduleType(), revenueScheduleType);
     }
 }
