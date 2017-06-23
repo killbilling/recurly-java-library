@@ -238,7 +238,7 @@ public class Adjustment extends RecurlyObject {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(RevenueScheduleType revenueScheduleType) {
+    public void setRevenueScheduleType(final RevenueScheduleType revenueScheduleType) {
         this.revenueScheduleType = revenueScheduleType;
     }
 
