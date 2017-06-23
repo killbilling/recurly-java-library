@@ -22,27 +22,13 @@ import javax.xml.bind.annotation.XmlEnumValue;
 @XmlEnum(String.class)
 public enum RevenueScheduleType {
     @XmlEnumValue("never")
-    NEVER("never"),
+    NEVER,
     @XmlEnumValue("evenly")
-    EVENLY("evenly"),
+    EVENLY,
     @XmlEnumValue("at_invoice")
-    AT_INVOICE("at_invoice"),
+    AT_INVOICE,
     @XmlEnumValue("at_range_end")
-    AT_RANGE_END("at_range_end"),
+    AT_RANGE_END,
     @XmlEnumValue("at_range_start")
-    AT_RANGE_START("at_range_start");
-
-    private final String type;
-
-    private RevenueScheduleType(final String type) {
-        this.type = type;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public static RevenueScheduleType from(String revenueScheduleType) {
-        return revenueScheduleType != null ? valueOf(revenueScheduleType.toUpperCase()) : null;
-    }
+    AT_RANGE_START
 }
