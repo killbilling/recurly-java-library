@@ -85,8 +85,8 @@ public class AddOn extends AbstractAddOn {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(final String revenueScheduleType) {
-        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    public void setRevenueScheduleType(final RevenueScheduleType revenueScheduleType) {
+        this.revenueScheduleType = revenueScheduleType;
     }
 
     public RecurlyUnitCurrency getUnitAmountInCents() {

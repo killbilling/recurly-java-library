@@ -238,8 +238,8 @@ public class Adjustment extends RecurlyObject {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(String revenueScheduleType) {
-        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    public void setRevenueScheduleType(RevenueScheduleType revenueScheduleType) {
+        this.revenueScheduleType = revenueScheduleType;
     }
 
     @Override
@@ -264,6 +264,7 @@ public class Adjustment extends RecurlyObject {
         sb.append(", endDate=").append(endDate);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append('}');
         return sb.toString();
     }
@@ -330,6 +331,10 @@ public class Adjustment extends RecurlyObject {
             return false;
         }
 
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -353,7 +358,8 @@ public class Adjustment extends RecurlyObject {
                 startDate,
                 endDate,
                 createdAt,
-                updatedAt
+                updatedAt,
+                revenueScheduleType
         );
     }
 }
