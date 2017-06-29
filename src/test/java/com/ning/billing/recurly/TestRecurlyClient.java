@@ -1575,10 +1575,16 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testPurchase() throws Exception {
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Adjustments adjustmentsData = new Adjustments();
         final Adjustment adjustmentData = TestUtils.createRandomAdjustment();
+        final GiftCard giftCardData = TestUtils.createRandomGiftCard();
+
+        giftCardData.setProductCode("test_gift_card");
+        giftCardData.setCurrency("USD");
+
         adjustmentData.setCurrency(null); // this one accepted by site
         adjustmentsData.add(adjustmentData);
 
@@ -1586,17 +1592,31 @@ public class TestRecurlyClient {
         accountData.setBillingInfo(billingInfoData); // add the billing info to account data
 
         try {
+            final Plan plan = recurlyClient.createPlan(planData);
+            final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
+            final GiftCard redemptionData = new GiftCard();
+            redemptionData.setRedemptionCode(purchasedGiftCard.getRedemptionCode());
+            final ArrayList<String> couponCodes = new ArrayList<String>(Arrays.asList("ascu2wprjk", "vttx1luuwz"));
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(subscriptionData);
+
             final Purchase purchaseData = new Purchase();
             purchaseData.setAccount(accountData);
             purchaseData.setAdjustments(adjustmentsData);
             purchaseData.setCollectionMethod("automatic");
             purchaseData.setAdjustments(adjustmentsData);
             purchaseData.setCurrency("USD");
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setGiftCard(redemptionData);
+            purchaseData.setCouponCodes(couponCodes);
 
             final Invoice invoice = recurlyClient.purchase(purchaseData);
-            Assert.assertEquals(invoice.getLineItems().get(0).getProductCode(), adjustmentData.getProductCode());
+            Assert.assertNotNull(invoice.getInvoiceNumber());
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
+            recurlyClient.deletePlan(planData.getPlanCode());
         }
     }
 }

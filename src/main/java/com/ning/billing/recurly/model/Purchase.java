@@ -17,7 +17,11 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
 
 import com.google.common.base.Objects;
 
@@ -56,6 +60,7 @@ public class Purchase extends RecurlyObject {
 
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
+    @XmlElement(name = "coupon_code")
     private List<String> couponCodes;
 
     public void setAccount(final Account account) {

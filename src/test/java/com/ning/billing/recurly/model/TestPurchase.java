@@ -69,6 +69,9 @@ public class TestPurchase extends TestModelBase {
                 "    <coupon_code>coupon1</coupon_code>" +
                 "    <coupon_code>coupon2</coupon_code>" +
                 "  </coupon_codes>" +
+                "  <gift_card>" +
+                "    <redemption_code>ABC1234</redemption_code>" +
+                "  </gift_card>" +
                 "</purchase>";
 
         final Purchase purchase = new Purchase();
@@ -112,10 +115,14 @@ public class TestPurchase extends TestModelBase {
         couponCodes.add("coupon1");
         couponCodes.add("coupon2");
 
+        final GiftCard giftCard = new GiftCard();
+        giftCard.setRedemptionCode("ABC1234");
+
         purchase.setAccount(account);
         purchase.setAdjustments(adjustments);
         purchase.setSubscriptions(subscriptions);
         purchase.setCouponCodes(couponCodes);
+        purchase.setGiftCard(giftCard);
 
         final String xml = xmlMapper.writeValueAsString(purchase);
         final Purchase purchaseExpected = xmlMapper.readValue(xml, Purchase.class);
