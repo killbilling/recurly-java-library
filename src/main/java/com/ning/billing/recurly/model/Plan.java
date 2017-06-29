@@ -273,8 +273,8 @@ public class Plan extends RecurlyObject {
         return setupFeeRevenueScheduleType;
     }
 
-    public void setSetupFeeRevenueScheduleType(final String setupFeeRevenueScheduleType) {
-        this.setupFeeRevenueScheduleType = RevenueScheduleType.valueOf(setupFeeRevenueScheduleType.toUpperCase());
+    public void setSetupFeeRevenueScheduleType(final RevenueScheduleType setupFeeRevenueScheduleType) {
+        this.setupFeeRevenueScheduleType = revenueScheduleType;
     }
 
     public RevenueScheduleType getRevenueScheduleType() {

@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
 import org.joda.time.DateTime;
 
 import com.ning.billing.recurly.RecurlyClient;
@@ -78,6 +79,7 @@ public abstract class RecurlyObject {
         xmlMapper.registerModule(new JodaModule());
         xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        xmlMapper.registerModule(new JaxbAnnotationModule());
 
         final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
         m.addSerializer(Accounts.class, new RecurlyObjectsSerializer<Accounts, Account>(Accounts.class, "account"));
