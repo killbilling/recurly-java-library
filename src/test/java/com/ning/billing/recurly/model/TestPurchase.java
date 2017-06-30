@@ -18,9 +18,9 @@
 package com.ning.billing.recurly.model;
 
 import com.ning.billing.recurly.TestUtils;
-import org.joda.time.DateTime;
-import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.util.List;
+import java.util.ArrayList;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
@@ -57,6 +57,21 @@ public class TestPurchase extends TestModelBase {
                 "      <product_code>product-code</product_code>" +
                 "    </adjustment>" +
                 "  </adjustments>" +
+                "  <subscriptions>" +
+                "    <subscription>" +
+                "       <plan_code>plan1</plan_code>" +
+                "    </subscription>" +
+                "    <subscription>" +
+                "       <plan_code>plan2</plan_code>" +
+                "    </subscription>" +
+                "  </subscriptions>" +
+                "  <coupon_codes>" +
+                "    <coupon_code>coupon1</coupon_code>" +
+                "    <coupon_code>coupon2</coupon_code>" +
+                "  </coupon_codes>" +
+                "  <gift_card>" +
+                "    <redemption_code>ABC1234</redemption_code>" +
+                "  </gift_card>" +
                 "</purchase>";
 
         final Purchase purchase = new Purchase();
@@ -88,8 +103,26 @@ public class TestPurchase extends TestModelBase {
         adjustment.setUnitAmountInCents(1000);
         adjustments.add(adjustment);
 
+        final Subscriptions subscriptions = new Subscriptions();
+        final Subscription sub1 = new Subscription();
+        sub1.setPlanCode("plan1");
+        final Subscription sub2 = new Subscription();
+        sub2.setPlanCode("plan2");
+        subscriptions.add(sub1);
+        subscriptions.add(sub2);
+
+        final List<String> couponCodes = new ArrayList<String>();
+        couponCodes.add("coupon1");
+        couponCodes.add("coupon2");
+
+        final GiftCard giftCard = new GiftCard();
+        giftCard.setRedemptionCode("ABC1234");
+
         purchase.setAccount(account);
         purchase.setAdjustments(adjustments);
+        purchase.setSubscriptions(subscriptions);
+        purchase.setCouponCodes(couponCodes);
+        purchase.setGiftCard(giftCard);
 
         final String xml = xmlMapper.writeValueAsString(purchase);
         final Purchase purchaseExpected = xmlMapper.readValue(xml, Purchase.class);

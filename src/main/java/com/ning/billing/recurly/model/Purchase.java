@@ -17,12 +17,15 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlList;
 
 import com.google.common.base.Objects;
+
+import java.util.List;
 
 @XmlRootElement(name = "purchase")
 public class Purchase extends RecurlyObject {
@@ -48,6 +51,18 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "adjustment")
     private Adjustments adjustments;
 
+    @XmlElementWrapper(name = "subscriptions")
+    @XmlElement(name = "subscription")
+    private Subscriptions subscriptions;
+
+    @XmlElement(name = "gift_card")
+    private GiftCard giftCard;
+
+    @XmlList
+    @XmlElementWrapper(name = "coupon_codes")
+    @XmlElement(name = "coupon_code")
+    private List<String> couponCodes;
+
     public void setAccount(final Account account) {
         this.account = account;
     }
@@ -70,6 +85,22 @@ public class Purchase extends RecurlyObject {
 
     public void setCollectionMethod(final Object collectionMethod) {
         this.collectionMethod = stringOrNull(collectionMethod);
+    }
+
+    public void setCouponCodes(final List<String> couponCodes) {
+        this.couponCodes = couponCodes;
+    }
+
+    public List<String> getCouponCodes() {
+        return this.couponCodes;
+    }
+
+    public GiftCard getGiftCard() {
+        return giftCard;
+    }
+
+    public void setGiftCard(final GiftCard giftCard) {
+        this.giftCard = giftCard;
     }
 
     public String getNetTerms() {
@@ -96,6 +127,14 @@ public class Purchase extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
+    public void setSubscriptions(final Subscriptions subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public Subscriptions getSubscriptions() {
+        return subscriptions;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -106,6 +145,9 @@ public class Purchase extends RecurlyObject {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", poNumber='").append(poNumber).append('\'');
         sb.append(", netTerms='").append(netTerms).append('\'');
+        sb.append(", giftCard='").append(giftCard).append('\'');
+        sb.append(", subscriptions='").append(subscriptions).append('\'');
+        sb.append(", couponCodes='").append(couponCodes).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -126,13 +168,22 @@ public class Purchase extends RecurlyObject {
         if (collectionMethod != null ? !collectionMethod.equals(purchase.collectionMethod) : purchase.collectionMethod != null) {
             return false;
         }
+        if (couponCodes != null ? !couponCodes.equals(purchase.couponCodes) : purchase.couponCodes != null) {
+            return false;
+        }
         if (currency != null ? !currency.equals(purchase.currency) : purchase.currency != null) {
+            return false;
+        }
+        if (giftCard != null ? !giftCard.equals(purchase.giftCard) : purchase.giftCard != null) {
             return false;
         }
         if (poNumber != null ? !poNumber.equals(purchase.poNumber) : purchase.poNumber != null) {
             return false;
         }
         if (netTerms != null ? !netTerms.equals(purchase.netTerms) : purchase.netTerms != null) {
+            return false;
+        }
+        if (subscriptions != null ? !subscriptions.equals(purchase.subscriptions) : purchase.subscriptions != null) {
             return false;
         }
 
@@ -146,8 +197,11 @@ public class Purchase extends RecurlyObject {
                 adjustments,
                 collectionMethod,
                 currency,
+                giftCard,
                 poNumber,
-                netTerms
+                netTerms,
+                subscriptions,
+                couponCodes
         );
     }
 
