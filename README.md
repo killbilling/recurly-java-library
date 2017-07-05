@@ -12,7 +12,7 @@ The library is distributed via [Maven Central](http://search.maven.org/#search%7
 <dependency>
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
-    <version>0.10.1</version>
+    <version>0.11.0</version>
 </dependency>
 ```
 
