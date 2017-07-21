@@ -45,12 +45,12 @@ public class TestSubscription extends TestModelBase {
                                         "  <unit_amount_in_cents type=\"integer\">800</unit_amount_in_cents>\n" +
                                         "  <currency>EUR</currency>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
-                                        "  <activated_at type=\"datetime\">2011-05-27T07:00:00Z</activated_at>\n" +
-                                        "  <updated_at type=\"datetime\">2011-05-27T07:00:00Z</updated_at>\n" +
+                                        "  <activated_at type=\"dateTime\">2011-05-27T07:00:00Z</activated_at>\n" +
+                                        "  <updated_at type=\"dateTime\">2011-05-27T07:00:00Z</updated_at>\n" +
                                         "  <canceled_at nil=\"nil\"></canceled_at>\n" +
                                         "  <expires_at nil=\"nil\"></expires_at>\n" +
-                                        "  <current_period_started_at type=\"datetime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
-                                        "  <current_period_ends_at type=\"datetime\">2010-07-27T07:00:00Z</current_period_ends_at>\n" +
+                                        "  <current_period_started_at type=\"dateTime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
+                                        "  <current_period_ends_at type=\"dateTime\">2010-07-27T07:00:00Z</current_period_ends_at>\n" +
                                         "  <trial_started_at nil=\"nil\"></trial_started_at>\n" +
                                         "  <trial_ends_at nil=\"nil\"></trial_ends_at>\n" +
                                         "  <starts_at>2010-07-28T07:00:00Z</starts_at>\n" +
@@ -65,9 +65,9 @@ public class TestSubscription extends TestModelBase {
                                         "  <tax_region>CA</tax_region>\n" +
                                         "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                                         "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
-                                        "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
+                                        "  <first_renewal_date type=\"dateTime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
-                                        "  <converted_at type=\"datetime\">2017-06-27T00:00:00Z</converted_at>" +
+                                        "  <converted_at type=\"dateTime\">2017-06-27T00:00:00Z</converted_at>" +
                                         "  <no_billing_info_reason>plan_free_trial</no_billing_info_reason>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
@@ -108,12 +108,12 @@ public class TestSubscription extends TestModelBase {
                                         "  <unit_amount_in_cents type=\"integer\">800</unit_amount_in_cents>\n" +
                                         "  <currency>EUR</currency>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
-                                        "  <activated_at type=\"datetime\">2011-05-27T07:00:00Z</activated_at>\n" +
-                                        "  <updated_at type=\"datetime\">2011-05-27T07:00:00Z</updated_at>\n" +
+                                        "  <activated_at type=\"dateTime\">2011-05-27T07:00:00Z</activated_at>\n" +
+                                        "  <updated_at type=\"dateTime\">2011-05-27T07:00:00Z</updated_at>\n" +
                                         "  <canceled_at nil=\"nil\"></canceled_at>\n" +
                                         "  <expires_at nil=\"nil\"></expires_at>\n" +
-                                        "  <current_period_started_at type=\"datetime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
-                                        "  <current_period_ends_at type=\"datetime\">2010-07-27T07:00:00Z</current_period_ends_at>\n" +
+                                        "  <current_period_started_at type=\"dateTime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
+                                        "  <current_period_ends_at type=\"dateTime\">2010-07-27T07:00:00Z</current_period_ends_at>\n" +
                                         "  <trial_started_at nil=\"nil\"></trial_started_at>\n" +
                                         "  <trial_ends_at nil=\"nil\"></trial_ends_at>\n" +
                                         "  <starts_at>2010-07-28T07:00:00Z</starts_at>\n" +
@@ -127,10 +127,10 @@ public class TestSubscription extends TestModelBase {
                                         "  <tax_type>usst</tax_type>\n" +
                                         "  <tax_region>CA</tax_region>\n" +
                                         "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
-                                        "  <first_renewal_date type=\"datetime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
+                                        "  <first_renewal_date type=\"dateTime\">2011-07-01T07:00:00Z</first_renewal_date>\n" +
                                         "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
-                                        "  <converted_at type=\"datetime\">2017-06-27T00:00:00Z</converted_at>" +
+                                        "  <converted_at type=\"dateTime\">2017-06-27T00:00:00Z</converted_at>" +
                                         "  <no_billing_info_reason>plan_free_trial</no_billing_info_reason>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "    <subscription_add_on>\n" +

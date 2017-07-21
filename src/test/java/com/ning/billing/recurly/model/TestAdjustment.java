@@ -41,10 +41,10 @@ public class TestAdjustment extends TestModelBase {
                                       "  <currency>USD</currency>\n" +
                                       "  <product_code>product123</product_code>\n" +
                                       "  <taxable type=\"boolean\">false</taxable>\n" +
-                                      "  <start_date type=\"datetime\">2011-08-31T03:30:00Z</start_date>\n" +
+                                      "  <start_date type=\"dateTime\">2011-08-31T03:30:00Z</start_date>\n" +
                                       "  <revenue_schedule_type>at_invoice</revenue_schedule_type>\n" +
                                       "  <end_date nil=\"nil\"></end_date>\n" +
-                                      "  <created_at type=\"datetime\">2011-08-31T03:30:00Z</created_at>\n" +
+                                      "  <created_at type=\"dateTime\">2011-08-31T03:30:00Z</created_at>\n" +
                                       "</adjustment>";
 
         final Adjustment adjustment = xmlMapper.readValue(adjustmentData, Adjustment.class);

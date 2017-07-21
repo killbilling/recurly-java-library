@@ -107,7 +107,7 @@ public abstract class RecurlyObject {
         // will interpret as an Object (Map), not Booleans.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 2 && "boolean".equals(map.get("type"))) {
+            if (map.keySet().size() == 2 && "boolean".equalsIgnoreCase((String) map.get("type"))) {
                 return Boolean.valueOf((String) map.get(""));
             }
         }
@@ -143,7 +143,7 @@ public abstract class RecurlyObject {
         // will interpret as an Object (Map), not Integers.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 2 && "integer".equals(map.get("type"))) {
+            if (map.keySet().size() == 2 && "integer".equalsIgnoreCase((String) map.get("type"))) {
                 return Integer.valueOf((String) map.get(""));
             }
         }
@@ -160,7 +160,7 @@ public abstract class RecurlyObject {
         // will interpret as an Object (Map), not Longs.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 2 && "integer".equals(map.get("type"))) {
+            if (map.keySet().size() == 2 && "integer".equalsIgnoreCase((String) map.get("type"))) {
                 return Long.valueOf((String) map.get(""));
             }
         }
@@ -177,7 +177,7 @@ public abstract class RecurlyObject {
         // will interpret as an Object (Map), not Longs.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 2 && "float".equals(map.get("type"))) {
+            if (map.keySet().size() == 2 && "float".equalsIgnoreCase((String) map.get("type"))) {
                 return new BigDecimal((String) map.get(""));
             }
         }
@@ -190,11 +190,11 @@ public abstract class RecurlyObject {
             return null;
         }
 
-        // DateTimes are represented as objects (e.g. <created_at type="datetime">2011-04-19T07:00:00Z</created_at>), which Jackson
+        // DateTimes are represented as objects (e.g. <created_at type="dateTime">2011-04-19T07:00:00Z</created_at>), which Jackson
         // will interpret as an Object (Map), not DateTimes.
         if (object instanceof Map) {
             final Map map = (Map) object;
-            if (map.keySet().size() == 2 && "datetime".equals(map.get("type"))) {
+            if (map.keySet().size() == 2 && "dateTime".equalsIgnoreCase((String) map.get("type"))) {
                 return new DateTime(map.get(""));
             }
         }

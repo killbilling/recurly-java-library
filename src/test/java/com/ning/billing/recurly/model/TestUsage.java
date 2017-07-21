@@ -34,10 +34,10 @@ public class TestUsage extends TestModelBase {
                 "  <id type=\"integer\">570702996069942457</id>\n" +
                 "  <amount type=\"integer\">10</amount>\n" +
                 "  <merchant_tag>test_merchant</merchant_tag>\n" +
-                "  <recording_timestamp type=\"datetime\">2016-12-27T14:04:01Z</recording_timestamp>\n" +
-                "  <usage_timestamp type=\"datetime\">2016-12-27T14:04:01Z</usage_timestamp>\n" +
-                "  <created_at type=\"datetime\">2016-12-27T14:04:58Z</created_at>\n" +
-                "  <updated_at type=\"datetime\">2016-12-27T14:04:58Z</updated_at>\n" +
+                "  <recording_timestamp type=\"dateTime\">2016-12-27T14:04:01Z</recording_timestamp>\n" +
+                "  <usage_timestamp type=\"dateTime\">2016-12-27T14:04:01Z</usage_timestamp>\n" +
+                "  <created_at type=\"dateTime\">2016-12-27T14:04:58Z</created_at>\n" +
+                "  <updated_at type=\"dateTime\">2016-12-27T14:04:58Z</updated_at>\n" +
                 "  <billed_at nil=\"nil\"></billed_at>\n" +
                 "  <usage_type>price</usage_type>\n" +
                 "  <unit_amount_in_cents type=\"integer\">150</unit_amount_in_cents>\n" +

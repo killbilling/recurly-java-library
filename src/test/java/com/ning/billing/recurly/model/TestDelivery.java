@@ -33,7 +33,7 @@ public class TestDelivery extends TestModelBase {
                 "    <delivery>\n" +
                 "         <method>email</method>\n" +
                 "         <email_address>john@example.com</email_address>\n" +
-                "         <deliver_at type=\"datetime\">2016-12-27T07:00:00Z</deliver_at>\n" +
+                "         <deliver_at type=\"dateTime\">2016-12-27T07:00:00Z</deliver_at>\n" +
                 "         <first_name>John</first_name>\n" +
                 "         <last_name>Smith</last_name>\n" +
                 "         <address>\n" +
