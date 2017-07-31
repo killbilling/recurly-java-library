@@ -1612,6 +1612,9 @@ public class RecurlyClient {
     }
 
     private void doDELETE(final String resource) {
+        if (debug()) {
+            log.info("Msg to Recurly API [PUT]:: URL : {}", baseUrl + resource);
+        }
         callRecurlySafeXmlContent(client.prepareDelete(baseUrl + resource), null);
     }
 
