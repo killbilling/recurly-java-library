@@ -18,7 +18,7 @@
 package com.ning.billing.recurly;
 
 import java.util.Random;
-import org.joda.time.DateTime;
+
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.Address;
@@ -41,6 +41,10 @@ import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
+import com.ning.billing.recurly.model.AccountAcquisition;
+import com.ning.billing.recurly.model.AcquisitionChannel;
+
+import org.joda.time.DateTime;
 
 public class TestUtils {
 
@@ -924,5 +928,32 @@ public class TestUtils {
         purchase.setNetTerms(30);
 
         return purchase;
+    }
+
+    /**
+     * Creates a random {@link AccountAcquisition} object for use in Tests
+     *
+     * @return The random {@link AccountAcquisition} object
+     */
+    public static AccountAcquisition createRandomAccountAcquisition() {
+        return createRandomAccountAcquisition(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link AccountAcquisition} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AccountAcquisition} object
+     */
+    public static AccountAcquisition createRandomAccountAcquisition(final int seed) {
+        final AccountAcquisition acquisition = new AccountAcquisition();
+
+        acquisition.setCurrency("USD");
+        acquisition.setCampaign("mailchimp." + randomAlphaNumericString(10, seed));
+        acquisition.setChannel(AcquisitionChannel.MARKETING_CONTENT);
+        acquisition.setCostInCents(randomInteger(1000, seed));
+        acquisition.setSubchannel(randomAlphaNumericString(50, seed));
+
+        return acquisition;
     }
 }
