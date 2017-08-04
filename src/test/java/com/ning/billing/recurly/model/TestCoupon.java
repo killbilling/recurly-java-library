@@ -47,13 +47,13 @@ public class TestCoupon extends TestModelBase {
                     "<discount_type>percent</discount_type>" +
                     "<discount_percent type=\"integer\">100</discount_percent>" +
                     "<invoice_description>invoice description</invoice_description>" +
-                    "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                    "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                     "<single_use type=\"boolean\">true</single_use>" +
                     "<applies_for_months nil=\"nil\"/>" +
                     "<max_redemptions type=\"integer\">200</max_redemptions>" +
                     "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                    "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                    "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                    "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                    "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                     "<deleted_at nil=\"nil\"/>" +
                     "<duration>single_use</duration>" +
                     "<temporal_unit nil=\"nil\"/>" +
@@ -107,13 +107,13 @@ public class TestCoupon extends TestModelBase {
                     "<discount_type>percent</discount_type>" +
                     "<discount_percent type=\"integer\">100</discount_percent>" +
                     "<invoice_description>invoice description</invoice_description>" +
-                    "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                    "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                     "<single_use type=\"boolean\">false</single_use>" +
                     "<applies_for_months nil=\"nil\"/>" +
                     "<max_redemptions type=\"integer\">200</max_redemptions>" +
                     "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                    "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                    "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                    "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                    "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                     "<deleted_at nil=\"nil\"/>" +
                     "<duration>temporal</duration>" +
                     "<temporal_unit>day</temporal_unit>" +
@@ -169,13 +169,13 @@ public class TestCoupon extends TestModelBase {
                     "    <USD type=\"integer\">199</USD>\n" +
                     "</discount_in_cents>" +
                     "<invoice_description>invoice description</invoice_description>" +
-                    "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                    "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                     "<single_use type=\"boolean\">true</single_use>" +
                     "<applies_for_months nil=\"nil\"/>" +
                     "<max_redemptions type=\"integer\">200</max_redemptions>" +
                     "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                    "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                    "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                    "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                    "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                     "<deleted_at nil=\"nil\"/>" +
                     "<duration>single_use</duration>" +
                     "<temporal_unit nil=\"nil\"/>" +
@@ -230,13 +230,13 @@ public class TestCoupon extends TestModelBase {
                         "<discount_type>percent</discount_type>" +
                         "<discount_percent type=\"integer\">100</discount_percent>" +
                         "<invoice_description>invoice description</invoice_description>" +
-                        "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                        "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                         "<single_use type=\"boolean\">true</single_use>" +
                         "<applies_for_months nil=\"nil\"/>" +
                         "<max_redemptions type=\"integer\">200</max_redemptions>" +
                         "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                        "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                        "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                        "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                        "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                         "<deleted_at nil=\"nil\"/>" +
                         "<duration>single_use</duration>" +
                         "<temporal_unit nil=\"nil\"/>" +

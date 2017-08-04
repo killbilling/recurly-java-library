@@ -37,10 +37,10 @@ public class TestGiftCard extends TestModelBase {
                 "    <currency>USD</currency>   \n" +
                 "    <redemption_code>AI4VOVO1RC74H9E2</redemption_code>\n" +
                 "    <id type=\"integer\">1988596967980562362</id>\n" +
-                "    <created_at type=\"datetime\">2016-04-15T07:00:00Z</created_at>\n" +
-                "    <updated_at type=\"datetime\">2016-12-27T07:00:00Z</updated_at>\n" +
-                "    <delivered_at type=\"datetime\">2016-12-25T07:00:05Z</delivered_at>\n" +
-                "    <redeemed_at type=\"datetime\">2016-12-27T07:00:00Z</redeemed_at>\n" +
+                "    <created_at type=\"dateTime\">2016-04-15T07:00:00Z</created_at>\n" +
+                "    <updated_at type=\"dateTime\">2016-12-27T07:00:00Z</updated_at>\n" +
+                "    <delivered_at type=\"dateTime\">2016-12-25T07:00:05Z</delivered_at>\n" +
+                "    <redeemed_at type=\"dateTime\">2016-12-27T07:00:00Z</redeemed_at>\n" +
                 "    <canceled_at nil=\"nil\"></canceled_at>\n" +
                 "    <product_code>gift_card</product_code>\n" +
                 "    <balance_in_cents type=\"integer\">2000</balance_in_cents>\n" +

@@ -72,7 +72,7 @@ public class TestErrors extends TestModelBase {
                                   "    <avs_result code=\"\" nil=\"nil\"></avs_result>\n" +
                                   "    <avs_result_street nil=\"nil\"></avs_result_street>\n" +
                                   "    <avs_result_postal nil=\"nil\"></avs_result_postal>\n" +
-                                  "    <created_at type=\"datetime\">2013-09-04T11:34:21Z</created_at>\n" +
+                                  "    <created_at type=\"dateTime\">2013-09-04T11:34:21Z</created_at>\n" +
                                   "    <details>\n" +
                                   "      <account>\n" +
                                   "        <account_code>4503f4df-acab-4097-9245-f4c130b5f9ac</account_code>\n" +

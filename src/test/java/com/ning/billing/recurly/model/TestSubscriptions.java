@@ -42,11 +42,11 @@ public class TestSubscriptions extends TestModelBase {
                                          "    <unit_amount_in_cents type=\"integer\">800</unit_amount_in_cents>\n" +
                                          "    <currency>EUR</currency>\n" +
                                          "    <quantity type=\"integer\">1</quantity>\n" +
-                                         "    <activated_at type=\"datetime\">2011-05-27T07:00:00Z</activated_at>\n" +
+                                         "    <activated_at type=\"dateTime\">2011-05-27T07:00:00Z</activated_at>\n" +
                                          "    <canceled_at nil=\"nil\"></canceled_at>\n" +
                                          "    <expires_at nil=\"nil\"></expires_at>\n" +
-                                         "    <current_period_started_at type=\"datetime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
-                                         "    <current_period_ends_at type=\"datetime\">2010-07-27T07:00:00Z</current_period_ends_at>\n" +
+                                         "    <current_period_started_at type=\"dateTime\">2011-06-27T07:00:00Z</current_period_started_at>\n" +
+                                         "    <current_period_ends_at type=\"dateTime\">2010-07-27T07:00:00Z</current_period_ends_at>\n" +
                                          "    <trial_started_at nil=\"nil\"></trial_started_at>\n" +
                                          "    <trial_ends_at nil=\"nil\"></trial_ends_at>\n" +
                                          "    <subscription_add_ons type=\"array\">\n" +

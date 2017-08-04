@@ -38,7 +38,7 @@ public class TestRedemption extends TestModelBase {
                 "  <total_discounted_in_cents type=\"integer\">100</total_discounted_in_cents>\n" +
                 "  <currency>USD</currency>\n" +
                 "  <state>active</state>\n" +
-                "  <created_at type=\"datetime\">2011-06-27T12:34:56Z</created_at>\n" +
+                "  <created_at type=\"dateTime\">2011-06-27T12:34:56Z</created_at>\n" +
                 "</redemption>";
 
         final Redemption redemption = xmlMapper.readValue(redemptionData, Redemption.class);

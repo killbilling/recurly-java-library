@@ -45,8 +45,8 @@ public class TestAddOns extends TestModelBase {
                                   "    <add_on_type>usage</add_on_type>\n" +
                                   "    <usage_type>price</usage_type>\n" +
                                   "    <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
-                                  "    <created_at type=\"datetime\">2011-06-28T12:34:56Z</created_at>\n" +
-                                  "    <updated_at type=\"datetime\">2011-06-28T12:34:56Z</updated_at>\n" +
+                                  "    <created_at type=\"dateTime\">2011-06-28T12:34:56Z</created_at>\n" +
+                                  "    <updated_at type=\"dateTime\">2011-06-28T12:34:56Z</updated_at>\n" +
                                   "  </add_on>\n" +
                                   "  <!-- Continued... -->\n" +
                                   "</add_ons>";

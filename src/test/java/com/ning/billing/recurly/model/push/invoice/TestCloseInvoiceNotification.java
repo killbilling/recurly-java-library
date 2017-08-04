@@ -46,8 +46,8 @@ public class TestCloseInvoiceNotification extends TestModelBase {
                                 "    <vat_number></vat_number>\n" +
                                 "    <total_in_cents type=\"integer\">1100</total_in_cents>\n" +
                                 "    <currency>USD</currency>\n" +
-                                "    <date type=\"datetime\">2014-01-01T20:20:29Z</date>\n" +
-                                "    <closed_at type=\"datetime\">2014-01-01T20:24:02Z</closed_at>\n" +
+                                "    <date type=\"dateTime\">2014-01-01T20:20:29Z</date>\n" +
+                                "    <closed_at type=\"dateTime\">2014-01-01T20:24:02Z</closed_at>\n" +
                                 "    <net_terms type=\"integer\">0</net_terms>\n" +
                                 "    <collection_method>automatic</collection_method>\n" +
                                 "  </invoice>\n" +

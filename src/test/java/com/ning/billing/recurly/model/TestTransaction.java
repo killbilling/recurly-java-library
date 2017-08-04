@@ -55,8 +55,8 @@ public class TestTransaction extends TestModelBase {
                                        "  <origin>api</origin>\n" +
                                        "  <message>Successful test transaction</message>\n" +
                                        "  <approval_code>P1234577Q</approval_code>\n" +
-                                       "  <created_at type=\"datetime\">2015-06-19T03:01:33Z</created_at>\n" +
-                                       "  <updated_at type=\"datetime\">2015-06-19T03:01:33Z</updated_at>\n" +
+                                       "  <created_at type=\"dateTime\">2015-06-19T03:01:33Z</created_at>\n" +
+                                       "  <updated_at type=\"dateTime\">2015-06-19T03:01:33Z</updated_at>\n" +
                                        "  <details>\n" +
                                        "    <account>\n" +
                                        "      <account_code>1</account_code>\n" +

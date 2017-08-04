@@ -42,10 +42,10 @@ public class TestAdjustements extends TestModelBase {
                                        "    <currency>USD</currency>\n" +
                                        "    <taxable type=\"boolean\">false</taxable>\n" +
                                        "    <tax_exempt type=\"boolean\">true</tax_exempt>\n" +
-                                       "    <start_date type=\"datetime\">2011-08-31T03:30:00Z</start_date>\n" +
+                                       "    <start_date type=\"dateTime\">2011-08-31T03:30:00Z</start_date>\n" +
                                        "    <end_date nil=\"nil\"></end_date>\n" +
-                                       "    <created_at type=\"datetime\">2011-08-31T03:30:00Z</created_at>\n" +
-                                       "    <updated_at type=\"datetime\">2011-08-31T03:30:00Z</updated_at>\n" +
+                                       "    <created_at type=\"dateTime\">2011-08-31T03:30:00Z</created_at>\n" +
+                                       "    <updated_at type=\"dateTime\">2011-08-31T03:30:00Z</updated_at>\n" +
                                        "  </adjustment>\n" +
                                        "  <!-- Continued... -->\n" +
                                        "</adjustments>";
