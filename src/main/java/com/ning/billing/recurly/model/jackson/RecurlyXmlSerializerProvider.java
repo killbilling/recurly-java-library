@@ -31,8 +31,9 @@ import com.fasterxml.jackson.dataformat.xml.util.XmlRootNameLookup;
 // Custom XmlSerializerProvider which delegates the writing of field names in array to
 // the object serializer (RecurlyObjectsSerializer). The default implementation hardcodes them to "item".
 public final class RecurlyXmlSerializerProvider extends XmlSerializerProvider {
+	private static final long serialVersionUID = 1139048428132862581L;
 
-    public RecurlyXmlSerializerProvider() {
+	public RecurlyXmlSerializerProvider() {
         this(new XmlRootNameLookup());
     }
 

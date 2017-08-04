@@ -17,8 +17,6 @@
 
 package com.ning.billing.recurly.model.push.payment;
 
-import java.util.Map;
-
 import javax.xml.bind.annotation.XmlElement;
 
 import org.joda.time.DateTime;

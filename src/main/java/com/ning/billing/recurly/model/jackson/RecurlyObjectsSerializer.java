@@ -31,8 +31,9 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 
 public class RecurlyObjectsSerializer<T extends RecurlyObjects<U>, U extends RecurlyObject> extends StdSerializer<T> {
-
-    private final String elementName;
+	private static final long serialVersionUID = 3364977585605030678L;
+	
+	private final String elementName;
 
     public RecurlyObjectsSerializer(final Class<T> recurlyObjectsClassName, final String elementName) {
         super(recurlyObjectsClassName);
@@ -48,8 +49,10 @@ public class RecurlyObjectsSerializer<T extends RecurlyObjects<U>, U extends Rec
         }
 
         final ToXmlGenerator xmlgen = (ToXmlGenerator) jgen;
+        final JsonWriteContext writeContext = (JsonWriteContext) xmlgen.getOutputContext();
+        
         // Nested RecurlyObjects
-        final boolean shouldSkipWritingFieldName = xmlgen.getOutputContext().writeFieldName(elementName) == JsonWriteContext.STATUS_EXPECT_VALUE;
+        final boolean shouldSkipWritingFieldName = writeContext.writeFieldName(elementName) == JsonWriteContext.STATUS_EXPECT_VALUE;
         boolean firstValue = true;
         for (final U value : values) {
             if (!shouldSkipWritingFieldName && firstValue) {
