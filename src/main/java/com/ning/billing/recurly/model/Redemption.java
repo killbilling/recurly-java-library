@@ -43,6 +43,9 @@ public class Redemption extends RecurlyObject {
     @XmlElement(name = "account_code")
     private String accountCode;
 
+    @XmlElement(name = "subscription_uuid")
+    private String subscriptionUuid;
+
     @XmlElement(name = "coupon")
     private Coupon coupon;
 
@@ -73,6 +76,14 @@ public class Redemption extends RecurlyObject {
 
     public void setAccountCode(final Object accountCode) {
         this.accountCode = stringOrNull(accountCode);
+    }
+
+    public String getSubscriptionUuid() {
+        return subscriptionUuid;
+    }
+
+    public void setSubscriptionUuid(String subscriptionUuid) {
+        this.subscriptionUuid = subscriptionUuid;
     }
 
     public Coupon getCoupon() {
@@ -158,6 +169,7 @@ public class Redemption extends RecurlyObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("Redemption");
         sb.append("{accountCode=").append(accountCode);
+        sb.append(", subscriptionUuid=").append(subscriptionUuid);
         sb.append(", coupon=").append(coupon);
         sb.append(", account=").append(account);
         sb.append(", uuid=").append(uuid);
@@ -179,6 +191,9 @@ public class Redemption extends RecurlyObject {
         final Redemption that = (Redemption) o;
 
         if (accountCode != null ? !accountCode.equals(that.accountCode) : that.accountCode != null) {
+            return false;
+        }
+        if (subscriptionUuid != null ? !subscriptionUuid.equals(that.subscriptionUuid) : that.subscriptionUuid != null) {
             return false;
         }
         if (coupon != null ? !coupon.equals(that.coupon) : that.coupon != null) {
@@ -217,6 +232,7 @@ public class Redemption extends RecurlyObject {
     public int hashCode() {
         return Objects.hashCode(
                 accountCode,
+                subscriptionUuid,
                 coupon,
                 account,
                 singleUse,
