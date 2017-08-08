@@ -769,6 +769,7 @@ public class TestUtils {
 
         redemption.setAccount(account);
         redemption.setAccountCode(account.getAccountCode());
+        redemption.setSubscriptionUuid(randomAlphaNumericString(10, seed));
         redemption.setCoupon(createRandomCoupon(seed));
         redemption.setSingleUse(true);
         redemption.setState("redeemed");
