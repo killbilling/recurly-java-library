@@ -82,8 +82,8 @@ public class Redemption extends RecurlyObject {
         return subscriptionUuid;
     }
 
-    public void setSubscriptionUuid(String subscriptionUuid) {
-        this.subscriptionUuid = subscriptionUuid;
+    public void setSubscriptionUuid(final Object subscriptionUuid) {
+        this.subscriptionUuid = stringOrNull(subscriptionUuid);
     }
 
     public Coupon getCoupon() {
