@@ -117,6 +117,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "vat_number")
     private String vatNumber;
 
+    @XmlElement(name = "account_acquisition")
+    private AccountAcquisition accountAcquisition;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -331,6 +334,14 @@ public class Account extends RecurlyObject {
         this.vatNumber = stringOrNull(vatNumber);
     }
 
+    public AccountAcquisition getAccountAcquisition() {
+        return accountAcquisition;
+    }
+
+    public void setAccountAcquisition(final AccountAcquisition accountAcquisition) {
+        this.accountAcquisition = accountAcquisition;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
@@ -360,6 +371,7 @@ public class Account extends RecurlyObject {
         sb.append(", hasCanceledSubscription=").append(hasCanceledSubscription);
         sb.append(", hasPastDueInvoice=").append(hasPastDueInvoice);
         sb.append(", vatNumber=").append(vatNumber);
+        sb.append(", accountAcquisition=").append(accountAcquisition);
         sb.append('}');
         return sb.toString();
     }
@@ -446,6 +458,9 @@ public class Account extends RecurlyObject {
         if (vatNumber != null ? !vatNumber.equals(account.vatNumber) : account.vatNumber != null) {
             return false;
         }
+        if (accountAcquisition != null ? !accountAcquisition.equals(account.accountAcquisition) : account.accountAcquisition != null) {
+            return false;
+        }
 
         return true;
     }
@@ -478,7 +493,8 @@ public class Account extends RecurlyObject {
                 updatedAt,
                 taxExempt,
                 shippingAddresses,
-                vatNumber
+                vatNumber,
+                accountAcquisition
         );
     }
 }

@@ -77,6 +77,7 @@ import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
 import com.ning.billing.recurly.model.MeasuredUnit;
 import com.ning.billing.recurly.model.MeasuredUnits;
+import com.ning.billing.recurly.model.AccountAcquisition;
 
 import com.ning.billing.recurly.util.http.SslUtils;
 import com.ning.http.client.FluentCaseInsensitiveStringsMap;
@@ -1495,6 +1496,59 @@ public class RecurlyClient {
      */
     public Invoice previewPurchase(final Purchase purchase) {
         return doPOST(Purchase.PURCHASES_ENDPOINT + "/preview", purchase, Invoice.class);
+    }
+
+    /**
+     * Sets the acquisition details for an account
+     * <p>
+     * https://dev.recurly.com/docs/create-account-acquisition
+     *
+     * @param accountCode The account's account code
+     * @param acquisition The AccountAcquisition data
+     * @return The created AccountAcquisition object
+     */
+    public AccountAcquisition createAccountAcquisition(final String accountCode, final AccountAcquisition acquisition) {
+        final String path = Account.ACCOUNT_RESOURCE + "/" + accountCode + AccountAcquisition.ACCOUNT_ACQUISITION_RESOURCE;
+        return doPOST(path, acquisition, AccountAcquisition.class);
+    }
+
+    /**
+     * Gets the acquisition details for an account
+     * <p>
+     * https://dev.recurly.com/docs/create-account-acquisition
+     *
+     * @param accountCode The account's account code
+     * @return The created AccountAcquisition object
+     */
+    public AccountAcquisition getAccountAcquisition(final String accountCode) {
+        final String path = Account.ACCOUNT_RESOURCE + "/" + accountCode + AccountAcquisition.ACCOUNT_ACQUISITION_RESOURCE;
+        return doGET(path, AccountAcquisition.class);
+    }
+
+    /**
+     * Updates the acquisition details for an account
+     * <p>
+     * https://dev.recurly.com/docs/update-account-acquisition
+     *
+     * @param accountCode The account's account code
+     * @param acquisition The AccountAcquisition data
+     * @return The created AccountAcquisition object
+     */
+    public AccountAcquisition updateAccountAcquisition(final String accountCode, final AccountAcquisition acquisition) {
+        final String path = Account.ACCOUNT_RESOURCE + "/" + accountCode + AccountAcquisition.ACCOUNT_ACQUISITION_RESOURCE;
+        return doPUT(path, acquisition, AccountAcquisition.class);
+    }
+
+    /**
+     * Clear the acquisition details for an account
+     * <p>
+     * https://dev.recurly.com/docs/clear-account-acquisition
+     *
+     * @param accountCode The account's account code
+     * @return The cleared AccountAcquisition object
+     */
+    public void deleteAccountAcquisition(final String accountCode) {
+        doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + AccountAcquisition.ACCOUNT_ACQUISITION_RESOURCE);
     }
 
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {

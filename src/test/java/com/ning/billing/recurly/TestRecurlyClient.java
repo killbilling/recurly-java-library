@@ -53,7 +53,8 @@ import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
-
+import com.ning.billing.recurly.model.AccountAcquisition;
+import com.ning.billing.recurly.model.AcquisitionChannel;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -423,6 +424,8 @@ public class TestRecurlyClient {
     public void testCreateAccount() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final AccountAcquisition acquisitionData = TestUtils.createRandomAccountAcquisition();
+        accountData.setAccountAcquisition(acquisitionData);
 
         try {
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
@@ -444,6 +447,14 @@ public class TestRecurlyClient {
             Assert.assertEquals(accountData.getAddress().getZip(), account.getAddress().getZip());
             Assert.assertEquals(accountData.getAddress().getCountry(), account.getAddress().getCountry());
             Assert.assertEquals(accountData.getAddress().getPhone(), account.getAddress().getPhone());
+
+            // fetch and check the acquisition data
+            final AccountAcquisition acquisition = recurlyClient.getAccountAcquisition(account.getAccountCode());
+            Assert.assertEquals(acquisition.getCurrency(), acquisitionData.getCurrency());
+            Assert.assertEquals(acquisition.getChannel(), acquisitionData.getChannel());
+            Assert.assertEquals(acquisition.getCampaign(), acquisitionData.getCampaign());
+            Assert.assertEquals(acquisition.getSubchannel(), acquisitionData.getSubchannel());
+            Assert.assertEquals(acquisition.getCostInCents(), acquisitionData.getCostInCents());
 
             // Test getting all
             final Accounts retrievedAccounts = recurlyClient.getAccounts();
@@ -1617,6 +1628,59 @@ public class TestRecurlyClient {
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testAccountAcquisition() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            AccountAcquisition acquisitionData = TestUtils.createRandomAccountAcquisition();
+
+            // test create
+            AccountAcquisition acquisition = recurlyClient.createAccountAcquisition(account.getAccountCode(), acquisitionData);
+            Assert.assertEquals(acquisition.getSubchannel(), acquisitionData.getSubchannel());
+            Assert.assertEquals(acquisition.getCampaign(), acquisitionData.getCampaign());
+            Assert.assertEquals(acquisition.getChannel(), acquisitionData.getChannel());
+            Assert.assertEquals(acquisition.getCurrency(), acquisitionData.getCurrency());
+            Assert.assertEquals(acquisition.getCostInCents(), acquisitionData.getCostInCents());
+
+            // test lookup
+            acquisition = recurlyClient.getAccountAcquisition(account.getAccountCode());
+            Assert.assertEquals(acquisition.getSubchannel(), acquisitionData.getSubchannel());
+            Assert.assertEquals(acquisition.getCampaign(), acquisitionData.getCampaign());
+            Assert.assertEquals(acquisition.getChannel(), acquisitionData.getChannel());
+            Assert.assertEquals(acquisition.getCurrency(), acquisitionData.getCurrency());
+            Assert.assertEquals(acquisition.getCostInCents(), acquisitionData.getCostInCents());
+
+            // test update
+            acquisitionData.setSubchannel("updated");
+            acquisitionData.setCampaign("updated");
+            acquisitionData.setCostInCents(0);
+            acquisitionData.setCurrency("EUR");
+            acquisitionData.setChannel(AcquisitionChannel.OTHER);
+
+            acquisition = recurlyClient.updateAccountAcquisition(account.getAccountCode(), acquisitionData);
+            Assert.assertEquals(acquisition.getSubchannel(), "updated");
+            Assert.assertEquals(acquisition.getCampaign(), "updated");
+            Assert.assertEquals(acquisition.getChannel(), AcquisitionChannel.OTHER);
+            Assert.assertEquals(acquisition.getCurrency(), "EUR");
+            Assert.assertEquals(acquisition.getCostInCents(), new Integer(0));
+
+            // test clear
+            recurlyClient.deleteAccountAcquisition(account.getAccountCode());
+
+            try {
+                recurlyClient.getAccountAcquisition(account.getAccountCode());
+                Assert.fail("getAccountAcquisition should have failed to find acquisition details for this account");
+            } catch (final RecurlyAPIException e) {
+                Assert.assertNotNull(e);
+                // good
+            }
+        } finally {
+            recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
 }
