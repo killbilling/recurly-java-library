@@ -209,7 +209,7 @@ public class RecurlyClient {
      */
     public Integer getAccountsCount(final QueryParams params) {
         FluentCaseInsensitiveStringsMap map = doHEAD(Accounts.ACCOUNTS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue("X-Records"));
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
     }
 
     /**
@@ -243,7 +243,7 @@ public class RecurlyClient {
      */
     public Integer getCouponsCount(final QueryParams params) {
         FluentCaseInsensitiveStringsMap map = doHEAD(Coupons.COUPONS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue("X-Records"));
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
     }
 
     /**
@@ -544,7 +544,7 @@ public class RecurlyClient {
      */
     public Integer getSubscriptionsCount(final QueryParams params) {
         FluentCaseInsensitiveStringsMap map = doHEAD(Subscription.SUBSCRIPTION_RESOURCE,  params);
-        return Integer.parseInt(map.getFirstValue("X-Records"));
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
     }
 
     /**
@@ -730,7 +730,7 @@ public class RecurlyClient {
      */
     public Integer getTransactionsCount(final QueryParams params) {
         FluentCaseInsensitiveStringsMap map = doHEAD(Transactions.TRANSACTIONS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue("X-Records"));
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
     }
 
     /**
@@ -1057,7 +1057,7 @@ public class RecurlyClient {
      */
     public Integer getPlansCount(final QueryParams params) {
         FluentCaseInsensitiveStringsMap map = doHEAD(Plans.PLANS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue("X-Records"));
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
     }
 
     /**
@@ -1402,7 +1402,7 @@ public class RecurlyClient {
      */
     public Integer getGiftCardsCount(final QueryParams params) {
         FluentCaseInsensitiveStringsMap map = doHEAD(GiftCards.GIFT_CARDS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue("X-Records"));
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
     }
 
     /**
