@@ -280,7 +280,7 @@ public class RecurlyClient {
      * @return the updated AccountBalance if success, null otherwise
      */
     public AccountBalance getAccountBalance(final String accountCode) {
-        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + "/" + AccountBalance.ACCOUNT_BALANCE_RESOURCE, AccountBalance.class);
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + AccountBalance.ACCOUNT_BALANCE_RESOURCE, AccountBalance.class);
     }
 
     /**
