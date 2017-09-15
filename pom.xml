@@ -28,7 +28,7 @@
     <version>0.11.1-kahoot-SNAPSHOT</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
-    <url>http://github.com/killbilling/recurly-java-library</url>
+    <url>http://github.com/mobitroll/recurly-java-library</url>
     <inceptionYear>2012</inceptionYear>
     <licenses>
         <license>
@@ -58,9 +58,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/killbilling/recurly-java-library.git</connection>
-        <developerConnection>scm:git:git@github.com:killbilling/recurly-java-library.git</developerConnection>
-        <url>http://github.com/killbilling/recurly-java-library/tree/master</url>
+        <connection>scm:git:git://github.com/mobitroll/recurly-java-library.git</connection>
+        <developerConnection>scm:git:git@github.com:mobitroll/recurly-java-library.git</developerConnection>
+        <url>http://github.com/mobitroll/recurly-java-library/tree/master</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
