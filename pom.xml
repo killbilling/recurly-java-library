@@ -25,10 +25,10 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.11.1-SNAPSHOT</version>
+    <version>0.11.1-kahoot</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
-    <url>http://github.com/killbilling/recurly-java-library</url>
+    <url>http://github.com/mobitroll/recurly-java-library</url>
     <inceptionYear>2012</inceptionYear>
     <licenses>
         <license>
@@ -58,13 +58,13 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/killbilling/recurly-java-library.git</connection>
-        <developerConnection>scm:git:git@github.com:killbilling/recurly-java-library.git</developerConnection>
-        <url>http://github.com/killbilling/recurly-java-library/tree/master</url>
+        <connection>scm:git:git://github.com/mobitroll/recurly-java-library.git</connection>
+        <developerConnection>scm:git:git@github.com:mobitroll/recurly-java-library.git</developerConnection>
+        <url>http://github.com/mobitroll/recurly-java-library/tree/master</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jackson.version>2.5.0</jackson.version>
+        <jackson.version>2.8.7</jackson.version>
         <guava.version>18.0</guava.version>
         <slf4j.version>1.7.10</slf4j.version>
     </properties>
@@ -146,6 +146,13 @@
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>com.ning.maven.plugins</groupId>
                 <artifactId>maven-dependency-versions-check-plugin</artifactId>
