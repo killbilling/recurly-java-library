@@ -106,6 +106,15 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @XmlElement(name = "customer_notes")
+    private String customerNotes;
+
+    @XmlElement(name = "terms_and_conditions")
+    private String termsAndConditions;
+
+    @XmlElement(name = "vat_reverse_charge_notes")
+    private String vatReverseChargeNotes;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -329,6 +338,30 @@ public class Invoice extends RecurlyObject {
         this.transactions = transactions;
     }
 
+    public String getCustomerNotes() {
+        return customerNotes;
+    }
+
+    public void setCustomerNotes(final Object customerNotes) {
+        this.customerNotes = stringOrNull(customerNotes);
+    }
+
+    public String getTermsAndConditions() {
+        return termsAndConditions;
+    }
+
+    public void setTermsAndConditions(final Object termsAndConditions) {
+        this.termsAndConditions = stringOrNull(termsAndConditions);
+    }
+
+    public String getVatReverseChargeNotes() {
+        return vatReverseChargeNotes;
+    }
+
+    public void setVatReverseChargeNotes(final Object vatReverseChargeNotes) {
+        this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
@@ -357,6 +390,9 @@ public class Invoice extends RecurlyObject {
         sb.append(", recoveryReason=").append(recoveryReason);
         sb.append(", lineItems=").append(lineItems);
         sb.append(", transactions=").append(transactions);
+        sb.append(", customerNotes='").append(customerNotes).append('\'');
+        sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
+        sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -387,6 +423,9 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (currency != null ? !currency.equals(invoice.currency) : invoice.currency != null) {
+            return false;
+        }
+        if (customerNotes != null ? !customerNotes.equals(invoice.customerNotes) : invoice.customerNotes != null) {
             return false;
         }
         if (invoiceNumber != null ? !invoiceNumber.equals(invoice.invoiceNumber) : invoice.invoiceNumber != null) {
@@ -431,6 +470,9 @@ public class Invoice extends RecurlyObject {
         if (taxRate != null ? !taxRate.equals(invoice.taxRate) : invoice.taxRate != null) {
           return false;
         }
+        if (termsAndConditions != null ? !termsAndConditions.equals(invoice.termsAndConditions) : invoice.termsAndConditions != null) {
+            return false;
+        }
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
             return false;
         }
@@ -441,6 +483,9 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (vatNumber != null ? !vatNumber.equals(invoice.vatNumber) : invoice.vatNumber != null) {
+            return false;
+        }
+        if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(invoice.vatReverseChargeNotes) : invoice.vatReverseChargeNotes != null) {
             return false;
         }
 
@@ -474,7 +519,10 @@ public class Invoice extends RecurlyObject {
                 attemptNextCollectionAt,
                 recoveryReason,
                 lineItems,
-                transactions
+                transactions,
+                customerNotes,
+                termsAndConditions,
+                vatReverseChargeNotes
         );
     }
 }
