@@ -223,6 +223,19 @@ public class TestUtils {
         return random.nextInt(upperRange);
     }
 
+    /**
+     * Returns a random 2 character country code.
+     *
+     * @param seed The RNG seed
+     * @return The random country code
+     */
+    public static String randomCountry(final int seed) {
+        Random random = new Random(seed);
+        final String[] countries = {"US", "CA", "MX", "IT", "CH"};
+        final int position = random.nextInt(countries.length);
+        return countries[position];
+    }
+
     public static String createTestCCNumber() {
         return "4111-1111-1111-1111";
     }
@@ -293,7 +306,7 @@ public class TestUtils {
         address.setCity(randomAlphaNumericString(10, seed));
         address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setZip("94110");
-        address.setCountry(randomAlphaString(2, seed).toUpperCase());
+        address.setCountry(randomCountry(seed));
         address.setPhone(randomNumericString(10, seed));
 
         return address;
@@ -323,7 +336,7 @@ public class TestUtils {
         address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setZip("94110");
-        address.setCountry(randomAlphaString(2, seed).toUpperCase());
+        address.setCountry(randomCountry(seed));
         address.setPhone(randomNumericString(10, seed));
         address.setNickname(randomAlphaNumericString(10, seed));
         address.setFirstName(randomAlphaNumericString(10, seed));
@@ -390,7 +403,7 @@ public class TestUtils {
         info.setCity(randomAlphaNumericString(10, seed));
         info.setState("CA");
         info.setZip("94110");
-        info.setCountry("US");
+        info.setCountry(randomCountry(seed));
         info.setPhone(randomInteger(8, seed));
         info.setVatNumber(randomNumericString(8, seed));
         info.setYear(createTestCCYear());
