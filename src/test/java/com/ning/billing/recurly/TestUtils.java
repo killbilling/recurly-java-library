@@ -735,6 +735,9 @@ public class TestUtils {
         invoice.setCreatedAt(NOW);
         invoice.setCollectionMethod("credit_card");
         invoice.setNetTerms(randomInteger(100, seed));
+        invoice.setCustomerNotes("Customer Notes " + randomAlphaString(20, seed));
+        invoice.setTermsAndConditions("Terms and Conditions " + randomAlphaString(20, seed));
+        invoice.setVatReverseChargeNotes("VAT Reverse Charge Notes " + randomAlphaString(20, seed));
 
         Adjustments adjustments = new Adjustments();
         for (int i = 0; i < 3; i++) {

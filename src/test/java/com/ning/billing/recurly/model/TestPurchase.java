@@ -34,6 +34,9 @@ public class TestPurchase extends TestModelBase {
                 "  <collection_method>automatic</collection_method>" +
                 "  <net_terms>30</net_terms>" +
                 "  <currency>USD</currency>" +
+                "  <customer_notes>Customer Notes</customer_notes>" +
+                "  <terms_and_conditions>Terms and Conditions</terms_and_conditions>" +
+                "  <vat_reverse_charge_notes>VAT Reverse Charge Notes</vat_reverse_charge_notes>" +
                 "  <account>" +
                 "    <account_code>test</account_code>" +
                 "    <billing_info>" +
@@ -78,6 +81,9 @@ public class TestPurchase extends TestModelBase {
         purchase.setCollectionMethod("automatic");
         purchase.setCurrency("USD");
         purchase.setNetTerms(30);
+        purchase.setCustomerNotes("Customer Notes");
+        purchase.setTermsAndConditions("Terms and Conditions");
+        purchase.setVatReverseChargeNotes("VAT Reverse Charge Notes");
 
         final Account account = new Account();
         account.setAccountCode("test");
@@ -124,8 +130,7 @@ public class TestPurchase extends TestModelBase {
         purchase.setCouponCodes(couponCodes);
         purchase.setGiftCard(giftCard);
 
-        final String xml = xmlMapper.writeValueAsString(purchase);
-        final Purchase purchaseExpected = xmlMapper.readValue(xml, Purchase.class);
+        final Purchase purchaseExpected = xmlMapper.readValue(purchaseData, Purchase.class);
 
         assertEquals(purchase, purchaseExpected);
     }
