@@ -142,6 +142,25 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testGetBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        billingInfoData.setAccount(null); // need to null out test account
+        accountData.setBillingInfo(billingInfoData);
+
+        try {
+            // Create account and fetch billing info
+            final Account account = recurlyClient.createAccount(accountData);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+            Assert.assertEquals(retrievedBillingInfo.getType(), "credit_card");
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
     @Test(groups = "integration", description = "See https://github.com/killbilling/recurly-java-library/issues/23")
     public void testRemoveSubscriptionAddons() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();

@@ -20,6 +20,7 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Objects;
 import org.joda.time.DateTime;
@@ -29,6 +30,9 @@ public class BillingInfo extends RecurlyObject {
 
     @XmlTransient
     public static final String BILLING_INFO_RESOURCE = "/billing_info";
+
+    @XmlAttribute(name="type")
+    private String type;
 
     @XmlElement(name = "account")
     private Account account;
@@ -101,6 +105,15 @@ public class BillingInfo extends RecurlyObject {
 
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
+
+
+    public String getType() {
+        return type;
+    }
+
+    protected void setType(final Object type) {
+        this.type = stringOrNull(type);
+    }
 
     /**
      * Account object associated to this BillingInfo
@@ -305,6 +318,7 @@ public class BillingInfo extends RecurlyObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("BillingInfo");
         sb.append("{account='").append(account).append('\'');
+        sb.append(", type='").append(type).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", company='").append(company).append('\'');
@@ -384,6 +398,9 @@ public class BillingInfo extends RecurlyObject {
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
         if (vatNumber != null ? !vatNumber.equals(that.vatNumber) : that.vatNumber != null) {
             return false;
         }
@@ -426,7 +443,8 @@ public class BillingInfo extends RecurlyObject {
                 firstSix,
                 lastFour,
                 updatedAt,
-                geoCode
+                geoCode,
+                type
         );
     }
 }
