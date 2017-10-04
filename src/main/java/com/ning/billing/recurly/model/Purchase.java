@@ -42,7 +42,7 @@ public class Purchase extends RecurlyObject {
     private String poNumber;
 
     @XmlElement(name = "net_terms")
-    private String netTerms;
+    private Integer netTerms;
 
     @XmlElement(name = "account")
     private Account account;
@@ -112,12 +112,12 @@ public class Purchase extends RecurlyObject {
         this.giftCard = giftCard;
     }
 
-    public String getNetTerms() {
+    public Integer getNetTerms() {
         return netTerms;
     }
 
     public void setNetTerms(final Object terms) {
-        this.netTerms = stringOrNull(terms);
+        this.netTerms = integerOrNull(terms);
     }
 
     public String getPoNumber() {
