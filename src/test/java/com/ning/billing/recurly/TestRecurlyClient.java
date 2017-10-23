@@ -1641,6 +1641,9 @@ public class TestRecurlyClient {
             purchaseData.setSubscriptions(subscriptions);
             purchaseData.setGiftCard(redemptionData);
             purchaseData.setCouponCodes(couponCodes);
+            purchaseData.setCustomerNotes("Customer Notes");
+            purchaseData.setTermsAndConditions("Terms and Conditions");
+            purchaseData.setVatReverseChargeNotes("VAT Reverse Charge Notes");
 
             final Invoice invoice = recurlyClient.purchase(purchaseData);
             Assert.assertNotNull(invoice.getInvoiceNumber());
