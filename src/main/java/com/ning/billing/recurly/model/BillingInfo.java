@@ -106,6 +106,8 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
+    @XmlElement(name = "external_hpp_type")
+    private String externalHppType;
 
     public String getType() {
         return type;
@@ -313,6 +315,10 @@ public class BillingInfo extends RecurlyObject {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public String getExternalHppType() { return externalHppType; }
+
+    public void setExternalHppType(final Object externalHppType) { this.externalHppType = stringOrNull(externalHppType); }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -339,6 +345,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", lastFour='").append(lastFour).append('\'');
         sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
+        sb.append(", externalHppType='").append(externalHppType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -416,6 +423,9 @@ public class BillingInfo extends RecurlyObject {
         if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
             return false;
         }
+        if (externalHppType != null ? !externalHppType.equals(that.externalHppType) : that.externalHppType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -444,7 +454,8 @@ public class BillingInfo extends RecurlyObject {
                 lastFour,
                 updatedAt,
                 geoCode,
-                type
+                type,
+                externalHppType
         );
     }
 }
