@@ -25,3 +25,5 @@ bin
 .DS_Store
 
 src/main/resources/com/ning/billing/recurly/git.properties
+
+dependency-reduced-pom.xml
