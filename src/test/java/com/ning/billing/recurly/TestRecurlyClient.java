@@ -17,16 +17,11 @@
 
 package com.ning.billing.recurly;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.AccountBalance;
 import com.ning.billing.recurly.model.Accounts;
+import com.ning.billing.recurly.model.AcquisitionChannel;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
 import com.ning.billing.recurly.model.Adjustment;
@@ -48,14 +43,11 @@ import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
-import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.SubscriptionNotes;
+import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
-import com.ning.billing.recurly.model.AccountAcquisition;
-import com.ning.billing.recurly.model.AcquisitionChannel;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.DateTime;
@@ -65,6 +57,13 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class TestRecurlyClient {
 
@@ -1085,6 +1084,13 @@ public class TestRecurlyClient {
             Assert.assertEquals(addOns.get(0).getDefaultQuantity(), addOn.getDefaultQuantity());
             Assert.assertEquals(addOns.get(0).getDisplayQuantityOnHostedPage(), addOn.getDisplayQuantityOnHostedPage());
             Assert.assertEquals(addOns.get(0).getUnitAmountInCents(), addOn.getUnitAmountInCents());
+
+            // Update addOn
+            AddOn addOnData = new AddOn();
+            addOnData.setName("New Name");
+
+            final AddOn updatedAddOn = recurlyClient.updateAddOn(plan.getPlanCode(), addOnRecurly.getAddOnCode(), addOnData);
+            Assert.assertEquals(updatedAddOn.getName(), "New Name");
         } finally {
             // Delete an AddOn
             recurlyClient.deleteAddOn(planData.getPlanCode(), addOn.getAddOnCode());
