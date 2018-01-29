@@ -142,6 +142,25 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testGetBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        billingInfoData.setAccount(null); // need to null out test account
+        accountData.setBillingInfo(billingInfoData);
+
+        try {
+            // Create account and fetch billing info
+            final Account account = recurlyClient.createAccount(accountData);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+            Assert.assertEquals(retrievedBillingInfo.getType(), "credit_card");
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
     @Test(groups = "integration", description = "See https://github.com/killbilling/recurly-java-library/issues/23")
     public void testRemoveSubscriptionAddons() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
@@ -1622,6 +1641,9 @@ public class TestRecurlyClient {
             purchaseData.setSubscriptions(subscriptions);
             purchaseData.setGiftCard(redemptionData);
             purchaseData.setCouponCodes(couponCodes);
+            purchaseData.setCustomerNotes("Customer Notes");
+            purchaseData.setTermsAndConditions("Terms and Conditions");
+            purchaseData.setVatReverseChargeNotes("VAT Reverse Charge Notes");
 
             final Invoice invoice = recurlyClient.purchase(purchaseData);
             Assert.assertNotNull(invoice.getInvoiceNumber());
@@ -1632,6 +1654,59 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testAuthorizePurchase() throws Exception {
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Adjustments adjustmentsData = new Adjustments();
+        final Adjustment adjustmentData = TestUtils.createRandomAdjustment();
+        final GiftCard giftCardData = TestUtils.createRandomGiftCard();
+
+        giftCardData.setProductCode("test_gift_card");
+        giftCardData.setCurrency("USD");
+
+        adjustmentData.setCurrency(null); // this one accepted by site
+        adjustmentsData.add(adjustmentData);
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        // these 2 things are required by this endpoint
+        billingInfoData.setExternalHppType("adyen"); // set the external hpp collection to adyen
+        accountData.setEmail("benjamin.dumonde@example.com");
+
+        try {
+            final Plan plan = recurlyClient.createPlan(planData);
+            final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
+            final GiftCard redemptionData = new GiftCard();
+            redemptionData.setRedemptionCode(purchasedGiftCard.getRedemptionCode());
+            final ArrayList<String> couponCodes = new ArrayList<String>(Arrays.asList("ascu2wprjk", "vttx1luuwz"));
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(subscriptionData);
+
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setAdjustments(adjustmentsData);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setAdjustments(adjustmentsData);
+            purchaseData.setCurrency("USD");
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setGiftCard(redemptionData);
+            purchaseData.setCouponCodes(couponCodes);
+            purchaseData.setCustomerNotes("Customer Notes");
+            purchaseData.setTermsAndConditions("Terms and Conditions");
+            purchaseData.setVatReverseChargeNotes("VAT Reverse Charge Notes");
+
+            final Invoice invoice = recurlyClient.authorizePurchase(purchaseData);
+            Assert.assertNotNull(invoice.getUuid());
+        } finally {
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+        @Test(groups = "integration")
     public void testAccountAcquisition() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
 

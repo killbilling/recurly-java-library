@@ -17,6 +17,7 @@
 
 package com.ning.billing.recurly.model.push;
 
+import com.ning.billing.recurly.model.push.account.*;
 import com.ning.billing.recurly.model.push.invoice.*;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -27,10 +28,6 @@ import org.testng.annotations.Test;
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.TestModelBase;
-import com.ning.billing.recurly.model.push.account.AccountNotification;
-import com.ning.billing.recurly.model.push.account.BillingInfoUpdatedNotification;
-import com.ning.billing.recurly.model.push.account.CanceledAccountNotification;
-import com.ning.billing.recurly.model.push.account.NewAccountNotification;
 import com.ning.billing.recurly.model.push.payment.FailedPaymentNotification;
 import com.ning.billing.recurly.model.push.payment.PaymentNotification;
 import com.ning.billing.recurly.model.push.payment.PushTransaction;
@@ -267,6 +264,9 @@ public class TestNotification extends TestModelBase {
     public void testCanceledAccountNotification() {
         deserialize(CanceledAccountNotification.class);
     }
+
+    @Test(groups = "fast")
+    public void testUpdatedAccountNotification() { deserialize(UpdatedAccountNotification.class); }
 
     @Test(groups = "fast")
     public void testBillingInfoUpdatedNotification() {
