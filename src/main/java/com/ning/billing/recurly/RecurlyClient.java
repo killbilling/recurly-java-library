@@ -943,7 +943,7 @@ public class RecurlyClient {
      * @param invoiceId Recurly Invoice ID
      */
     @Deprecated
-    public InvoiceCollection markInvoiceSuccessful(final Integer invoiceId) {
+    public Invoice markInvoiceSuccessful(final Integer invoiceId) {
         return markInvoiceSuccessful(invoiceId.toString());
     }
 
@@ -952,8 +952,8 @@ public class RecurlyClient {
      *
      * @param invoiceId String Recurly Invoice ID
      */
-    public InvoiceCollection markInvoiceSuccessful(final String invoiceId) {
-        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful", null, InvoiceCollection.class);
+    public Invoice markInvoiceSuccessful(final String invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful", null, Invoice.class);
     }
 
     /**
@@ -964,7 +964,7 @@ public class RecurlyClient {
      * @param invoiceId Recurly Invoice ID
      */
     @Deprecated
-    public InvoiceCollection markInvoiceFailed(final Integer invoiceId) {
+    public Invoice markInvoiceFailed(final Integer invoiceId) {
         return markInvoiceFailed(invoiceId.toString());
     }
 
@@ -973,8 +973,8 @@ public class RecurlyClient {
      *
      * @param invoiceId String Recurly Invoice ID
      */
-    public InvoiceCollection markInvoiceFailed(final String invoiceId) {
-        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, InvoiceCollection.class);
+    public Invoice markInvoiceFailed(final String invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, Invoice.class);
     }
 
     /**
@@ -982,8 +982,8 @@ public class RecurlyClient {
      *
      * @param invoiceId String Recurly Invoice ID
      */
-    public InvoiceCollection forceCollectInvoice(final String invoiceId) {
-        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/collect", null, InvoiceCollection.class);
+    public Invoice forceCollectInvoice(final String invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/collect", null, Invoice.class);
     }
 
     /**
@@ -991,8 +991,8 @@ public class RecurlyClient {
      *
      * @param invoiceId String Recurly Invoice ID
      */
-    public InvoiceCollection voidInvoice(final String invoiceId) {
-        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/void", null, InvoiceCollection.class);
+    public Invoice voidInvoice(final String invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/void", null, Invoice.class);
     }
 
     /**
