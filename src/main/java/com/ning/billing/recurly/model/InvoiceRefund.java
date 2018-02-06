@@ -26,8 +26,8 @@ import java.util.List;
 
 @XmlRootElement(name = "invoice")
 public class InvoiceRefund extends RecurlyObject {
-    @XmlElement(name = "refund_apply_order")
-    private RefundApplyOrder refundApplyOrder;
+    @XmlElement(name = "refund_method")
+    private RefundMethod refundMethod;
 
     @XmlElement(name = "amount_in_cents")
     private Integer amountInCents;
@@ -36,12 +36,12 @@ public class InvoiceRefund extends RecurlyObject {
     @XmlElement(name = "adjustment")
     private List<AdjustmentRefund> lineItems;
 
-    public void setRefundApplyOrder(final RefundApplyOrder refundApplyOrder) {
-        this.refundApplyOrder = refundApplyOrder;
+    public void setRefundMethod(final RefundMethod refundMethod) {
+        this.refundMethod = refundMethod;
     }
 
-    public RefundApplyOrder getRefundApplyOrder() {
-        return this.refundApplyOrder;
+    public RefundMethod getRefundMethod() {
+        return this.refundMethod;
     }
 
     public void setAmountInCents(final Object amountInCents) {
@@ -62,7 +62,7 @@ public class InvoiceRefund extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(refundApplyOrder, amountInCents);
+        return Objects.hashCode(refundMethod, amountInCents);
     }
 
     @Override
@@ -75,7 +75,7 @@ public class InvoiceRefund extends RecurlyObject {
         if (amountInCents != null ? !amountInCents.equals(refund.amountInCents) : refund.amountInCents != null) {
             return false;
         }
-        if (refundApplyOrder != null ? !refundApplyOrder.equals(refund.refundApplyOrder) : refund.refundApplyOrder != null) {
+        if (refundMethod != null ? !refundMethod.equals(refund.refundMethod) : refund.refundMethod != null) {
             return false;
         }
         return true;
@@ -85,7 +85,7 @@ public class InvoiceRefund extends RecurlyObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder("InvoiceRefund{");
         sb.append("amountInCents=").append(amountInCents);
-        sb.append(", refundApplyOrder='").append(refundApplyOrder).append('\'');
+        sb.append(", refundMethod='").append(refundMethod).append('\'');
         sb.append('}');
         return sb.toString();
     }

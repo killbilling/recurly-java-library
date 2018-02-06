@@ -17,11 +17,11 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.joda.time.DateTime;
-import com.google.common.base.Objects;
 
 @XmlRootElement(name = "adjustment")
 public class Adjustment extends RecurlyObject {
@@ -82,6 +82,12 @@ public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "revenue_schedule_type")
     private RevenueScheduleType revenueScheduleType;
+
+    @XmlElement(name = "credit_reason_code")
+    private String creditReasonCode;
+
+    @XmlElement(name = "original_adjustment_uuid")
+    private String originalAdjustmentUuid;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -238,8 +244,24 @@ public class Adjustment extends RecurlyObject {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(final RevenueScheduleType revenueScheduleType) {
-        this.revenueScheduleType = revenueScheduleType;
+    public void setRevenueScheduleType(final Object revenueScheduleType) {
+        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
+    }
+
+    public String getCreditReasonCode() {
+        return creditReasonCode;
+    }
+
+    public void setCreditReasonCode(final String creditReasonCode) {
+        this.creditReasonCode = creditReasonCode;
+    }
+
+    public String getOriginalAdjustmentUuid() {
+        return originalAdjustmentUuid;
+    }
+
+    public void setOriginalAdjustmentUuid(final String originalAdjustmentUuid) {
+        this.originalAdjustmentUuid = originalAdjustmentUuid;
     }
 
     @Override
@@ -265,6 +287,8 @@ public class Adjustment extends RecurlyObject {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
+        sb.append(", creditReasonCode=").append(creditReasonCode);
+        sb.append(", originalAdjustmentUuid=").append(originalAdjustmentUuid);
         sb.append('}');
         return sb.toString();
     }
@@ -288,6 +312,9 @@ public class Adjustment extends RecurlyObject {
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
             return false;
         }
+        if (creditReasonCode != null ? !creditReasonCode.equals(that.creditReasonCode) : that.creditReasonCode != null) {
+            return false;
+        }
         if (description != null ? !description.equals(that.description) : that.description != null) {
             return false;
         }
@@ -298,6 +325,9 @@ public class Adjustment extends RecurlyObject {
             return false;
         }
         if (origin != null ? !origin.equals(that.origin) : that.origin != null) {
+            return false;
+        }
+        if (originalAdjustmentUuid != null ? !originalAdjustmentUuid.equals(that.originalAdjustmentUuid) : that.originalAdjustmentUuid != null) {
             return false;
         }
         if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
@@ -330,7 +360,6 @@ public class Adjustment extends RecurlyObject {
         if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
             return false;
         }
-
         if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
             return false;
         }
@@ -359,7 +388,10 @@ public class Adjustment extends RecurlyObject {
                 endDate,
                 createdAt,
                 updatedAt,
-                revenueScheduleType
+                revenueScheduleType,
+                creditReasonCode,
+                originalAdjustmentUuid
         );
     }
+
 }

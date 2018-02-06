@@ -32,12 +32,13 @@ import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Purchase;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
-import com.ning.billing.recurly.model.RefundApplyOrder;
+import com.ning.billing.recurly.model.RefundMethod;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
@@ -806,8 +807,8 @@ public class TestRecurlyClient {
             // Post an invoice/invoice the adjustment
             final Invoice invoiceData = new Invoice();
             invoiceData.setLineItems(null);
-            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
-            Assert.assertNotNull(invoice);
+            final InvoiceCollection collection = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
+            Assert.assertNotNull(collection.getChargeInvoice());
 
             // Check to see if the adjustment was invoiced properly
             Adjustments retrievedAdjustments = recurlyClient.getAccountAdjustments(accountData.getAccountCode(), null, Adjustments.AdjustmentState.PENDING);
@@ -826,7 +827,7 @@ public class TestRecurlyClient {
             // Post an invoice/invoice the adjustment
             final Invoice failInvoiceData = new Invoice();
             failInvoiceData.setLineItems(null);
-            final Invoice invoiceFail = recurlyClient.postAccountInvoice(accountData.getAccountCode(), failInvoiceData);
+            final Invoice invoiceFail = recurlyClient.postAccountInvoice(accountData.getAccountCode(), failInvoiceData).getChargeInvoice();
             Assert.assertNotNull(invoiceFail);
 
             // Check to see if the adjustment was invoiced properly
@@ -863,7 +864,7 @@ public class TestRecurlyClient {
             final Invoice invoiceData = new Invoice();
             invoiceData.setCollectionMethod("manual");
             invoiceData.setLineItems(null);
-            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
+            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData).getChargeInvoice();
             Assert.assertNotNull(invoice);
 
             InputStream pdfInputStream = recurlyClient.getInvoicePdf(invoice.getId());
@@ -876,7 +877,7 @@ public class TestRecurlyClient {
             Assert.assertTrue(pdfString.contains("Invoice # " + invoice.getId()));
             Assert.assertTrue(pdfString.contains("Subtotal $" + 1.5));
             // Attempt to close the invoice
-            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getId());
+            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getId()).getChargeInvoice();
             Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
 
         } finally {
@@ -907,11 +908,11 @@ public class TestRecurlyClient {
             final Invoice invoiceData = new Invoice();
             invoiceData.setCollectionMethod("manual");
             invoiceData.setLineItems(null);
-            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData);
+            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData).getChargeInvoice();
             Assert.assertNotNull(invoice);
 
             // Attempt to close the invoice
-            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getId());
+            final Invoice closedInvoice = recurlyClient.markInvoiceSuccessful(invoice.getId()).getChargeInvoice();
             Assert.assertEquals(closedInvoice.getState(), "collected", "Invoice not closed successfully");
 
             // Create an Adjustment
@@ -925,11 +926,11 @@ public class TestRecurlyClient {
             final Invoice failInvoiceData = new Invoice();
             failInvoiceData.setCollectionMethod("manual");
             failInvoiceData.setLineItems(null);
-            final Invoice invoiceFail = recurlyClient.postAccountInvoice(accountData.getAccountCode(), failInvoiceData);
+            final Invoice invoiceFail = recurlyClient.postAccountInvoice(accountData.getAccountCode(), failInvoiceData).getChargeInvoice();
             Assert.assertNotNull(invoiceFail);
 
             // Attempt to fail the invoice
-            final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getId());
+            final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getId()).getChargeInvoice();
             Assert.assertEquals(failedInvoice.getState(), "failed", "Invoice not failed successfully");
 
             // Create an Adjustment
@@ -937,13 +938,13 @@ public class TestRecurlyClient {
             c.setUnitAmountInCents(450);
             c.setCurrency(CURRENCY);
 
-            final Adjustment createdC = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), c);
+            final Adjustment created = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), c);
 
             // Post an invoice/invoice the adjustment
             final Invoice externalInvoiceData = new Invoice();
             externalInvoiceData.setCollectionMethod("manual");
             externalInvoiceData.setLineItems(null);
-            final Invoice invoiceExternal = recurlyClient.postAccountInvoice(accountData.getAccountCode(), externalInvoiceData);
+            final Invoice invoiceExternal = recurlyClient.postAccountInvoice(accountData.getAccountCode(), externalInvoiceData).getChargeInvoice();
             Assert.assertNotNull(invoiceExternal);
 
             //create an external payment to pay off the invoice
@@ -1504,7 +1505,7 @@ public class TestRecurlyClient {
             final Invoice invoiceData = new Invoice();
             invoiceData.setCollectionMethod("automatic");
 
-            final Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData);
+            final Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData).getChargeInvoice();
 
             Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
 
@@ -1512,7 +1513,7 @@ public class TestRecurlyClient {
             // has to happen asynchronously on the server
             Thread.sleep(5000);
 
-            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), 100, RefundApplyOrder.transaction);
+            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), 100, RefundMethod.transaction_first);
 
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
@@ -1554,7 +1555,7 @@ public class TestRecurlyClient {
             final Invoice invoiceData = new Invoice();
             invoiceData.setCollectionMethod("automatic");
 
-            Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData);
+            Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData).getChargeInvoice();
 
             Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
 
@@ -1576,7 +1577,7 @@ public class TestRecurlyClient {
             // adjustmentRefund.setQuantity(1);
             lineItems.add(adjustmentRefund);
 
-            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), lineItems, RefundApplyOrder.transaction);
+            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), lineItems, RefundMethod.transaction_first);
 
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
@@ -1650,7 +1651,7 @@ public class TestRecurlyClient {
             purchaseData.setTermsAndConditions("Terms and Conditions");
             purchaseData.setVatReverseChargeNotes("VAT Reverse Charge Notes");
 
-            final Invoice invoice = recurlyClient.purchase(purchaseData);
+            final Invoice invoice = recurlyClient.purchase(purchaseData).getChargeInvoice();
             Assert.assertNotNull(invoice.getInvoiceNumber());
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
@@ -1704,7 +1705,7 @@ public class TestRecurlyClient {
             purchaseData.setTermsAndConditions("Terms and Conditions");
             purchaseData.setVatReverseChargeNotes("VAT Reverse Charge Notes");
 
-            final Invoice invoice = recurlyClient.authorizePurchase(purchaseData);
+            final Invoice invoice = recurlyClient.authorizePurchase(purchaseData).getChargeInvoice();
             Assert.assertNotNull(invoice.getUuid());
         } finally {
             recurlyClient.deletePlan(planData.getPlanCode());

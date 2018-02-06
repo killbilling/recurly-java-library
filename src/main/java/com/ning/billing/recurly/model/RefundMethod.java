@@ -20,6 +20,6 @@ package com.ning.billing.recurly.model;
 /**
  * The order in which to apply an invoice refund
  */
-public enum RefundApplyOrder {
-    transaction, credit
+public enum RefundMethod {
+    transaction_first, credit_first
 }

@@ -17,13 +17,12 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.joda.time.DateTime;
-import com.google.common.base.Objects;
-
 import java.math.BigDecimal;
 
 @XmlRootElement(name = "invoice")
@@ -89,9 +88,6 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
-    @XmlElement(name = "subtotal_after_discount_in_cents")
-    private Integer subtotalAfterDiscountInCents;
-
     @XmlElement(name = "attempt_next_collection_at")
     private DateTime attemptNextCollectionAt;
 
@@ -114,6 +110,24 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "vat_reverse_charge_notes")
     private String vatReverseChargeNotes;
+
+    @XmlElement(name = "subtotal_before_discount_in_cents")
+    private Integer subtotalBeforeDiscountInCents;
+
+    @XmlElement(name = "discount_in_cents")
+    private Integer discountInCents;
+
+    @XmlElement(name = "balance_in_cents")
+    private Integer balanceInCents;
+
+    @XmlElement(name = "due_on")
+    private DateTime dueOn;
+
+    @XmlElement(name = "type")
+    private String type;
+
+    @XmlElement(name = "origin")
+    private String origin;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -298,14 +312,6 @@ public class Invoice extends RecurlyObject {
         this.netTerms = integerOrNull(netTerms);
     }
 
-    public Integer getSubtotalAfterDiscountInCents() {
-        return this.subtotalAfterDiscountInCents;
-    }
-
-    public void setSubtotalAfterDiscountInCents(final Object subtotalAfterDiscountInCents) {
-        this.subtotalAfterDiscountInCents = integerOrNull(subtotalAfterDiscountInCents);
-    }
-
     public DateTime getAttemptNextCollectionAt() {
         return this.attemptNextCollectionAt;
     }
@@ -362,6 +368,54 @@ public class Invoice extends RecurlyObject {
         this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
     }
 
+    public Integer getSubtotalBeforeDiscountInCents() {
+        return subtotalBeforeDiscountInCents;
+    }
+
+    public void setSubtotalBeforeDiscountInCents(final Object subtotalBeforeDiscountInCents) {
+        this.subtotalBeforeDiscountInCents = integerOrNull(subtotalBeforeDiscountInCents);
+    }
+
+    public Integer getDiscountInCents() {
+        return discountInCents;
+    }
+
+    public void setDiscountInCents(final Object discountInCents) {
+        this.discountInCents = integerOrNull(discountInCents);
+    }
+
+    public Integer getBalanceInCents() {
+        return balanceInCents;
+    }
+
+    public void setBalanceInCents(final Object balanceInCents) {
+        this.balanceInCents = integerOrNull(balanceInCents);
+    }
+
+    public DateTime getDueOn() {
+        return dueOn;
+    }
+
+    public void setDueOn(final Object dueOn) {
+        this.dueOn = dateTimeOrNull(dueOn);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final String type) {
+        this.type = type;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(final String origin) {
+        this.origin = origin;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
@@ -385,7 +439,6 @@ public class Invoice extends RecurlyObject {
         sb.append(", closedAt=").append(closedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", netTerms=").append(netTerms);
-        sb.append(", subtotalAfterDiscountInCents=").append(subtotalAfterDiscountInCents);
         sb.append(", attemptNextCollectionAt=").append(attemptNextCollectionAt);
         sb.append(", recoveryReason=").append(recoveryReason);
         sb.append(", lineItems=").append(lineItems);
@@ -393,6 +446,12 @@ public class Invoice extends RecurlyObject {
         sb.append(", customerNotes='").append(customerNotes).append('\'');
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
+        sb.append(", subtotalBeforeDiscountInCents=").append(subtotalBeforeDiscountInCents);
+        sb.append(", discountInCents=").append(discountInCents);
+        sb.append(", balanceInCents=").append(balanceInCents);
+        sb.append(", dueOn=").append(dueOn);
+        sb.append(", type=").append(type);
+        sb.append(", origin=").append(origin);
         sb.append('}');
         return sb.toString();
     }
@@ -410,7 +469,7 @@ public class Invoice extends RecurlyObject {
         if (attemptNextCollectionAt != null ? attemptNextCollectionAt.compareTo(invoice.attemptNextCollectionAt) != 0 : invoice.attemptNextCollectionAt != null) {
             return false;
         }
-        if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
+        if (balanceInCents != null ? !balanceInCents.equals(invoice.balanceInCents) : invoice.balanceInCents != null) {
             return false;
         }
         if (closedAt != null ? closedAt.compareTo(invoice.closedAt) != 0 : invoice.closedAt != null) {
@@ -428,6 +487,9 @@ public class Invoice extends RecurlyObject {
         if (customerNotes != null ? !customerNotes.equals(invoice.customerNotes) : invoice.customerNotes != null) {
             return false;
         }
+        if (discountInCents != null ? !discountInCents.equals(invoice.discountInCents) : invoice.discountInCents != null) {
+            return false;
+        }
         if (invoiceNumber != null ? !invoiceNumber.equals(invoice.invoiceNumber) : invoice.invoiceNumber != null) {
             return false;
         }
@@ -440,6 +502,12 @@ public class Invoice extends RecurlyObject {
         if (netTerms != null ? !netTerms.equals(invoice.netTerms) : invoice.netTerms != null) {
             return false;
         }
+        if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
+            return false;
+        }
+        if (origin != null ? !origin.equals(invoice.origin) : invoice.origin != null) {
+            return false;
+        }
         if (poNumber != null ? !poNumber.equals(invoice.poNumber) : invoice.poNumber != null) {
             return false;
         }
@@ -449,7 +517,7 @@ public class Invoice extends RecurlyObject {
         if (state != null ? !state.equals(invoice.state) : invoice.state != null) {
             return false;
         }
-        if (subtotalAfterDiscountInCents != null ? !subtotalAfterDiscountInCents.equals(invoice.subtotalAfterDiscountInCents) : invoice.subtotalAfterDiscountInCents != null) {
+        if (subtotalBeforeDiscountInCents != null ? !subtotalBeforeDiscountInCents.equals(invoice.subtotalBeforeDiscountInCents) : invoice.subtotalBeforeDiscountInCents != null) {
             return false;
         }
         if (subtotalInCents != null ? !subtotalInCents.equals(invoice.subtotalInCents) : invoice.subtotalInCents != null) {
@@ -462,18 +530,21 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (taxRegion != null ? !taxRegion.equals(invoice.taxRegion) : invoice.taxRegion != null) {
-          return false;
+            return false;
         }
         if (taxType != null ? !taxType.equals(invoice.taxType) : invoice.taxType != null) {
-          return false;
+            return false;
         }
         if (taxRate != null ? !taxRate.equals(invoice.taxRate) : invoice.taxRate != null) {
-          return false;
+            return false;
         }
         if (termsAndConditions != null ? !termsAndConditions.equals(invoice.termsAndConditions) : invoice.termsAndConditions != null) {
             return false;
         }
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
+            return false;
+        }
+        if (type != null ? !type.equals(invoice.type) : invoice.type != null) {
             return false;
         }
         if (updatedAt != null ? updatedAt.compareTo(invoice.updatedAt) != 0 : invoice.updatedAt != null) {
@@ -515,14 +586,19 @@ public class Invoice extends RecurlyObject {
                 closedAt,
                 collectionMethod,
                 netTerms,
-                subtotalAfterDiscountInCents,
                 attemptNextCollectionAt,
                 recoveryReason,
                 lineItems,
                 transactions,
                 customerNotes,
                 termsAndConditions,
-                vatReverseChargeNotes
+                vatReverseChargeNotes,
+                subtotalBeforeDiscountInCents,
+                discountInCents,
+                balanceInCents,
+                type,
+                origin
         );
     }
+
 }
