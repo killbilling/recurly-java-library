@@ -55,6 +55,7 @@ public class TestTransaction extends TestModelBase {
                                        "  <origin>api</origin>\n" +
                                        "  <message>Successful test transaction</message>\n" +
                                        "  <approval_code>P1234577Q</approval_code>\n" +
+                                       "  <failure_type>Declined by the gateway</failure_type>\n" +
                                        "  <created_at type=\"dateTime\">2015-06-19T03:01:33Z</created_at>\n" +
                                        "  <updated_at type=\"dateTime\">2015-06-19T03:01:33Z</updated_at>\n" +
                                        "  <details>\n" +
@@ -98,6 +99,7 @@ public class TestTransaction extends TestModelBase {
         Assert.assertNull(transaction.getCvvResult());
         Assert.assertEquals(transaction.getCreatedAt(), new DateTime("2015-06-19T03:01:33Z"));
         Assert.assertEquals(transaction.getUpdatedAt(), new DateTime("2015-06-19T03:01:33Z"));
+        Assert.assertEquals(transaction.getFailureType(), "Declined by the gateway");
         Assert.assertEquals(transaction.getGatewayType(), "test");
         Assert.assertEquals(transaction.getOrigin(), "api");
         Assert.assertEquals(transaction.getApprovalCode(), "P1234577Q");
