@@ -69,6 +69,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
                                         "  <converted_at type=\"dateTime\">2017-06-27T00:00:00Z</converted_at>" +
                                         "  <no_billing_info_reason>plan_free_trial</no_billing_info_reason>" +
+                                        "  <imported_trial type=\"boolean\">true</imported_trial>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
                                         "  <coupon_codes type=\"array\">\n" +
@@ -132,6 +133,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <started_with_gift type=\"boolean\">true</started_with_gift>\n" +
                                         "  <converted_at type=\"dateTime\">2017-06-27T00:00:00Z</converted_at>" +
                                         "  <no_billing_info_reason>plan_free_trial</no_billing_info_reason>" +
+                                        "  <imported_trial type=\"boolean\">true</imported_trial>" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "    <subscription_add_on>\n" +
                                         "      <add_on_code>extra_users</add_on_code>\n" +
@@ -205,6 +207,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getConvertedAt(), new DateTime("2017-06-27T00:00:00Z"));
         Assert.assertTrue(subscription.getStartedWithGift());
         Assert.assertEquals(subscription.getNoBillingInfoReason(), "plan_free_trial");
+        Assert.assertTrue(subscription.getImportedTrial());
 
         return subscription;
     }

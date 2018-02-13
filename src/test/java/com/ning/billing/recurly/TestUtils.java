@@ -239,7 +239,6 @@ public class TestUtils {
         return "2020";
     }
 
-
     /**
      * Creates a random {@link com.ning.billing.recurly.model.Account} object for testing use.
      *
@@ -293,7 +292,7 @@ public class TestUtils {
         address.setCity(randomAlphaNumericString(10, seed));
         address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setZip("94110");
-        address.setCountry(randomAlphaString(2, seed).toUpperCase());
+        address.setCountry("US");
         address.setPhone(randomNumericString(10, seed));
 
         return address;
@@ -323,7 +322,7 @@ public class TestUtils {
         address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setState(randomAlphaString(2, seed).toUpperCase());
         address.setZip("94110");
-        address.setCountry(randomAlphaString(2, seed).toUpperCase());
+        address.setCountry("US");
         address.setPhone(randomNumericString(10, seed));
         address.setNickname(randomAlphaNumericString(10, seed));
         address.setFirstName(randomAlphaNumericString(10, seed));
@@ -735,6 +734,9 @@ public class TestUtils {
         invoice.setCreatedAt(NOW);
         invoice.setCollectionMethod("credit_card");
         invoice.setNetTerms(randomInteger(100, seed));
+        invoice.setCustomerNotes("Customer Notes " + randomAlphaString(20, seed));
+        invoice.setTermsAndConditions("Terms and Conditions " + randomAlphaString(20, seed));
+        invoice.setVatReverseChargeNotes("VAT Reverse Charge Notes " + randomAlphaString(20, seed));
 
         Adjustments adjustments = new Adjustments();
         for (int i = 0; i < 3; i++) {

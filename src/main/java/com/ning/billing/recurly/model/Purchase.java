@@ -42,7 +42,7 @@ public class Purchase extends RecurlyObject {
     private String poNumber;
 
     @XmlElement(name = "net_terms")
-    private String netTerms;
+    private Integer netTerms;
 
     @XmlElement(name = "account")
     private Account account;
@@ -57,6 +57,15 @@ public class Purchase extends RecurlyObject {
 
     @XmlElement(name = "gift_card")
     private GiftCard giftCard;
+
+    @XmlElement(name = "customer_notes")
+    private String customerNotes;
+
+    @XmlElement(name = "vat_reverse_charge_notes")
+    private String vatReverseChargeNotes;
+
+    @XmlElement(name = "terms_and_conditions")
+    private String termsAndConditions;
 
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
@@ -103,12 +112,12 @@ public class Purchase extends RecurlyObject {
         this.giftCard = giftCard;
     }
 
-    public String getNetTerms() {
+    public Integer getNetTerms() {
         return netTerms;
     }
 
     public void setNetTerms(final Object terms) {
-        this.netTerms = stringOrNull(terms);
+        this.netTerms = integerOrNull(terms);
     }
 
     public String getPoNumber() {
@@ -135,6 +144,30 @@ public class Purchase extends RecurlyObject {
         return subscriptions;
     }
 
+    public String getCustomerNotes() {
+        return customerNotes;
+    }
+
+    public void setCustomerNotes(final Object customerNotes) {
+        this.customerNotes = stringOrNull(customerNotes);
+    }
+
+    public String getTermsAndConditions() {
+        return termsAndConditions;
+    }
+
+    public void setTermsAndConditions(final Object termsAndConditions) {
+        this.termsAndConditions = stringOrNull(termsAndConditions);
+    }
+
+    public String getVatReverseChargeNotes() {
+        return vatReverseChargeNotes;
+    }
+
+    public void setVatReverseChargeNotes(final Object vatReverseChargeNotes) {
+        this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -148,6 +181,9 @@ public class Purchase extends RecurlyObject {
         sb.append(", giftCard='").append(giftCard).append('\'');
         sb.append(", subscriptions='").append(subscriptions).append('\'');
         sb.append(", couponCodes='").append(couponCodes).append('\'');
+        sb.append(", customerNotes='").append(customerNotes).append('\'');
+        sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
+        sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -174,6 +210,9 @@ public class Purchase extends RecurlyObject {
         if (currency != null ? !currency.equals(purchase.currency) : purchase.currency != null) {
             return false;
         }
+        if (customerNotes != null ? !customerNotes.equals(purchase.customerNotes) : purchase.customerNotes != null) {
+            return false;
+        }
         if (giftCard != null ? !giftCard.equals(purchase.giftCard) : purchase.giftCard != null) {
             return false;
         }
@@ -184,6 +223,12 @@ public class Purchase extends RecurlyObject {
             return false;
         }
         if (subscriptions != null ? !subscriptions.equals(purchase.subscriptions) : purchase.subscriptions != null) {
+            return false;
+        }
+        if (termsAndConditions != null ? !termsAndConditions.equals(purchase.termsAndConditions) : purchase.termsAndConditions != null) {
+            return false;
+        }
+        if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(purchase.vatReverseChargeNotes) : purchase.vatReverseChargeNotes != null) {
             return false;
         }
 
@@ -201,7 +246,10 @@ public class Purchase extends RecurlyObject {
                 poNumber,
                 netTerms,
                 subscriptions,
-                couponCodes
+                couponCodes,
+                customerNotes,
+                termsAndConditions,
+                vatReverseChargeNotes
         );
     }
 

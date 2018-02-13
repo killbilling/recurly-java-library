@@ -18,6 +18,7 @@
 package com.ning.billing.recurly.model;
 
 import com.ning.billing.recurly.TestUtils;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.List;
 import java.util.ArrayList;
@@ -32,8 +33,11 @@ public class TestPurchase extends TestModelBase {
         final String purchaseData = "<purchase xmlns=\"\">" +
                 "<currency>USD</currency>" +
                 "  <collection_method>automatic</collection_method>" +
-                "  <net_terms>30</net_terms>" +
+                "  <net_terms type=\"integer\">30</net_terms>" +
                 "  <currency>USD</currency>" +
+                "  <customer_notes>Customer Notes</customer_notes>" +
+                "  <terms_and_conditions>Terms and Conditions</terms_and_conditions>" +
+                "  <vat_reverse_charge_notes>VAT Reverse Charge Notes</vat_reverse_charge_notes>" +
                 "  <account>" +
                 "    <account_code>test</account_code>" +
                 "    <billing_info>" +
@@ -44,15 +48,15 @@ public class TestPurchase extends TestModelBase {
                 "      <state>CA</state>" +
                 "      <zip>94110</zip>" +
                 "      <country>US</country>" +
-                "      <year>2019</year>" +
-                "      <month>12</month>" +
+                "      <year type=\"integer\">2019</year>" +
+                "      <month type=\"integer\">12</month>" +
                 "      <number>4000-0000-0000-0000</number>" +
                 "    </billing_info>" +
                 "  </account>" +
                 "  <adjustments>" +
                 "    <adjustment>" +
-                "      <unit_amount_in_cents>1000</unit_amount_in_cents>" +
-                "      <quantity>1</quantity>" +
+                "      <unit_amount_in_cents type=\"integer\">1000</unit_amount_in_cents>" +
+                "      <quantity type=\"integer\">1</quantity>" +
                 "      <currency>USD</currency>" +
                 "      <product_code>product-code</product_code>" +
                 "    </adjustment>" +
@@ -74,60 +78,57 @@ public class TestPurchase extends TestModelBase {
                 "  </gift_card>" +
                 "</purchase>";
 
-        final Purchase purchase = new Purchase();
-        purchase.setCollectionMethod("automatic");
-        purchase.setCurrency("USD");
-        purchase.setNetTerms(30);
+        // test serialization
+        final Purchase purchase = xmlMapper.readValue(purchaseData, Purchase.class);
+        verifyPurchase(purchase);
 
-        final Account account = new Account();
-        account.setAccountCode("test");
-
-        final BillingInfo billingInfo = new BillingInfo();
-        billingInfo.setAddress1("400 Alabama St");
-        billingInfo.setCity("San Francisco");
-        billingInfo.setCountry("US");
-        billingInfo.setFirstName("Benjamin");
-        billingInfo.setLastName("Du Monde");
-        billingInfo.setMonth(12);
-        billingInfo.setNumber("4000-0000-0000-0000");
-        billingInfo.setState("CA");
-        billingInfo.setYear(2019);
-        billingInfo.setZip("94110");
-        account.setBillingInfo(billingInfo);
-
-        final Adjustments adjustments = new Adjustments();
-        final Adjustment adjustment = new Adjustment();
-        adjustment.setCurrency("USD");
-        adjustment.setProductCode("product-code");
-        adjustment.setQuantity(1);
-        adjustment.setUnitAmountInCents(1000);
-        adjustments.add(adjustment);
-
-        final Subscriptions subscriptions = new Subscriptions();
-        final Subscription sub1 = new Subscription();
-        sub1.setPlanCode("plan1");
-        final Subscription sub2 = new Subscription();
-        sub2.setPlanCode("plan2");
-        subscriptions.add(sub1);
-        subscriptions.add(sub2);
-
-        final List<String> couponCodes = new ArrayList<String>();
-        couponCodes.add("coupon1");
-        couponCodes.add("coupon2");
-
-        final GiftCard giftCard = new GiftCard();
-        giftCard.setRedemptionCode("ABC1234");
-
-        purchase.setAccount(account);
-        purchase.setAdjustments(adjustments);
-        purchase.setSubscriptions(subscriptions);
-        purchase.setCouponCodes(couponCodes);
-        purchase.setGiftCard(giftCard);
-
-        final String xml = xmlMapper.writeValueAsString(purchase);
-        final Purchase purchaseExpected = xmlMapper.readValue(xml, Purchase.class);
-
+        // test deseralization
+        final Purchase purchaseExpected = xmlMapper.readValue(purchaseData, Purchase.class);
         assertEquals(purchase, purchaseExpected);
+    }
+
+    public void verifyPurchase(final Purchase purchase) {
+        assertEquals(purchase.getCollectionMethod(), "automatic");
+        assertEquals(purchase.getCurrency(), "USD");
+        assertEquals(purchase.getNetTerms(), new Integer(30));
+        assertEquals(purchase.getCustomerNotes(), "Customer Notes");
+        assertEquals(purchase.getTermsAndConditions(), "Terms and Conditions");
+        assertEquals(purchase.getVatReverseChargeNotes(), "VAT Reverse Charge Notes");
+
+        final Account account = purchase.getAccount();
+        assertEquals(account.getAccountCode(), "test");
+
+
+        final BillingInfo billingInfo = purchase.getAccount().getBillingInfo();
+        assertEquals(billingInfo.getAddress1(), "400 Alabama St");
+        assertEquals(billingInfo.getCity(), "San Francisco");
+        assertEquals(billingInfo.getState(), "CA");
+        assertEquals(billingInfo.getCountry(), "US");
+        assertEquals(billingInfo.getZip(), "94110");
+        assertEquals(billingInfo.getFirstName(), "Benjamin");
+        assertEquals(billingInfo.getLastName(), "Du Monde");
+        assertEquals(billingInfo.getMonth(), new Integer(12));
+        assertEquals(billingInfo.getYear(), new Integer(2019));
+        assertEquals(billingInfo.getNumber(), "4000-0000-0000-0000");
+
+        final Adjustment adjustment = purchase.getAdjustments().get(0);
+        assertEquals(adjustment.getCurrency(), "USD");
+        assertEquals(adjustment.getProductCode(), "product-code");
+        assertEquals(adjustment.getQuantity(), new Integer(1));
+        assertEquals(adjustment.getUnitAmountInCents(), new Integer(1000));
+
+
+        final Subscription sub1 = purchase.getSubscriptions().get(0);
+        assertEquals(sub1.getPlanCode(), "plan1");
+        final Subscription sub2 = purchase.getSubscriptions().get(1);
+        assertEquals(sub2.getPlanCode(), "plan2");
+
+        final List<String> couponCodes = purchase.getCouponCodes();
+        assertEquals(couponCodes.get(0), "coupon1");
+        assertEquals(couponCodes.get(1), "coupon2");
+
+        final GiftCard giftCard = purchase.getGiftCard();
+        assertEquals(giftCard.getRedemptionCode(), "ABC1234");
     }
 
     @Test(groups = "fast")

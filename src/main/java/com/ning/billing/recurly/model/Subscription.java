@@ -145,6 +145,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "no_billing_info_reason")
     public String noBillingInfoReason;
 
+    @XmlElement(name = "imported_trial")
+    public Boolean importedTrial;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -435,6 +438,15 @@ public class Subscription extends AbstractSubscription {
         this.noBillingInfoReason = stringOrNull(noBillingInfoReason);
     }
 
+    public Boolean getImportedTrial() {
+        return this.importedTrial;
+    }
+
+    public void setImportedTrial(final Object importedTrial) {
+        this.importedTrial = booleanOrNull(importedTrial);
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -473,6 +485,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", startedWithGift=").append(startedWithGift);
         sb.append(", convertedAt=").append(convertedAt);
         sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
+        sb.append(", importedTrial=").append(importedTrial);
         sb.append('}');
         return sb.toString();
     }
@@ -512,6 +525,9 @@ public class Subscription extends AbstractSubscription {
             return false;
         }
         if (expiresAt != null ? expiresAt.compareTo(that.expiresAt) != 0 : that.expiresAt != null) {
+            return false;
+        }
+        if (importedTrial != null ? !importedTrial.equals(that.importedTrial) : that.importedTrial != null) {
             return false;
         }
         if (remainingBillingCycles != null ? !remainingBillingCycles.equals(that.remainingBillingCycles) : that.remainingBillingCycles != null) {
@@ -630,7 +646,8 @@ public class Subscription extends AbstractSubscription {
                 couponCodes,
                 convertedAt,
                 startedWithGift,
-                noBillingInfoReason
+                noBillingInfoReason,
+                importedTrial
         );
     }
 

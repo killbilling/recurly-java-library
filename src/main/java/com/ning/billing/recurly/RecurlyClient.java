@@ -102,7 +102,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.7";
+    public static final String RECURLY_API_VERSION = "2.9";
 
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
@@ -534,6 +534,22 @@ public class RecurlyClient {
     public Subscriptions getSubscriptions() {
         return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE,
                 Subscriptions.class);
+    }
+
+    /**
+     * Get all the subscriptions on the site given some sort and filter params.
+     * <p>
+     * Returns all the subscriptions on the site
+     *
+     * @param state {@link SubscriptionState}
+     * @param params {@link QueryParams}
+     * @return Subscriptions on the site
+     */
+    public Subscriptions getSubscriptions(final SubscriptionState state, final QueryParams params) {
+        if (state != null) { params.put("state", state.getType()); }
+
+        return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                Subscriptions.class, params);
     }
 
     /**
@@ -1496,6 +1512,25 @@ public class RecurlyClient {
      */
     public Invoice previewPurchase(final Purchase purchase) {
         return doPOST(Purchase.PURCHASES_ENDPOINT + "/preview", purchase, Invoice.class);
+    }
+
+    /**
+     * Purchases authorize endpoint.
+     *
+     * Generate an authorized invoice for the purchase. Runs validations
+     + but does not run any transactions. This endpoint will create a
+     + pending purchase that can be activated at a later time once payment
+     + has been completed on an external source (e.g. Adyen's Hosted
+     + Payment Pages).
+     *
+     * <p>
+     * https://dev.recurly.com/docs/authorize-purchase
+     *
+     * @param purchase The purchase data
+     * @return The authorized invoice
+     */
+    public Invoice authorizePurchase(final Purchase purchase) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT + "/authorize", purchase, Invoice.class);
     }
 
     /**

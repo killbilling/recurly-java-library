@@ -31,7 +31,7 @@ import com.google.common.base.CaseFormat;
 public abstract class Notification extends RecurlyObject {
 
     private static Logger log = LoggerFactory.getLogger(Notification.class);
-    private static Pattern ROOT_NAME = Pattern.compile("<(.*_notification)>");
+    private static Pattern ROOT_NAME = Pattern.compile("<(\\w+_notification)>");
 
     public static enum Type {
         BillingInfoUpdatedNotification(com.ning.billing.recurly.model.push.account.BillingInfoUpdatedNotification.class),
@@ -50,7 +50,8 @@ public abstract class Notification extends RecurlyObject {
         ClosedInvoiceNotification(com.ning.billing.recurly.model.push.invoice.ClosedInvoiceNotification.class),
         NewInvoiceNotification(com.ning.billing.recurly.model.push.invoice.NewInvoiceNotification.class),
         PastDueInvoiceNotification(com.ning.billing.recurly.model.push.invoice.PastDueInvoiceNotification.class),
-        ProcessingInvoiceNotification(com.ning.billing.recurly.model.push.invoice.ProcessingInvoiceNotification.class);
+        ProcessingInvoiceNotification(com.ning.billing.recurly.model.push.invoice.ProcessingInvoiceNotification.class),
+        UpdatedAccountNotification(com.ning.billing.recurly.model.push.account.UpdatedAccountNotification.class);
 
         private Class<? extends Notification> javaType;
 
