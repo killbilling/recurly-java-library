@@ -149,6 +149,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "credit_customer_notes")
     private String creditCustomerNotes;
 
+    @XmlElement(name = "invoice_collection")
+    private InvoiceCollection invoiceCollection;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -452,8 +455,16 @@ public class Subscription extends AbstractSubscription {
         return creditCustomerNotes;
     }
 
-    public void setCreditCustomerNotes(String creditCustomerNotes) {
-        this.creditCustomerNotes = creditCustomerNotes;
+    public void setCreditCustomerNotes(final Object creditCustomerNotes) {
+        this.creditCustomerNotes = stringOrNull(creditCustomerNotes);
+    }
+
+    public InvoiceCollection getInvoiceCollection() {
+        return invoiceCollection;
+    }
+
+    public void setInvoiceCollection(final InvoiceCollection invoiceCollection) {
+        this.invoiceCollection = invoiceCollection;
     }
 
     @Override
@@ -496,6 +507,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
         sb.append(", importedTrial=").append(importedTrial);
         sb.append(", creditCustomerNotes=").append(creditCustomerNotes);
+        sb.append(", invoiceCollection=").append(invoiceCollection);
         sb.append('}');
         return sb.toString();
     }
@@ -618,6 +630,9 @@ public class Subscription extends AbstractSubscription {
         if (creditCustomerNotes != null ? !creditCustomerNotes.equals(that.creditCustomerNotes) : that.creditCustomerNotes != null) {
             return false;
         }
+        if (invoiceCollection != null ? !invoiceCollection.equals(that.invoiceCollection) : that.invoiceCollection != null) {
+            return false;
+        }
 
         return true;
     }
@@ -660,7 +675,8 @@ public class Subscription extends AbstractSubscription {
                 convertedAt,
                 startedWithGift,
                 noBillingInfoReason,
-                importedTrial
+                importedTrial,
+                invoiceCollection
         );
     }
 }

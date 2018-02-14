@@ -802,7 +802,7 @@ public class TestRecurlyClient {
             a.setUnitAmountInCents(150);
             a.setCurrency(CURRENCY);
 
-            final Adjustment createdA = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), a);
+            recurlyClient.createAccountAdjustment(accountData.getAccountCode(), a);
 
             // Post an invoice/invoice the adjustment
             final Invoice invoiceData = new Invoice();
@@ -930,7 +930,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(invoiceFail);
 
             // Attempt to fail the invoice
-            final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getId());
+            final Invoice failedInvoice = recurlyClient.markInvoiceFailed(invoiceFail.getId()).getChargeInvoice();
             Assert.assertEquals(failedInvoice.getState(), "failed", "Invoice not failed successfully");
 
             // Create an Adjustment
@@ -1168,7 +1168,7 @@ public class TestRecurlyClient {
 
             Assert.assertNotNull(subscriptionUpdatedPreview);
             // Test inline invoice fetch
-            Assert.assertNotNull(subscriptionUpdatedPreview.getInvoice());
+            Assert.assertNotNull(subscriptionUpdatedPreview.getInvoiceCollection().getChargeInvoice());
             Assert.assertEquals(subscription.getUuid(), subscriptionUpdatedPreview.getUuid());
             Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdatedPreview.getPlan());
             Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdatedPreview.getPlan().getPlanCode());

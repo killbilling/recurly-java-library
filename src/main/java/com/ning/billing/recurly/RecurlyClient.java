@@ -964,7 +964,7 @@ public class RecurlyClient {
      * @param invoiceId Recurly Invoice ID
      */
     @Deprecated
-    public Invoice markInvoiceFailed(final Integer invoiceId) {
+    public InvoiceCollection markInvoiceFailed(final Integer invoiceId) {
         return markInvoiceFailed(invoiceId.toString());
     }
 
@@ -973,8 +973,8 @@ public class RecurlyClient {
      *
      * @param invoiceId String Recurly Invoice ID
      */
-    public Invoice markInvoiceFailed(final String invoiceId) {
-        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, Invoice.class);
+    public InvoiceCollection markInvoiceFailed(final String invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, InvoiceCollection.class);
     }
 
     /**
