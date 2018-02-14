@@ -17,10 +17,10 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.google.common.base.Objects;
 
 @XmlRootElement(name = "transaction_error")
 public class TransactionError extends RecurlyObject {
@@ -76,8 +76,8 @@ public class TransactionError extends RecurlyObject {
         return gatewayErrorCode;
     }
 
-    public void setGatewayErrorCode(String gatewayErrorCode) {
-        this.gatewayErrorCode = gatewayErrorCode;
+    public void setGatewayErrorCode(final Object gatewayErrorCode) {
+        this.gatewayErrorCode = stringOrNull(gatewayErrorCode);
     }
 
     @Override

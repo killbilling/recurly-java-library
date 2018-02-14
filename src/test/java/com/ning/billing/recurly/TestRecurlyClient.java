@@ -428,9 +428,8 @@ public class TestRecurlyClient {
         try {
             final Account account = recurlyClient.createAccount(accountData);
             billingInfoData.setAccount(account);
-
             recurlyClient.createOrUpdateBillingInfo(billingInfoData);
-            Assert.fail();
+            Assert.fail("Should have thrown transaction exception");
         } catch (TransactionErrorException e) {
             Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "fraud_ip_address");
             Assert.assertEquals(e.getErrors().getTransactionError().getMerchantMessage(), "The payment gateway declined the transaction because it originated from an IP address known for fraudulent transactions.");
@@ -1585,7 +1584,7 @@ public class TestRecurlyClient {
 
             Assert.assertEquals(refundInvoice.getLineItems().size(), 1);
             final Adjustment lineItem = refundInvoice.getLineItems().get(0);
-            Assert.assertEquals(lineItem.getQuantity(), new Integer(-1));
+            Assert.assertEquals(lineItem.getQuantity(), new Integer(1));
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());

@@ -1785,6 +1785,7 @@ public class RecurlyClient {
             // Handle errors payload
             if (response.getStatusCode() >= 300) {
                 log.warn("Recurly error whilst calling: {}\n{}", response.getUri(), payload);
+                log.warn("Error status code: {}\n", response.getStatusCode());
                 RecurlyAPIError recurlyError = new RecurlyAPIError();
 
                 if (response.getStatusCode() == 422) {
@@ -1794,7 +1795,7 @@ public class RecurlyClient {
                     } catch (Exception e) {
                         // 422 is returned for transaction errors (see https://recurly.readme.io/v2.0/page/transaction-errors)
                         // as well as bad input payloads
-                        log.debug("Unable to extract error", e);
+                        log.warn("Unable to extract error", e);
                         return null;
                     }
                     throw new TransactionErrorException(errors);
