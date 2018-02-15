@@ -404,16 +404,16 @@ public class Invoice extends RecurlyObject {
         return type;
     }
 
-    public void setType(final String type) {
-        this.type = type;
+    public void setType(final Object type) {
+        this.type = stringOrNull(type);
     }
 
     public String getOrigin() {
         return origin;
     }
 
-    public void setOrigin(final String origin) {
-        this.origin = origin;
+    public void setOrigin(final Object origin) {
+        this.origin = stringOrNull(origin);
     }
 
     @Override

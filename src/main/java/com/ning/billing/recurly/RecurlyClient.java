@@ -929,7 +929,7 @@ public class RecurlyClient {
      * Returns an invoice collection
      *
      * @param accountCode
-     * @return the invoice collcetion that was generated on success, null otherwise
+     * @return the invoice collection that was generated on success, null otherwise
      */
     public InvoiceCollection postAccountInvoice(final String accountCode, final Invoice invoice) {
         return doPOST(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE, invoice, InvoiceCollection.class);

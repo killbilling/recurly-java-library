@@ -252,16 +252,16 @@ public class Adjustment extends RecurlyObject {
         return creditReasonCode;
     }
 
-    public void setCreditReasonCode(final String creditReasonCode) {
-        this.creditReasonCode = creditReasonCode;
+    public void setCreditReasonCode(final Object creditReasonCode) {
+        this.creditReasonCode = stringOrNull(creditReasonCode);
     }
 
     public String getOriginalAdjustmentUuid() {
         return originalAdjustmentUuid;
     }
 
-    public void setOriginalAdjustmentUuid(final String originalAdjustmentUuid) {
-        this.originalAdjustmentUuid = originalAdjustmentUuid;
+    public void setOriginalAdjustmentUuid(final Object originalAdjustmentUuid) {
+        this.originalAdjustmentUuid = stringOrNull(originalAdjustmentUuid);
     }
 
     @Override
