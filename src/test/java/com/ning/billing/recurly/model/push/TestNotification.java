@@ -115,6 +115,8 @@ public class TestNotification extends TestModelBase {
                                               "  <closed_at type=\"dateTime\">2014-01-01T20:24:02Z</closed_at>\n" +
                                               "  <net_terms type=\"integer\">0</net_terms>\n" +
                                               "  <collection_method>automatic</collection_method>\n" +
+                                              "  <dunning_events_count type=\"integer\">2</dunning_events_count>\n" +
+                                              "  <final_dunning_event type=\"boolean\">true</final_dunning_event>\n" +
                                               "</invoice>";
 
     private <T extends Notification> void deserialize(final Class<T> clazz) {
@@ -253,6 +255,8 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(invoice.getClosedAt(), new DateTime("2014-01-01T20:24:02Z"));
         Assert.assertEquals(invoice.getNetTerms(), new Integer(0));
         Assert.assertEquals(invoice.getCollectionMethod(), "automatic");
+        Assert.assertEquals(invoice.getDunningEventsCount(), new Integer(2));
+        Assert.assertEquals(invoice.isFinalDunningEvent(), Boolean.TRUE);
     }
 
     @Test(groups = "fast")
@@ -341,5 +345,10 @@ public class TestNotification extends TestModelBase {
     @Test(groups = "fast")
     public void testProcessingInvoiceNotification() {
         deserialize(ProcessingInvoiceNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testNewDunningEventNotification() {
+        deserialize(NewDunningEventNotification.class);
     }
 }

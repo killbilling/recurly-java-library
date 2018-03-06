@@ -35,6 +35,12 @@ public class PushInvoice extends Invoice {
     @XmlElement(name = "closed_at")
     private DateTime closedAt;
 
+    @XmlElement(name = "dunning_events_count")
+    private Integer dunningEventsCount;
+
+    @XmlElement(name = "final_dunning_event")
+    private Boolean isFinalDunningEvent;
+
     public String getSubscriptionId() {
         return subscriptionId;
     }
@@ -65,6 +71,22 @@ public class PushInvoice extends Invoice {
 
     public void setClosedAt(final Object closedAt) {
         this.closedAt = dateTimeOrNull(closedAt);
+    }
+
+    public Integer getDunningEventsCount() {
+       return dunningEventsCount;
+    }
+
+    public void setDunningEventsCount(final Object dunningEventsCount) {
+       this.dunningEventsCount = integerOrNull(dunningEventsCount);
+    }
+
+    public Boolean isFinalDunningEvent() {
+       return isFinalDunningEvent;
+    }
+
+    public void setIsFinalDunningEvent(final Object isFinalDunningEvent) {
+       this.isFinalDunningEvent = booleanOrNull(isFinalDunningEvent);
     }
 
     @Override
