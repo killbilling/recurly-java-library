@@ -152,6 +152,12 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "invoice_collection")
     private InvoiceCollection invoiceCollection;
 
+    @XmlElement(name = "remaining_pause_cycles")
+    private Integer remainingPauseCycles;
+
+    @XmlElement(name = "paused_at")
+    private DateTime pausedAt;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -467,6 +473,22 @@ public class Subscription extends AbstractSubscription {
         this.invoiceCollection = invoiceCollection;
     }
 
+    public Integer getRemainingPauseCycles() {
+        return remainingPauseCycles;
+    }
+
+    public void setRemainingPauseCycles(final Object remainingPauseCycles) {
+        this.remainingPauseCycles = integerOrNull(remainingPauseCycles);
+    }
+
+    public DateTime getPausedAt() {
+        return this.pausedAt;
+    }
+
+    public void setPausedAt(final Object pausedAt) {
+        this.pausedAt = dateTimeOrNull(pausedAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -508,6 +530,8 @@ public class Subscription extends AbstractSubscription {
         sb.append(", importedTrial=").append(importedTrial);
         sb.append(", creditCustomerNotes=").append(creditCustomerNotes);
         sb.append(", invoiceCollection=").append(invoiceCollection);
+        sb.append(", remainingPauseCycles=").append(remainingPauseCycles);
+        sb.append(", pausedAt=").append(pausedAt);
         sb.append('}');
         return sb.toString();
     }
@@ -555,6 +579,9 @@ public class Subscription extends AbstractSubscription {
         if (remainingBillingCycles != null ? !remainingBillingCycles.equals(that.remainingBillingCycles) : that.remainingBillingCycles != null) {
             return false;
         }
+        if (remainingPauseCycles != null ? !remainingPauseCycles.equals(that.remainingPauseCycles) : that.remainingPauseCycles != null) {
+            return false;
+        }
         if (plan != null ? !plan.equals(that.plan) : that.plan != null) {
             return false;
         }
@@ -589,6 +616,9 @@ public class Subscription extends AbstractSubscription {
             return false;
         }
         if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
+            return false;
+        }
+        if (pausedAt != null ? pausedAt.compareTo(that.pausedAt) != 0 : that.pausedAt != null) {
             return false;
         }
         if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
@@ -676,7 +706,10 @@ public class Subscription extends AbstractSubscription {
                 startedWithGift,
                 noBillingInfoReason,
                 importedTrial,
-                invoiceCollection
+                invoiceCollection,
+                remainingPauseCycles,
+                pausedAt
         );
     }
+
 }

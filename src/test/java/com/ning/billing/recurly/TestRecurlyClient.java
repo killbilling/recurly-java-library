@@ -1617,6 +1617,8 @@ public class TestRecurlyClient {
         final Adjustments adjustmentsData = new Adjustments();
         final Adjustment adjustmentData = TestUtils.createRandomAdjustment();
         final GiftCard giftCardData = TestUtils.createRandomGiftCard();
+        final ShippingAddress shippingAddress = TestUtils.createRandomShippingAddress();
+        final ShippingAddresses addresses = new ShippingAddresses();
 
         giftCardData.setProductCode("test_gift_card");
         giftCardData.setCurrency("USD");
@@ -1626,6 +1628,10 @@ public class TestRecurlyClient {
 
         billingInfoData.setAccount(null); // null out random account fixture
         accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        // add a shipping address
+        addresses.add(shippingAddress);
+        accountData.setShippingAddresses(addresses);
 
         try {
             final Plan plan = recurlyClient.createPlan(planData);
@@ -1667,6 +1673,8 @@ public class TestRecurlyClient {
         final Adjustments adjustmentsData = new Adjustments();
         final Adjustment adjustmentData = TestUtils.createRandomAdjustment();
         final GiftCard giftCardData = TestUtils.createRandomGiftCard();
+        final ShippingAddress shippingAddress = TestUtils.createRandomShippingAddress();
+        final ShippingAddresses addresses = new ShippingAddresses();
 
         giftCardData.setProductCode("test_gift_card");
         giftCardData.setCurrency("USD");
@@ -1680,6 +1688,10 @@ public class TestRecurlyClient {
         // these 2 things are required by this endpoint
         billingInfoData.setExternalHppType("adyen"); // set the external hpp collection to adyen
         accountData.setEmail("benjamin.dumonde@example.com");
+
+        // add a shipping address
+        addresses.add(shippingAddress);
+        accountData.setShippingAddresses(addresses);
 
         try {
             final Plan plan = recurlyClient.createPlan(planData);
@@ -1764,4 +1776,45 @@ public class TestRecurlyClient {
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
+
+    @Test(groups = "integration")
+    public void testPauseSubscription() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+        billingInfoData.setAccount(null);
+        accountData.setBillingInfo(billingInfoData);
+        try {
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Set up a subscription
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setRemainingBillingCycles(2);
+
+            // Create the user to the plan
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            // Test subscription creation
+            Assert.assertNotNull(subscription);
+
+            // schedule a pause for 1 cycle
+            final Subscription scheduledPauseSub = recurlyClient.pauseSubscription(subscription.getUuid(), 1);
+            Assert.assertEquals(scheduledPauseSub.getRemainingPauseCycles(), new Integer(1));
+            Assert.assertEquals(scheduledPauseSub.getPausedAt().getClass(), DateTime.class);
+
+            final Subscription canceledPauseSub = recurlyClient.pauseSubscription(subscription.getUuid(), 0);
+            Assert.assertEquals(canceledPauseSub.getPausedAt(), null);
+            Assert.assertEquals(canceledPauseSub.getRemainingPauseCycles(), null);
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
 }

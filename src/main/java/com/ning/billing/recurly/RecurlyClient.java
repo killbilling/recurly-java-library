@@ -102,7 +102,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.10";
+    public static final String RECURLY_API_VERSION = "2.11";
 
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
     private static final String LINK_HEADER_NAME = "Link";
@@ -420,11 +420,51 @@ public class RecurlyClient {
      * Cancel a subscription so it remains active and then expires at the end of the current bill cycle.
      *
      * @param subscription Subscription object
-     * @return -?-
+     * @return Subscription
      */
     public Subscription cancelSubscription(final Subscription subscription) {
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/cancel",
                      subscription, Subscription.class);
+    }
+
+    /**
+     * Pause a subscription or cancel a scheduled pause on a subscription.
+     * <p>
+     * * For an active subscription without a pause scheduled already, this will
+     *   schedule a pause period to begin at the next renewal date for the specified
+     *   number of billing cycles (remaining_pause_cycles).
+     * * When a scheduled pause already exists, this will update the remaining pause
+     *   cycles with the new value sent. When zero (0) remaining_pause_cycles is sent
+     *   for a subscription with a scheduled pause, the pause will be canceled.
+     * * For a paused subscription, the remaining_pause_cycles will adjust the
+     *   length of the current pause period. Sending zero (0) in the remaining_pause_cycles
+     *   field will cause the subscription to be resumed at the next renewal date.
+     *
+     * @param subscriptionUuid The uuid for the subscription you wish to pause.
+     * @param remainingPauseCycles The number of billing cycles that the subscription will be paused.
+     * @return Subscription
+     */
+    public Subscription pauseSubscription(final String subscriptionUuid, final int remainingPauseCycles) {
+        Subscription request = new Subscription();
+        request.setRemainingPauseCycles(remainingPauseCycles);
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + "/pause",
+                     request, Subscription.class);
+    }
+
+    /**
+     * Immediately resumes a currently paused subscription.
+     * <p>
+     * For a paused subscription, this will immediately resume the subscription
+     * from the pause, produce an invoice, and return the newly resumed subscription.
+     * Any at-renewal subscription changes will be immediately applied when
+     * the subscription resumes.
+     *
+     * @param subscriptionUuid The uuid for the subscription you wish to pause.
+     * @return Subscription
+     */
+    public Subscription resumeSubscription(final String subscriptionUuid) {
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + "/resume",
+                null, Subscription.class);
     }
 
     /**
@@ -433,7 +473,7 @@ public class RecurlyClient {
      * postpone a subscription, setting a new renewal date.
      *
      * @param subscription Subscription object
-     * @return -?-
+     * @return Subscription
      */
     public Subscription postponeSubscription(final Subscription subscription, final DateTime renewaldate) {
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/postpone?next_renewal_date=" + renewaldate,
@@ -456,7 +496,7 @@ public class RecurlyClient {
      * Reactivate a canceled subscription so it renews at the end of the current bill cycle.
      *
      * @param subscription Subscription object
-     * @return -?-
+     * @return Subscription
      */
     public Subscription reactivateSubscription(final Subscription subscription) {
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/reactivate",
