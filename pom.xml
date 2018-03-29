@@ -103,7 +103,6 @@
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.google.code.findbugs</groupId>
@@ -509,12 +508,17 @@
                             <artifactSet>
                                 <includes>
                                     <include>com.fasterxml.jackson.*:*</include>
+                                    <include>org.codehaus.woodstox:stax2-api</include>
                                 </includes>
                             </artifactSet>
                             <relocations>
                                 <relocation>
                                     <pattern>com.fasterxml.jackson</pattern>
                                     <shadedPattern>com.ning.billing.recurly.shaded.com.fasterxml.jackson</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.codehaus.stax2</pattern>
+                                    <shadedPattern>com.ning.billing.recurly.shaded.org.codehaus.stax2</shadedPattern>
                                 </relocation>
                             </relocations>
                         </configuration>
