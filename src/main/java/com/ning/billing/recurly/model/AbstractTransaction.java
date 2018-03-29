@@ -111,6 +111,17 @@ public class AbstractTransaction extends RecurlyObject {
     @XmlElement(name = "avs_result_postal")
     private String avsResultPostal;
 
+    @XmlElement(name = "failure_type")
+    private String failureType;
+
+    public String getFailureType() {
+        return failureType;
+    }
+
+    public void setFailureType(final Object failureType) {
+        this.failureType = stringOrNull(failureType);
+    }
+
     public String getAction() {
         return action;
     }
@@ -270,6 +281,9 @@ public class AbstractTransaction extends RecurlyObject {
             return false;
         }
         if (avsResultPostal != null ? !avsResultPostal.equals(that.avsResultPostal) : that.avsResultPostal != null) {
+            return false;
+        }
+        if (failureType != null ? !failureType.equals(that.failureType) : that.failureType != null) {
             return false;
         }
 

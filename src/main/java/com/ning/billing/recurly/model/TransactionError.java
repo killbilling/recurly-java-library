@@ -17,10 +17,10 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.google.common.base.Objects;
 
 @XmlRootElement(name = "transaction_error")
 public class TransactionError extends RecurlyObject {
@@ -36,6 +36,9 @@ public class TransactionError extends RecurlyObject {
 
     @XmlElement(name = "customer_message")
     private String customerMessage;
+
+    @XmlElement(name = "gateway_error_code")
+    private String gatewayErrorCode;
 
     public String getErrorCode() {
         return errorCode;
@@ -69,47 +72,46 @@ public class TransactionError extends RecurlyObject {
         this.customerMessage = stringOrNull(customerMessage);
     }
 
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("TransactionError{");
-        sb.append("errorCode='").append(errorCode).append('\'');
-        sb.append(", errorCategory='").append(errorCategory).append('\'');
-        sb.append(", merchantMessage='").append(merchantMessage).append('\'');
-        sb.append(", customerMessage='").append(customerMessage).append('\'');
-        sb.append('}');
-        return sb.toString();
+    public String getGatewayErrorCode() {
+        return gatewayErrorCode;
+    }
+
+    public void setGatewayErrorCode(final Object gatewayErrorCode) {
+        this.gatewayErrorCode = stringOrNull(gatewayErrorCode);
     }
 
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
-        final TransactionError that = (TransactionError) o;
+        TransactionError that = (TransactionError) o;
 
-        if (customerMessage != null ? !customerMessage.equals(that.customerMessage) : that.customerMessage != null) {
+        if (errorCode != null ? !errorCode.equals(that.errorCode) : that.errorCode != null) return false;
+        if (errorCategory != null ? !errorCategory.equals(that.errorCategory) : that.errorCategory != null)
             return false;
-        }
-        if (errorCategory != null ? !errorCategory.equals(that.errorCategory) : that.errorCategory != null) {
+        if (merchantMessage != null ? !merchantMessage.equals(that.merchantMessage) : that.merchantMessage != null)
             return false;
-        }
-        if (errorCode != null ? !errorCode.equals(that.errorCode) : that.errorCode != null) {
+        if (customerMessage != null ? !customerMessage.equals(that.customerMessage) : that.customerMessage != null)
             return false;
-        }
-        if (merchantMessage != null ? !merchantMessage.equals(that.merchantMessage) : that.merchantMessage != null) {
-            return false;
-        }
-
-        return true;
+        return gatewayErrorCode != null ? gatewayErrorCode.equals(that.gatewayErrorCode) : that.gatewayErrorCode == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(
-                errorCode,
-                errorCategory,
-                merchantMessage,
-                customerMessage
-        );
+        return Objects.hashCode(errorCode, errorCategory, merchantMessage, customerMessage, gatewayErrorCode);
     }
+
+    @Override
+    public String toString() {
+        return "TransactionError{" +
+                "errorCode='" + errorCode + '\'' +
+                ", errorCategory='" + errorCategory + '\'' +
+                ", merchantMessage='" + merchantMessage + '\'' +
+                ", customerMessage='" + customerMessage + '\'' +
+                ", gatewayErrorCode='" + gatewayErrorCode + '\'' +
+                '}';
+    }
+
 }

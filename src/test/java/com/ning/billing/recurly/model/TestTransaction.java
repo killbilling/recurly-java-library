@@ -55,6 +55,7 @@ public class TestTransaction extends TestModelBase {
                                        "  <origin>api</origin>\n" +
                                        "  <message>Successful test transaction</message>\n" +
                                        "  <approval_code>P1234577Q</approval_code>\n" +
+                                       "  <failure_type>Declined by the gateway</failure_type>\n" +
                                        "  <created_at type=\"dateTime\">2015-06-19T03:01:33Z</created_at>\n" +
                                        "  <updated_at type=\"dateTime\">2015-06-19T03:01:33Z</updated_at>\n" +
                                        "  <details>\n" +
@@ -98,6 +99,7 @@ public class TestTransaction extends TestModelBase {
         Assert.assertNull(transaction.getCvvResult());
         Assert.assertEquals(transaction.getCreatedAt(), new DateTime("2015-06-19T03:01:33Z"));
         Assert.assertEquals(transaction.getUpdatedAt(), new DateTime("2015-06-19T03:01:33Z"));
+        Assert.assertEquals(transaction.getFailureType(), "Declined by the gateway");
         Assert.assertEquals(transaction.getGatewayType(), "test");
         Assert.assertEquals(transaction.getOrigin(), "api");
         Assert.assertEquals(transaction.getApprovalCode(), "P1234577Q");
@@ -119,6 +121,77 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(billingInfo.getCountry(), "US");
         Assert.assertNull(billingInfo.getPhone());
         Assert.assertNull(billingInfo.getVatNumber());
+    }
+
+    @Test(groups = "fast")
+    public void testTransactionErrorDeserialization() throws Exception {
+        // See http://docs.recurly.com/api/invoices
+        final String transactionData = "<transaction href=\"https://your-subdomain.recurly.com/v2/transactions/41de32a87e061a97bb27724194856e4e\" type=\"credit_card\">\n" +
+                "        <account href=\"https://your-subdomain.recurly.com/v2/accounts/70e5ff0e-df50-11e7-9485-0aabf6bafcb0\"/>\n" +
+                "        <invoice href=\"https://your-subdomain.recurly.com/v2/invoices/55959127\"/>\n" +
+                "        <subscription href=\"https://your-subdomain.recurly.com/v2/subscriptions/41ba25f2e4bbd6f41ab1734237aca931\"/>\n" +
+                "        <uuid>41de32a87e061a97bb27724194856e4e</uuid>\n" +
+                "        <action>purchase</action>\n" +
+                "        <amount_in_cents type=\"integer\">8898</amount_in_cents>\n" +
+                "        <tax_in_cents type=\"integer\">0</tax_in_cents>\n" +
+                "        <currency>USD</currency>\n" +
+                "        <status>declined</status>\n" +
+                "        <payment_method>credit_card</payment_method>\n" +
+                "        <reference>2485247626;</reference>\n" +
+                "        <source>subscription</source>\n" +
+                "        <recurring type=\"boolean\">true</recurring>\n" +
+                "        <test type=\"boolean\">false</test>\n" +
+                "        <voidable type=\"boolean\">false</voidable>\n" +
+                "        <refundable type=\"boolean\">false</refundable>\n" +
+                "        <ip_address nil=\"nil\"></ip_address>\n" +
+                "        <transaction_error>\n" +
+                "            <error_code>insufficient_funds</error_code>\n" +
+                "            <error_category>soft</error_category>\n" +
+                "            <merchant_message>The card has insufficient funds to cover the cost of the transaction.</merchant_message>\n" +
+                "            <customer_message>Your transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.</customer_message>\n" +
+                "            <gateway_error_code>302</gateway_error_code>\n" +
+                "        </transaction_error>\n" +
+                "        <cvv_result code=\"\" nil=\"nil\"></cvv_result>\n" +
+                "        <avs_result code=\"A\">Street address matches, but 5-digit and 9-digit postal code do not match.</avs_result>\n" +
+                "        <avs_result_street nil=\"nil\"></avs_result_street>\n" +
+                "        <avs_result_postal nil=\"nil\"></avs_result_postal>\n" +
+                "        <created_at type=\"datetime\">2017-12-19T15:32:16Z</created_at>\n" +
+                "        <details>\n" +
+                "            <account>\n" +
+                "                <account_code>70e5ff0e-df50-11e7-9485-0aabf6bafcb0</account_code>\n" +
+                "                <first_name>jaqueace</first_name>\n" +
+                "                <last_name>parker</last_name>\n" +
+                "                <company nil=\"nil\"></company>\n" +
+                "                <email>mookiebrienbrook@gmail.com</email>\n" +
+                "                <billing_info type=\"credit_card\">\n" +
+                "                    <first_name>jaqueace</first_name>\n" +
+                "                    <last_name>parker</last_name>\n" +
+                "                    <address1 nil=\"nil\"></address1>\n" +
+                "                    <address2 nil=\"nil\"></address2>\n" +
+                "                    <city nil=\"nil\"></city>\n" +
+                "                    <state nil=\"nil\"></state>\n" +
+                "                    <zip>46545</zip>\n" +
+                "                    <country>US</country>\n" +
+                "                    <phone nil=\"nil\"></phone>\n" +
+                "                    <vat_number nil=\"nil\"></vat_number>\n" +
+                "                    <card_type>MasterCard</card_type>\n" +
+                "                    <year type=\"integer\">2021</year>\n" +
+                "                    <month type=\"integer\">1</month>\n" +
+                "                    <first_six>533248</first_six>\n" +
+                "                    <last_four>9687</last_four>\n" +
+                "                </billing_info>\n" +
+                "            </account>\n" +
+                "        </details>\n" +
+                "    </transaction>";
+
+        final Transaction transaction = xmlMapper.readValue(transactionData, Transaction.class);
+        final TransactionError transactionError = transaction.getTransactionError();
+
+        Assert.assertEquals(transactionError.getErrorCode(), "insufficient_funds");
+        Assert.assertEquals(transactionError.getErrorCategory(), "soft");
+        Assert.assertEquals(transactionError.getCustomerMessage(), "Your transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.");
+        Assert.assertEquals(transactionError.getMerchantMessage(), "The card has insufficient funds to cover the cost of the transaction.");
+        Assert.assertEquals(transactionError.getGatewayErrorCode(), "302");
     }
 
     @Test(groups = "fast")

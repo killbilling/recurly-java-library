@@ -17,12 +17,12 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.joda.time.DateTime;
-import com.google.common.base.Objects;
 
 @XmlRootElement(name = "add_on")
 public class AddOn extends AbstractAddOn {
@@ -85,8 +85,8 @@ public class AddOn extends AbstractAddOn {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(final RevenueScheduleType revenueScheduleType) {
-        this.revenueScheduleType = revenueScheduleType;
+    public void setRevenueScheduleType(final Object revenueScheduleType) {
+        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
     }
 
     public RecurlyUnitCurrency getUnitAmountInCents() {

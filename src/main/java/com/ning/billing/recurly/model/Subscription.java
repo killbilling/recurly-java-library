@@ -17,15 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.joda.time.DateTime;
-
-import com.google.common.base.Objects;
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -143,10 +141,16 @@ public class Subscription extends AbstractSubscription {
     private Long shippingAddressId;
 
     @XmlElement(name = "no_billing_info_reason")
-    public String noBillingInfoReason;
+    private String noBillingInfoReason;
 
     @XmlElement(name = "imported_trial")
-    public Boolean importedTrial;
+    private Boolean importedTrial;
+
+    @XmlElement(name = "credit_customer_notes")
+    private String creditCustomerNotes;
+
+    @XmlElement(name = "invoice_collection")
+    private InvoiceCollection invoiceCollection;
 
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
@@ -382,8 +386,8 @@ public class Subscription extends AbstractSubscription {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(final RevenueScheduleType revenueScheduleType) {
-        this.revenueScheduleType = revenueScheduleType;
+    public void setRevenueScheduleType(final Object revenueScheduleType) {
+        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
     }
 
     public GiftCard getGiftCard() {
@@ -447,6 +451,22 @@ public class Subscription extends AbstractSubscription {
     }
 
 
+    public String getCreditCustomerNotes() {
+        return creditCustomerNotes;
+    }
+
+    public void setCreditCustomerNotes(final Object creditCustomerNotes) {
+        this.creditCustomerNotes = stringOrNull(creditCustomerNotes);
+    }
+
+    public InvoiceCollection getInvoiceCollection() {
+        return invoiceCollection;
+    }
+
+    public void setInvoiceCollection(final InvoiceCollection invoiceCollection) {
+        this.invoiceCollection = invoiceCollection;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -486,6 +506,8 @@ public class Subscription extends AbstractSubscription {
         sb.append(", convertedAt=").append(convertedAt);
         sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
         sb.append(", importedTrial=").append(importedTrial);
+        sb.append(", creditCustomerNotes=").append(creditCustomerNotes);
+        sb.append(", invoiceCollection=").append(invoiceCollection);
         sb.append('}');
         return sb.toString();
     }
@@ -605,6 +627,12 @@ public class Subscription extends AbstractSubscription {
         if (noBillingInfoReason != null ? !noBillingInfoReason.equals(that.noBillingInfoReason) : that.noBillingInfoReason != null) {
             return false;
         }
+        if (creditCustomerNotes != null ? !creditCustomerNotes.equals(that.creditCustomerNotes) : that.creditCustomerNotes != null) {
+            return false;
+        }
+        if (invoiceCollection != null ? !invoiceCollection.equals(that.invoiceCollection) : that.invoiceCollection != null) {
+            return false;
+        }
 
         return true;
     }
@@ -647,8 +675,8 @@ public class Subscription extends AbstractSubscription {
                 convertedAt,
                 startedWithGift,
                 noBillingInfoReason,
-                importedTrial
+                importedTrial,
+                invoiceCollection
         );
     }
-
 }
