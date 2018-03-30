@@ -58,6 +58,7 @@ import com.ning.billing.recurly.model.TransactionState;
 import com.ning.billing.recurly.model.TransactionType;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
+import com.ning.billing.recurly.model.Usages;
 import com.ning.billing.recurly.model.MeasuredUnit;
 import com.ning.billing.recurly.model.MeasuredUnits;
 import com.ning.billing.recurly.model.AccountAcquisition;
@@ -602,6 +603,25 @@ public class RecurlyClient {
                         Usage.USAGE_RESOURCE,
                 usage, Usage.class);
     }
+
+    /**
+     * Get Subscription Addon Usages
+     * <p>
+     *
+     * @param subscriptionCode The recurly id of the {@link Subscription }
+     * @param addOnCode recurly id of {@link AddOn}
+     * @return {@link Usages} for the specified subscription and addOn
+     */
+    public Usages getSubscriptionUsages(final String subscriptionCode, final String addOnCode) {
+       return doGET(Subscription.SUBSCRIPTION_RESOURCE +
+                        "/" +
+                        subscriptionCode +
+                        AddOn.ADDONS_RESOURCE +
+                        "/" +
+                        addOnCode +
+                        Usage.USAGE_RESOURCE, Usages.class );
+    }
+
 
     /**
      * Get the subscriptions for an account.
