@@ -612,14 +612,14 @@ public class RecurlyClient {
      * @param addOnCode recurly id of {@link AddOn}
      * @return {@link Usages} for the specified subscription and addOn
      */
-    public Usages getSubscriptionUsages(final String subscriptionCode, final String addOnCode) {
+    public Usages getSubscriptionUsages(final String subscriptionCode, final String addOnCode, final QueryParams params) {
        return doGET(Subscription.SUBSCRIPTION_RESOURCE +
                         "/" +
                         subscriptionCode +
                         AddOn.ADDONS_RESOURCE +
                         "/" +
                         addOnCode +
-                        Usage.USAGE_RESOURCE, Usages.class );
+                        Usage.USAGE_RESOURCE, Usages.class, params );
     }
 
 

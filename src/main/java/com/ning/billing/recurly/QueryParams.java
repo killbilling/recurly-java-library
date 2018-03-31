@@ -62,6 +62,35 @@ public class QueryParams {
         }
     }
 
+    public enum DateTimeType {
+        USAGE("usage"),
+        RECORDING("recording");
+
+        private final String type;
+
+       private DateTimeType(final String type) {
+           this.type = type;
+       }
+
+       public String getType() {
+           return type;
+       }
+    }
+
+    public enum BillingStatus {
+        ALL("all"), UNBILLED("unbilled"), BILLED("billed");
+
+        private final String type;
+
+        private BillingStatus(final String type) {
+            this.type = type;
+        }
+
+        public String getType() {
+            return type;
+        }
+    }
+
     private Map<String,String> params;
 
     public QueryParams() {
@@ -98,8 +127,25 @@ public class QueryParams {
         params.put("end_time", formatDate(endTime));
     }
 
+    // Parameters to support List Subscription Add-On's Usage
+    public void setStartDateTime(final DateTime startDateTime) {
+        params.put("start_datetime", formatDate(startDateTime));
+    }
+
+    public void setEndDateTime(final DateTime endDateTime) {
+        params.put("end_datetime", formatDate(endDateTime));
+    }
+
     private String formatDate(final DateTime dateTime) {
         return dateTime.toDateTimeISO().toString();
+    }
+
+    public void setDateTimeType(final DateTimeType dateTimeType) {
+        params.put("datetime_type", dateTimeType.getType());
+    }
+
+    public void setBillingStatus(final BillingStatus billingStatus) {
+        params.put("biiling_status", billingStatus.getType());
     }
 
     public void put(final String key, final String value) { params.put(key, value); }
