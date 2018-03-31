@@ -72,6 +72,7 @@ public class TestAccount extends TestModelBase {
         // Verify serialization
         final String accountSerialized = xmlMapper.writeValueAsString(account);
         final Account account2 = xmlMapper.readValue(accountSerialized, Account.class);
+        Assert.assertNull(account2.getHref());
         verifyAccount(account2);
     }
 
