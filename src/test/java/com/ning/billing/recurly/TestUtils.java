@@ -17,15 +17,15 @@
 
 package com.ning.billing.recurly;
 
-import java.util.Random;
-
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountAcquisition;
+import com.ning.billing.recurly.model.AcquisitionChannel;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.Address;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.Adjustments;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Delivery;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
@@ -41,10 +41,9 @@ import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
-import com.ning.billing.recurly.model.AccountAcquisition;
-import com.ning.billing.recurly.model.AcquisitionChannel;
-
 import org.joda.time.DateTime;
+
+import java.util.Random;
 
 public class TestUtils {
 
@@ -257,7 +256,8 @@ public class TestUtils {
     public static Account createRandomAccount(final int seed) {
         final Account account = new Account();
 
-        account.setAcceptLanguage("en_US");
+        account.setAcceptLanguage("en-US");
+        account.setPreferredLocale("en-US");
         account.setAccountCode(randomAlphaNumericString(10, seed));
         account.setCompanyName(randomAlphaNumericString(10, seed));
         account.setEmail(randomAlphaNumericString(4, seed) + "@test.com");

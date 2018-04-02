@@ -17,14 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
-
 import com.google.common.base.Objects;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @XmlRootElement(name = "purchase")
@@ -66,6 +65,9 @@ public class Purchase extends RecurlyObject {
 
     @XmlElement(name = "terms_and_conditions")
     private String termsAndConditions;
+
+    @XmlElement(name = "shipping_address_id")
+    private Long shippingAddressId;
 
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
@@ -168,6 +170,14 @@ public class Purchase extends RecurlyObject {
         this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
     }
 
+    public Long getShippingAddressId() {
+        return shippingAddressId;
+    }
+
+    public void setShippingAddressId(final Object shippingAddressId) {
+        this.shippingAddressId = longOrNull(shippingAddressId);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -184,6 +194,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", customerNotes='").append(customerNotes).append('\'');
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
+        sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -222,6 +233,9 @@ public class Purchase extends RecurlyObject {
         if (netTerms != null ? !netTerms.equals(purchase.netTerms) : purchase.netTerms != null) {
             return false;
         }
+        if (shippingAddressId != null ? !shippingAddressId.equals(purchase.shippingAddressId) : purchase.shippingAddressId != null) {
+            return false;
+        }
         if (subscriptions != null ? !subscriptions.equals(purchase.subscriptions) : purchase.subscriptions != null) {
             return false;
         }
@@ -249,7 +263,8 @@ public class Purchase extends RecurlyObject {
                 couponCodes,
                 customerNotes,
                 termsAndConditions,
-                vatReverseChargeNotes
+                vatReverseChargeNotes,
+                shippingAddressId
         );
     }
 

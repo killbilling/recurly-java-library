@@ -89,6 +89,12 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "original_adjustment_uuid")
     private String originalAdjustmentUuid;
 
+    @XmlElement(name = "shipping_address")
+    private ShippingAddress shippingAddress;
+
+    @XmlElement(name = "shipping_address_id")
+    private Long shippingAddressId;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -264,6 +270,23 @@ public class Adjustment extends RecurlyObject {
         this.originalAdjustmentUuid = stringOrNull(originalAdjustmentUuid);
     }
 
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(final ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public Long getShippingAddressId() {
+        return shippingAddressId;
+    }
+
+    public void setShippingAddressId(final Object shippingAddressId) {
+        this.shippingAddressId = longOrNull(shippingAddressId);
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -289,6 +312,8 @@ public class Adjustment extends RecurlyObject {
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", creditReasonCode=").append(creditReasonCode);
         sb.append(", originalAdjustmentUuid=").append(originalAdjustmentUuid);
+        sb.append(", shippingAddress=").append(shippingAddress);
+        sb.append(", shippingAddressId=").append(shippingAddressId);
         sb.append('}');
         return sb.toString();
     }
@@ -334,6 +359,12 @@ public class Adjustment extends RecurlyObject {
             return false;
         }
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
+            return false;
+        }
+        if (shippingAddress != null ? !shippingAddress.equals(that.shippingAddress) : that.shippingAddress != null) {
+            return false;
+        }
+        if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
             return false;
         }
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) {
@@ -390,7 +421,9 @@ public class Adjustment extends RecurlyObject {
                 updatedAt,
                 revenueScheduleType,
                 creditReasonCode,
-                originalAdjustmentUuid
+                originalAdjustmentUuid,
+                shippingAddress,
+                shippingAddressId
         );
     }
 
