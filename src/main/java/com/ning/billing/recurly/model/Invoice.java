@@ -129,6 +129,12 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "origin")
     private String origin;
 
+    @XmlElement(name = "address")
+    private Address address;
+
+    @XmlElement(name = "shipping_address")
+    private ShippingAddress shippingAddress;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -416,6 +422,22 @@ public class Invoice extends RecurlyObject {
         this.origin = stringOrNull(origin);
     }
 
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(final ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
@@ -452,6 +474,8 @@ public class Invoice extends RecurlyObject {
         sb.append(", dueOn=").append(dueOn);
         sb.append(", type=").append(type);
         sb.append(", origin=").append(origin);
+        sb.append(", address=").append(address);
+        sb.append(", shippingAddress=").append(shippingAddress);
         sb.append('}');
         return sb.toString();
     }
@@ -464,6 +488,9 @@ public class Invoice extends RecurlyObject {
         final Invoice invoice = (Invoice) o;
 
         if (account != null ? !account.equals(invoice.account) : invoice.account != null) {
+            return false;
+        }
+        if (address != null ? !address.equals(invoice.address) : invoice.address != null) {
             return false;
         }
         if (attemptNextCollectionAt != null ? attemptNextCollectionAt.compareTo(invoice.attemptNextCollectionAt) != 0 : invoice.attemptNextCollectionAt != null) {
@@ -512,6 +539,9 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (recoveryReason != null ? !recoveryReason.equals(invoice.recoveryReason) : invoice.recoveryReason != null) {
+            return false;
+        }
+        if (shippingAddress != null ? !shippingAddress.equals(invoice.shippingAddress) : invoice.shippingAddress != null) {
             return false;
         }
         if (state != null ? !state.equals(invoice.state) : invoice.state != null) {
@@ -597,7 +627,9 @@ public class Invoice extends RecurlyObject {
                 discountInCents,
                 balanceInCents,
                 type,
-                origin
+                origin,
+                address,
+                shippingAddress
         );
     }
 
