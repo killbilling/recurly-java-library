@@ -52,6 +52,25 @@ public class TestInvoice extends TestModelBase {
                                    + "  <created_at type=\"dateTime\">2011-08-25T12:00:00Z</created_at>\n"
                                    + "  <updated_at type=\"dateTime\">2011-08-25T12:00:00Z</updated_at>\n"
                                    + "  <closed_at type=\"dateTime\">2011-08-25T12:00:00Z</closed_at>\n"
+                                   + "    <address>\n"
+                                   + "        <address1>123 Main St.</address1>\n"
+                                   + "        <address2 nil=\"nil\"></address2>\n"
+                                   + "        <city>San Francisco</city>\n"
+                                   + "        <state>CA</state>\n"
+                                   + "        <zip>94105</zip>\n"
+                                   + "        <country>US</country>\n"
+                                   + "        <phone nil=\"nil\"></phone>\n"
+                                   + "    </address>\n"
+                                   + "    <shipping_address>\n"
+                                   + "        <name>Tester Number 11</name>\n"
+                                   + "        <address1>123 Canal St.</address1>\n"
+                                   + "        <address2>Suite 101</address2>\n"
+                                   + "        <city>San Francisco</city>\n"
+                                   + "        <state>CA</state>\n"
+                                   + "        <zip>94105</zip>\n"
+                                   + "        <country>US</country>\n"
+                                   + "        <phone>555-222-1212</phone>\n"
+                                   + "    </shipping_address>"
                                    + "  <line_items type=\"array\">\n"
                                    + "    <adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n"
                                    + "      <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
@@ -105,6 +124,9 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
 
         Assert.assertEquals(invoice.getTransactions().size(), 0);
+
+        Assert.assertEquals(invoice.getAddress().getAddress1(), "123 Main St.");
+        Assert.assertEquals(invoice.getShippingAddress().getAddress1(), "123 Canal St.");
     }
 
     @Test(groups = "fast")
