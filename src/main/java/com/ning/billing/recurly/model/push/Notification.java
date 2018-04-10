@@ -51,7 +51,8 @@ public abstract class Notification extends RecurlyObject {
         NewInvoiceNotification(com.ning.billing.recurly.model.push.invoice.NewInvoiceNotification.class),
         PastDueInvoiceNotification(com.ning.billing.recurly.model.push.invoice.PastDueInvoiceNotification.class),
         ProcessingInvoiceNotification(com.ning.billing.recurly.model.push.invoice.ProcessingInvoiceNotification.class),
-        UpdatedAccountNotification(com.ning.billing.recurly.model.push.account.UpdatedAccountNotification.class);
+        UpdatedAccountNotification(com.ning.billing.recurly.model.push.account.UpdatedAccountNotification.class),
+        NewDunningEventNotification(com.ning.billing.recurly.model.push.invoice.NewDunningEventNotification.class);
 
         private Class<? extends Notification> javaType;
 
