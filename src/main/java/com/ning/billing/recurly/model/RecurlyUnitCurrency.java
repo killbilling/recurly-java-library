@@ -63,6 +63,10 @@ public class RecurlyUnitCurrency {
     @XmlElement(name = "HUF")
     private Integer unitAmountHUF;
 
+    // Indian Rupees
+    @XmlElement(name = "INR")
+    private Integer unitAmountINR;
+
     // Norwegian Krones
     @XmlElement(name = "NOK")
     private Integer unitAmountNOK;
@@ -121,6 +125,7 @@ public class RecurlyUnitCurrency {
             recurlyUnitCurrency.setUnitAmountCHF(amounts.get("CHF"));
             recurlyUnitCurrency.setUnitAmountZAR(amounts.get("ZAR"));
             recurlyUnitCurrency.setUnitAmountJPY(amounts.get("JPY"));
+            recurlyUnitCurrency.setUnitAmountINR(amounts.get("INR"));
         }
 
         return recurlyUnitCurrency;
@@ -188,6 +193,14 @@ public class RecurlyUnitCurrency {
 
     public void setUnitAmountHUF(final Object unitAmountHUF) {
         this.unitAmountHUF = RecurlyObject.integerOrNull(unitAmountHUF);
+    }
+
+    public Integer getUnitAmountINR() {
+        return unitAmountINR;
+    }
+
+    public void setUnitAmountINR(final Object unitAmountINR) {
+        this.unitAmountINR = RecurlyObject.integerOrNull(unitAmountINR);
     }
 
     public Integer getUnitAmountNOK() {
@@ -274,6 +287,7 @@ public class RecurlyUnitCurrency {
         sb.append(", unitAmountCHF=").append(unitAmountCHF);
         sb.append(", unitAmountZAR=").append(unitAmountZAR);
         sb.append(", unitAmountJPY=").append(unitAmountJPY);
+        sb.append(", unitAmountINR=").append(unitAmountINR);
         sb.append('}');
         return sb.toString();
     }
@@ -333,6 +347,9 @@ public class RecurlyUnitCurrency {
         if (unitAmountJPY != null ? !unitAmountJPY.equals(that.unitAmountJPY) : that.unitAmountJPY != null) {
             return false;
         }
+        if (unitAmountINR != null ? !unitAmountINR.equals(that.unitAmountINR) : that.unitAmountINR != null) {
+            return false;
+        }
         return true;
     }
 
@@ -354,7 +371,8 @@ public class RecurlyUnitCurrency {
                 unitAmountSEK,
                 unitAmountCHF,
                 unitAmountZAR,
-                unitAmountJPY
+                unitAmountJPY,
+                unitAmountINR
         );
     }
 }
