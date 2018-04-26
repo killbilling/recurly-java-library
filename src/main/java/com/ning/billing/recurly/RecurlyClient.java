@@ -17,7 +17,14 @@
 
 package com.ning.billing.recurly;
 
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.StandardSystemProperty;
+import com.google.common.io.CharSource;
+import com.google.common.io.Resources;
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.AccountBalance;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
@@ -37,6 +44,8 @@ import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.InvoiceState;
 import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.MeasuredUnit;
+import com.ning.billing.recurly.model.MeasuredUnits;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Purchase;
@@ -49,9 +58,9 @@ import com.ning.billing.recurly.model.RefundMethod;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.SubscriptionState;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
-import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.TransactionState;
@@ -59,28 +68,19 @@ import com.ning.billing.recurly.model.TransactionType;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
 import com.ning.billing.recurly.model.Usages;
-import com.ning.billing.recurly.model.MeasuredUnit;
-import com.ning.billing.recurly.model.MeasuredUnits;
-import com.ning.billing.recurly.model.AccountAcquisition;
-
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.StandardSystemProperty;
-import com.google.common.io.CharSource;
-import com.google.common.io.Resources;
-import com.google.common.net.HttpHeaders;
-
 import com.ning.billing.recurly.util.http.SslUtils;
-import com.ning.http.client.AsyncHttpClient;
-import com.ning.http.client.AsyncHttpClientConfig;
-import com.ning.http.client.FluentCaseInsensitiveStringsMap;
-import com.ning.http.client.Response;
+import io.netty.handler.codec.http.HttpHeaders;
+import org.asynchttpclient.AsyncHttpClient;
+import org.asynchttpclient.BoundRequestBuilder;
+import org.asynchttpclient.DefaultAsyncHttpClient;
+import org.asynchttpclient.DefaultAsyncHttpClientConfig;
+import org.asynchttpclient.Response;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
+import javax.net.ssl.SSLException;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -88,15 +88,13 @@ import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.List;
 
 public class RecurlyClient {
 
@@ -154,7 +152,7 @@ public class RecurlyClient {
     /**
      * Open the underlying http client
      */
-    public synchronized void open() throws NoSuchAlgorithmException, KeyManagementException {
+    public synchronized void open() throws SSLException {
         client = createHttpClient();
     }
 
@@ -163,7 +161,11 @@ public class RecurlyClient {
      */
     public synchronized void close() {
         if (client != null) {
-            client.close();
+            try {
+                client.close();
+            } catch (IOException e) {
+                log.error("Error closing client", e);
+            }
         }
     }
 
@@ -209,8 +211,8 @@ public class RecurlyClient {
      * @return Integer on success, null otherwise
      */
     public Integer getAccountsCount(final QueryParams params) {
-        FluentCaseInsensitiveStringsMap map = doHEAD(Accounts.ACCOUNTS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+        HttpHeaders headers = doHEAD(Accounts.ACCOUNTS_RESOURCE, params);
+        return headers.getInt(X_RECORDS_HEADER_NAME);
     }
 
     /**
@@ -243,8 +245,8 @@ public class RecurlyClient {
      * @return Integer on success, null otherwise
      */
     public Integer getCouponsCount(final QueryParams params) {
-        FluentCaseInsensitiveStringsMap map = doHEAD(Coupons.COUPONS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+        HttpHeaders headers = doHEAD(Coupons.COUPONS_RESOURCE, params);
+        return headers.getInt(X_RECORDS_HEADER_NAME);
     }
 
     /**
@@ -600,8 +602,8 @@ public class RecurlyClient {
      * @return Integer on success, null otherwise
      */
     public Integer getSubscriptionsCount(final QueryParams params) {
-        FluentCaseInsensitiveStringsMap map = doHEAD(Subscription.SUBSCRIPTION_RESOURCE,  params);
-        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+        HttpHeaders headers = doHEAD(Subscription.SUBSCRIPTION_RESOURCE, params);
+        return headers.getInt(X_RECORDS_HEADER_NAME);
     }
 
     /**
@@ -805,8 +807,8 @@ public class RecurlyClient {
      * @return Integer on success, null otherwise
      */
     public Integer getTransactionsCount(final QueryParams params) {
-        FluentCaseInsensitiveStringsMap map = doHEAD(Transactions.TRANSACTIONS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+        HttpHeaders headers = doHEAD(Transactions.TRANSACTIONS_RESOURCE, params);
+        return headers.getInt(X_RECORDS_HEADER_NAME);
     }
 
     /**
@@ -1141,8 +1143,8 @@ public class RecurlyClient {
      * @return Integer on success, null otherwise
      */
     public Integer getPlansCount(final QueryParams params) {
-        FluentCaseInsensitiveStringsMap map = doHEAD(Plans.PLANS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+        HttpHeaders headers = doHEAD(Plans.PLANS_RESOURCE, params);
+        return headers.getInt(X_RECORDS_HEADER_NAME);
     }
 
     /**
@@ -1507,8 +1509,8 @@ public class RecurlyClient {
      * @return Integer on success, null otherwise
      */
     public Integer getGiftCardsCount(final QueryParams params) {
-        FluentCaseInsensitiveStringsMap map = doHEAD(GiftCards.GIFT_CARDS_RESOURCE, params);
-        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+        HttpHeaders headers = doHEAD(GiftCards.GIFT_CARDS_RESOURCE, params);
+        return headers.getInt(X_RECORDS_HEADER_NAME);
     }
 
     /**
@@ -1768,9 +1770,6 @@ public class RecurlyClient {
         } catch (ExecutionException e) {
             log.error("Execution error", e);
             return null;
-        } catch (IOException e) {
-            log.error("Error retrieving response body", e);
-            return null;
         }
 
         if (response.getStatusCode() != 200) {
@@ -1820,7 +1819,7 @@ public class RecurlyClient {
         return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
-    private FluentCaseInsensitiveStringsMap doHEAD(final String resource, QueryParams params) {
+    private HttpHeaders doHEAD(final String resource, QueryParams params) {
         final String url = constructGetUrl(resource, params);
         if (debug()) {
             log.info("Msg to Recurly API [HEAD]:: URL : {}", url);
@@ -1832,7 +1831,7 @@ public class RecurlyClient {
         callRecurlySafeXmlContent(client.prepareDelete(baseUrl + resource), null);
     }
 
-    private FluentCaseInsensitiveStringsMap callRecurlyNoContent(final AsyncHttpClient.BoundRequestBuilder builder) {
+    private HttpHeaders callRecurlyNoContent(final BoundRequestBuilder builder) {
         try {
             final Response response = clientRequestBuilderCommon(builder)
                     .addHeader("Accept", "application/xml")
@@ -1844,14 +1843,13 @@ public class RecurlyClient {
         } catch (ExecutionException e) {
             log.error("Execution error", e);
             return null;
-        }
-        catch (InterruptedException e) {
+        } catch (InterruptedException e) {
             log.error("Interrupted while calling Recurly", e);
             return null;
         }
     }
 
-    private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
+    private <T> T callRecurlySafeXmlContent(final BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
         try {
             return callRecurlyXmlContent(builder, clazz);
         } catch (IOException e) {
@@ -1876,7 +1874,7 @@ public class RecurlyClient {
         }
     }
 
-    private <T> T callRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
+    private <T> T callRecurlyXmlContent(final BoundRequestBuilder builder, @Nullable final Class<T> clazz)
             throws IOException, ExecutionException, InterruptedException {
         final Response response = clientRequestBuilderCommon(builder)
                 .addHeader("Accept", "application/xml")
@@ -1955,11 +1953,10 @@ public class RecurlyClient {
         }
     }
 
-    private AsyncHttpClient.BoundRequestBuilder clientRequestBuilderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
+    private BoundRequestBuilder clientRequestBuilderCommon(BoundRequestBuilder requestBuilder) {
         return requestBuilder.addHeader("Authorization", "Basic " + key)
-                .addHeader("X-Api-Version", RECURLY_API_VERSION)
-                .addHeader(HttpHeaders.USER_AGENT, userAgent)
-                .setBodyEncoding("UTF-8");
+                             .addHeader("X-Api-Version", RECURLY_API_VERSION)
+                             .addHeader(com.google.common.net.HttpHeaders.USER_AGENT, userAgent);
     }
 
     private String convertStreamToString(final java.io.InputStream is) {
@@ -1980,15 +1977,15 @@ public class RecurlyClient {
         }
     }
 
-    protected AsyncHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
-        final AsyncHttpClientConfig.Builder builder = new AsyncHttpClientConfig.Builder();
+    protected AsyncHttpClient createHttpClient() throws SSLException {
+        final DefaultAsyncHttpClientConfig.Builder builder = new DefaultAsyncHttpClientConfig.Builder();
 
         // Don't limit the number of connections per host
         // See https://github.com/ning/async-http-client/issues/issue/28
         builder.setMaxConnectionsPerHost(-1);
-        builder.setSSLContext(SslUtils.getInstance().getSSLContext());
+        builder.setSslContext(SslUtils.getInstance().getSslContext());
 
-        return new AsyncHttpClient(builder.build());
+        return new DefaultAsyncHttpClient(builder.build());
     }
 
     @VisibleForTesting

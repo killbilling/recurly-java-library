@@ -18,15 +18,16 @@
 package com.ning.billing.recurly.util.http;
 
 
-import java.security.KeyManagementException;
-import java.security.NoSuchAlgorithmException;
-import javax.net.ssl.SSLContext;
+import io.netty.handler.ssl.SslContext;
+import io.netty.handler.ssl.SslContextBuilder;
+
+import javax.net.ssl.SSLException;
 
 public class SslUtils {
 
     private static final String TLS_PROTOCOL_KEY = "killbill.payment.recurly.tlsProtocol";
     private static final String TLS_PROTOCOL_DEFAULT = "TLSv1.2";
-    private SSLContext context;
+    private SslContext context;
 
     private static class SingletonHolder {
         public static final SslUtils instance = new SslUtils();
@@ -36,12 +37,12 @@ public class SslUtils {
         return SingletonHolder.instance;
     }
 
-    public SSLContext getSSLContext() throws NoSuchAlgorithmException, KeyManagementException {
+    public SslContext getSslContext() throws SSLException {
         if (context != null) return this.context;
 
         final String protocol = System.getProperty(TLS_PROTOCOL_KEY, TLS_PROTOCOL_DEFAULT);
-        context = SSLContext.getInstance(protocol);
-        context.init(null, null, null);
+
+        context = SslContextBuilder.forClient().protocols(protocol).build();
 
         return context;
     }
