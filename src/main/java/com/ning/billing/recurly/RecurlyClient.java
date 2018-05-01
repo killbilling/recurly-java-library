@@ -174,7 +174,7 @@ public class RecurlyClient {
 
     /**
      * Returns the number of requests remaining until requests will be denied by rate limiting.
-     * @return Number of request remaining. Value is valid (> -1) after a successful API call.
+     * @return Number of requests remaining. Value is valid (> -1) after a successful API call.
      */
     public int getRateLimitRemaining() {
         return rateLimitRemaining;
@@ -1963,7 +1963,7 @@ public class RecurlyClient {
                 }
             }
 
-            // set rate limit header
+            // Save value of rate limit remaining header
             String rateLimitRemainingString = response.getHeader(X_RATELIMIT_REMAINING_HEADER_NAME);
             if (rateLimitRemainingString != null)
                 rateLimitRemaining = Integer.parseInt(rateLimitRemainingString);
