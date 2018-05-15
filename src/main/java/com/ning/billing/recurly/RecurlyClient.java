@@ -1624,6 +1624,22 @@ public class RecurlyClient {
     }
 
     /**
+     * Purchases pending endpoint.
+     *
+     * Use for Adyen HPP transaction requests. Runs validations
+     + but does not run any transactions.
+     *
+     * <p>
+     * https://dev.recurly.com/docs/pending-purchase
+     *
+     * @param purchase The purchase data
+     * @return The authorized invoice collection
+     */
+    public InvoiceCollection pendingPurchase(final Purchase purchase) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT + "/pending", purchase, InvoiceCollection.class);
+    }
+
+    /**
      * Sets the acquisition details for an account
      * <p>
      * https://dev.recurly.com/docs/create-account-acquisition
