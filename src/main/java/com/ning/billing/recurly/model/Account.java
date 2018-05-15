@@ -67,6 +67,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "email")
     private String email;
 
+    @XmlElement(name = "cc_emails")
+    private String ccEmails;
+
     @XmlElement(name = "first_name")
     private String firstName;
 
@@ -209,6 +212,14 @@ public class Account extends RecurlyObject {
 
     public void setEmail(final Object email) {
         this.email = stringOrNull(email);
+    }
+
+    public String getCcEmails() {
+        return ccEmails;
+    }
+
+    public void setCcEmails(final Object ccEmails) {
+        this.ccEmails = stringOrNull(ccEmails);
     }
 
     public String getFirstName() {
@@ -376,6 +387,7 @@ public class Account extends RecurlyObject {
         sb.append(", state='").append(state).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append(", email='").append(email).append('\'');
+        sb.append(", ccEmails='").append(ccEmails).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", companyName='").append(companyName).append('\'');
@@ -431,6 +443,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (email != null ? !email.equals(account.email) : account.email != null) {
+            return false;
+        }
+        if (ccEmails != null ? !ccEmails.equals(account.ccEmails) : account.ccEmails != null) {
             return false;
         }
         if (firstName != null ? !firstName.equals(account.firstName) : account.firstName != null) {
@@ -507,6 +522,7 @@ public class Account extends RecurlyObject {
                 state,
                 username,
                 email,
+                ccEmails,
                 firstName,
                 hasLiveSubscription,
                 hasActiveSubscription,
