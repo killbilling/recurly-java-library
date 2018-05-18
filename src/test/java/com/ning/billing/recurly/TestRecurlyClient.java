@@ -1817,4 +1817,10 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testInvoicesCount() throws Exception {
+        int invoiceCount = recurlyClient.getInvoicesCount(new QueryParams());
+        Assert.assertTrue(invoiceCount > 0);
+    }
+
 }

@@ -919,6 +919,41 @@ public class RecurlyClient {
     }
 
     /**
+     * Lookup all invoices
+     * <p>
+     * Returns all invoices on the site
+     *
+     * @return the invoices associated with this site on success, null otherwise
+     */
+    public Invoices getInvoices() {
+        return doGET(Invoices.INVOICES_RESOURCE,
+                Invoices.class);
+    }
+
+    /**
+     * Return all the invoices given query params
+     * <p>
+     *
+     * @param params {@link QueryParams}
+     * @return all invoices matching the query
+     */
+    public Invoices getInvoices(final QueryParams params) {
+        return doGET(Invoices.INVOICES_RESOURCE, Invoices.class, params);
+    }
+
+    /**
+     * Return all the invoices given query params
+     * <p>
+     *
+     * @param params {@link QueryParams}
+     * @return the count of invoices matching the query
+     */
+    public int getInvoicesCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(Invoices.INVOICES_RESOURCE, params);
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+    }
+
+    /**
      * Lookup an account's invoices
      * <p>
      * Returns the account's invoices
@@ -1850,6 +1885,10 @@ public class RecurlyClient {
     }
 
     private FluentCaseInsensitiveStringsMap doHEAD(final String resource, QueryParams params) {
+        if (params == null) {
+            params = new QueryParams();
+        }
+
         final String url = constructGetUrl(resource, params);
         if (debug()) {
             log.info("Msg to Recurly API [HEAD]:: URL : {}", url);
