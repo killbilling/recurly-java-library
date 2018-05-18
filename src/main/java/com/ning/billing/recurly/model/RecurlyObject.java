@@ -21,14 +21,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
@@ -39,6 +43,8 @@ import org.joda.time.DateTime;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.stream.XMLStreamReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -95,7 +101,37 @@ public abstract class RecurlyObject {
         m.addSerializer(Usages.class, new RecurlyObjectsSerializer<Usages, Usage>(Usages.class, "usage"));
         xmlMapper.registerModule(m);
 
+        //TODO: This is added just to satisfy old tests that wanted empty xml elements to be deserialized as null
+        // and empty attribute values to be deserialized as empty strings. These tests could probably be changed
+        // to match new Jackson defaults and this module could be removed.
+        xmlMapper.registerModule(new StringSanitizerModule());
+
         return xmlMapper;
+    }
+
+
+    public static class StringSanitizerModule extends SimpleModule {
+        StringSanitizerModule() {
+            addDeserializer(String.class, new StdScalarDeserializer<String>(String.class) {
+                @Override
+                public String deserialize(JsonParser jsonParser, DeserializationContext ctx) throws IOException {
+
+                    FromXmlParser fxp = (FromXmlParser) jsonParser;
+
+                    XMLStreamReader reader = fxp.getStaxReader();
+                    if (reader.isStartElement()) {
+                        if (reader.getAttributeCount() > 0) {
+                            return jsonParser.getValueAsString();
+                        }
+                    }
+
+                    if (jsonParser.getValueAsString() == null || "".equals(jsonParser.getValueAsString())){
+                        return null;
+                    }
+                    return jsonParser.getValueAsString().trim();
+                }
+            });
+        }
     }
 
     public static Boolean booleanOrNull(@Nullable final Object object) {
