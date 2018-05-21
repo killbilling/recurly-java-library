@@ -36,6 +36,7 @@ import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Purchase;
+import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundMethod;
@@ -1814,6 +1815,53 @@ public class TestRecurlyClient {
             recurlyClient.closeAccount(accountData.getAccountCode());
             // Delete the Plan
             recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testInvoicesCount() throws Exception {
+        int invoiceCount = recurlyClient.getInvoicesCount(new QueryParams());
+        Assert.assertTrue(invoiceCount > 0);
+    }
+
+    @Test(groups = "integration")
+    public void testShippingAddresses() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final ShippingAddress shippingAddressData = TestUtils.createRandomShippingAddress();
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+
+            final ShippingAddress shippingAddress = recurlyClient.createShippingAddress(account.getAccountCode(), shippingAddressData);
+            final long shadId = shippingAddress.getId();
+
+            Assert.assertNotNull(shadId);
+
+            final ShippingAddress updatedRequest = new ShippingAddress();
+            updatedRequest.setCity("Houston");
+
+            final ShippingAddress updatedShippingAddress = recurlyClient.updateShippingAddress(account.getAccountCode(),
+                    shadId, updatedRequest);
+
+            Assert.assertEquals(updatedShippingAddress.getCity(), "Houston");
+
+            // now delete the address
+            recurlyClient.deleteShippingAddress(account.getAccountCode(), shadId);
+
+            // check that it was deleted
+            try {
+                recurlyClient.getShippingAddress(account.getAccountCode(), shadId);
+                Assert.fail("Should not have been able to fetch shipping address we just deleted");
+            } catch (RecurlyAPIException ex) {
+                final RecurlyAPIError err = ex.getRecurlyError();
+                Assert.assertEquals(err.getSymbol(), "not_found");
+            } catch (Exception ex) {
+                Assert.fail("Fetching deleted shipping address should have failed with 404 and instead failed because: " + ex.getMessage());
+            }
+
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
 

@@ -47,6 +47,7 @@ import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundMethod;
 import com.ning.billing.recurly.model.RefundOption;
+import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionState;
@@ -919,6 +920,40 @@ public class RecurlyClient {
     }
 
     /**
+     * Lookup all invoices
+     * <p>
+     * Returns all invoices on the site
+     *
+     * @return the invoices associated with this site on success, null otherwise
+     */
+    public Invoices getInvoices() {
+        return doGET(Invoices.INVOICES_RESOURCE, Invoices.class);
+    }
+
+    /**
+     * Return all the invoices given query params
+     * <p>
+     *
+     * @param params {@link QueryParams}
+     * @return all invoices matching the query
+     */
+    public Invoices getInvoices(final QueryParams params) {
+        return doGET(Invoices.INVOICES_RESOURCE, Invoices.class, params);
+    }
+
+    /**
+     * Return all the invoices given query params
+     * <p>
+     *
+     * @param params {@link QueryParams}
+     * @return the count of invoices matching the query
+     */
+    public int getInvoicesCount(final QueryParams params) {
+        FluentCaseInsensitiveStringsMap map = doHEAD(Invoices.INVOICES_RESOURCE, params);
+        return Integer.parseInt(map.getFirstValue(X_RECORDS_HEADER_NAME));
+    }
+
+    /**
      * Lookup an account's invoices
      * <p>
      * Returns the account's invoices
@@ -978,6 +1013,57 @@ public class RecurlyClient {
     public ShippingAddresses getAccountShippingAddresses(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + ShippingAddresses.SHIPPING_ADDRESSES_RESOURCE,
                 ShippingAddresses.class);
+    }
+
+    /**
+     * Get an existing shipping address
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @param shippingAddressId the shipping address id to fetch
+     * @return the newly created shipping address on success
+     */
+    public ShippingAddress getShippingAddress(final String accountCode, final long shippingAddressId) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + ShippingAddresses.SHIPPING_ADDRESSES_RESOURCE + "/" + shippingAddressId,
+                ShippingAddress.class);
+    }
+
+    /**
+     * Create a shipping address on an existing account
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @param shippingAddress the shipping address request data
+     * @return the newly created shipping address on success
+     */
+    public ShippingAddress createShippingAddress(final String accountCode, final ShippingAddress shippingAddress) {
+        return doPOST(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + ShippingAddresses.SHIPPING_ADDRESSES_RESOURCE, shippingAddress,
+                ShippingAddress.class);
+    }
+
+    /**
+     * Update an existing shipping address
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @param shippingAddressId the shipping address id to update
+     * @param shippingAddress the shipping address request data
+     * @return the updated shipping address on success
+     */
+    public ShippingAddress updateShippingAddress(final String accountCode, final long shippingAddressId, ShippingAddress shippingAddress) {
+        return doPUT(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + ShippingAddresses.SHIPPING_ADDRESSES_RESOURCE + "/" + shippingAddressId, shippingAddress,
+                ShippingAddress.class);
+    }
+
+    /**
+     * Delete an existing shipping address
+     * <p>
+     *
+     * @param accountCode recurly account id
+     * @param shippingAddressId the shipping address id to delete
+     */
+    public void deleteShippingAddress(final String accountCode, final long shippingAddressId) {
+        doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + ShippingAddresses.SHIPPING_ADDRESSES_RESOURCE + "/" + shippingAddressId);
     }
 
     /**
@@ -1850,6 +1936,10 @@ public class RecurlyClient {
     }
 
     private FluentCaseInsensitiveStringsMap doHEAD(final String resource, QueryParams params) {
+        if (params == null) {
+            params = new QueryParams();
+        }
+
         final String url = constructGetUrl(resource, params);
         if (debug()) {
             log.info("Msg to Recurly API [HEAD]:: URL : {}", url);
