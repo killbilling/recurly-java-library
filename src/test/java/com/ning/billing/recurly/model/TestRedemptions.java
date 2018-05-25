@@ -37,6 +37,7 @@ public class TestRedemptions extends TestModelBase {
                 "    <total_discounted_in_cents type=\"integer\">0</total_discounted_in_cents>\n" +
                 "    <currency>USD</currency>\n" +
                 "    <state>active</state>\n" +
+                "    <coupon_code>special</coupon_code>\n" +
                 "    <created_at type=\"dateTime\">2015-09-23T17:13:30Z</created_at>\n" +
                 "    <updated_at type=\"dateTime\">2015-09-23T17:13:30Z</updated_at>\n" +
                 "  </redemption>\n" +
@@ -48,6 +49,7 @@ public class TestRedemptions extends TestModelBase {
                 "    <total_discounted_in_cents type=\"integer\">1500</total_discounted_in_cents>\n" +
                 "    <currency>USD</currency>\n" +
                 "    <state>active</state>\n" +
+                "    <coupon_code>special2</coupon_code>\n" +
                 "    <created_at type=\"dateTime\">2011-06-27T12:34:56Z</created_at>\n" +
                 "    <updated_at type=\"dateTime\">2011-06-27T12:34:56Z</updated_at>\n" +
                 "  </redemption>\n" +
@@ -62,6 +64,7 @@ public class TestRedemptions extends TestModelBase {
         Assert.assertEquals(redemption.getAccountCode(), "1");
         Assert.assertEquals(redemption.getState(), "active");
         Assert.assertEquals(redemption.getCurrency(), "USD");
+        Assert.assertEquals(redemption.getCouponCode(), "special");
         Assert.assertEquals(redemption.getCreatedAt(), new DateTime("2015-09-23T17:13:30Z"));
         Assert.assertEquals(redemption.getUpdatedAt(), new DateTime("2015-09-23T17:13:30Z"));
     }
