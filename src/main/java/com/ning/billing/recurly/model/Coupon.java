@@ -53,7 +53,7 @@ public class Coupon extends RecurlyObject {
     }
 
     public enum Type {
-        single_code, bulk
+        single_code, bulk, unique_code
     }
 
     @XmlTransient
