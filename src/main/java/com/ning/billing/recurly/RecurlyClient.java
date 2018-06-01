@@ -954,6 +954,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Return all the transactions on an invoice. Only use this endpoint
+     * if you have more than 500 transactions on an invoice.
+     * <p>
+     *
+     * @param invoiceId String Recurly Invoice ID
+     * @return all the transactions on the invoice
+     */
+    public Transactions getInvoiceTransactions(final String invoiceId) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + Transactions.TRANSACTIONS_RESOURCE, Transactions.class);
+    }
+    
+    /**
      * Lookup an account's invoices
      * <p>
      * Returns the account's invoices
