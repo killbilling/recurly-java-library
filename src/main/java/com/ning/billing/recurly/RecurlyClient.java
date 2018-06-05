@@ -1764,35 +1764,30 @@ public class RecurlyClient {
             }
 
             // Handle errors payload
-            if (response.getStatusCode() >= 300) {
+          int statusCode = response.getStatusCode();
+          if (statusCode >= 300) {
                 log.warn("Recurly error whilst calling: {}\n{}", response.getUri(), payload);
-                RecurlyAPIError recurlyError = new RecurlyAPIError();
 
-                if (response.getStatusCode() == 422) {
-                    final Errors errors;
+                // 422 is returned for transaction errors (see https://dev.recurly.com/page/transaction-errors)
+                if (statusCode == 422) {
+                    Errors errors = null;
                     try {
                         errors = xmlMapper.readValue(payload, Errors.class);
                     } catch (Exception e) {
-                        // 422 is returned for transaction errors (see https://recurly.readme.io/v2.0/page/transaction-errors)
-                        // as well as bad input payloads
                         log.debug("Unable to extract error", e);
-                        return null;
                     }
+                  if (errors == null || (errors.getTransactionError() == null && errors.getRecurlyErrors() == null)) {
+                    throw new RecurlyAPIException(createRecurlyAPIError(payload, statusCode));
+                  } else {
                     throw new TransactionErrorException(errors);
-                } else if (response.getStatusCode() == 401) {
+                  }
+                } else if (statusCode == 401) {
+                    RecurlyAPIError recurlyError = new RecurlyAPIError();
                     recurlyError.setSymbol("unauthorized");
                     recurlyError.setDescription("We could not authenticate your request. Either your subdomain and private key are not set or incorrect");
-
                     throw new RecurlyAPIException(recurlyError);
                 } else {
-                    try {
-                        recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
-                    } catch (Exception e) {
-                        log.debug("Unable to extract error", e);
-                    }
-
-                    recurlyError.setHttpStatusCode(response.getStatusCode());
-                    throw new RecurlyAPIException(recurlyError);
+                    throw new RecurlyAPIException(createRecurlyAPIError(payload, statusCode));
                 }
             }
 
@@ -1824,6 +1819,19 @@ public class RecurlyClient {
         } finally {
             closeStream(in);
         }
+    }
+
+    private RecurlyAPIError createRecurlyAPIError(String payload, int statusCode) {
+        RecurlyAPIError recurlyError = new RecurlyAPIError();
+        try {
+            recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
+        } catch (Exception e) {
+            log.debug("Unable to extract error", e);
+        }
+
+        recurlyError.setHttpStatusCode(statusCode);
+        return recurlyError;
+
     }
 
     private AsyncHttpClient.BoundRequestBuilder clientRequestBuilderCommon(AsyncHttpClient.BoundRequestBuilder requestBuilder) {
