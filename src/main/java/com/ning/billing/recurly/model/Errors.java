@@ -56,12 +56,12 @@ public class Errors extends RecurlyObject {
         return recurlyErrors;
     }
 
-    public void setRecurlyErrors(final Object recurlyError) {
-        if (recurlyError instanceof Map) {
+    public void setRecurlyErrors(final Object recurlyErrors) {
+        if (recurlyErrors instanceof Map) {
             final RecurlyError error = new RecurlyError();
-            error.setField((String) ((Map) recurlyError).get("field"));
-            error.setSymbol((String) ((Map) recurlyError).get("symbol"));
-            error.setMessage((String) ((Map) recurlyError).get(""));
+            error.setField((String) ((Map) recurlyErrors).get("field"));
+            error.setSymbol((String) ((Map) recurlyErrors).get("symbol"));
+            error.setMessage((String) ((Map) recurlyErrors).get(""));
 
             if (this.recurlyErrors == null) {
                 this.recurlyErrors = new RecurlyErrors();
