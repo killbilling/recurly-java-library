@@ -18,10 +18,8 @@
 package com.ning.billing.recurly.model;
 
 import com.ning.billing.recurly.TestUtils;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 import java.util.List;
-import java.util.ArrayList;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
