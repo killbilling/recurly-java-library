@@ -101,6 +101,9 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "setup_fee_in_cents")
     private RecurlyUnitCurrency setupFeeInCents;
 
+    @XmlElement(name = "auto_renew")
+    private Boolean autoRenew;
+
     public String getPlanCode() {
         return planCode;
     }
@@ -285,6 +288,14 @@ public class Plan extends RecurlyObject {
         this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
     }
 
+    public Boolean getAutoRenew() {
+        return this.autoRenew;
+    }
+
+    public void setAutoRenew(final Object trialRequiresBillingInfo) {
+        this.autoRenew = booleanOrNull(autoRenew);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -312,6 +323,7 @@ public class Plan extends RecurlyObject {
         sb.append(", setupFeeInCents=").append(setupFeeInCents);
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", setupFeeRevenueScheduleType=").append(setupFeeRevenueScheduleType);
+        sb.append(", autoRenew=").append(autoRenew);
         sb.append('}');
         return sb.toString();
     }
@@ -333,6 +345,9 @@ public class Plan extends RecurlyObject {
             return false;
         }
         if (addOns != null ? !addOns.equals(plan.addOns) : plan.addOns != null) {
+            return false;
+        }
+        if (autoRenew != null ? !autoRenew.equals(plan.autoRenew) : plan.autoRenew != null) {
             return false;
         }
         if (cancelLink != null ? !cancelLink.equals(plan.cancelLink) : plan.cancelLink != null) {
@@ -421,7 +436,8 @@ public class Plan extends RecurlyObject {
                 setupFeeInCents,
                 revenueScheduleType,
                 setupFeeRevenueScheduleType,
-                trialRequiresBillingInfo
+                trialRequiresBillingInfo,
+                autoRenew
         );
     }
 }
