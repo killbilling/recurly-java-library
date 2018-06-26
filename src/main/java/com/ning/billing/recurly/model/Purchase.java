@@ -69,6 +69,9 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
     @XmlElement(name = "coupon_code")
@@ -178,6 +181,14 @@ public class Purchase extends RecurlyObject {
         this.shippingAddressId = longOrNull(shippingAddressId);
     }
 
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -195,6 +206,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
         sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
+        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -222,6 +234,9 @@ public class Purchase extends RecurlyObject {
             return false;
         }
         if (customerNotes != null ? !customerNotes.equals(purchase.customerNotes) : purchase.customerNotes != null) {
+            return false;
+        }
+        if (gatewayCode != null ? !gatewayCode.equals(purchase.gatewayCode) : purchase.gatewayCode != null) {
             return false;
         }
         if (giftCard != null ? !giftCard.equals(purchase.giftCard) : purchase.giftCard != null) {
@@ -264,7 +279,8 @@ public class Purchase extends RecurlyObject {
                 customerNotes,
                 termsAndConditions,
                 vatReverseChargeNotes,
-                shippingAddressId
+                shippingAddressId,
+                gatewayCode
         );
     }
 

@@ -158,6 +158,24 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "paused_at")
     private DateTime pausedAt;
 
+    @XmlElement(name = "auto_renew")
+    private Boolean autoRenew;
+
+    @XmlElement(name = "renewal_billing_cycles")
+    private Integer renewalBillingCycles;
+
+    @XmlElement(name = "first_bill_date")
+    private DateTime firstBillDate;
+
+    @XmlElement(name = "next_bill_date")
+    private DateTime nextBillDate;
+
+    @XmlElement(name = "current_term_started_at")
+    private DateTime currentTermStartedAt;
+
+    @XmlElement(name = "current_term_ends_at")
+    private DateTime currentTermEndsAt;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -489,6 +507,54 @@ public class Subscription extends AbstractSubscription {
         this.pausedAt = dateTimeOrNull(pausedAt);
     }
 
+    public Boolean getAutoRenew() {
+        return this.autoRenew;
+    }
+
+    public void setAutoRenew(final Object trialRequiresBillingInfo) {
+        this.autoRenew = booleanOrNull(autoRenew);
+    }
+
+    public Integer getRenewalBillingCycles() {
+        return renewalBillingCycles;
+    }
+
+    public void setRenewalBillingCycles(final Object renewalBillingCycles) {
+        this.renewalBillingCycles = integerOrNull(renewalBillingCycles);
+    }
+
+    public DateTime getFirstBillDate() {
+        return firstBillDate;
+    }
+
+    protected void setFirstBillDate(final Object firstBillDate) {
+        this.firstBillDate = dateTimeOrNull(firstBillDate);
+    }
+
+    public DateTime getNextBillDate() {
+        return nextBillDate;
+    }
+
+    protected void setNextBillDate(final Object nextBillDate) {
+        this.nextBillDate = dateTimeOrNull(nextBillDate);
+    }
+
+    public DateTime getCurrentTermStartedAt() {
+        return currentTermStartedAt;
+    }
+
+    protected void setCurrentTermStartedAt(final Object currentTermStartedAt) {
+        this.currentTermStartedAt = dateTimeOrNull(currentTermStartedAt);
+    }
+
+    public DateTime getCurrentTermEndsAt() {
+        return currentTermEndsAt;
+    }
+
+    protected void setCurrentTermEndsAt(final Object currentTermEndsAt) {
+        this.currentTermEndsAt = dateTimeOrNull(currentTermEndsAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -532,6 +598,12 @@ public class Subscription extends AbstractSubscription {
         sb.append(", invoiceCollection=").append(invoiceCollection);
         sb.append(", remainingPauseCycles=").append(remainingPauseCycles);
         sb.append(", pausedAt=").append(pausedAt);
+        sb.append(", autoRenew=").append(autoRenew);
+        sb.append(", renewalBillingCycles=").append(renewalBillingCycles);
+        sb.append(", firstBillDate=").append(firstBillDate);
+        sb.append(", nextBillDate=").append(nextBillDate);
+        sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
+        sb.append(", currentPeriodEndsAt=").append(currentPeriodEndsAt);
         sb.append('}');
         return sb.toString();
     }
@@ -663,6 +735,22 @@ public class Subscription extends AbstractSubscription {
         if (invoiceCollection != null ? !invoiceCollection.equals(that.invoiceCollection) : that.invoiceCollection != null) {
             return false;
         }
+        if (renewalBillingCycles != null ? !renewalBillingCycles.equals(that.renewalBillingCycles) : that.renewalBillingCycles != null) {
+            return false;
+        }
+        if (firstBillDate != null ? firstBillDate.compareTo(that.firstBillDate) != 0 : that.firstBillDate != null) {
+            return false;
+        }
+        if (nextBillDate != null ? nextBillDate.compareTo(that.nextBillDate) != 0 : that.nextBillDate != null) {
+            return false;
+        }
+        if (currentPeriodStartedAt != null ? currentPeriodStartedAt.compareTo(that.currentPeriodStartedAt) != 0 : that.currentPeriodStartedAt != null) {
+            return false;
+        }
+        if (currentPeriodEndsAt != null ? currentPeriodEndsAt.compareTo(that.currentPeriodEndsAt) != 0 : that.currentPeriodEndsAt != null) {
+            return false;
+        }
+
 
         return true;
     }
@@ -708,7 +796,13 @@ public class Subscription extends AbstractSubscription {
                 importedTrial,
                 invoiceCollection,
                 remainingPauseCycles,
-                pausedAt
+                pausedAt,
+                autoRenew,
+                renewalBillingCycles,
+                firstBillDate,
+                nextBillDate,
+                currentPeriodStartedAt,
+                currentPeriodEndsAt
         );
     }
 
