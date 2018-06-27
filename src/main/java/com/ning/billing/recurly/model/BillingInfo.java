@@ -100,6 +100,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "token_id")
     private String tokenId;
 
+    @XmlElement(name = "currency")
+    private String currency;
+
     @XmlElement(name = "geo_code")
     private String geoCode;
 
@@ -301,6 +304,14 @@ public class BillingInfo extends RecurlyObject {
 
     public void setTokenId(final String tokenId){
         this.tokenId = tokenId;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(final Object currency) {
+        this.currency = stringOrNull(currency);
     }
 
     public String getGeoCode() { return geoCode; }
