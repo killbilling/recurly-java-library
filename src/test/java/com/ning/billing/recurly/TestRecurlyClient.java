@@ -1132,10 +1132,16 @@ public class TestRecurlyClient {
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final Plan planData = TestUtils.createRandomPlan();
         final Plan plan2Data = TestUtils.createRandomPlan(CURRENCY);
+        final ShippingAddress shad = TestUtils.createRandomShippingAddress();
+        final ShippingAddresses shads = new ShippingAddresses();
+        shads.add(shad);
+        accountData.setShippingAddresses(shads);
 
         try {
             // Create a user
             final Account account = recurlyClient.createAccount(accountData);
+            // fetch the shipping address object that was created with the account
+            final ShippingAddress originalShippingAddress = recurlyClient.getAccountShippingAddresses(account.getAccountCode()).get(0);
 
             // Create BillingInfo
             billingInfoData.setAccount(account);
@@ -1151,9 +1157,13 @@ public class TestRecurlyClient {
             // Subscribe the user to the plan
             final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
-            subscriptionData.setAccount(accountData);
+            final Account accountCodeData = new Account();
+            accountCodeData.setAccountCode(account.getAccountCode());
+            subscriptionData.setAccount(accountCodeData);
             subscriptionData.setCurrency(CURRENCY);
             subscriptionData.setUnitAmountInCents(1242);
+            // set the shipping address to account's first shipping address
+            subscriptionData.setShippingAddressId(originalShippingAddress.getId());
             final DateTime creationDateTime = new DateTime(DateTimeZone.UTC);
             final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
 
@@ -1173,6 +1183,9 @@ public class TestRecurlyClient {
             Assert.assertEquals(subscription.getUuid(), subscriptionUpdatedPreview.getUuid());
             Assert.assertNotEquals(subscription.getPlan(), subscriptionUpdatedPreview.getPlan());
             Assert.assertEquals(plan2.getPlanCode(), subscriptionUpdatedPreview.getPlan().getPlanCode());
+
+            // Update with a new shipping address
+            subscriptionUpdateData.setShippingAddress(TestUtils.createRandomShippingAddress());
 
             // Update the subscription
             final Subscription subscriptionUpdated = recurlyClient.updateSubscription(subscription.getUuid(), subscriptionUpdateData);
