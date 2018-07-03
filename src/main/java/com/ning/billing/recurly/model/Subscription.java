@@ -596,6 +596,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", importedTrial=").append(importedTrial);
         sb.append(", creditCustomerNotes=").append(creditCustomerNotes);
         sb.append(", invoiceCollection=").append(invoiceCollection);
+        sb.append(", customFields=").append(customFields);
         sb.append(", remainingPauseCycles=").append(remainingPauseCycles);
         sb.append(", pausedAt=").append(pausedAt);
         sb.append(", autoRenew=").append(autoRenew);
@@ -735,6 +736,9 @@ public class Subscription extends AbstractSubscription {
         if (invoiceCollection != null ? !invoiceCollection.equals(that.invoiceCollection) : that.invoiceCollection != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
+            return false;
+        }
         if (renewalBillingCycles != null ? !renewalBillingCycles.equals(that.renewalBillingCycles) : that.renewalBillingCycles != null) {
             return false;
         }
@@ -795,6 +799,7 @@ public class Subscription extends AbstractSubscription {
                 noBillingInfoReason,
                 importedTrial,
                 invoiceCollection,
+                customFields,
                 remainingPauseCycles,
                 pausedAt,
                 autoRenew,

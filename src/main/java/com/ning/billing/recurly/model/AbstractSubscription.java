@@ -38,6 +38,10 @@ public class AbstractSubscription extends RecurlyObject {
     @XmlElement(name = "subscription_add_on")
     protected SubscriptionAddOns addOns;
 
+    @XmlElementWrapper(name = "custom_fields")
+    @XmlElement(name = "custom_field")
+    protected CustomFields customFields;
+
     @XmlElement(name = "plan_code")
     private String planCode;
 
@@ -47,6 +51,14 @@ public class AbstractSubscription extends RecurlyObject {
 
     public void setPlanCode(final String planCode) {
         this.planCode = stringOrNull(planCode);
+    }
+
+    public CustomFields getCustomFields() {
+        return customFields;
+    }
+
+    public void setCustomFields(final CustomFields customFields) {
+        this.customFields = customFields;
     }
 
     public Integer getUnitAmountInCents() {
@@ -102,7 +114,8 @@ public class AbstractSubscription extends RecurlyObject {
                 unitAmountInCents,
                 quantity,
                 addOns,
-                planCode
+                planCode,
+                customFields
         );
     }
 }
