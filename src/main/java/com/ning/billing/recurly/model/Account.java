@@ -101,6 +101,10 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "shipping_address")
     private ShippingAddresses shippingAddresses;
 
+    @XmlElementWrapper(name = "custom_fields")
+    @XmlElement(name = "custom_field")
+    private CustomFields customFields;
+
     @XmlElement(name = "has_live_subscription")
     private Boolean hasLiveSubscription;
 
@@ -350,6 +354,14 @@ public class Account extends RecurlyObject {
         this.shippingAddresses = shippingAddresses;
     }
 
+    public CustomFields getCustomFields() {
+        return customFields;
+    }
+
+    public void setCustomFields(final CustomFields customFields) {
+        this.customFields = customFields;
+    }
+
     public String getVatNumber() {
         return vatNumber;
     }
@@ -398,6 +410,7 @@ public class Account extends RecurlyObject {
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", shippingAddresses=").append(shippingAddresses);
+        sb.append(", customFields=").append(customFields);
         sb.append(", hasLiveSubscription=").append(hasLiveSubscription);
         sb.append(", hasActiveSubscription=").append(hasActiveSubscription);
         sb.append(", hasFutureSubscription=").append(hasFutureSubscription);
@@ -502,6 +515,9 @@ public class Account extends RecurlyObject {
         if (shippingAddresses != null ? !shippingAddresses.equals(account.shippingAddresses) : account.shippingAddresses != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(account.customFields) : account.customFields != null) {
+            return false;
+        }
         if (vatNumber != null ? !vatNumber.equals(account.vatNumber) : account.vatNumber != null) {
             return false;
         }
@@ -539,6 +555,7 @@ public class Account extends RecurlyObject {
                 updatedAt,
                 taxExempt,
                 shippingAddresses,
+                customFields,
                 vatNumber,
                 accountAcquisition,
                 preferredLocale

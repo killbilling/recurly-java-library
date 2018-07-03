@@ -62,7 +62,13 @@ public class TestAccount extends TestModelBase {
                                    "      <zip>94105-1804</zip>\n" +
                                    "      <country>US</country>\n" +
                                    "      <phone nil=\"nil\"></phone>\n" +
-                                   "  </address>" +
+                                   "  </address>\n" +
+                                   "  <custom_fields type=\"array\">\n" +
+                                   "    <custom_field>\n" +
+                                   "      <name>acct_field</name>\n" +
+                                   "      <value>some account value</value>\n" +
+                                   "    </custom_field>\n" +
+                                   "  </custom_fields>\n" +
                                    "</account>";
 
         final Account account = xmlMapper.readValue(accountData, Account.class);
@@ -106,12 +112,22 @@ public class TestAccount extends TestModelBase {
         Assert.assertEquals(account.getAddress().getCountry(), "US");
         Assert.assertFalse(account.getTaxExempt());
         Assert.assertNull(account.getAddress().getPhone());
+        Assert.assertEquals(account.getCustomFields(), getTestFields());
         Assert.assertTrue(account.getHasLiveSubscription());
         Assert.assertTrue(account.getHasActiveSubscription());
         Assert.assertFalse(account.getHasFutureSubscription());
         Assert.assertFalse(account.getHasCanceledSubscription());
         Assert.assertFalse(account.getHasPastDueInvoice());
         Assert.assertEquals(account.getVatNumber(), "U12345678");
+    }
+
+    private CustomFields getTestFields() {
+        CustomField cf = new CustomField();
+        cf.setName("acct_field");
+        cf.setValue("some account value");
+        CustomFields fields = new CustomFields();
+        fields.add(cf);
+        return fields;
     }
 
 }
