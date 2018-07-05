@@ -81,6 +81,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (couponCode != null ? !couponCode.equals(that.couponCode) : that.couponCode != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
+            return false;
+        }
 
         return true;
     }
@@ -90,7 +93,8 @@ public class SubscriptionUpdate extends AbstractSubscription {
         return Objects.hashCode(
                 timeframe,
                 couponCode,
-                collectionMethod
+                collectionMethod,
+                customFields
         );
     }
 }

@@ -26,6 +26,8 @@ import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.CustomField;
+import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.Delivery;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
@@ -331,6 +333,30 @@ public class TestUtils {
         address.setEmail(randomAlphaNumericString(10, seed) + "@email.com");
 
         return address;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.CustomField} object for testing use
+     *
+     * @return The random {@link com.ning.billing.recurly.model.CustomField} object
+     */
+    public static CustomField createRandomCustomField(String name) {
+        return createRandomCustomField(name, randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.CustomField} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.CustomField} object
+     */
+    public static CustomField createRandomCustomField(String name, final int seed) {
+        final CustomField field = new CustomField();
+
+        field.setName(name);
+        field.setValue(randomAlphaNumericString(50, seed));
+
+        return field;
     }
 
     /**
