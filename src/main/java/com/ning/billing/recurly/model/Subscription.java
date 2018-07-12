@@ -422,12 +422,12 @@ public class Subscription extends AbstractSubscription {
         this.giftCard = giftCard;
     }
 
-    public ShippingAddress getShippingAddress() {
-        return shippingAddress;
-    }
-
     public void setShippingAddress(final ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
     }
 
     public void setShippingAddressId(final Object shippingAddressId) {
