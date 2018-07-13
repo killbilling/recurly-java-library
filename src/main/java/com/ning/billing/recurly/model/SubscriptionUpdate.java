@@ -106,6 +106,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
+            return false;
+        }
 
         return true;
     }
@@ -117,7 +120,8 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 couponCode,
                 collectionMethod,
                 shippingAddress,
-                shippingAddressId
+                shippingAddressId,
+                customFields
         );
     }
 }
