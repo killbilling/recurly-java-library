@@ -31,7 +31,7 @@ public class BillingInfo extends RecurlyObject {
     @XmlTransient
     public static final String BILLING_INFO_RESOURCE = "/billing_info";
 
-    @XmlAttribute(name="type")
+    @XmlAttribute(name = "type")
     private String type;
 
     @XmlElement(name = "account")
@@ -111,6 +111,12 @@ public class BillingInfo extends RecurlyObject {
 
     @XmlElement(name = "external_hpp_type")
     private String externalHppType;
+
+    @XmlElement(name = "gateway_token")
+    private String gatewayToken;
+
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
 
     public String getType() {
         return type;
@@ -298,11 +304,11 @@ public class BillingInfo extends RecurlyObject {
         this.verificationValue = stringOrNull(verificationValue);
     }
 
-    public String getTokenId(){
+    public String getTokenId() {
         return tokenId;
     }
 
-    public void setTokenId(final String tokenId){
+    public void setTokenId(final String tokenId) {
         this.tokenId = tokenId;
     }
 
@@ -314,9 +320,13 @@ public class BillingInfo extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
-    public String getGeoCode() { return geoCode; }
+    public String getGeoCode() {
+        return geoCode;
+    }
 
-    public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
+    public void setGeoCode(final Object geoCode) {
+        this.geoCode = stringOrNull(geoCode);
+    }
 
     public DateTime getUpdatedAt() {
         return updatedAt;
@@ -326,9 +336,29 @@ public class BillingInfo extends RecurlyObject {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
-    public String getExternalHppType() { return externalHppType; }
+    public String getExternalHppType() {
+        return externalHppType;
+    }
 
-    public void setExternalHppType(final Object externalHppType) { this.externalHppType = stringOrNull(externalHppType); }
+    public void setExternalHppType(final Object externalHppType) {
+        this.externalHppType = stringOrNull(externalHppType);
+    }
+
+    public String getGatewayToken() {
+        return gatewayToken;
+    }
+
+    public void setGatewayToken(final Object gatewayToken) {
+        this.gatewayToken = stringOrNull(gatewayToken);
+    }
+
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
 
     @Override
     public String toString() {
@@ -357,6 +387,8 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append(", externalHppType='").append(externalHppType).append('\'');
+        sb.append(", gatewayToken='").append(gatewayToken).append('\'');
+        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -431,6 +463,12 @@ public class BillingInfo extends RecurlyObject {
         if (geoCode != null ? !geoCode.equals(that.geoCode) : that.geoCode != null) {
             return false;
         }
+        if (gatewayToken != null ? !gatewayToken.equals(that.gatewayToken) : that.gatewayToken != null) {
+            return false;
+        }
+        if (gatewayCode != null ? !gatewayCode.equals(that.gatewayCode) : that.gatewayCode != null) {
+            return false;
+        }
         if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
             return false;
         }
@@ -466,7 +504,9 @@ public class BillingInfo extends RecurlyObject {
                 updatedAt,
                 geoCode,
                 type,
-                externalHppType
+                externalHppType,
+                gatewayToken,
+                gatewayCode
         );
     }
 }
