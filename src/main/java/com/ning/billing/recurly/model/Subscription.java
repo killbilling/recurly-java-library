@@ -511,7 +511,7 @@ public class Subscription extends AbstractSubscription {
         return this.autoRenew;
     }
 
-    public void setAutoRenew(final Object trialRequiresBillingInfo) {
+    public void setAutoRenew(final Object autoRenew) {
         this.autoRenew = booleanOrNull(autoRenew);
     }
 
