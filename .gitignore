@@ -1,6 +1,7 @@
 # Temp files and IDE files
 *.*#
 .idea
+.vscode
 *.iml
 *.ipr
 *.iws

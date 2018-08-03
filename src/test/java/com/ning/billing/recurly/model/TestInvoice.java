@@ -45,6 +45,10 @@ public class TestInvoice extends TestModelBase {
                                    + "  <subtotal_in_cents type=\"integer\">9900</subtotal_in_cents>\n"
                                    + "  <tax_in_cents type=\"integer\">0</tax_in_cents>\n"
                                    + "  <total_in_cents type=\"integer\">9900</total_in_cents>\n"
+                                   + "  <vat_reverse_charge_notes>Some reverse charge notes</vat_reverse_charge_notes>\n"
+                                   + "  <customer_notes>Some notes</customer_notes>\n"
+                                   + "  <terms_and_conditions>t and c</terms_and_conditions>\n"
+                                   + "  <net_terms type=\"integer\">0</net_terms>\n"
                                    + "  <currency>USD</currency>\n"
                                    + "  <tax_type>usst</tax_type>\n"
                                    + "  <tax_region>CA</tax_region>\n"
@@ -53,6 +57,10 @@ public class TestInvoice extends TestModelBase {
                                    + "  <updated_at type=\"dateTime\">2011-08-25T12:00:00Z</updated_at>\n"
                                    + "  <closed_at type=\"dateTime\">2011-08-25T12:00:00Z</closed_at>\n"
                                    + "    <address>\n"
+                                   + "        <first_name>John</first_name>\n"
+                                   + "        <last_name>Smith</last_name>\n"
+                                   + "        <name_on_account>John Smith</name_on_account>\n"
+                                   + "        <company>East Atlantic Trading Company</company>\n"
                                    + "        <address1>123 Main St.</address1>\n"
                                    + "        <address2 nil=\"nil\"></address2>\n"
                                    + "        <city>San Francisco</city>\n"
@@ -102,6 +110,10 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getState(), "open");
         Assert.assertEquals((int) invoice.getInvoiceNumber(), 1402);
         Assert.assertEquals(invoice.getPoNumber(), "abc-123");
+        Assert.assertEquals(invoice.getVatReverseChargeNotes(), "Some reverse charge notes");
+        Assert.assertEquals(invoice.getCustomerNotes(), "Some notes");
+        Assert.assertEquals(invoice.getTermsAndConditions(), "t and c");
+        Assert.assertEquals((int) invoice.getNetTerms(), 0);
         Assert.assertNull(invoice.getVatNumber());
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 9900);
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);
