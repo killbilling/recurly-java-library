@@ -24,6 +24,7 @@ import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AcquisitionChannel;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
+import com.ning.billing.recurly.model.Address;
 import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
@@ -1550,7 +1551,7 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
-    public void testInvoiceRefund() throws Exception {
+    public void testInvoices() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final Plan planData = TestUtils.createRandomPlan(CURRENCY);
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
@@ -1588,6 +1589,18 @@ public class TestRecurlyClient {
             // has to happen asynchronously on the server
             Thread.sleep(5000);
 
+            // Test updating an invoice while we're at it
+            Address address = TestUtils.createRandomAddress();
+
+            Invoice updatedInvoice = new Invoice();
+            updatedInvoice.setAddress(address);
+            updatedInvoice.setPoNumber("9876");
+            updatedInvoice.setTermsAndConditions("T&C");
+            updatedInvoice.setCustomerNotes("Some notes");
+
+            recurlyClient.updateInvoice(invoice.getId(), updatedInvoice);
+
+            // Now refund the invoice
             final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), 100, RefundMethod.transaction_first);
 
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
@@ -1938,5 +1951,4 @@ public class TestRecurlyClient {
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
-
 }

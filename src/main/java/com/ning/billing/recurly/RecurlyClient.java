@@ -896,6 +896,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Update an invoice
+     * <p>
+     * Updates an existing invoice.
+     *
+     * @param invoiceId String Recurly Invoice ID
+     * @return the updated invoice object on success, null otherwise
+     */
+    public Invoice updateInvoice(final String invoiceId, final Invoice invoice) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId, invoice, Invoice.class);
+    }
+
+    /**
      * Fetch invoice pdf
      * <p>
      * Returns the invoice pdf as an inputStream

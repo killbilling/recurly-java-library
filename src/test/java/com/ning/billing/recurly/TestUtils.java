@@ -289,6 +289,9 @@ public class TestUtils {
     public static Address createRandomAddress(final int seed) {
         final Address address = new Address();
 
+        address.setFirstName(randomAlphaNumericString(10, seed));
+        address.setLastName(randomAlphaNumericString(10, seed));
+        address.setCompany(randomAlphaNumericString(10, seed));
         address.setAddress1(randomAlphaNumericString(10, seed));
         address.setAddress2(randomAlphaNumericString(10, seed));
         address.setCity(randomAlphaNumericString(10, seed));
