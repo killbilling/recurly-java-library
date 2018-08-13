@@ -203,7 +203,7 @@ public class RecurlyClient {
      * @return Accounts on success, null otherwise
      */
     public Accounts getAccounts() {
-        return doGET(Accounts.ACCOUNTS_RESOURCE, Accounts.class);
+        return doGET(Accounts.ACCOUNTS_RESOURCE, Accounts.class, new QueryParams());
     }
 
     /**
@@ -237,7 +237,7 @@ public class RecurlyClient {
      * @return Coupons on success, null otherwise
      */
     public Coupons getCoupons() {
-        return doGET(Coupons.COUPONS_RESOURCE, Coupons.class);
+        return doGET(Coupons.COUPONS_RESOURCE, Coupons.class, new QueryParams());
     }
 
     /**
@@ -578,7 +578,8 @@ public class RecurlyClient {
         return doGET(Account.ACCOUNT_RESOURCE
                      + "/" + accountCode
                      + Subscriptions.SUBSCRIPTIONS_RESOURCE,
-                     Subscriptions.class);
+                     Subscriptions.class,
+                     new QueryParams());
     }
 
     /**
@@ -590,7 +591,7 @@ public class RecurlyClient {
      */
     public Subscriptions getSubscriptions() {
         return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE,
-                Subscriptions.class);
+                Subscriptions.class, new QueryParams());
     }
 
     /**
@@ -764,7 +765,7 @@ public class RecurlyClient {
      */
     public Transactions getAccountTransactions(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Transactions.TRANSACTIONS_RESOURCE,
-                     Transactions.class);
+                     Transactions.class, new QueryParams());
     }
 
     /**
@@ -794,7 +795,7 @@ public class RecurlyClient {
      * @return the transaction history of the site on success, null otherwise
      */
     public Transactions getTransactions() {
-        return doGET(Transactions.TRANSACTIONS_RESOURCE, Transactions.class);
+        return doGET(Transactions.TRANSACTIONS_RESOURCE, Transactions.class, new QueryParams());
     }
 
     /**
@@ -929,7 +930,7 @@ public class RecurlyClient {
      * @return the invoices associated with this site on success, null otherwise
      */
     public Invoices getInvoices() {
-        return doGET(Invoices.INVOICES_RESOURCE, Invoices.class);
+        return doGET(Invoices.INVOICES_RESOURCE, Invoices.class, new QueryParams());
     }
 
     /**
@@ -964,7 +965,8 @@ public class RecurlyClient {
      * @return all the transactions on the invoice
      */
     public Transactions getInvoiceTransactions(final String invoiceId) {
-        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + Transactions.TRANSACTIONS_RESOURCE, Transactions.class);
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + Transactions.TRANSACTIONS_RESOURCE,
+                     Transactions.class, new QueryParams());
     }
     
     /**
@@ -977,7 +979,7 @@ public class RecurlyClient {
      */
     public Invoices getAccountInvoices(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Invoices.INVOICES_RESOURCE,
-                     Invoices.class);
+                     Invoices.class, new QueryParams());
     }
 
     /**
@@ -1026,7 +1028,7 @@ public class RecurlyClient {
      */
     public ShippingAddresses getAccountShippingAddresses(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + ShippingAddresses.SHIPPING_ADDRESSES_RESOURCE,
-                ShippingAddresses.class);
+                ShippingAddresses.class, new QueryParams());
     }
 
     /**
@@ -1233,7 +1235,7 @@ public class RecurlyClient {
      * @return the plan object as identified by the passed in ID
      */
     public Plans getPlans() {
-        return doGET(Plans.PLANS_RESOURCE, Plans.class);
+        return doGET(Plans.PLANS_RESOURCE, Plans.class, new QueryParams());
     }
 
     /**
@@ -1317,7 +1319,8 @@ public class RecurlyClient {
                 "/" +
                 planCode +
                 AddOn.ADDONS_RESOURCE,
-                AddOns.class);
+                AddOns.class,
+                new QueryParams());
     }
 
     /**
@@ -1440,7 +1443,7 @@ public class RecurlyClient {
      */
     public Redemptions getCouponRedemptionsByAccount(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTIONS_RESOURCE,
-                Redemptions.class);
+                Redemptions.class, new QueryParams());
     }
 
     /**
@@ -1610,7 +1613,7 @@ public class RecurlyClient {
      * @return gitfcards object on success, null otherwise
      */
     public GiftCards getGiftCards() {
-        return doGET(GiftCards.GIFT_CARDS_RESOURCE, GiftCards.class);
+        return doGET(GiftCards.GIFT_CARDS_RESOURCE, GiftCards.class, new QueryParams());
     }
 
     /**
@@ -1679,7 +1682,7 @@ public class RecurlyClient {
      * @return the MeasuredUnits object as identified by the passed in ID
      */
     public MeasuredUnits getMeasuredUnits() {
-        return doGET(MeasuredUnits.MEASURED_UNITS_RESOURCE, MeasuredUnits.class);
+        return doGET(MeasuredUnits.MEASURED_UNITS_RESOURCE, MeasuredUnits.class, new QueryParams());
     }
 
     /**
@@ -1814,7 +1817,7 @@ public class RecurlyClient {
      * @return CreditPayments on success, null otherwise
      */
     public CreditPayments getCreditPayments() {
-        return doGET(CreditPayments.CREDIT_PAYMENTS_RESOURCE, CreditPayments.class);
+        return doGET(CreditPayments.CREDIT_PAYMENTS_RESOURCE, CreditPayments.class, new QueryParams());
     }
 
     /**
@@ -1854,7 +1857,7 @@ public class RecurlyClient {
     }
 
     private <T> T doGET(final String resource, final Class<T> clazz) {
-        return doGETWithFullURL(clazz, constructGetUrl(resource, new QueryParams()));
+        return doGETWithFullURL(clazz, baseUrl + resource);
     }
 
     private <T> T doGET(final String resource, final Class<T> clazz, QueryParams params) {
