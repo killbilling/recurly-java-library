@@ -1174,6 +1174,10 @@ public class TestRecurlyClient {
             Assert.assertEquals(coupon.getDiscountType(), couponData.getDiscountType());
             Assert.assertEquals(coupon.getDiscountPercent(), couponData.getDiscountPercent());
 
+            // Also test getting all coupons
+            Coupons coupons = recurlyClient.getCoupons();
+            Assert.assertNotNull(coupons);
+
         } finally {
             recurlyClient.deleteCoupon(couponData.getCouponCode());
         }

@@ -24,8 +24,8 @@ public class TestCoupons extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See https://dev.recurly.com/docs/list-accounts
-        final String accountsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        // See https://dev.recurly.com/docs/list-active-coupons
+        final String couponData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                     "<coupons type=\"array\">\n" +
                                     "  <coupon href=\"https://api.recurly.com/v2/coupons/cdeb2\">\n" +
                                     "    <redemptions href=\"https://api.recurly.com/v2/coupons/cdeb2/redemptions\"/>\n" +
@@ -119,7 +119,7 @@ public class TestCoupons extends TestModelBase {
                                     "  </coupon>\n" +
                                     "</coupons>\n";
 
-        final Coupons coupons = xmlMapper.readValue(accountsData, Coupons.class);
+        final Coupons coupons = xmlMapper.readValue(couponData, Coupons.class);
         Assert.assertEquals(coupons.size(), 5);
     }
 }
