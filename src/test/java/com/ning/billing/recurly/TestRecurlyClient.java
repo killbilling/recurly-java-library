@@ -727,6 +727,9 @@ public class TestRecurlyClient {
             final SubscriptionNotes subscriptionNotesData = new SubscriptionNotes();
             subscriptionNotesData.setTermsAndConditions("New Terms and Conditions");
             subscriptionNotesData.setCustomerNotes("New Customer Notes");
+            final CustomFields customFields = new CustomFields();
+            customFields.add(TestUtils.createRandomCustomField("food"));
+            subscriptionNotesData.setCustomFields(customFields);
 
             recurlyClient.updateSubscriptionNotes(subscription.getUuid(), subscriptionNotesData);
             final Subscription subscriptionWithNotes = recurlyClient.getSubscription(subscription.getUuid());
@@ -735,6 +738,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subscriptionWithNotes);
             Assert.assertEquals(subscriptionWithNotes.getTermsAndConditions(), subscriptionNotesData.getTermsAndConditions());
             Assert.assertEquals(subscriptionWithNotes.getCustomerNotes(), subscriptionNotesData.getCustomerNotes());
+            Assert.assertEquals(subscriptionWithNotes.getCustomFields().get(0).getValue(), subscriptionNotesData.getCustomFields().get(0).getValue());
 
             // Cancel a Subscription
             recurlyClient.cancelSubscription(subscription);
