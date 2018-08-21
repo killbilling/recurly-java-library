@@ -2,6 +2,7 @@
 *.*#
 .vscode
 .idea
+.vscode
 *.iml
 *.ipr
 *.iws
