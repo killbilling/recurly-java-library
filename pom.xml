@@ -251,6 +251,7 @@
                                 <exclude>**/test-output/**</exclude>
                                 <exclude>**/target/**</exclude>
                                 <exclude>**/.settings/**</exclude>
+                                <exclude>scripts/**</exclude>
                                 <exclude>.travis.yml</exclude>
                                 <exclude>travis-test.sh</exclude>
                                 <exclude>bin/**</exclude>
