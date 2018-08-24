@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -e
+
+# subdomain and key could come from travis
+# or the command line arguments
+SUB=$1
+KEY=$2
+TEST=$3
+COMMAND="mvn clean test"
+
+# If the first argument is "travis"
+# Set the travis profile and get key and
+# subdomain from the travis environment
+if [ "$1" = "travis" ]; then
+  COMMAND+=" -Ptravis"
+  SUB=$SUBDOMAIN
+  KEY=$API_KEY
+elif [ -n "$SUB" ]; then
+  COMMAND+=" -Pintegration -Drecurly.debug=true"
+fi
+
+if [ -n "$SUB" ] && [ -n "$KEY" ]; then
+  COMMAND+=" -Dkillbill.payment.recurly.apiKey=$KEY -Dkillbill.payment.recurly.subDomain=$SUB"
+fi
+
+if [ -n "$TEST" ]; then
+  COMMAND+=" -Dtest=TestRecurlyClient#$TEST"
+fi
+
+set -o xtrace
+eval $COMMAND
