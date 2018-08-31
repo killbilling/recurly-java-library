@@ -19,6 +19,7 @@ package com.ning.billing.recurly;
 
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AccountBalance;
+import com.ning.billing.recurly.model.AccountNotes;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
@@ -750,6 +751,22 @@ public class RecurlyClient {
      */
     public void clearBillingInfo(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Account Notes
+
+    /**
+     * List an account's notes
+     * <p>
+     * Returns the account's notes
+     *
+     * @param accountCode recurly account id
+     * @return the notes associated with this account on success, null otherwise
+     */
+    public AccountNotes getAccountNotes(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + AccountNotes.ACCOUNT_NOTES_RESOURCE,
+                     AccountNotes.class, new QueryParams());
     }
 
     ///////////////////////////////////////////////////////////////////////////
