@@ -17,16 +17,14 @@
 
 package com.ning.billing.recurly.model.push;
 
+import com.google.common.base.CaseFormat;
 import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ning.billing.recurly.model.RecurlyObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.ning.billing.recurly.model.RecurlyObject;
-
-import com.google.common.base.CaseFormat;
 
 public abstract class Notification extends RecurlyObject {
 
@@ -52,7 +50,8 @@ public abstract class Notification extends RecurlyObject {
         PastDueInvoiceNotification(com.ning.billing.recurly.model.push.invoice.PastDueInvoiceNotification.class),
         ProcessingInvoiceNotification(com.ning.billing.recurly.model.push.invoice.ProcessingInvoiceNotification.class),
         UpdatedAccountNotification(com.ning.billing.recurly.model.push.account.UpdatedAccountNotification.class),
-        NewDunningEventNotification(com.ning.billing.recurly.model.push.invoice.NewDunningEventNotification.class);
+        NewDunningEventNotification(com.ning.billing.recurly.model.push.invoice.NewDunningEventNotification.class),
+        LowBalanceGiftCardNotification(com.ning.billing.recurly.model.push.subscription.LowBalanceGiftCardNotification.class);
 
         private Class<? extends Notification> javaType;
 
