@@ -1405,7 +1405,9 @@ public class TestRecurlyClient {
 
             Assert.assertNotNull(subscription);
 
-            final int expectedMonth = (now.getMonthOfYear() + 3) % 12;
+            // this code should be fine as long as we don't try to add more than 12 months
+            int expectedMonth = now.getMonthOfYear() + 3;
+            if (expectedMonth > 12) expectedMonth = expectedMonth - 12;
             Assert.assertEquals(subscription.getTrialEndsAt().getMonthOfYear(), expectedMonth);
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
