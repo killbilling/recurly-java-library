@@ -227,7 +227,7 @@
             <plugin>
                 <groupId>org.apache.rat</groupId>
                 <artifactId>apache-rat-plugin</artifactId>
-                <version>0.7</version>
+                <version>0.9</version>
                 <executions>
                     <execution>
                         <phase>verify</phase>
@@ -264,6 +264,7 @@
                                 <exclude>travis-test.sh</exclude>
                                 <exclude>bin/**</exclude>
                                 <exclude>CREDITS</exclude>
+                                <exclude>Jenkinsfile</exclude>
                             </excludes>
                         </configuration>
                     </execution>
