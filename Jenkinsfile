@@ -41,6 +41,7 @@ pipeline {
           }
         }
       }
+    }
     post {
         always {
             cleanWs()
@@ -53,3 +54,4 @@ Select Proceed or Abort to terminate the build pod"""
         }
     }
   }
+}
