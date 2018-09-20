@@ -19,6 +19,7 @@ pipeline {
           container('maven') {
             sh "mvn versions:set -DnewVersion=$PREVIEW_VERSION"
             sh "mvn install"
+          }
         }
       }
       stage('Build Release') {
@@ -53,5 +54,4 @@ We will keep the build pod around to help you diagnose any failures.
 Select Proceed or Abort to terminate the build pod"""
         }
     }
-  }
 }
