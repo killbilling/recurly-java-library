@@ -38,7 +38,7 @@ pipeline {
             sh "mvn versions:set -DnewVersion=\$(cat VERSION)"
           }
           container('maven') {
-            sh 'mvn clean deploy'
+            sh 'mvn clean deploy -Drat.ignoreErrors=true'
           }
         }
       }
