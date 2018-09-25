@@ -19,6 +19,7 @@ package com.ning.billing.recurly;
 
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AccountBalance;
+import com.ning.billing.recurly.model.AccountNotes;
 import com.ning.billing.recurly.model.Accounts;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.AddOns;
@@ -106,7 +107,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.14";
+    public static final String RECURLY_API_VERSION = "2.15";
 
     private static final String X_RATELIMIT_REMAINING_HEADER_NAME = "X-RateLimit-Remaining";
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
@@ -750,6 +751,22 @@ public class RecurlyClient {
      */
     public void clearBillingInfo(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Account Notes
+
+    /**
+     * List an account's notes
+     * <p>
+     * Returns the account's notes
+     *
+     * @param accountCode recurly account id
+     * @return the notes associated with this account on success, null otherwise
+     */
+    public AccountNotes getAccountNotes(final String accountCode) {
+        return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + AccountNotes.ACCOUNT_NOTES_RESOURCE,
+                     AccountNotes.class, new QueryParams());
     }
 
     ///////////////////////////////////////////////////////////////////////////
