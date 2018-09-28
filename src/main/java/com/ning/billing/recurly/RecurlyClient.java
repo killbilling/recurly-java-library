@@ -1012,6 +1012,19 @@ public class RecurlyClient {
     }
 
     /**
+     * Lookup an invoice's original invoices (e.g. a refund invoice has original_invoices)
+     * <p>
+     * Returns the invoice's original invoices
+     *
+     * @param invoiceId the invoice id
+     * @return the original invoices associated with this invoice on success. Throws RecurlyAPIError if not found
+     */
+    public Invoices getOriginalInvoices(final String invoiceId) {
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/original_invoices",
+                    Invoices.class, new QueryParams());
+    }
+
+    /**
      * Refund an invoice given an open amount
      * <p/>
      * Returns the refunded invoice
