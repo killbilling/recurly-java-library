@@ -1608,6 +1608,10 @@ public class TestRecurlyClient {
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
+
+            // The refundInvoice should have an original_invoices of the original invoice
+            final Invoices originalInvoices = recurlyClient.getOriginalInvoices(refundInvoice.getId());
+            Assert.assertEquals(originalInvoices.get(0).getId(), invoice.getId());
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
