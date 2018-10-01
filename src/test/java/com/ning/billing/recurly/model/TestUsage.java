@@ -20,6 +20,7 @@ import com.ning.billing.recurly.TestUtils;
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import java.math.BigDecimal;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
@@ -41,7 +42,7 @@ public class TestUsage extends TestModelBase {
                 "  <billed_at nil=\"nil\"></billed_at>\n" +
                 "  <usage_type>price</usage_type>\n" +
                 "  <unit_amount_in_cents type=\"integer\">150</unit_amount_in_cents>\n" +
-                "  <usage_percentage>100</usage_percentage>\n" +
+                "  <usage_percentage type=\"float\">100</usage_percentage>\n" +
                 "</usage>" ;
 
         final Usage usage = xmlMapper.readValue(transactionData, Usage.class);
@@ -54,7 +55,7 @@ public class TestUsage extends TestModelBase {
         Assert.assertEquals(usage.getUpdatedAt(), new DateTime("2016-12-27T14:04:58Z"));
         Assert.assertEquals(usage.getUsageType(), "price");
         Assert.assertEquals(usage.getUnitAmountInCents(), Integer.valueOf(150));
-        Assert.assertEquals(usage.getUsagePercentage(), Integer.valueOf(100));
+        Assert.assertEquals(usage.getUsagePercentage(), BigDecimal.valueOf(100));
     }
 
     @Test(groups = "fast")
