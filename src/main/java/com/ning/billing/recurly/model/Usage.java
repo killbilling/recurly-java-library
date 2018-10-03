@@ -18,6 +18,7 @@ package com.ning.billing.recurly.model;
 
 import com.google.common.base.Objects;
 import org.joda.time.DateTime;
+import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -58,7 +59,7 @@ public class Usage extends RecurlyObject{
     protected Integer unitAmountInCents;
 
     @XmlElement(name = "usage_percentage")
-    private Integer usagePercentage;
+    private BigDecimal usagePercentage;
 
     @Override
     public String toString() {
@@ -184,11 +185,11 @@ public class Usage extends RecurlyObject{
         this.unitAmountInCents = integerOrNull(unitAmountInCents);
     }
 
-    public Integer getUsagePercentage() {
+    public BigDecimal getUsagePercentage() {
         return usagePercentage;
     }
 
     public void setUsagePercentage(final Object usagePercentage) {
-        this.usagePercentage = integerOrNull(usagePercentage);
+        this.usagePercentage = bigDecimalOrNull(usagePercentage);
     }
 }

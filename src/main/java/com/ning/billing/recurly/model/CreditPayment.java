@@ -90,6 +90,15 @@ public class CreditPayment extends RecurlyObject {
         this.voidedAt = dateTimeOrNull(voidedAt);
     }
 
+    public Integer getAmountInCents() {
+        return amountInCents;
+    }
+
+    public void setAmountInCents(final Object amountInCents) {
+        this.amountInCents = integerOrNull(amountInCents);
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
