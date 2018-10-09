@@ -105,6 +105,10 @@ public class TestNotification extends TestModelBase {
                                               "  <invoice_number type=\"integer\">1000</invoice_number>\n" +
                                               "  <po_number>PO-12345</po_number>\n" +
                                               "  <vat_number></vat_number>\n" +
+                                              "  <subscription_ids type=\"array\">\n" +
+                                              "    <subscription_id>40b8f5e99df03b8684b99d4993b6e088</subscription_id>\n" +
+                                              "    <subscription_id>40b8f5e99df03b8684b99d4993b6e089</subscription_id>\n" +
+                                              "  </subscription_ids>\n" +
                                               "  <total_in_cents type=\"integer\">1100</total_in_cents>\n" +
                                               "  <currency>USD</currency>\n" +
                                               "  <date type=\"dateTime\">2014-01-01T20:20:29Z</date>\n" +
@@ -331,7 +335,7 @@ public class TestNotification extends TestModelBase {
         PushInvoice invoice = invoiceNotification.getInvoice();
         Assert.assertNotNull(invoice);
         Assert.assertEquals(invoice.getUuid(), "ffc64d71d4b5404e93f13aac9c63b007");
-        Assert.assertNull(invoice.getSubscriptionId());
+        Assert.assertEquals(invoice.getSubscriptionIds().get(0), "40b8f5e99df03b8684b99d4993b6e088");
         Assert.assertEquals(invoice.getState(), "collected");
         Assert.assertNull(invoice.getInvoiceNumberPrefix());
         Assert.assertEquals(invoice.getInvoiceNumber(), new Integer(1000));
