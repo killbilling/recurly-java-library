@@ -20,6 +20,8 @@ package com.ning.billing.recurly.model;
 import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -94,6 +96,15 @@ public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
+
+    @XmlElement(name = "refundable_total_in_cents")
+    private Integer refundableTotalInCents;
+
+    @XmlElement(name = "state")
+    private String state;
+
+    @XmlElement(name = "proration_rate")
+    private BigDecimal prorationRate;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -286,6 +297,29 @@ public class Adjustment extends RecurlyObject {
         this.shippingAddressId = longOrNull(shippingAddressId);
     }
 
+    public Integer getRefundableTotalInCents() {
+        return refundableTotalInCents;
+    }
+
+    public void setRefundableTotalInCents(final Object refundableTotalInCents) {
+        this.refundableTotalInCents = integerOrNull(refundableTotalInCents);
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(final Object state) {
+        this.state = stringOrNull(state);
+    }
+
+    public BigDecimal getProrationRate() {
+        return prorationRate;
+    }
+
+    public void setProrationRate(final Object prorationRate) {
+        this.prorationRate = bigDecimalOrNull(prorationRate);
+    }
 
     @Override
     public String toString() {
@@ -314,6 +348,9 @@ public class Adjustment extends RecurlyObject {
         sb.append(", originalAdjustmentUuid=").append(originalAdjustmentUuid);
         sb.append(", shippingAddress=").append(shippingAddress);
         sb.append(", shippingAddressId=").append(shippingAddressId);
+        sb.append(", refundableTotalInCents=").append(refundableTotalInCents);
+        sb.append(", state=").append(state);
+        sb.append(", prorationRate=").append(prorationRate);
         sb.append('}');
         return sb.toString();
     }
@@ -394,7 +431,15 @@ public class Adjustment extends RecurlyObject {
         if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
             return false;
         }
-
+        if (refundableTotalInCents != null ? !refundableTotalInCents.equals(that.refundableTotalInCents) : that.refundableTotalInCents != null) {
+            return false;
+        }
+        if (state != null ? !state.equals(that.state) : that.state != null) {
+            return false;
+        }
+        if (prorationRate != null ? !prorationRate.equals(that.prorationRate) : that.prorationRate != null) {
+            return false;
+        }
         return true;
     }
 
@@ -423,7 +468,10 @@ public class Adjustment extends RecurlyObject {
                 creditReasonCode,
                 originalAdjustmentUuid,
                 shippingAddress,
-                shippingAddressId
+                shippingAddressId,
+                refundableTotalInCents,
+                state,
+                prorationRate
         );
     }
 

@@ -114,6 +114,15 @@ public class AbstractTransaction extends RecurlyObject {
     @XmlElement(name = "failure_type")
     private String failureType;
 
+    @XmlElement(name = "gateway_error_codes")
+    private String gatewayErrorCodes;
+
+    @XmlElement(name = "payment_method")
+    private String paymentMethod;
+
+    @XmlElement(name = "message")
+    private String message;
+
     public String getFailureType() {
         return failureType;
     }
@@ -234,6 +243,30 @@ public class AbstractTransaction extends RecurlyObject {
         this.avsResultPostal = stringOrNull(avsResultPostal);
     }
 
+    public String getGatewayErrorCodes() {
+        return gatewayErrorCodes;
+    }
+
+    public void setGatewayErrorCodes(final Object gatewayErrorCodes) {
+        this.gatewayErrorCodes = stringOrNull(gatewayErrorCodes);
+    }
+
+    public String getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public void setPaymentMethod(final Object paymentMethod) {
+        this.paymentMethod = stringOrNull(paymentMethod);
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    protected void setMessage(final Object message) {
+        this.message = stringOrNull(message);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -286,6 +319,15 @@ public class AbstractTransaction extends RecurlyObject {
         if (failureType != null ? !failureType.equals(that.failureType) : that.failureType != null) {
             return false;
         }
+        if (paymentMethod != null ? !paymentMethod.equals(that.paymentMethod) : that.paymentMethod != null) {
+            return false;
+        }
+        if (message != null ? !message.equals(that.message) : that.message != null) {
+            return false;
+        }
+        if (gatewayErrorCodes != null ? !gatewayErrorCodes.equals(that.gatewayErrorCodes) : that.gatewayErrorCodes != null) {
+            return false;
+        }
 
         return true;
     }
@@ -303,6 +345,9 @@ public class AbstractTransaction extends RecurlyObject {
                 transactionError,
                 source,
                 ipAddress,
+                message,
+                gatewayErrorCodes,
+                paymentMethod,
                 cvvResult,
                 avsResult,
                 avsResultStreet,
