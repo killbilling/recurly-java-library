@@ -332,7 +332,7 @@ public class RecurlyClient {
      * <p>
      *
      * @param accountCode recurly account id
-     * @param type {@link Adjustments.AdjustmentType}
+     * @param type {@link com.ning.billing.recurly.model.Adjustments.AdjustmentType}
      * @return the adjustments on the account
      */
     public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type) {
@@ -344,8 +344,8 @@ public class RecurlyClient {
      * <p>
      *
      * @param accountCode recurly account id
-     * @param type {@link Adjustments.AdjustmentType}
-     * @param state {@link Adjustments.AdjustmentState}
+     * @param type {@link com.ning.billing.recurly.model.Adjustments.AdjustmentType}
+     * @param state {@link com.ning.billing.recurly.model.Adjustments.AdjustmentState}
      * @return the adjustments on the account
      */
     public Adjustments getAccountAdjustments(final String accountCode, final Adjustments.AdjustmentType type, final Adjustments.AdjustmentState state) {
@@ -357,8 +357,8 @@ public class RecurlyClient {
      * <p>
      *
      * @param accountCode recurly account id
-     * @param type {@link Adjustments.AdjustmentType}
-     * @param state {@link Adjustments.AdjustmentState}
+     * @param type {@link com.ning.billing.recurly.model.Adjustments.AdjustmentType}
+     * @param state {@link com.ning.billing.recurly.model.Adjustments.AdjustmentState}
      * @param params {@link QueryParams}
      * @return the adjustments on the account
      */
@@ -1844,7 +1844,6 @@ public class RecurlyClient {
      * https://dev.recurly.com/docs/clear-account-acquisition
      *
      * @param accountCode The account's account code
-     * @return The cleared AccountAcquisition object
      */
     public void deleteAccountAcquisition(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode + AccountAcquisition.ACCOUNT_ACQUISITION_RESOURCE);
