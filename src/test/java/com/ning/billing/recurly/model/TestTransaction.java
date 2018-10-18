@@ -46,7 +46,7 @@ public class TestTransaction extends TestModelBase {
                                        "  <test type=\"boolean\">true</test>\n" +
                                        "  <voidable type=\"boolean\">true</voidable>\n" +
                                        "  <refundable type=\"boolean\">true</refundable>\n" +
-                                       "  <ip_address nil=\"nil\"/>\n" +
+                                       "  <ip_address>1.2.3.4</ip_address>\n" +
                                        "  <cvv_result code=\"\" nil=\"nil\"></cvv_result>" +
                                        "  <avs_result code=\"\" nil=\"nil\"></avs_result>" +
                                        "  <avs_result_street nil=\"nil\"></avs_result_street>" +
@@ -63,7 +63,7 @@ public class TestTransaction extends TestModelBase {
                                        "      <account_code>1</account_code>\n" +
                                        "      <first_name nil=\"nil\"/>\n" +
                                        "      <last_name nil=\"nil\"/>\n" +
-                                       "      <company nil=\"nil\"/>\n" +
+                                       "      <company>Cool Company</company>\n" +
                                        "      <email nil=\"nil\"/>\n" +
                                        "      <billing_info>\n" +
                                        "        <first_name>Verena</first_name>\n" +
@@ -92,7 +92,7 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(transaction.getTest(), new Boolean(true));
         Assert.assertEquals(transaction.getVoidable(), new Boolean(true));
         Assert.assertEquals(transaction.getRefundable(), new Boolean(true));
-        Assert.assertNull(transaction.getIpAddress());
+        Assert.assertEquals(transaction.getIpAddress(), "1.2.3.4");
         Assert.assertNull(transaction.getAvsResult());
         Assert.assertNull(transaction.getAvsResultPostal());
         Assert.assertNull(transaction.getAvsResultStreet());
@@ -103,12 +103,14 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(transaction.getGatewayType(), "test");
         Assert.assertEquals(transaction.getOrigin(), "api");
         Assert.assertEquals(transaction.getApprovalCode(), "P1234577Q");
+        Assert.assertEquals(transaction.getPaymentMethod(), "check");
+        Assert.assertEquals(transaction.getMessage(), "Successful test transaction");
 
         final Account account = transaction.getDetails().getAccount();
         Assert.assertEquals(account.getAccountCode(), "1");
         Assert.assertNull(account.getFirstName());
         Assert.assertNull(account.getLastName());
-        Assert.assertNull(account.getCompanyName());
+        Assert.assertEquals(account.getCompanyName(), "Cool Company");
         Assert.assertNull(account.getEmail());
 
         final BillingInfo billingInfo = account.getBillingInfo();
@@ -144,6 +146,7 @@ public class TestTransaction extends TestModelBase {
                 "        <voidable type=\"boolean\">false</voidable>\n" +
                 "        <refundable type=\"boolean\">false</refundable>\n" +
                 "        <ip_address nil=\"nil\"></ip_address>\n" +
+                "        <gateway_error_codes>302,303</gateway_error_codes>\n" +
                 "        <transaction_error>\n" +
                 "            <error_code>insufficient_funds</error_code>\n" +
                 "            <error_category>soft</error_category>\n" +
@@ -192,6 +195,7 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(transactionError.getCustomerMessage(), "Your transaction was declined due to insufficient funds in your account. Please use a different card or contact your bank.");
         Assert.assertEquals(transactionError.getMerchantMessage(), "The card has insufficient funds to cover the cost of the transaction.");
         Assert.assertEquals(transactionError.getGatewayErrorCode(), "302");
+        Assert.assertEquals(transaction.getGatewayErrorCodes(), "302,303");
     }
 
     @Test(groups = "fast")

@@ -79,6 +79,12 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "company_name")
     private String companyName;
 
+    // This property appears instead of "company_name" on some Account xml,
+    // such as when listing invoices:
+    // invoices -> invoice -> transactions -> transaction -> details -> account -> company
+    @XmlElement(name = "company")
+    private String company;
+
     @XmlElement(name = "accept_language")
     private String acceptLanguage;
 
@@ -243,11 +249,15 @@ public class Account extends RecurlyObject {
     }
 
     public String getCompanyName() {
-        return companyName;
+        return companyName != null ? companyName : company;
     }
 
     public void setCompanyName(final Object companyName) {
         this.companyName = stringOrNull(companyName);
+    }
+
+    public void setCompany(final Object company) {
+        this.company = stringOrNull(company);
     }
 
     public String getAcceptLanguage() {
@@ -402,7 +412,7 @@ public class Account extends RecurlyObject {
         sb.append(", ccEmails='").append(ccEmails).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", companyName='").append(companyName).append('\'');
+        sb.append(", companyName='").append(this.getCompanyName()).append('\'');
         sb.append(", acceptLanguage='").append(acceptLanguage).append('\'');
         sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
         sb.append(", createdAt=").append(createdAt);
@@ -449,7 +459,7 @@ public class Account extends RecurlyObject {
         if (billingInfo != null ? !billingInfo.equals(account.billingInfo) : account.billingInfo != null) {
             return false;
         }
-        if (companyName != null ? !companyName.equals(account.companyName) : account.companyName != null) {
+        if (this.getCompanyName() != null ? !this.getCompanyName().equals(account.getCompanyName()) : account.getCompanyName() != null) {
             return false;
         }
         if (createdAt != null ? createdAt.compareTo(account.createdAt) != 0 : account.createdAt != null) {
@@ -547,7 +557,7 @@ public class Account extends RecurlyObject {
                 hasPastDueInvoice,
                 hasPausedSubscription,
                 lastName,
-                companyName,
+                this.getCompanyName(),
                 acceptLanguage,
                 hostedLoginToken,
                 createdAt,
