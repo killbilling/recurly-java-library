@@ -77,11 +77,17 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "trial_interval_unit")
     private String trialIntervalUnit;
 
+    @XmlElement(name = "total_billing_cycles")
+    private Integer totalBillingCycles;
+
     @XmlElement(name = "trial_requires_billing_info")
     private Boolean trialRequiresBillingInfo;
 
     @XmlElement(name = "accounting_code")
     private String accountingCode;
+
+    @XmlElement(name = "setup_fee_accounting_code")
+    private String setupFeeAccountingCode;
 
     @XmlElement(name = "revenue_schedule_type")
     private RevenueScheduleType revenueScheduleType;
@@ -208,6 +214,14 @@ public class Plan extends RecurlyObject {
         this.trialIntervalUnit = stringOrNull(trialIntervalUnit);
     }
 
+    public Integer getTotalBillingCycles() {
+        return totalBillingCycles;
+    }
+
+    public void setTotalBillingCycles(final Object totalBillingCycles) {
+        this.totalBillingCycles = integerOrNull(totalBillingCycles);
+    }
+
     public Boolean getTrialRequiresBillingInfo() {
         return this.trialRequiresBillingInfo;
     }
@@ -230,6 +244,14 @@ public class Plan extends RecurlyObject {
 
     public void setAccountingCode(final Object accountingCode) {
         this.accountingCode = stringOrNull(accountingCode);
+    }
+
+    public String getSetupFeeAccountingCode() {
+        return setupFeeAccountingCode;
+    }
+
+    public void setSetupFeeAccountingCode(final Object setupFeeAccountingCode) {
+        this.setupFeeAccountingCode = stringOrNull(setupFeeAccountingCode);
     }
 
     public DateTime getCreatedAt() {
@@ -315,8 +337,10 @@ public class Plan extends RecurlyObject {
         sb.append(", planIntervalLength=").append(planIntervalLength);
         sb.append(", trialIntervalLength=").append(trialIntervalLength);
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
+        sb.append(", totalBillingCycles").append(totalBillingCycles);
         sb.append(", trialRequiresBillingInfo='").append(trialRequiresBillingInfo).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
+        sb.append(", setupFeeAccountingCode='").append(setupFeeAccountingCode).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
@@ -407,6 +431,12 @@ public class Plan extends RecurlyObject {
         if (updatedAt != null ? updatedAt.compareTo(plan.updatedAt) != 0: plan.updatedAt != null) {
             return false;
         }
+        if (totalBillingCycles != null ? totalBillingCycles.compareTo(plan.totalBillingCycles) != 0: plan.totalBillingCycles != null) {
+            return false;
+        }
+        if (setupFeeAccountingCode != null ? setupFeeAccountingCode.compareTo(plan.setupFeeAccountingCode) != 0: plan.setupFeeAccountingCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -429,7 +459,9 @@ public class Plan extends RecurlyObject {
                 planIntervalLength,
                 trialIntervalUnit,
                 trialIntervalLength,
+                totalBillingCycles,
                 accountingCode,
+                setupFeeAccountingCode,
                 createdAt,
                 updatedAt,
                 unitAmountInCents,
