@@ -15,6 +15,12 @@ if [ "$1" = "travis" ]; then
   COMMAND+=" -Ptravis"
   SUB=$SUBDOMAIN
   KEY=$API_KEY
+
+  # PRs from the community only run unit tests because the SUB and KEY are null for them
+  if [ -z $KEY ]; then
+    COMMAND="mvn clean test"
+  fi
+
 elif [ -n "$SUB" ]; then
   COMMAND+=" -Pintegration -Drecurly.debug=true"
 fi
