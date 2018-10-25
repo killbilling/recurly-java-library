@@ -90,6 +90,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
+import java.net.ConnectException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
@@ -2036,7 +2037,10 @@ public class RecurlyClient {
             return null;
         } catch (ExecutionException e) {
             // Extract the errors exception, if any
-            if (e.getCause() != null &&
+            if (e.getCause() instanceof ConnectException) {
+                // See https://github.com/killbilling/recurly-java-library/issues/185
+                throw new ConnectionErrorException(e.getCause());
+            } else if (e.getCause() != null &&
                 e.getCause().getCause() != null &&
                 e.getCause().getCause() instanceof TransactionErrorException) {
                 throw (TransactionErrorException) e.getCause().getCause();
