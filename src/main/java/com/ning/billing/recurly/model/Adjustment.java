@@ -20,10 +20,9 @@ package com.ning.billing.recurly.model;
 import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
-import java.math.BigDecimal;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
 
 @XmlRootElement(name = "adjustment")
 public class Adjustment extends RecurlyObject {

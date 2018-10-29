@@ -36,6 +36,7 @@ import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.InvoiceCollection;
+import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Purchase;
@@ -1603,7 +1604,13 @@ public class TestRecurlyClient {
             recurlyClient.updateInvoice(invoice.getId(), updatedInvoice);
 
             // Now refund the invoice
-            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), 100, RefundMethod.transaction_first);
+            final InvoiceRefund refundOptions = new InvoiceRefund();
+            refundOptions.setRefundMethod(RefundMethod.transaction_first);
+            refundOptions.setAmountInCents(100);
+            refundOptions.setCreditCustomerNotes("Credit Customer Notes");
+            refundOptions.setExternalRefund(true);
+            refundOptions.setPaymentMethod("credit_card");
+            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), refundOptions);
 
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
@@ -1671,7 +1678,10 @@ public class TestRecurlyClient {
             // adjustmentRefund.setQuantity(1);
             lineItems.add(adjustmentRefund);
 
-            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), lineItems, RefundMethod.transaction_first);
+            final InvoiceRefund refundOptions = new InvoiceRefund();
+            refundOptions.setRefundMethod(RefundMethod.transaction_first);
+            refundOptions.setLineItems(lineItems);
+            final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), refundOptions);
 
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));

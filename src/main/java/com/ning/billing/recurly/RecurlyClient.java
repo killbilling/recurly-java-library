@@ -30,8 +30,6 @@ import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CreditPayments;
-import com.ning.billing.recurly.model.CustomField;
-import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
@@ -1030,17 +1028,20 @@ public class RecurlyClient {
      * <p/>
      * Returns the refunded invoice
      *
+     * @deprecated Please use refundInvoice(String, InvoiceRefund)
+     *
      * @param invoiceId The id of the invoice to refund
      * @param amountInCents The open amount to refund
      * @param method If credit line items exist on the invoice, this parameter specifies which refund method to use first
      * @return the refunded invoice
      */
+    @Deprecated
     public Invoice refundInvoice(final String invoiceId, final Integer amountInCents, final RefundMethod method) {
         final InvoiceRefund invoiceRefund = new InvoiceRefund();
         invoiceRefund.setRefundMethod(method);
         invoiceRefund.setAmountInCents(amountInCents);
 
-        return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/refund", invoiceRefund, Invoice.class);
+        return refundInvoice(invoiceId, invoiceRefund);
     }
 
     /**
@@ -1048,17 +1049,33 @@ public class RecurlyClient {
      * <p/>
      * Returns the refunded invoice
      *
+     * @deprecated Please use refundInvoice(String, InvoiceRefund)
+     *
      * @param invoiceId The id of the invoice to refund
      * @param lineItems The list of adjustment refund objects
      * @param method If credit line items exist on the invoice, this parameter specifies which refund method to use first
      * @return the refunded invoice
      */
+    @Deprecated
     public Invoice refundInvoice(final String invoiceId, List<AdjustmentRefund> lineItems, final RefundMethod method) {
         final InvoiceRefund invoiceRefund = new InvoiceRefund();
         invoiceRefund.setRefundMethod(method);
         invoiceRefund.setLineItems(lineItems);
 
-        return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/refund", invoiceRefund, Invoice.class);
+        return refundInvoice(invoiceId, invoiceRefund);
+    }
+
+    /**
+     * Refund an invoice given some options
+     * <p/>
+     * Returns the refunded invoice
+     *
+     * @param invoiceId The id of the invoice to refund
+     * @param refundOptions The options for the refund
+     * @return the refunded invoice
+     */
+    public Invoice refundInvoice(final String invoiceId, final InvoiceRefund refundOptions) {
+        return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/refund", refundOptions, Invoice.class);
     }
 
     /**
