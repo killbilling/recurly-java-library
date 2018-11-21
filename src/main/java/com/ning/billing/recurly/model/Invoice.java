@@ -34,6 +34,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "original_invoice")
     private Invoice originalInvoice;
 
+    @XmlElement(name = "original_invoices")
+    private Invoice originalInvoices;
+
     @XmlElement(name = "uuid")
     private String uuid;
 
@@ -165,6 +168,16 @@ public class Invoice extends RecurlyObject {
             originalInvoice = fetch(originalInvoice, Invoice.class);
         }
         return originalInvoice;
+    }
+
+    /**
+     * For use with RecurlyClient.getOriginalInvoices(). Check if an invoice had an <original_invoices> link
+     * in the XML from the API.
+     *
+     * @return true if there are original invoices associated with this invoice
+     */
+    public Boolean hasOriginalInvoices() {
+        return originalInvoices != null && originalInvoices.getHref() != null && !originalInvoices.getHref().isEmpty();
     }
 
     public String getId() {
@@ -455,6 +468,7 @@ public class Invoice extends RecurlyObject {
         final StringBuilder sb = new StringBuilder("Invoice{");
         sb.append("account=").append(account);
         sb.append(", originalInvoice='").append(originalInvoice).append('\'');
+        sb.append(", originalInvoices='").append(originalInvoices).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
@@ -545,6 +559,9 @@ public class Invoice extends RecurlyObject {
         if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
             return false;
         }
+        if (originalInvoices != null ? !originalInvoices.equals(invoice.originalInvoices) : invoice.originalInvoices != null) {
+            return false;
+        }
         if (origin != null ? !origin.equals(invoice.origin) : invoice.origin != null) {
             return false;
         }
@@ -614,6 +631,7 @@ public class Invoice extends RecurlyObject {
         return Objects.hashCode(
                 account,
                 originalInvoice,
+                originalInvoices,
                 uuid,
                 state,
                 invoiceNumber,
