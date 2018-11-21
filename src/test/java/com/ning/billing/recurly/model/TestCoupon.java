@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -276,8 +276,8 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getMaxRedemptionsPerAccount().intValue(), 1);
         assertEquals(coupon.getType(), Type.single_code);
         assertEquals(coupon.getPlanCodes().size(), 2);
-        assertTrue(coupon.getPlanCodes().contains("platinum"));
-        assertTrue(coupon.getPlanCodes().contains("gold"));
+        assertTrue(coupon.getPlanCodes().contains(new PlanCode("platinum")));
+        assertTrue(coupon.getPlanCodes().contains(new PlanCode("gold")));
     }
 
     @Test(groups = "fast")

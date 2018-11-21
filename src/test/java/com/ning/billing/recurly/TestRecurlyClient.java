@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -39,6 +39,8 @@ import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.PlanCode;
+import com.ning.billing.recurly.model.PlanCodes;
 import com.ning.billing.recurly.model.Purchase;
 import com.ning.billing.recurly.model.RecurlyAPIError;
 import com.ning.billing.recurly.model.Redemption;
@@ -652,7 +654,9 @@ public class TestRecurlyClient {
 
             // Create a coupon for the plan
             couponDataForPlan.setAppliesToAllPlans(false);
-            couponDataForPlan.setPlanCodes(Arrays.asList(plan.getPlanCode()));
+            final PlanCodes planCodes = new PlanCodes();
+            planCodes.add(new PlanCode(plan.getPlanCode()));
+            couponDataForPlan.setPlanCodes(planCodes);
             Coupon couponForPlan = recurlyClient.createCoupon(couponDataForPlan);
 
             // Set up a subscription
