@@ -136,6 +136,9 @@ public class RecurlyClient {
     private final String baseUrl;
     private AsyncHttpClient client;
 
+    // Allows error messages to be returned in a specified language
+    private String acceptLanguage = "en-US";
+
     // Stores the number of requests remaining before rate limiting takes effect
     private int rateLimitRemaining;
 
@@ -173,6 +176,18 @@ public class RecurlyClient {
         if (client != null) {
             client.close();
         }
+    }
+
+    /**
+     * Set the Accept-Language header
+     * <p>
+     * Sets the Accept-Language header for all requests made by this client. Note: this is not thread-safe!
+     * See https://github.com/killbilling/recurly-java-library/pull/298 for more details about thread safety.
+     *
+     * @param language The language to set in the header. E.g., "en-US"
+     */
+    public void setAcceptLanguage(String language) {
+        this.acceptLanguage = language;
     }
 
     /**
@@ -2163,6 +2178,7 @@ public class RecurlyClient {
         return requestBuilder.addHeader("Authorization", "Basic " + key)
                 .addHeader("X-Api-Version", RECURLY_API_VERSION)
                 .addHeader(HttpHeaders.USER_AGENT, userAgent)
+                .addHeader("Accept-Language", acceptLanguage)
                 .setBodyEncoding("UTF-8");
     }
 
