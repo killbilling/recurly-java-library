@@ -53,6 +53,7 @@ public class TestPurchase extends TestModelBase {
                 "  </account>" +
                 "  <adjustments>" +
                 "    <adjustment>" +
+                "      <subscription href=\"https://subdomain.recurly.com/v2/subscriptions/48e99881b3726425bf49e64b45af7fe4\"/>" +
                 "      <unit_amount_in_cents type=\"integer\">1000</unit_amount_in_cents>" +
                 "      <quantity type=\"integer\">1</quantity>" +
                 "      <currency>USD</currency>" +
@@ -114,6 +115,7 @@ public class TestPurchase extends TestModelBase {
         assertEquals(adjustment.getProductCode(), "product-code");
         assertEquals(adjustment.getQuantity(), new Integer(1));
         assertEquals(adjustment.getUnitAmountInCents(), new Integer(1000));
+        assertEquals(adjustment.getSubscriptionId(), "48e99881b3726425bf49e64b45af7fe4");
 
 
         final Subscription sub1 = purchase.getSubscriptions().get(0);

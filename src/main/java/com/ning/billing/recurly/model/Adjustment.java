@@ -30,6 +30,9 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "account")
     private Account account;
 
+    @XmlElement(name = "subscription")
+    private Subscription subscription;
+
     @XmlElement(name = "uuid")
     private String uuid;
 
@@ -114,6 +117,18 @@ public class Adjustment extends RecurlyObject {
 
     public void setAccount(final Account account) {
         this.account = account;
+    }
+
+    public String getSubscriptionId() {
+        if (subscription != null && subscription.getHref() != null) {
+            String[] parts = subscription.getHref().split("/");
+            return parts[parts.length - 1];
+        }
+        return null;
+    }
+
+    public void setSubscription(final Subscription subscription) {
+        this.subscription = subscription;
     }
 
     public String getUuid() {

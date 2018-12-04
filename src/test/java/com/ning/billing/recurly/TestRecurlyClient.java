@@ -1763,6 +1763,11 @@ public class TestRecurlyClient {
 
             final Invoice invoice = recurlyClient.purchase(purchaseData).getChargeInvoice();
             Assert.assertNotNull(invoice.getInvoiceNumber());
+
+            // Ensure Adjustment's subscription id is valid
+            String subscriptionId = invoice.getLineItems().get(0).getSubscriptionId();
+            Subscription sub = recurlyClient.getSubscription(subscriptionId);
+            Assert.assertEquals(sub.getUuid(), subscriptionId);
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
