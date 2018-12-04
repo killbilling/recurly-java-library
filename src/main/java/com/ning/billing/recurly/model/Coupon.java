@@ -59,6 +59,12 @@ public class Coupon extends RecurlyObject {
     @XmlTransient
     public static final String COUPON_RESOURCE = "/coupons";
 
+    @XmlTransient
+    public static final String GENERATE_RESOURCE = "/generate";
+
+    @XmlTransient
+    public static final String UNIQUE_CODES_RESOURCE = "/unique_coupon_codes";
+
     @XmlElement(name = "id")
     private Long id;
 
@@ -212,6 +218,15 @@ public class Coupon extends RecurlyObject {
      */
     @XmlElement(name = "unique_code_template")
     private String uniqueCodeTemplate;
+
+    /**
+     * The number of unique codes to generate.
+     *
+     * @see <a href=
+     *      "https://dev.recurly.com/docs/generate-unique-codes">https://dev.recurly.com/docs/generate-unique-codes</a>
+     */
+    @XmlElement(name = "number_of_unique_codes")
+    private Integer numberOfUniqueCodes;
 
     public void setId(final Object id) {
         this.id = longOrNull(id);
@@ -454,6 +469,14 @@ public class Coupon extends RecurlyObject {
 
     public void setUniqueCodeTemplate(Object uniqueCodeTemplate) {
       this.uniqueCodeTemplate = stringOrNull(uniqueCodeTemplate);
+    }
+
+    public Integer getNumberOfUniqueCodes() {
+        return numberOfUniqueCodes;
+    }
+
+    public void setNumberOfUniqueCodes(Integer numberOfUniqueCodes) {
+        this.numberOfUniqueCodes = numberOfUniqueCodes;
     }
 
     @Override

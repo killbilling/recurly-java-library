@@ -1190,6 +1190,26 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testBulkCoupons() throws Exception {
+        final Coupon couponData = TestUtils.createRandomCoupon();
+        couponData.setType(Coupon.Type.bulk);
+        couponData.setUniqueCodeTemplate(String.format("'%s'99999", couponData.getCouponCode()));
+
+        Coupon coupon = recurlyClient.createCoupon(couponData);
+
+        Coupon genCouponData = new Coupon();
+        genCouponData.setNumberOfUniqueCodes(50);
+
+        recurlyClient.generateUniqueCodes(coupon.getCouponCode(), genCouponData);
+
+        QueryParams qp = new QueryParams();
+        qp.setPerPage(50);
+        Coupons coupons = recurlyClient.getUniqueCouponCodes(couponData.getCouponCode(), qp);
+
+        Assert.assertEquals(coupons.size(), 50);
+    }
+
+    @Test(groups = "integration")
     public void testUpdateSubscriptions() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
