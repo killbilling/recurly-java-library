@@ -33,7 +33,6 @@ import static org.testng.Assert.assertNotEquals;
 
 public class TestCoupon extends TestModelBase {
 
-
     @Test(groups = "fast")
     public void testDeserializationPercent() throws Exception {
         final String couponData = 
@@ -216,7 +215,6 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getType(), Type.single_code);
     }
 
-
     @Test(groups = "fast")
     public void testPlanCodes() throws Exception {
         // See https://dev.recurly.com/docs/list-active-coupons
@@ -278,6 +276,11 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getPlanCodes().size(), 2);
         assertTrue(coupon.getPlanCodes().contains(new PlanCode("platinum")));
         assertTrue(coupon.getPlanCodes().contains(new PlanCode("gold")));
+
+        // Verify serialization
+        final String couponSerialized = xmlMapper.writeValueAsString(coupon);
+        final Coupon coupon2 = xmlMapper.readValue(couponSerialized, Coupon.class);
+        assertEquals(coupon2, coupon);
     }
 
     @Test(groups = "fast")

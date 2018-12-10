@@ -488,6 +488,9 @@ public class Coupon extends RecurlyObject {
         if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
             return false;
         }
+        if (planCodes != null ? !planCodes.equals(coupon.planCodes) : coupon.planCodes != null) {
+            return false;
+        }
         if (createdAt != null ? createdAt.compareTo(coupon.createdAt) != 0 : coupon.createdAt != null) {
             return false;
         }
@@ -560,6 +563,7 @@ public class Coupon extends RecurlyObject {
                 appliesToNonPlanCharges,
                 name,
                 couponCode,
+                planCodes,
                 description,
                 discountType,
                 discountPercent,

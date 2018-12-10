@@ -16,14 +16,18 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+@JsonSerialize(using = PlanCodeSerializer.class)
 @XmlRootElement(name = "plan_code")
 public class PlanCode extends RecurlyObject {
 
     private String name;
+
+    public PlanCode() { /* Required for Jackson */ }
 
     public PlanCode(final String name) {
         this.name = name;
