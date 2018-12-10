@@ -1638,6 +1638,29 @@ public class RecurlyClient {
         doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + Redemption.REDEMPTIONS_RESOURCE + "/" + redemptionUuid);
     }
 
+    /**
+     * Generates unique codes for a bulk coupon.
+     *
+     * @param couponCode recurly coupon code (must have been created as type: bulk)
+     * @param coupon A coupon with number of unique codes set
+     */
+    public void generateUniqueCodes(final String couponCode, final Coupon coupon) {
+        doPOST(Coupon.COUPON_RESOURCE + "/" + couponCode + Coupon.GENERATE_RESOURCE,
+                      coupon, null);
+    }
+
+    /**
+     * Lookup all unique codes for a bulk coupon given query params.
+     *
+     * @param couponCode String coupon code
+     * @param params {@link QueryParams}
+     * @return the unique coupon codes for the coupon code on success, null otherwise
+     */
+    public Coupons getUniqueCouponCodes(final String couponCode, final QueryParams params) {
+        return doGET(Coupon.COUPON_RESOURCE + "/" + couponCode + Coupon.UNIQUE_CODES_RESOURCE,
+                Coupons.class, params);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     //
     // Recurly.js API
