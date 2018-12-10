@@ -54,6 +54,8 @@ import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
+import com.ning.billing.recurly.model.Coupon.RedemptionResource;
+
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import org.joda.time.DateTime;
@@ -1273,12 +1275,15 @@ public class TestRecurlyClient {
         final Plan planData = TestUtils.createRandomPlan(CURRENCY);
         final Coupon couponData = TestUtils.createRandomCoupon();
         final Coupon secondCouponData = TestUtils.createRandomCoupon();
+        final Coupon subscriptionLevelCouponData = TestUtils.createRandomCoupon();
+        subscriptionLevelCouponData.setRedemptionResource(RedemptionResource.subscription);
 
         try {
             final Account account = recurlyClient.createAccount(accountData);
             final Plan plan = recurlyClient.createPlan(planData);
             final Coupon coupon = recurlyClient.createCoupon(couponData);
             final Coupon secondCoupon = recurlyClient.createCoupon(secondCouponData);
+            final Coupon subscriptionLevelCoupon = recurlyClient.createCoupon(subscriptionLevelCouponData);
 
             // Create BillingInfo
             billingInfoData.setAccount(account);
@@ -1361,10 +1366,24 @@ public class TestRecurlyClient {
             Assert.assertEquals(redemption.getState(), "active");
             Assert.assertEquals(redemption.getCurrency(), CURRENCY);
 
+            // Redeem a subscription level coupon
+            final Redemption subscriptionLevelRedemptionData = new Redemption();
+            subscriptionLevelRedemptionData.setAccountCode(account.getAccountCode());
+            subscriptionLevelRedemptionData.setCurrency(CURRENCY);
+            subscriptionLevelRedemptionData.setSubscriptionUuid(subscription.getUuid());
+            Redemption subscriptionLevelRedemption = recurlyClient.redeemCoupon(subscriptionLevelCoupon.getCouponCode(), subscriptionLevelRedemptionData);
+            Assert.assertNotNull(subscriptionLevelRedemption.getUuid());
+
+            // List the redemptions on the subscription
+            Redemptions subRedemptions = recurlyClient.getCouponRedemptionsBySubscription(subscription.getUuid(), new QueryParams());
+            Assert.assertEquals(subRedemptions.size(), 1);
+
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());
             recurlyClient.deleteCoupon(couponData.getCouponCode());
+            recurlyClient.deleteCoupon(secondCouponData.getCouponCode());
+            recurlyClient.deleteCoupon(subscriptionLevelCouponData.getCouponCode());
         }
     }
 

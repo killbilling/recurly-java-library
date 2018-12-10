@@ -1608,6 +1608,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Lookup all coupon redemptions on a subscription given query params.
+     *
+     * @param subscriptionUuid String subscription uuid
+     * @param params {@link QueryParams}
+     * @return the coupon redemptions for this subscription on success, null otherwise
+     */
+    public Redemptions getCouponRedemptionsBySubscription(final String subscriptionUuid, final QueryParams params) {
+        return doGET(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + Redemptions.REDEMPTIONS_RESOURCE,
+                Redemptions.class, params);
+    }
+
+    /**
      * Deletes a coupon redemption from an account.
      *
      * @param accountCode recurly account id
