@@ -103,6 +103,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
 
+    @XmlElement(name = "exemption_certificate")
+    private String exemptionCertificate;
+
     @XmlElementWrapper(name = "shipping_addresses")
     @XmlElement(name = "shipping_address")
     private ShippingAddresses shippingAddresses;
@@ -308,6 +311,14 @@ public class Account extends RecurlyObject {
         this.taxExempt = booleanOrNull(taxExempt);
     }
 
+    public String getExemptionCertificate() {
+        return exemptionCertificate;
+    }
+
+    public void setExemptionCertificate(final Object exemptionCertificate) {
+        this.exemptionCertificate = stringOrNull(exemptionCertificate);
+    }
+
     public Boolean getHasLiveSubscription() {
         return hasLiveSubscription;
     }
@@ -419,6 +430,7 @@ public class Account extends RecurlyObject {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
+        sb.append(", exemptionCertificate='").append(exemptionCertificate).append('\'');
         sb.append(", shippingAddresses=").append(shippingAddresses);
         sb.append(", customFields=").append(customFields);
         sb.append(", hasLiveSubscription=").append(hasLiveSubscription);
@@ -522,6 +534,9 @@ public class Account extends RecurlyObject {
         if (taxExempt != null ? !taxExempt.equals(account.taxExempt) : account.taxExempt != null) {
             return false;
         }
+        if (exemptionCertificate != null ? !exemptionCertificate.equals(account.exemptionCertificate) : account.exemptionCertificate != null) {
+            return false;
+        }
         if (shippingAddresses != null ? !shippingAddresses.equals(account.shippingAddresses) : account.shippingAddresses != null) {
             return false;
         }
@@ -564,6 +579,7 @@ public class Account extends RecurlyObject {
                 billingInfo,
                 updatedAt,
                 taxExempt,
+                exemptionCertificate,
                 shippingAddresses,
                 customFields,
                 vatNumber,

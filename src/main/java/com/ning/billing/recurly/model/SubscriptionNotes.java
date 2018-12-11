@@ -33,6 +33,9 @@ public class SubscriptionNotes extends AbstractSubscription {
     @XmlElement(name = "vat_reverse_charge_notes")
     private String vatReverseChargeNotes;
 
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
     @XmlElementWrapper(name = "custom_fields")
     @XmlElement(name = "custom_field")
     private CustomFields customFields;
@@ -60,6 +63,14 @@ public class SubscriptionNotes extends AbstractSubscription {
     public void setVatReverseChargeNotes(final Object getVatReverseChargeNotes) {
         this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
     }
+    
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
 
     public CustomFields getCustomFields() {
         return customFields;
@@ -75,6 +86,7 @@ public class SubscriptionNotes extends AbstractSubscription {
         sb.append("termsAndConditions=").append(termsAndConditions).append('\'');
         sb.append(", customerNotes=").append(customerNotes).append('\'');
         sb.append(", vatReverseChargeNotes=").append(vatReverseChargeNotes).append('\'');
+        sb.append(", gatewayCode=").append(gatewayCode).append('\'');
         sb.append(", customFields=").append(customFields);
         sb.append('}');
         return sb.toString();
@@ -99,6 +111,9 @@ public class SubscriptionNotes extends AbstractSubscription {
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(that.vatReverseChargeNotes) : that.vatReverseChargeNotes != null) {
             return false;
         }
+        if (gatewayCode != null ? !gatewayCode.equals(that.gatewayCode) : that.gatewayCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -109,7 +124,8 @@ public class SubscriptionNotes extends AbstractSubscription {
                 termsAndConditions,
                 customerNotes,
                 vatReverseChargeNotes,
-                customFields
+                customFields,
+                gatewayCode
         );
     }
 }

@@ -114,6 +114,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "vat_reverse_charge_notes")
     private String vatReverseChargeNotes;
 
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
     @XmlElement(name = "subtotal_before_discount_in_cents")
     private Integer subtotalBeforeDiscountInCents;
 
@@ -390,6 +393,14 @@ public class Invoice extends RecurlyObject {
         this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
     }
 
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
+
     public Integer getSubtotalBeforeDiscountInCents() {
         return subtotalBeforeDiscountInCents;
     }
@@ -494,6 +505,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", customerNotes='").append(customerNotes).append('\'');
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
+        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append(", subtotalBeforeDiscountInCents=").append(subtotalBeforeDiscountInCents);
         sb.append(", discountInCents=").append(discountInCents);
         sb.append(", balanceInCents=").append(balanceInCents);
@@ -622,6 +634,9 @@ public class Invoice extends RecurlyObject {
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(invoice.vatReverseChargeNotes) : invoice.vatReverseChargeNotes != null) {
             return false;
         }
+        if (gatewayCode != null ? !gatewayCode.equals(invoice.gatewayCode) : invoice.gatewayCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -657,6 +672,7 @@ public class Invoice extends RecurlyObject {
                 customerNotes,
                 termsAndConditions,
                 vatReverseChargeNotes,
+                gatewayCode,
                 subtotalBeforeDiscountInCents,
                 discountInCents,
                 balanceInCents,

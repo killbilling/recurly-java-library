@@ -44,6 +44,7 @@ public class TestAccount extends TestModelBase {
                                    "  <first_name>Verena</first_name>\n" +
                                    "  <last_name>Example</last_name>\n" +
                                    "  <tax_exempt type=\"boolean\">false</tax_exempt>\n\n" +
+                                   "  <exemption_certificate>Some Certificate</exemption_certificate>\n" +
                                    "  <accept_language nil=\"nil\"></accept_language>\n" +
                                    "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
                                    "  <created_at type=\"dateTime\">2011-10-25T12:00:00</created_at>\n" +
@@ -111,6 +112,7 @@ public class TestAccount extends TestModelBase {
         Assert.assertEquals(account.getAddress().getZip(), "94105-1804");
         Assert.assertEquals(account.getAddress().getCountry(), "US");
         Assert.assertFalse(account.getTaxExempt());
+        Assert.assertEquals(account.getExemptionCertificate(), "Some Certificate");
         Assert.assertNull(account.getAddress().getPhone());
         Assert.assertEquals(account.getCustomFields(), getTestFields());
         Assert.assertTrue(account.getHasLiveSubscription());

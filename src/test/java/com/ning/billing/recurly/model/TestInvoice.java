@@ -48,6 +48,7 @@ public class TestInvoice extends TestModelBase {
                                    + "  <vat_reverse_charge_notes>Some reverse charge notes</vat_reverse_charge_notes>\n"
                                    + "  <customer_notes>Some notes</customer_notes>\n"
                                    + "  <terms_and_conditions>t and c</terms_and_conditions>\n"
+                                   + "  <gateway_code>Some Gateway Code</gateway_code>\n"
                                    + "  <net_terms type=\"integer\">0</net_terms>\n"
                                    + "  <currency>USD</currency>\n"
                                    + "  <tax_type>usst</tax_type>\n"
@@ -115,6 +116,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getTermsAndConditions(), "t and c");
         Assert.assertEquals((int) invoice.getNetTerms(), 0);
         Assert.assertNull(invoice.getVatNumber());
+        Assert.assertEquals(invoice.getGatewayCode(), "Some Gateway Code");
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 9900);
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);
         Assert.assertEquals((int) invoice.getTotalInCents(), 9900);
