@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -24,8 +24,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 import com.google.common.base.Objects;
-
-import java.util.List;
 
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.
@@ -145,17 +143,17 @@ public class Coupon extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
-    public List<String> getPlanCodes() {
+    public PlanCodes getPlanCodes() {
         return planCodes;
     }
 
-    public void setPlanCodes(List<String> planCodes) {
+    public void setPlanCodes(final PlanCodes planCodes) {
         this.planCodes = planCodes;
     }
 
-    @XmlElement( name="plan_code" )
-    @XmlElementWrapper( name="plan_codes" )
-    private List<String> planCodes;
+    @XmlElement(name = "plan_code")
+    @XmlElementWrapper(name = "plan_codes")
+    private PlanCodes planCodes;
 
     /**
      * forever, single_use, or temporal. If single_use, the coupon applies to
@@ -513,6 +511,9 @@ public class Coupon extends RecurlyObject {
         if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
             return false;
         }
+        if (planCodes != null ? !planCodes.equals(coupon.planCodes) : coupon.planCodes != null) {
+            return false;
+        }
         if (createdAt != null ? createdAt.compareTo(coupon.createdAt) != 0 : coupon.createdAt != null) {
             return false;
         }
@@ -585,6 +586,7 @@ public class Coupon extends RecurlyObject {
                 appliesToNonPlanCharges,
                 name,
                 couponCode,
+                planCodes,
                 description,
                 discountType,
                 discountPercent,
