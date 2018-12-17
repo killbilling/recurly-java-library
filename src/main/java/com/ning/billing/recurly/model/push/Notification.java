@@ -52,7 +52,7 @@ public abstract class Notification extends RecurlyObject {
         VoidedCreditPaymentNotification(com.ning.billing.recurly.model.push.creditpayment.VoidedCreditPaymentNotification.class),
         CanceledSubscriptionNotification(com.ning.billing.recurly.model.push.subscription.CanceledSubscriptionNotification.class),
         ExpiredSubscriptionNotification(com.ning.billing.recurly.model.push.subscription.ExpiredSubscriptionNotification.class),
-        PausedSubscriptionNotification(com.ning.billing.recurly.model.push.subscription.PausedSubscriptionNotification.class),
+        SubscriptionPausedNotification(com.ning.billing.recurly.model.push.subscription.SubscriptionPausedNotification.class),
         ResumedSubscriptionNotification(com.ning.billing.recurly.model.push.subscription.ResumedSubscriptionNotification.class),
         ScheduledSubscriptionPauseNotification(com.ning.billing.recurly.model.push.subscription.ScheduledSubscriptionPauseNotification.class),
         SubscriptionPausedModifiedNotification(com.ning.billing.recurly.model.push.subscription.SubscriptionPausedModifiedNotification.class),

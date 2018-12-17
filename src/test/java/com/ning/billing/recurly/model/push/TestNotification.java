@@ -482,8 +482,8 @@ public class TestNotification extends TestModelBase {
     }
 
     @Test(groups = "fast")
-    public void testPausedSubscriptionNotification() {
-        deserialize(PausedSubscriptionNotification.class);
+    public void testSubscriptionPausedNotification() {
+        deserialize(SubscriptionPausedNotification.class);
     }
 
     @Test(groups = "fast")
