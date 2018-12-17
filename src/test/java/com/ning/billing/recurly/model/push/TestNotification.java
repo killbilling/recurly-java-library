@@ -64,11 +64,15 @@ public class TestNotification extends TestModelBase {
                                                    "  <state>active</state>\n" +
                                                    "  <quantity type=\"integer\">1</quantity>\n" +
                                                    "  <total_amount_in_cents type=\"integer\">200</total_amount_in_cents>\n" +
+                                                   "  <subscription_add_ons type=\"array\"/>\n" +
                                                    "  <activated_at type=\"dateTime\">2010-09-23T22:12:39Z</activated_at>\n" +
                                                    "  <canceled_at nil=\"true\"></canceled_at>\n" +
                                                    "  <expires_at nil=\"true\"></expires_at>\n" +
                                                    "  <current_period_started_at type=\"dateTime\">2010-09-23T22:03:30Z</current_period_started_at>\n" +
                                                    "  <current_period_ends_at type=\"dateTime\">2010-09-24T22:03:30Z</current_period_ends_at>\n" +
+                                                   "  <paused_at type=\"datetime\">2018-03-10T22:12:08Z</paused_at>\n" +
+                                                   "  <resume_at type=\"datetime\">2018-03-20T22:12:08Z</resume_at>\n" +
+                                                   "  <remaining_pause_cycles type=\"integer\">9</remaining_pause_cycles>\n" +
                                                    "  <trial_started_at nil=\"true\" type=\"dateTime\"></trial_started_at>\n" +
                                                    "  <trial_ends_at nil=\"true\" type=\"dateTime\"></trial_ends_at>\n" +
                                                    "  <starts_at type=\"dateTime\">2010-09-23T07:00:00Z</starts_at>\n" +
@@ -291,6 +295,9 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(subscription.getActivatedAt(), new DateTime("2010-09-23T22:12:39Z"));
         Assert.assertNull(subscription.getCanceledAt());
         Assert.assertNull(subscription.getExpiresAt());
+        Assert.assertEquals(subscription.getResumeAt(), new DateTime("2018-03-20T22:12:08Z"));
+        Assert.assertEquals(subscription.getPausedAt(), new DateTime("2018-03-10T22:12:08Z"));
+        Assert.assertEquals(subscription.getRemainingPauseCycles(), new Integer(9));
         Assert.assertEquals(subscription.getCurrentPeriodStartedAt(), new DateTime("2010-09-23T22:03:30Z"));
         Assert.assertEquals(subscription.getCurrentPeriodEndsAt(), new DateTime("2010-09-24T22:03:30Z"));
         Assert.assertEquals(subscription.getStartsAt(), new DateTime("2010-09-23T07:00:00Z"));
