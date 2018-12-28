@@ -19,10 +19,10 @@ package com.ning.billing.recurly.model.push.subscription;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "subscription_paused_notification")
-public class PausedSubscriptionNotification extends SubscriptionNotification {
+@XmlRootElement(name = "subscription_resumed_notification")
+public class SubscriptionResumedNotification extends SubscriptionNotification {
 
-    public static PausedSubscriptionNotification read(final String payload) {
-        return read(payload, PausedSubscriptionNotification.class);
+    public static SubscriptionResumedNotification read(final String payload) {
+        return read(payload, SubscriptionResumedNotification.class);
     }
 }
