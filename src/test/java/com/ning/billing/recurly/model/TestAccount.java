@@ -31,6 +31,8 @@ public class TestAccount extends TestModelBase {
     public void testSerialization() throws Exception {
         // See https://dev.recurly.com/docs/list-accounts
         final String accountData = "<account href=\"https://api.recurly.com/v2/accounts/1\">\n" +
+                                   "  <parent_account href=\"https://api.recurly.com/v2/accounts/2\"/>\n" +
+                                   "  <child_accounts href=\"https://api.recurly.com/v2/accounts/1/child_accounts\"/>\n" +
                                    "  <adjustments href=\"https://api.recurly.com/v2/accounts/1/adjustments\"/>\n" +
                                    "  <billing_info href=\"https://api.recurly.com/v2/accounts/1/billing_info\"/>\n" +
                                    "  <invoices href=\"https://api.recurly.com/v2/accounts/1/invoices\"/>\n" +
@@ -38,6 +40,7 @@ public class TestAccount extends TestModelBase {
                                    "  <subscriptions href=\"https://api.recurly.com/v2/accounts/1/subscriptions\"/>\n" +
                                    "  <transactions href=\"https://api.recurly.com/v2/accounts/1/transactions\"/>\n" +
                                    "  <account_code>1</account_code>\n" +
+                                   "  <parent_account_code>2</parent_account_code>\n" +
                                    "  <state>active</state>\n" +
                                    "  <username nil=\"nil\"></username>\n" +
                                    "  <email>verena@example.com</email>\n" +
@@ -121,6 +124,7 @@ public class TestAccount extends TestModelBase {
         Assert.assertFalse(account.getHasCanceledSubscription());
         Assert.assertFalse(account.getHasPastDueInvoice());
         Assert.assertEquals(account.getVatNumber(), "U12345678");
+        Assert.assertEquals(account.getParentAccountCode(), "2");
     }
 
     private CustomFields getTestFields() {
