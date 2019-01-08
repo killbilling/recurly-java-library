@@ -39,6 +39,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "address")
     private Address address;
 
+    @XmlElement(name = "parent_account_code")
+    private String parentAccountCode;
+
     @XmlElementWrapper(name = "adjustments")
     @XmlElement(name = "adjustment")
     private Adjustments adjustments;
@@ -201,6 +204,14 @@ public class Account extends RecurlyObject {
 
     public void setAccountCode(final Object accountCode) {
         this.accountCode = stringOrNull(accountCode);
+    }
+
+    public String getParentAccountCode() {
+        return this.parentAccountCode;
+    }
+
+    public void setParentAccountCode(final Object parentAccountCode) {
+        this.parentAccountCode = stringOrNull(parentAccountCode);
     }
 
     public String getState() {
@@ -417,6 +428,7 @@ public class Account extends RecurlyObject {
         sb.append(", subscriptions=").append(subscriptions);
         sb.append(", transactions=").append(transactions);
         sb.append(", accountCode='").append(accountCode).append('\'');
+        sb.append(", parent_account_code=''").append(parentAccountCode).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append(", email='").append(email).append('\'');
@@ -460,6 +472,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (accountCode != null ? !accountCode.equals(account.accountCode) : account.accountCode != null) {
+            return false;
+        }
+        if (parentAccountCode != null ? !parentAccountCode.equals(account.parentAccountCode) : account.parentAccountCode != null) {
             return false;
         }
         if (address != null ? !address.equals(account.address) : account.address != null) {
@@ -554,6 +569,7 @@ public class Account extends RecurlyObject {
     public int hashCode() {
         return Objects.hashCode(
                 address,
+                parentAccountCode,
                 href,
                 adjustments,
                 invoices,

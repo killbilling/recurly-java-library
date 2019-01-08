@@ -327,6 +327,18 @@ public class RecurlyClient {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode);
     }
 
+    /**
+     * Get Child Accounts
+     * <p>
+     * Returns information about a the child accounts of an account.
+     *
+     * @param accountCode recurly account id
+     * @return Accounts on success, null otherwise
+     */
+    public Accounts getChildAccounts(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + "/child_accounts", Accounts.class, new QueryParams());
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////
     // Account adjustments
 

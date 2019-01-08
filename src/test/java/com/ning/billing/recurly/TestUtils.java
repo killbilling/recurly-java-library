@@ -261,6 +261,7 @@ public class TestUtils {
         account.setAcceptLanguage("en-US");
         account.setPreferredLocale("en-US");
         account.setAccountCode(randomAlphaNumericString(10, seed));
+        account.setParentAccountCode(randomAlphaNumericString(9, seed));
         account.setCompanyName(randomAlphaNumericString(10, seed));
         account.setEmail(randomAlphaNumericString(4, seed) + "@test.com");
         account.setFirstName(randomAlphaNumericString(5, seed));
