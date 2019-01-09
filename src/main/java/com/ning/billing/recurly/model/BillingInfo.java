@@ -118,6 +118,12 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "gateway_code")
     private String gatewayCode;
 
+    @XmlElement(name = "amazon_billing_agreement_id")
+    private String amazonBillingAgreementId;
+
+    @XmlElement(name = "amazon_region")
+    private String amazonRegion;
+
     public String getType() {
         return type;
     }
@@ -360,6 +366,22 @@ public class BillingInfo extends RecurlyObject {
         this.gatewayCode = stringOrNull(gatewayCode);
     }
 
+    public String getAmazonBillingAgreementId() {
+        return amazonBillingAgreementId;
+    }
+
+    public void setAmazonBillingAgreementId(final Object amazonBillingAgreementId) {
+        this.amazonBillingAgreementId = stringOrNull(amazonBillingAgreementId);
+    }
+
+    public String getAmazonRegion() {
+        return amazonRegion;
+    }
+
+    public void setAmazonRegion(final Object amazonRegion) {
+        this.amazonRegion = stringOrNull(amazonRegion);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -389,6 +411,8 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", externalHppType='").append(externalHppType).append('\'');
         sb.append(", gatewayToken='").append(gatewayToken).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
+        sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
+        sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -475,6 +499,12 @@ public class BillingInfo extends RecurlyObject {
         if (externalHppType != null ? !externalHppType.equals(that.externalHppType) : that.externalHppType != null) {
             return false;
         }
+        if (amazonBillingAgreementId != null ? !amazonBillingAgreementId.equals(that.amazonBillingAgreementId) : that.amazonBillingAgreementId != null) {
+            return false;
+        }
+        if (amazonRegion != null ? !amazonRegion.equals(that.amazonRegion) : that.amazonRegion != null) {
+            return false;
+        }
 
         return true;
     }
@@ -506,7 +536,9 @@ public class BillingInfo extends RecurlyObject {
                 type,
                 externalHppType,
                 gatewayToken,
-                gatewayCode
+                gatewayCode,
+                amazonBillingAgreementId,
+                amazonRegion
         );
     }
 }
