@@ -129,6 +129,17 @@ public class RecurlyClient {
         return Boolean.getBoolean(RECURLY_DEBUG_KEY);
     }
 
+    /**
+     * Warns the user about logging PII in production environments
+     */
+    private static void loggerWarning() {
+        if (debug())
+        {
+            log.warn("[WARNING] Logger enabled. The logger has the potential to leak " +
+            "PII and should never be used in production environments.");
+        }
+    }
+
     // TODO: should we make it static?
     private final XmlMapper xmlMapper;
     private final String userAgent;
@@ -145,14 +156,17 @@ public class RecurlyClient {
 
     public RecurlyClient(final String apiKey) {
         this(apiKey, "api");
+        loggerWarning();
     }
 
     public RecurlyClient(final String apiKey, final String subDomain) {
         this(apiKey, subDomain + ".recurly.com", 443, "v2");
+        loggerWarning();
     }
 
     public RecurlyClient(final String apiKey, final String host, final int port, final String version) {
         this(apiKey, "https", host, port, version);
+        loggerWarning();
     }
 
     public RecurlyClient(final String apiKey, final String scheme, final String host, final int port, final String version) {
@@ -161,6 +175,7 @@ public class RecurlyClient {
         this.xmlMapper = RecurlyObject.newXmlMapper();
         this.userAgent = buildUserAgent();
         this.rateLimitRemaining = -1;
+        loggerWarning();
     }
 
     /**
