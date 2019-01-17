@@ -19,10 +19,19 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.base.Objects;
+import com.ning.http.client.Response;
+
+import java.io.IOException;
 
 @XmlRootElement(name = "error")
 public class RecurlyAPIError extends RecurlyObject {
+
+    @XmlTransient
+    private ResponseMetadata responseMetadata;
 
     @XmlElement(name = "description")
     private String description;
@@ -34,6 +43,18 @@ public class RecurlyAPIError extends RecurlyObject {
     private String details;
 
     private int httpStatusCode;
+
+    public static RecurlyAPIError buildFromResponse(final Response response) {
+        final RecurlyAPIError recurlyAPIError = new RecurlyAPIError();
+        recurlyAPIError.setResponse(response);
+        return recurlyAPIError;
+    }
+
+    public static RecurlyAPIError buildFromXml(final XmlMapper xmlMapper, final String payload, final Response response) throws IOException {
+        final RecurlyAPIError recurlyAPIError = xmlMapper.readValue(payload, RecurlyAPIError.class);
+        recurlyAPIError.setResponse(response);
+        return recurlyAPIError;
+    }
 
     public String getDescription() {
         return description;
@@ -65,6 +86,19 @@ public class RecurlyAPIError extends RecurlyObject {
 
     public int getHttpStatusCode() { return this.httpStatusCode; }
 
+    public void setResponseMetadata(final ResponseMetadata meta) {
+        this.responseMetadata = meta;
+    }
+
+    public ResponseMetadata getResponseMetadata() {
+        return this.responseMetadata;
+    }
+
+    protected void setResponse(final Response response) {
+        this.setHttpStatusCode(response.getStatusCode());
+        this.setResponseMetadata(new ResponseMetadata(response));
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("RecurlyAPIError{");
@@ -72,6 +106,7 @@ public class RecurlyAPIError extends RecurlyObject {
         sb.append(", symbol='").append(symbol).append('\'');
         sb.append(", details='").append(details).append('\'');
         sb.append(", httpStatusCode='").append(httpStatusCode).append('\'');
+        sb.append(", responseMetadata='").append(responseMetadata).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -90,6 +125,10 @@ public class RecurlyAPIError extends RecurlyObject {
             return false;
         }
         if (symbol != null ? !symbol.equals(that.symbol) : that.symbol != null) {
+
+            return false;
+        }
+        if (responseMetadata != null ? !responseMetadata.equals(that.responseMetadata) : that.responseMetadata != null) {
             return false;
         }
 
@@ -102,7 +141,8 @@ public class RecurlyAPIError extends RecurlyObject {
                 description,
                 symbol,
                 details,
-                httpStatusCode
+                httpStatusCode,
+                responseMetadata
         );
     }
 }

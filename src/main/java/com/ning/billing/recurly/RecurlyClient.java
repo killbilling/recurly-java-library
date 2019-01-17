@@ -48,6 +48,7 @@ import com.ning.billing.recurly.model.Redemption;
 import com.ning.billing.recurly.model.Redemptions;
 import com.ning.billing.recurly.model.RefundMethod;
 import com.ning.billing.recurly.model.RefundOption;
+import com.ning.billing.recurly.model.ResponseMetadata;
 import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
 import com.ning.billing.recurly.model.Subscription;
@@ -2015,9 +2016,7 @@ public class RecurlyClient {
         }
 
         if (response.getStatusCode() != 200) {
-            RecurlyAPIError recurlyAPIError = new RecurlyAPIError();
-            recurlyAPIError.setHttpStatusCode(response.getStatusCode());
-
+            final RecurlyAPIError recurlyAPIError = RecurlyAPIError.buildFromResponse(response);
             throw new RecurlyAPIException(recurlyAPIError);
         }
 
@@ -2143,7 +2142,7 @@ public class RecurlyClient {
             if (response.getStatusCode() >= 300) {
                 log.warn("Recurly error whilst calling: {}\n{}", response.getUri(), payload);
                 log.warn("Error status code: {}\n", response.getStatusCode());
-                RecurlyAPIError recurlyError = new RecurlyAPIError();
+                RecurlyAPIError recurlyError = RecurlyAPIError.buildFromResponse(response);
 
                 if (response.getStatusCode() == 422) {
                     final Errors errors;
@@ -2163,12 +2162,11 @@ public class RecurlyClient {
                     throw new RecurlyAPIException(recurlyError);
                 } else {
                     try {
-                        recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
+                        recurlyError = RecurlyAPIError.buildFromXml(xmlMapper, payload, response);
                     } catch (Exception e) {
                         log.debug("Unable to extract error", e);
                     }
 
-                    recurlyError.setHttpStatusCode(response.getStatusCode());
                     throw new RecurlyAPIException(recurlyError);
                 }
             }
@@ -2178,6 +2176,7 @@ public class RecurlyClient {
             }
 
             final T obj = xmlMapper.readValue(payload, clazz);
+            final ResponseMetadata meta = new ResponseMetadata(response);
             if (obj instanceof RecurlyObject) {
                 ((RecurlyObject) obj).setRecurlyClient(this);
             } else if (obj instanceof RecurlyObjects) {
