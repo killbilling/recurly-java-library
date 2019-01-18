@@ -1104,7 +1104,8 @@ public class TestRecurlyClient {
             // 2 Invoices are present (the first one is for the transaction, the second for the subscription)
             Assert.assertEquals(invoices.size(), 2, "Number of Invoices incorrect");
             Assert.assertEquals(invoices.get(0).getTotalInCents(), t.getAmountInCents(), "Amount in cents is not the same");
-            Assert.assertEquals(invoices.get(1).getTotalInCents(), subscriptionData.getUnitAmountInCents(), "Amount in cents is not the same");
+            final Integer total = subscriptionData.getUnitAmountInCents() + planData.getSetupFeeInCents().getUnitAmountUSD();
+            Assert.assertEquals(invoices.get(1).getTotalInCents(), total, "Amount in cents is not the same");
         } finally {
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());

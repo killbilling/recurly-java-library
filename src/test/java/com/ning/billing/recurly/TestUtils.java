@@ -486,7 +486,7 @@ public class TestUtils {
         price.setUnitAmountUSD(LifecycleTest.randomInteger(10));
         price.setUnitAmountSEK(LifecycleTest.randomInteger(10));
         */
-        price.setUnitAmountEUR(10);
+        price.setUnitAmountUSD(10);
 
         return price;
     }
