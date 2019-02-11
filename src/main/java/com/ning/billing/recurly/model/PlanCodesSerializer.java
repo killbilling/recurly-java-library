@@ -35,8 +35,10 @@ public class PlanCodesSerializer extends StdSerializer<PlanCodes> {
 
     @Override
     public void serialize(final PlanCodes value, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
-        for (final PlanCode planCode : value) {
+      jgen.writeStartArray();  
+      for (final PlanCode planCode : value) {
             jgen.writeObject(planCode);
         }
+      jgen.writeEndArray();
     }
 }

@@ -52,16 +52,16 @@ public class RecurlyObjectsSerializer<T extends RecurlyObjects<U>, U extends Rec
         final JsonWriteContext writeContext = (JsonWriteContext) xmlgen.getOutputContext();
         
         // Nested RecurlyObjects
-        final boolean shouldSkipWritingFieldName = writeContext.writeFieldName(elementName) == JsonWriteContext.STATUS_EXPECT_VALUE;
+        //final boolean shouldSkipWritingFieldName =; 
+        writeContext.writeFieldName(elementName);
         boolean firstValue = true;
         for (final U value : values) {
-            if (!shouldSkipWritingFieldName && firstValue) {
+            if (firstValue) {
                 xmlgen.setNextName(new QName(null, elementName));
-            } else if (!shouldSkipWritingFieldName) {
+            } else {
                 xmlgen.writeFieldName(elementName);
             }
             firstValue = false;
-
             xmlgen.writeObject(value);
         }
     }

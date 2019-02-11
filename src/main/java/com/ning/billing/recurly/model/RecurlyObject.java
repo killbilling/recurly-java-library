@@ -29,6 +29,8 @@ import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
@@ -77,7 +79,9 @@ public abstract class RecurlyObject {
         xmlMapper.setAnnotationIntrospector(pair);
         xmlMapper.registerModule(new JodaModule());
         xmlMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+        xmlMapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
         xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        
         xmlMapper.registerModule(new JaxbAnnotationModule());
 
         final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
