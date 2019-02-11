@@ -17,9 +17,10 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.XmlElement;
-
 import com.google.common.base.Objects;
+
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 public class SubscriptionNotes extends AbstractSubscription {
 
@@ -30,7 +31,14 @@ public class SubscriptionNotes extends AbstractSubscription {
     private String customerNotes;
     
     @XmlElement(name = "vat_reverse_charge_notes")
-    private String vatReverseChargeNotes;    
+    private String vatReverseChargeNotes;
+
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
+    @XmlElementWrapper(name = "custom_fields")
+    @XmlElement(name = "custom_field")
+    private CustomFields customFields;
 
     public String getTermsAndConditions() {
         return termsAndConditions;
@@ -56,12 +64,30 @@ public class SubscriptionNotes extends AbstractSubscription {
         this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
     }
     
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
+
+    public CustomFields getCustomFields() {
+        return customFields;
+    }
+
+    public void setCustomFields(final CustomFields customFields) {
+        this.customFields = customFields;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Subscription{");
         sb.append("termsAndConditions=").append(termsAndConditions).append('\'');
         sb.append(", customerNotes=").append(customerNotes).append('\'');
         sb.append(", vatReverseChargeNotes=").append(vatReverseChargeNotes).append('\'');
+        sb.append(", gatewayCode=").append(gatewayCode).append('\'');
+        sb.append(", customFields=").append(customFields);
         sb.append('}');
         return sb.toString();
     }
@@ -79,7 +105,13 @@ public class SubscriptionNotes extends AbstractSubscription {
         if (customerNotes != null ? !customerNotes.equals(that.customerNotes) : that.customerNotes != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
+            return false;
+        }
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(that.vatReverseChargeNotes) : that.vatReverseChargeNotes != null) {
+            return false;
+        }
+        if (gatewayCode != null ? !gatewayCode.equals(that.gatewayCode) : that.gatewayCode != null) {
             return false;
         }
 
@@ -91,7 +123,9 @@ public class SubscriptionNotes extends AbstractSubscription {
         return Objects.hashCode(
                 termsAndConditions,
                 customerNotes,
-                vatReverseChargeNotes
+                vatReverseChargeNotes,
+                customFields,
+                gatewayCode
         );
     }
 }

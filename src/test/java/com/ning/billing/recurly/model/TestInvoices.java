@@ -33,13 +33,17 @@ public class TestInvoices extends TestModelBase {
                                     + "    <uuid>421f7b7d414e4c6792938e7c49d552e9</uuid>\n"
                                     + "    <state>open</state>\n"
                                     + "    <invoice_number type=\"integer\">1005</invoice_number>\n"
-                                    + "    <po_number nil=\"nil\"></po_number>\n"
+                                    + "    <po_number>abc-123</po_number>\n"
                                     + "    <vat_number></vat_number>\n"
                                     + "    <subtotal_in_cents type=\"integer\">1200</subtotal_in_cents>\n"
                                     + "    <tax_in_cents type=\"integer\">0</tax_in_cents>\n"
                                     + "    <total_in_cents type=\"integer\">1200</total_in_cents>\n"
                                     + "    <currency>USD</currency>\n"
-                                    + "    <created_at type=\"datetime\">2011-08-25T12:00:00Z</created_at>\n"
+                                    + "    <subtotal_after_discount_in_cents type=\"integer\">300</subtotal_after_discount_in_cents>\n"
+                                    + "    <attempt_next_collection_at type=\"dateTime\">2017-08-31T00:00:00Z</attempt_next_collection_at>\n"
+                                    + "    <recovery_reason>Reason</recovery_reason>\n"
+                                    + "    <tax_types nil=\"nil\"></tax_types>"
+                                    + "    <created_at type=\"dateTime\">2011-08-25T12:00:00Z</created_at>\n"
                                     + "    <line_items type=\"array\">\n"
                                     + "      <adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n"
                                     + "        <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
@@ -54,9 +58,9 @@ public class TestInvoices extends TestModelBase {
                                     + "        <total_in_cents type=\"integer\">5000</total_in_cents>\n"
                                     + "        <currency>USD</currency>\n"
                                     + "        <taxable type=\"boolean\">false</taxable>\n"
-                                    + "        <start_date type=\"datetime\">2011-08-31T03:30:00Z</start_date>\n"
+                                    + "        <start_date type=\"dateTime\">2011-08-31T03:30:00Z</start_date>\n"
                                     + "        <end_date nil=\"nil\"></end_date>\n"
-                                    + "        <created_at type=\"datetime\">2011-08-31T03:30:00Z</created_at>\n"
+                                    + "        <created_at type=\"dateTime\">2011-08-31T03:30:00Z</created_at>\n"
                                     + "      </adjustment>\n"
                                     + "    </line_items>\n"
                                     + "    <transactions type=\"array\">\n"
@@ -73,7 +77,7 @@ public class TestInvoices extends TestModelBase {
         Assert.assertEquals(invoice.getUuid(), "421f7b7d414e4c6792938e7c49d552e9");
         Assert.assertEquals(invoice.getState(), "open");
         Assert.assertEquals((int) invoice.getInvoiceNumber(), 1005);
-        Assert.assertNull(invoice.getPoNumber());
+        Assert.assertEquals(invoice.getPoNumber(), "abc-123");
         Assert.assertNull(invoice.getVatNumber());
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 1200);
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);
@@ -83,5 +87,8 @@ public class TestInvoices extends TestModelBase {
         Assert.assertNotNull(invoice.getLineItems());
         Assert.assertEquals(invoice.getLineItems().size(), 1);
         Assert.assertEquals(invoice.getTransactions().size(), 0);
+        Assert.assertEquals(invoice.getAttemptNextCollectionAt(), new DateTime("2017-08-31T00:00:00Z"));
+        Assert.assertEquals(invoice.getRecoveryReason(), "Reason");
+        Assert.assertNull(invoice.getTaxType());
     }
 }

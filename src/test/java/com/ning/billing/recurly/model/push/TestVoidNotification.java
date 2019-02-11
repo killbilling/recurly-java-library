@@ -44,7 +44,7 @@ public class TestVoidNotification extends TestModelBase {
                                 "    <invoice_number type=\"integer\">2059</invoice_number>\n" +
                                 "    <subscription_id>1974a098jhlkjasdfljkha898326881c</subscription_id>\n" +
                                 "    <action>purchase</action>\n" +
-                                "    <date type=\"datetime\">2010-10-05T23:00:50Z</date>\n" +
+                                "    <date type=\"dateTime\">2010-10-05T23:00:50Z</date>\n" +
                                 "    <amount_in_cents type=\"integer\">235</amount_in_cents>\n" +
                                 "    <status>void</status>\n" +
                                 "    <message>Test Gateway: Successful test transaction</message>\n" +

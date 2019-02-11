@@ -17,8 +17,9 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.XmlElement;
 import com.google.common.base.Objects;
+
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Subscription object for update calls.
@@ -35,6 +36,18 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement
     private Timeframe timeframe;
 
+    @XmlElement(name = "coupon_code")
+    private String couponCode;
+
+    @XmlElement(name = "collection_method")
+    private String collectionMethod;
+
+    @XmlElement(name = "shipping_address")
+    private ShippingAddress shippingAddress;
+
+    @XmlElement(name = "shipping_address_id")
+    private Long shippingAddressId;
+
     public Timeframe getTimeframe() {
         return timeframe;
     }
@@ -43,15 +56,32 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.timeframe = timeframe;
     }
 
-    @XmlElement(name = "collection_method")
-    private String collectionMethod;
-
     public String getCollectionMethod() {
         return collectionMethod;
     }
 
-    public void setCollectionMethod(Object collectionMethod) {
+    public void setCollectionMethod(final Object collectionMethod) {
         this.collectionMethod = stringOrNull(collectionMethod);
+    }
+
+    public String getCouponCode() {
+        return couponCode;
+    }
+
+    public void setCouponCode(final Object couponCode) {
+        this.couponCode = stringOrNull(couponCode);
+    }
+
+    public void setShippingAddress(final ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddressId(final Object shippingAddressId) {
+        this.shippingAddressId = longOrNull(shippingAddressId);
     }
 
     @Override
@@ -67,6 +97,18 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (timeframe != that.timeframe) {
             return false;
         }
+        if (couponCode != null ? !couponCode.equals(that.couponCode) : that.couponCode != null) {
+            return false;
+        }
+        if (shippingAddress != null ? !shippingAddress.equals(that.shippingAddress) : that.shippingAddress != null) {
+            return false;
+        }
+        if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
+            return false;
+        }
+        if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
+            return false;
+        }
 
         return true;
     }
@@ -75,7 +117,11 @@ public class SubscriptionUpdate extends AbstractSubscription {
     public int hashCode() {
         return Objects.hashCode(
                 timeframe,
-                collectionMethod
+                couponCode,
+                collectionMethod,
+                shippingAddress,
+                shippingAddressId,
+                customFields
         );
     }
 }

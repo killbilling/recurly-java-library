@@ -51,17 +51,29 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "recurring")
     private Boolean recurring;
 
+    @XmlElement(name = "product_code")
+    private String productCode;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
 
     @XmlElement(name = "details")
     private TransactionDetails details;
 
-    @XmlElement(name = "payment_method")
-    private String paymentMethod;
-
     @XmlElement(name = "collected_at")
     private DateTime collectedAt;
+
+    @XmlElement(name = "gateway_type")
+    private String gatewayType;
+
+    @XmlElement(name = "origin")
+    private String origin;
+
+    @XmlElement(name = "approval_code")
+    private String approvalCode;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -129,9 +141,11 @@ public class Transaction extends AbstractTransaction {
         return recurring;
     }
 
-    public void setRecurring(final Object recurring) {
-        this.recurring = booleanOrNull(recurring);
-    }
+    public void setRecurring(final Object recurring) { this.recurring = booleanOrNull(recurring); }
+
+    protected String getProductCode() { return productCode; }
+
+    public void setProductCode(final Object productCode) { this.productCode = stringOrNull(productCode); }
 
     public DateTime getCreatedAt() {
         return createdAt;
@@ -139,6 +153,14 @@ public class Transaction extends AbstractTransaction {
 
     public void setCreatedAt(final Object createdAt) {
         this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
     public TransactionDetails getDetails() {
@@ -149,14 +171,6 @@ public class Transaction extends AbstractTransaction {
         this.details = details;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(final Object paymentMethod) {
-        this.paymentMethod = stringOrNull(paymentMethod);
-    }
-
     public DateTime getCollectedAt() {
         return collectedAt;
     }
@@ -165,6 +179,29 @@ public class Transaction extends AbstractTransaction {
         this.collectedAt = dateTimeOrNull(collectedAt);
     }
 
+    public String getGatewayType() {
+        return this.gatewayType;
+    }
+
+    protected void setGatewayType(final Object gatewayType) {
+        this.gatewayType = stringOrNull(gatewayType);
+    }
+
+    public String getOrigin() {
+        return this.origin;
+    }
+
+    protected void setOrigin(final Object origin) {
+        this.origin = stringOrNull(origin);
+    }
+
+    public String getApprovalCode() {
+        return this.approvalCode;
+    }
+
+    protected void setApprovalCode(final Object approvalCode) {
+        this.approvalCode = stringOrNull(approvalCode);
+    }
 
     @Override
     public String toString() {
@@ -177,10 +214,14 @@ public class Transaction extends AbstractTransaction {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", recurring=").append(recurring);
+        sb.append(", productCode=").append(productCode);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", details=").append(details);
-        sb.append(", paymentMethod=").append(paymentMethod);
         sb.append(", collectedAt=").append(collectedAt);
+        sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", origin=").append(origin);
+        sb.append(", gatewayType=").append(gatewayType);
+        sb.append(", approvalCode=").append(approvalCode);
         sb.append('}');
         return sb.toString();
     }
@@ -213,6 +254,9 @@ public class Transaction extends AbstractTransaction {
         if (recurring != null ? !recurring.equals(that.recurring) : that.recurring != null) {
             return false;
         }
+        if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
+            return false;
+        }
         if (subscription != null ? !subscription.equals(that.subscription) : that.subscription != null) {
             return false;
         }
@@ -222,10 +266,19 @@ public class Transaction extends AbstractTransaction {
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
-        if (paymentMethod != null ? !paymentMethod.equals(that.paymentMethod) : that.paymentMethod != null) {
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
             return false;
         }
         if (collectedAt != null ? collectedAt.compareTo(that.collectedAt) != 0 : that.collectedAt != null) {
+            return false;
+        }
+        if (origin != null ? !origin.equals(that.origin) : that.origin != null) {
+            return false;
+        }
+        if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) {
+            return false;
+        }
+        if (gatewayType != null ? !gatewayType.equals(that.gatewayType) : that.gatewayType != null) {
             return false;
         }
 
@@ -242,9 +295,14 @@ public class Transaction extends AbstractTransaction {
                 taxInCents,
                 currency,
                 description,
+                productCode,
                 recurring,
                 createdAt,
-                details
+                updatedAt,
+                details,
+                gatewayType,
+                origin,
+                approvalCode
         );
     }
 }

@@ -25,6 +25,12 @@ public class AbstractAddOn extends RecurlyObject {
     @XmlElement(name = "add_on_code")
     protected String addOnCode;
 
+    @XmlElement(name = "measured_unit_id")
+    protected Long measuredUnitId;
+
+    @XmlElement(name = "usage_type")
+    protected String usageType;
+
     public String getAddOnCode() {
         return addOnCode;
     }
@@ -33,10 +39,28 @@ public class AbstractAddOn extends RecurlyObject {
         this.addOnCode = stringOrNull(addOnCode);
     }
 
+    public Long getMeasuredUnitId() {
+        return measuredUnitId;
+    }
+
+    public void setMeasuredUnitId(final Object measuredUnitId) {
+        this.measuredUnitId = longOrNull(measuredUnitId);
+    }
+
+    public String getUsageType() {
+        return usageType;
+    }
+
+    public void setUsageType(final Object usageType) {
+        this.usageType = stringOrNull(usageType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AbstractAddOn{");
         sb.append("addOnCode='").append(addOnCode).append('\'');
+        sb.append("measuredUnitId='").append(measuredUnitId).append('\'');
+        sb.append("usageType='").append(usageType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -52,11 +76,19 @@ public class AbstractAddOn extends RecurlyObject {
             return false;
         }
 
+        if (measuredUnitId != null ? !measuredUnitId.equals(that.measuredUnitId) : that.measuredUnitId != null) {
+            return false;
+        }
+
+        if (usageType != null ? !usageType.equals(that.usageType) : that.usageType != null) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(addOnCode);
+        return Objects.hashCode(addOnCode, measuredUnitId, usageType);
     }
 }

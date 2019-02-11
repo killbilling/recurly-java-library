@@ -21,8 +21,20 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import com.google.common.base.Objects;
 
-@XmlRootElement(name = "account")
+@XmlRootElement(name = "address")
 public class Address extends RecurlyObject {
+
+    @XmlElement(name = "first_name")
+    private String firstName;
+
+    @XmlElement(name = "last_name")
+    private String lastName;
+
+    @XmlElement(name = "name_on_account")
+    private String nameOnAccount;
+
+    @XmlElement(name = "company")
+    private String company;
 
     @XmlElement(name = "address1")
     private String address1;
@@ -44,6 +56,41 @@ public class Address extends RecurlyObject {
 
     @XmlElement(name = "phone")
     private String phone;
+
+    @XmlElement(name = "geo_code")
+    private String geoCode;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(final Object firstName) {
+        this.firstName = stringOrNull(firstName);
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(final Object lastName) {
+        this.lastName = stringOrNull(lastName);
+    }
+
+    public String getNameOnAccount() {
+        return nameOnAccount;
+    }
+
+    public void setNameOnAccount(final Object nameOnAccount) {
+        this.nameOnAccount = stringOrNull(nameOnAccount);
+    }
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(final Object company) {
+        this.company = stringOrNull(company);
+    }
 
     public String getAddress1() {
         return address1;
@@ -101,16 +148,29 @@ public class Address extends RecurlyObject {
         this.phone = stringOrNull(phone);
     }
 
+    public String getGeoCode() {
+        return geoCode;
+    }
+
+    public void setGeoCode(final Object geoCode) {
+        this.geoCode = stringOrNull(geoCode);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Address{");
-        sb.append("address1='").append(address1).append('\'');
+        sb.append("firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
+        sb.append(", company='").append(company).append('\'');
+        sb.append(", address1='").append(address1).append('\'');
         sb.append(", address2='").append(address2).append('\'');
         sb.append(", city='").append(city).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", zip=").append(zip);
         sb.append(", country='").append(country).append('\'');
         sb.append(", phone='").append(phone).append('\'');
+        sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -122,6 +182,18 @@ public class Address extends RecurlyObject {
 
         final Address address = (Address) o;
 
+        if (firstName != null ? !firstName.equals(address.firstName) : address.firstName != null) {
+            return false;
+        }
+        if (lastName != null ? !lastName.equals(address.lastName) : address.lastName != null) {
+            return false;
+        }
+        if (nameOnAccount != null ? !nameOnAccount.equals(address.nameOnAccount) : address.nameOnAccount != null) {
+            return false;
+        }
+        if (company != null ? !company.equals(address.company) : address.company != null) {
+            return false;
+        }
         if (address1 != null ? !address1.equals(address.address1) : address.address1 != null) {
             return false;
         }
@@ -143,6 +215,9 @@ public class Address extends RecurlyObject {
         if (zip != null ? !zip.equals(address.zip) : address.zip != null) {
             return false;
         }
+        if (geoCode != null ? !geoCode.equals(address.geoCode) : address.geoCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -151,13 +226,18 @@ public class Address extends RecurlyObject {
     @Override
     public int hashCode() {
         return Objects.hashCode(
+                firstName,
+                lastName,
+                nameOnAccount,
+                company,
                 address1,
                 address2,
                 city,
                 state,
                 zip,
                 country,
-                phone
+                phone,
+                geoCode
         );
     }
 }

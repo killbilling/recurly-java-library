@@ -48,13 +48,8 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     private String startUrl;
 
     @XmlTransient
-    private String prevUrl;
-
-    @XmlTransient
     private String nextUrl;
 
-    @XmlTransient
-    private Integer nbRecords;
 
     @JsonIgnore
     <U extends RecurlyObjects> U getStart(final Class<U> clazz) {
@@ -64,13 +59,7 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
         return recurlyClient.doGETWithFullURL(clazz, startUrl);
     }
 
-    @JsonIgnore
-    <U extends RecurlyObjects> U getPrev(final Class<U> clazz) {
-        if (recurlyClient == null || prevUrl == null) {
-            return null;
-        }
-        return recurlyClient.doGETWithFullURL(clazz, prevUrl);
-    }
+    public abstract RecurlyObjects<T> getStart();
 
     @JsonIgnore
     <U extends RecurlyObjects> U getNext(final Class<U> clazz) {
@@ -79,6 +68,8 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
         }
         return recurlyClient.doGETWithFullURL(clazz, nextUrl);
     }
+
+    public abstract RecurlyObjects<T> getNext();
 
     @JsonIgnore
     public void setRecurlyClient(final RecurlyClient recurlyClient) {
@@ -96,16 +87,6 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     }
 
     @JsonIgnore
-    public String getPrevUrl() {
-        return prevUrl;
-    }
-
-    @JsonIgnore
-    public void setPrevUrl(final String prevUrl) {
-        this.prevUrl = prevUrl;
-    }
-
-    @JsonIgnore
     public String getNextUrl() {
         return nextUrl;
     }
@@ -113,16 +94,6 @@ public abstract class RecurlyObjects<T extends RecurlyObject> extends ArrayList<
     @JsonIgnore
     public void setNextUrl(final String nextUrl) {
         this.nextUrl = nextUrl;
-    }
-
-    @JsonIgnore
-    public Integer getNbRecords() {
-        return nbRecords;
-    }
-
-    @JsonIgnore
-    public void setNbRecords(final Integer nbRecords) {
-        this.nbRecords = nbRecords;
     }
 
     @Override

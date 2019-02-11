@@ -50,6 +50,9 @@ public class TestBillingInfo extends TestModelBase {
         billingInfo.setVerificationValue("009"); //CVV can have leading zeroes
         billingInfo.setYear(Integer.MIN_VALUE);
         billingInfo.setZip(randomString());
+        billingInfo.setGeoCode(randomString());
+        billingInfo.setGatewayToken(randomString());
+        billingInfo.setGatewayCode(randomString());
 
         final String xml = xmlMapper.writeValueAsString(billingInfo);
         Assert.assertEquals(xmlMapper.readValue(xml, BillingInfo.class), billingInfo);

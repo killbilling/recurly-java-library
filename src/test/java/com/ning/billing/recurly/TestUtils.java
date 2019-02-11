@@ -17,28 +17,35 @@
 
 package com.ning.billing.recurly;
 
-import java.util.Date;
-import java.util.Random;
-import java.util.UUID;
-
-import com.ning.billing.recurly.model.Adjustment;
-import com.ning.billing.recurly.model.Adjustments;
-import com.ning.billing.recurly.model.Invoice;
-import com.ning.billing.recurly.model.Redemption;
-import com.ning.billing.recurly.model.Transactions;
-import org.joda.time.DateTime;
-
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountAcquisition;
+import com.ning.billing.recurly.model.AcquisitionChannel;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.Address;
+import com.ning.billing.recurly.model.Adjustment;
+import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.CustomField;
+import com.ning.billing.recurly.model.CustomFields;
+import com.ning.billing.recurly.model.Delivery;
+import com.ning.billing.recurly.model.GiftCard;
+import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.MeasuredUnit;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Purchase;
 import com.ning.billing.recurly.model.RecurlyUnitCurrency;
+import com.ning.billing.recurly.model.Redemption;
+import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOn;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.Transaction;
+import com.ning.billing.recurly.model.Transactions;
+import com.ning.billing.recurly.model.Usage;
+import org.joda.time.DateTime;
+
+import java.util.Random;
 
 public class TestUtils {
 
@@ -233,7 +240,6 @@ public class TestUtils {
         return "2020";
     }
 
-
     /**
      * Creates a random {@link com.ning.billing.recurly.model.Account} object for testing use.
      *
@@ -252,13 +258,15 @@ public class TestUtils {
     public static Account createRandomAccount(final int seed) {
         final Account account = new Account();
 
-        account.setAcceptLanguage("en_US");
+        account.setAcceptLanguage("en-US");
+        account.setPreferredLocale("en-US");
         account.setAccountCode(randomAlphaNumericString(10, seed));
         account.setCompanyName(randomAlphaNumericString(10, seed));
         account.setEmail(randomAlphaNumericString(4, seed) + "@test.com");
         account.setFirstName(randomAlphaNumericString(5, seed));
         account.setLastName(randomAlphaNumericString(6, seed));
         account.setAddress(createRandomAddress(seed));
+        account.setVatNumber(randomAlphaNumericString(15, seed));
 
         return account;
     }
@@ -281,15 +289,86 @@ public class TestUtils {
     public static Address createRandomAddress(final int seed) {
         final Address address = new Address();
 
+        address.setFirstName(randomAlphaNumericString(10, seed));
+        address.setLastName(randomAlphaNumericString(10, seed));
+        address.setCompany(randomAlphaNumericString(10, seed));
         address.setAddress1(randomAlphaNumericString(10, seed));
         address.setAddress2(randomAlphaNumericString(10, seed));
         address.setCity(randomAlphaNumericString(10, seed));
-        address.setState(randomAlphaString(2, seed));
-        address.setZip(49302);
-        address.setCountry(randomAlphaString(3, seed));
+        address.setState(randomAlphaString(2, seed).toUpperCase());
+        address.setZip("94110");
+        address.setCountry("US");
         address.setPhone(randomNumericString(10, seed));
 
         return address;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.ShippingAddress} object for testing use
+     *
+     * @return The random {@link com.ning.billing.recurly.model.ShippingAddress} object
+     */
+    public static ShippingAddress createRandomShippingAddress() {
+        return createRandomShippingAddress(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.ShippingAddress} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.ShippingAddress} object
+     */
+    public static ShippingAddress createRandomShippingAddress(final int seed) {
+        final ShippingAddress address = new ShippingAddress();
+
+        address.setAddress1(randomAlphaNumericString(10, seed));
+        address.setAddress2(randomAlphaNumericString(10, seed));
+        address.setCity(randomAlphaNumericString(10, seed));
+        address.setState(randomAlphaString(2, seed).toUpperCase());
+        address.setState(randomAlphaString(2, seed).toUpperCase());
+        address.setZip("94110");
+        address.setCountry("US");
+        address.setPhone(randomNumericString(10, seed));
+        address.setNickname(randomAlphaNumericString(10, seed));
+        address.setFirstName(randomAlphaNumericString(10, seed));
+        address.setLastName(randomAlphaNumericString(10, seed));
+        address.setCompany(randomAlphaNumericString(10, seed));
+        address.setEmail(randomAlphaNumericString(10, seed) + "@email.com");
+
+        return address;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.CustomField} object for testing use
+     *
+     * @return The random {@link com.ning.billing.recurly.model.CustomField} object
+     */
+    public static CustomField createRandomCustomField(String name) {
+        return createRandomCustomField(name, randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.CustomField} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.CustomField} object
+     */
+    public static CustomField createRandomCustomField(String name, final int seed) {
+        final CustomField field = new CustomField();
+
+        field.setName(name);
+        field.setValue(randomAlphaNumericString(50, seed));
+
+        return field;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Adjustment} object for testing use
+     *
+     * @return The random {@link com.ning.billing.recurly.model.Adjustment} object
+     */
+    public static Adjustment createRandomAdjustment() {
+        return createRandomAdjustment(randomSeed());
     }
 
     /**
@@ -301,25 +380,16 @@ public class TestUtils {
     public static Adjustment createRandomAdjustment(final int seed) {
         final Adjustment adjustment = new Adjustment();
 
-        adjustment.setAccount(createRandomAccount(seed));
-        adjustment.setUuid(randomAlphaNumericString(20, seed));
         adjustment.setDescription(randomAlphaNumericString(50, seed));
         adjustment.setAccountingCode(randomAlphaNumericString(10, seed));
-        adjustment.setOrigin(randomAlphaNumericString(10, seed));
         adjustment.setUnitAmountInCents(randomInteger(1000, seed));
         adjustment.setQuantity(1 + randomInteger(10, seed));
-        adjustment.setDiscountInCents(randomInteger(1000, seed));
-        adjustment.setTaxInCents(randomInteger(1000, seed));
-        adjustment.setTotalInCents(randomInteger(1000, seed));
         adjustment.setCurrency(randomCurrency(seed));
-        adjustment.setTaxable(true);
         adjustment.setStartDate(NOW);
         adjustment.setStartDate(TOMORROW);
-        adjustment.setCreatedAt(NOW);
 
         return adjustment;
     }
-
 
     /**
      * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use.
@@ -346,9 +416,9 @@ public class TestUtils {
         info.setAddress1(randomAlphaNumericString(10, seed));
         info.setAddress2(randomAlphaNumericString(10, seed));
         info.setCity(randomAlphaNumericString(10, seed));
-        info.setState(randomAlphaNumericString(10, seed));
-        info.setZip(randomAlphaNumericString(5, seed));
-        info.setCountry(randomAlphaNumericString(5, seed));
+        info.setState("CA");
+        info.setZip("94110");
+        info.setCountry("US");
         info.setPhone(randomInteger(8, seed));
         info.setVatNumber(randomNumericString(8, seed));
         info.setYear(createTestCCYear());
@@ -416,7 +486,7 @@ public class TestUtils {
         price.setUnitAmountUSD(LifecycleTest.randomInteger(10));
         price.setUnitAmountSEK(LifecycleTest.randomInteger(10));
         */
-        price.setUnitAmountEUR(10);
+        price.setUnitAmountUSD(10);
 
         return price;
     }
@@ -657,7 +727,7 @@ public class TestUtils {
         coupon.setName(randomAlphaNumericString(10, seed));
         coupon.setCouponCode(randomAlphaNumericString(10, seed).toLowerCase());
         coupon.setDiscountType("percent");
-        coupon.setDiscountPercent(randomNumericString(2, seed));
+        coupon.setDiscountPercent(randomInteger(90, seed) + 1);
 
         return coupon;
     }
@@ -693,6 +763,9 @@ public class TestUtils {
         invoice.setCreatedAt(NOW);
         invoice.setCollectionMethod("credit_card");
         invoice.setNetTerms(randomInteger(100, seed));
+        invoice.setCustomerNotes("Customer Notes " + randomAlphaString(20, seed));
+        invoice.setTermsAndConditions("Terms and Conditions " + randomAlphaString(20, seed));
+        invoice.setVatReverseChargeNotes("VAT Reverse Charge Notes " + randomAlphaString(20, seed));
 
         Adjustments adjustments = new Adjustments();
         for (int i = 0; i < 3; i++) {
@@ -731,6 +804,7 @@ public class TestUtils {
 
         redemption.setAccount(account);
         redemption.setAccountCode(account.getAccountCode());
+        redemption.setSubscriptionUuid(randomAlphaNumericString(10, seed));
         redemption.setCoupon(createRandomCoupon(seed));
         redemption.setSingleUse(true);
         redemption.setState("redeemed");
@@ -738,5 +812,180 @@ public class TestUtils {
         redemption.setTotalDiscountedInCents(randomInteger(1000, seed));
 
         return redemption;
+    }
+
+    /**
+     * Creates a random {@link Delivery} object for use in Tests
+     *
+     * @return The random {@link Delivery} object
+     */
+    public static Delivery createRandomDelivery() {
+        return createRandomDelivery(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Delivery} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Delivery} object
+     */
+    public static Delivery createRandomDelivery(final int seed) {
+        Delivery delivery = new Delivery();
+
+        delivery.setAddress(createRandomAddress(seed));
+        delivery.setEmailAddress(randomAlphaNumericString(10, seed) + "@email.com");
+        delivery.setFirstName(randomAlphaNumericString(5, seed));
+        delivery.setLastName(randomAlphaNumericString(5, seed));
+        delivery.setGifterName(randomAlphaNumericString(5, seed));
+        delivery.setMethod("email");
+        delivery.setPersonalMessage(randomAlphaNumericString(100, seed));
+        if (seed == 0) { // we want it to be deterministic
+            delivery.setDeliverAt(new DateTime("2020-01-01T00:00:00Z"));
+        } else {
+            delivery.setDeliverAt(new DateTime().plusDays(5)); // needs to be at least 1 hour in future
+        }
+
+        return delivery;
+    }
+
+    /**
+     * Creates a random {@link GiftCard} object for use in Tests
+     *
+     * @return The random {@link GiftCard} object
+     */
+    public static GiftCard createRandomGiftCard() {
+        return createRandomGiftCard(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link GiftCard} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link GiftCard} object
+     */
+    public static GiftCard createRandomGiftCard(final int seed) {
+        final GiftCard giftCardData = new GiftCard();
+        final Account accountData = createRandomAccount(seed);
+        final Delivery deliveryData = createRandomDelivery(seed);
+        final BillingInfo billingInfoData = createRandomBillingInfo(seed);
+
+        // need to null out account
+        // TODO - account should not be writeable in XML
+        billingInfoData.setAccount(null);
+        accountData.setBillingInfo(billingInfoData);
+
+        // Gift card product needs to be created on the site with
+        // product code "test_gift_card"
+
+        giftCardData.setGifterAccount(accountData);
+        giftCardData.setDelivery(deliveryData);
+        giftCardData.setCurrency("USD");
+        giftCardData.setProductCode("test_gift_card");
+        giftCardData.setUnitAmountInCents(2000);
+
+        return giftCardData;
+    }
+
+    /**
+     * Creates a random {@link Usage} object for use in Tests
+     *
+     * @return The random {@link Usage} object
+     */
+    public static Usage createRandomUsage() {
+        return createRandomUsage(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Usage} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Usage} object
+     */
+    public static Usage createRandomUsage(final int seed) {
+        final Usage usage = new Usage();
+
+        usage.setAmount(randomInteger(1000, seed));
+        usage.setMerchantTag("merchant");
+        usage.setUsagePercentage(randomInteger(100, seed));
+        usage.setUsageType("price");
+        usage.setUnitAmountInCents(randomInteger(1000, seed));
+        usage.setUsageAt(NOW);
+
+        return usage;
+    }
+
+    /**
+     * Creates a random {@link MeasuredUnit} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link MeasuredUnit} object
+     */
+    public static MeasuredUnit createRandomMeasuredUnit(final int seed) {
+        final MeasuredUnit measuredUnit = new MeasuredUnit();
+
+        measuredUnit.setName(randomAlphaNumericString(10, seed));
+        measuredUnit.setDisplayName(randomAlphaNumericString(10, seed));
+        measuredUnit.setDescription(randomAlphaNumericString(50, seed));
+
+        return measuredUnit;
+    }
+
+    /**
+     * Creates a random {@link Purchase} object for use in Tests
+     *
+     * @return The random {@link Purchase} object
+     */
+    public static Purchase createRandomPurchase() {
+        return createRandomPurchase(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link Purchase} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link Purchase} object
+     */
+    public static Purchase createRandomPurchase(final int seed) {
+        final Purchase purchase = new Purchase();
+
+        purchase.setAccount(createRandomAccount(seed));
+
+        Adjustments adjustments = new Adjustments();
+        adjustments.add(createRandomAdjustment(seed));
+        purchase.setAdjustments(adjustments);
+
+        purchase.setCurrency("USD");
+        purchase.setCollectionMethod("automatic");
+        purchase.setPoNumber("PO12345");
+        purchase.setNetTerms(30);
+
+        return purchase;
+    }
+
+    /**
+     * Creates a random {@link AccountAcquisition} object for use in Tests
+     *
+     * @return The random {@link AccountAcquisition} object
+     */
+    public static AccountAcquisition createRandomAccountAcquisition() {
+        return createRandomAccountAcquisition(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link AccountAcquisition} object for use in Tests given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AccountAcquisition} object
+     */
+    public static AccountAcquisition createRandomAccountAcquisition(final int seed) {
+        final AccountAcquisition acquisition = new AccountAcquisition();
+
+        acquisition.setCurrency("USD");
+        acquisition.setCampaign("mailchimp." + randomAlphaNumericString(10, seed));
+        acquisition.setChannel(AcquisitionChannel.MARKETING_CONTENT);
+        acquisition.setCostInCents(randomInteger(1000, seed));
+        acquisition.setSubchannel(randomAlphaNumericString(50, seed));
+
+        return acquisition;
     }
 }

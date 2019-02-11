@@ -20,14 +20,19 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Objects;
+import org.joda.time.DateTime;
 
 @XmlRootElement(name = "billing_info")
 public class BillingInfo extends RecurlyObject {
 
     @XmlTransient
     public static final String BILLING_INFO_RESOURCE = "/billing_info";
+
+    @XmlAttribute(name = "type")
+    private String type;
 
     @XmlElement(name = "account")
     private Account account;
@@ -95,6 +100,31 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "token_id")
     private String tokenId;
 
+    @XmlElement(name = "currency")
+    private String currency;
+
+    @XmlElement(name = "geo_code")
+    private String geoCode;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
+    @XmlElement(name = "external_hpp_type")
+    private String externalHppType;
+
+    @XmlElement(name = "gateway_token")
+    private String gatewayToken;
+
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
+    public String getType() {
+        return type;
+    }
+
+    protected void setType(final Object type) {
+        this.type = stringOrNull(type);
+    }
 
     /**
      * Account object associated to this BillingInfo
@@ -274,12 +304,60 @@ public class BillingInfo extends RecurlyObject {
         this.verificationValue = stringOrNull(verificationValue);
     }
 
-    public String getTokenId(){
+    public String getTokenId() {
         return tokenId;
     }
 
-    public void setTokenId(final String tokenId){
+    public void setTokenId(final String tokenId) {
         this.tokenId = tokenId;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(final Object currency) {
+        this.currency = stringOrNull(currency);
+    }
+
+    public String getGeoCode() {
+        return geoCode;
+    }
+
+    public void setGeoCode(final Object geoCode) {
+        this.geoCode = stringOrNull(geoCode);
+    }
+
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
+    public String getExternalHppType() {
+        return externalHppType;
+    }
+
+    public void setExternalHppType(final Object externalHppType) {
+        this.externalHppType = stringOrNull(externalHppType);
+    }
+
+    public String getGatewayToken() {
+        return gatewayToken;
+    }
+
+    public void setGatewayToken(final Object gatewayToken) {
+        this.gatewayToken = stringOrNull(gatewayToken);
+    }
+
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
     }
 
     @Override
@@ -287,6 +365,7 @@ public class BillingInfo extends RecurlyObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("BillingInfo");
         sb.append("{account='").append(account).append('\'');
+        sb.append(", type='").append(type).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", company='").append(company).append('\'');
@@ -305,6 +384,11 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", month=").append(month);
         sb.append(", firstSix='").append(firstSix).append('\'');
         sb.append(", lastFour='").append(lastFour).append('\'');
+        sb.append(", geoCode='").append(geoCode).append('\'');
+        sb.append(", updatedAt='").append(updatedAt).append('\'');
+        sb.append(", externalHppType='").append(externalHppType).append('\'');
+        sb.append(", gatewayToken='").append(gatewayToken).append('\'');
+        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -364,6 +448,9 @@ public class BillingInfo extends RecurlyObject {
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
         if (vatNumber != null ? !vatNumber.equals(that.vatNumber) : that.vatNumber != null) {
             return false;
         }
@@ -371,6 +458,21 @@ public class BillingInfo extends RecurlyObject {
             return false;
         }
         if (zip != null ? !zip.equals(that.zip) : that.zip != null) {
+            return false;
+        }
+        if (geoCode != null ? !geoCode.equals(that.geoCode) : that.geoCode != null) {
+            return false;
+        }
+        if (gatewayToken != null ? !gatewayToken.equals(that.gatewayToken) : that.gatewayToken != null) {
+            return false;
+        }
+        if (gatewayCode != null ? !gatewayCode.equals(that.gatewayCode) : that.gatewayCode != null) {
+            return false;
+        }
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
+        if (externalHppType != null ? !externalHppType.equals(that.externalHppType) : that.externalHppType != null) {
             return false;
         }
 
@@ -398,7 +500,13 @@ public class BillingInfo extends RecurlyObject {
                 year,
                 month,
                 firstSix,
-                lastFour
+                lastFour,
+                updatedAt,
+                geoCode,
+                type,
+                externalHppType,
+                gatewayToken,
+                gatewayCode
         );
     }
 }

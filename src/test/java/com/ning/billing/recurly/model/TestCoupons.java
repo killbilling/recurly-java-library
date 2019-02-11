@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -24,8 +24,8 @@ public class TestCoupons extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See https://dev.recurly.com/docs/list-accounts
-        final String accountsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        // See https://dev.recurly.com/docs/list-active-coupons
+        final String couponData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                     "<coupons type=\"array\">\n" +
                                     "  <coupon href=\"https://api.recurly.com/v2/coupons/cdeb2\">\n" +
                                     "    <redemptions href=\"https://api.recurly.com/v2/coupons/cdeb2/redemptions\"/>\n" +
@@ -35,12 +35,12 @@ public class TestCoupons extends TestModelBase {
                                     "    <description nil=\"nil\"></description>\n" +
                                     "    <discount_type>percent</discount_type>\n" +
                                     "    <discount_percent type=\"integer\">100</discount_percent>\n" +
-                                    "    <redeem_by_date type=\"datetime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
+                                    "    <redeem_by_date type=\"dateTime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
                                     "    <single_use type=\"boolean\">true</single_use>\n" +
                                     "    <applies_for_months type=\"integer\">3</applies_for_months>\n" +
                                     "    <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                                     "    <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
-                                    "    <created_at type=\"datetime\">2013-05-08T11:25:05Z</created_at>\n" +
+                                    "    <created_at type=\"dateTime\">2013-05-08T11:25:05Z</created_at>\n" +
                                     "    <plan_codes type=\"array\">\n" +
                                     "    </plan_codes>\n" +
                                     "    <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/cdeb2/redeem\" method=\"post\"/>\n" +
@@ -53,12 +53,12 @@ public class TestCoupons extends TestModelBase {
                                     "    <description nil=\"nil\"></description>\n" +
                                     "    <discount_type>percent</discount_type>\n" +
                                     "    <discount_percent type=\"integer\">100</discount_percent>\n" +
-                                    "    <redeem_by_date type=\"datetime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
+                                    "    <redeem_by_date type=\"dateTime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
                                     "    <single_use type=\"boolean\">true</single_use>\n" +
                                     "    <applies_for_months type=\"integer\">3</applies_for_months>\n" +
                                     "    <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                                     "    <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
-                                    "    <created_at type=\"datetime\">2013-05-08T11:25:04Z</created_at>\n" +
+                                    "    <created_at type=\"dateTime\">2013-05-08T11:25:04Z</created_at>\n" +
                                     "    <plan_codes type=\"array\">\n" +
                                     "    </plan_codes>\n" +
                                     "    <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/4c236/redeem\" method=\"post\"/>\n" +
@@ -71,12 +71,12 @@ public class TestCoupons extends TestModelBase {
                                     "    <description nil=\"nil\"></description>\n" +
                                     "    <discount_type>percent</discount_type>\n" +
                                     "    <discount_percent type=\"integer\">100</discount_percent>\n" +
-                                    "    <redeem_by_date type=\"datetime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
+                                    "    <redeem_by_date type=\"dateTime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
                                     "    <single_use type=\"boolean\">true</single_use>\n" +
                                     "    <applies_for_months type=\"integer\">3</applies_for_months>\n" +
                                     "    <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                                     "    <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
-                                    "    <created_at type=\"datetime\">2013-05-08T11:25:03Z</created_at>\n" +
+                                    "    <created_at type=\"dateTime\">2013-05-08T11:25:03Z</created_at>\n" +
                                     "    <plan_codes type=\"array\">\n" +
                                     "    </plan_codes>\n" +
                                     "    <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/558ae/redeem\" method=\"post\"/>\n" +
@@ -89,13 +89,14 @@ public class TestCoupons extends TestModelBase {
                                     "    <description nil=\"nil\"></description>\n" +
                                     "    <discount_type>percent</discount_type>\n" +
                                     "    <discount_percent type=\"integer\">100</discount_percent>\n" +
-                                    "    <redeem_by_date type=\"datetime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
+                                    "    <redeem_by_date type=\"dateTime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
                                     "    <single_use type=\"boolean\">true</single_use>\n" +
                                     "    <applies_for_months type=\"integer\">3</applies_for_months>\n" +
                                     "    <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                                     "    <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
-                                    "    <created_at type=\"datetime\">2013-05-08T11:25:02Z</created_at>\n" +
+                                    "    <created_at type=\"dateTime\">2013-05-08T11:25:02Z</created_at>\n" +
                                     "    <plan_codes type=\"array\">\n" +
+                                    "      <plan_code>gold</plan_code>\n" +
                                     "    </plan_codes>\n" +
                                     "    <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/9442c/redeem\" method=\"post\"/>\n" +
                                     "  </coupon>\n" +
@@ -107,19 +108,29 @@ public class TestCoupons extends TestModelBase {
                                     "    <description nil=\"nil\"></description>\n" +
                                     "    <discount_type>percent</discount_type>\n" +
                                     "    <discount_percent type=\"integer\">100</discount_percent>\n" +
-                                    "    <redeem_by_date type=\"datetime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
+                                    "    <redeem_by_date type=\"dateTime\">2013-09-30T21:00:00Z</redeem_by_date>\n" +
                                     "    <single_use type=\"boolean\">true</single_use>\n" +
                                     "    <applies_for_months type=\"integer\">3</applies_for_months>\n" +
                                     "    <max_redemptions nil=\"nil\"></max_redemptions>\n" +
                                     "    <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
-                                    "    <created_at type=\"datetime\">2013-05-08T11:24:31Z</created_at>\n" +
+                                    "    <created_at type=\"dateTime\">2013-05-08T11:24:31Z</created_at>\n" +
                                     "    <plan_codes type=\"array\">\n" +
+                                    "      <plan_code>gold</plan_code>\n" +
+                                    "      <plan_code>silver</plan_code>" +
                                     "    </plan_codes>\n" +
                                     "    <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/f15a9/redeem\" method=\"post\"/>\n" +
                                     "  </coupon>\n" +
                                     "</coupons>\n";
 
-        final Coupons coupons = xmlMapper.readValue(accountsData, Coupons.class);
+        final Coupons coupons = xmlMapper.readValue(couponData, Coupons.class);
         Assert.assertEquals(coupons.size(), 5);
+        Assert.assertEquals(coupons.get(0).getPlanCodes().size(), 0);
+        Assert.assertEquals(coupons.get(1).getPlanCodes().size(), 0);
+        Assert.assertEquals(coupons.get(2).getPlanCodes().size(), 0);
+        Assert.assertEquals(coupons.get(3).getPlanCodes().size(), 1);
+        Assert.assertEquals(coupons.get(3).getPlanCodes().get(0).getName(), "gold");
+        Assert.assertEquals(coupons.get(4).getPlanCodes().size(), 2);
+        Assert.assertEquals(coupons.get(4).getPlanCodes().get(0).getName(), "gold");
+        Assert.assertEquals(coupons.get(4).getPlanCodes().get(1).getName(), "silver");
     }
 }

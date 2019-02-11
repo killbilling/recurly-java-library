@@ -1,6 +1,8 @@
 # Temp files and IDE files
 *.*#
+.vscode
 .idea
+.vscode
 *.iml
 *.ipr
 *.iws
@@ -20,7 +22,10 @@ test-output/*
 .settings/*
 .project
 .classpath
+bin
 
 .DS_Store
 
 src/main/resources/com/ning/billing/recurly/git.properties
+
+dependency-reduced-pom.xml

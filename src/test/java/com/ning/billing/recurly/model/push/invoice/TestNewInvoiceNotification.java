@@ -42,12 +42,12 @@ public class TestNewInvoiceNotification extends TestModelBase {
                                 "    <state>open</state>\n" +
                                 "    <invoice_number_prefix></invoice_number_prefix>\n" +
                                 "    <invoice_number type=\"integer\">1000</invoice_number>\n" +
-                                "    <po_number></po_number>\n" +
+                                "    <po_number>abcd</po_number>\n" +
                                 "    <vat_number></vat_number>\n" +
                                 "    <total_in_cents type=\"integer\">1000</total_in_cents>\n" +
                                 "    <currency>USD</currency>\n" +
-                                "    <date type=\"datetime\">2014-01-01T20:21:44Z</date>\n" +
-                                "    <closed_at type=\"datetime\" nil=\"true\"></closed_at>\n" +
+                                "    <date type=\"dateTime\">2014-01-01T20:21:44Z</date>\n" +
+                                "    <closed_at type=\"dateTime\" nil=\"true\"></closed_at>\n" +
                                 "    <net_terms type=\"integer\">0</net_terms>\n" +
                                 "    <collection_method>automatic</collection_method>\n" +
                                 "  </invoice>\n" +

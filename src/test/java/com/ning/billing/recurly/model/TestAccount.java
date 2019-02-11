@@ -43,9 +43,18 @@ public class TestAccount extends TestModelBase {
                                    "  <email>verena@example.com</email>\n" +
                                    "  <first_name>Verena</first_name>\n" +
                                    "  <last_name>Example</last_name>\n" +
+                                   "  <tax_exempt type=\"boolean\">false</tax_exempt>\n\n" +
+                                   "  <exemption_certificate>Some Certificate</exemption_certificate>\n" +
                                    "  <accept_language nil=\"nil\"></accept_language>\n" +
                                    "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
-                                   "  <created_at type=\"datetime\">2011-10-25T12:00:00</created_at>\n" +
+                                   "  <created_at type=\"dateTime\">2011-10-25T12:00:00</created_at>\n" +
+                                   "  <updated_at type=\"dateTime\">2011-10-25T12:00:00</updated_at>\n" +
+                                   "  <has_live_subscription type=\"boolean\">true</has_live_subscription>\n" +
+                                   "  <has_active_subscription type=\"boolean\">true</has_active_subscription>\n" +
+                                   "  <has_future_subscription type=\"boolean\">false</has_future_subscription>\n" +
+                                   "  <has_canceled_subscription type=\"boolean\">false</has_canceled_subscription>\n" +
+                                   "  <has_past_due_invoice type=\"boolean\">false</has_past_due_invoice>\n" +
+                                   "  <vat_number>U12345678</vat_number>\n" +
                                    "  <address>\n" +
                                    "      <address1>123 Main St.</address1>\n" +
                                    "      <address2 nil=\"nil\"></address2>\n" +
@@ -54,7 +63,13 @@ public class TestAccount extends TestModelBase {
                                    "      <zip>94105-1804</zip>\n" +
                                    "      <country>US</country>\n" +
                                    "      <phone nil=\"nil\"></phone>\n" +
-                                   "  </address>" +
+                                   "  </address>\n" +
+                                   "  <custom_fields type=\"array\">\n" +
+                                   "    <custom_field>\n" +
+                                   "      <name>acct_field</name>\n" +
+                                   "      <value>some account value</value>\n" +
+                                   "    </custom_field>\n" +
+                                   "  </custom_fields>\n" +
                                    "</account>";
 
         final Account account = xmlMapper.readValue(accountData, Account.class);
@@ -64,6 +79,7 @@ public class TestAccount extends TestModelBase {
         // Verify serialization
         final String accountSerialized = xmlMapper.writeValueAsString(account);
         final Account account2 = xmlMapper.readValue(accountSerialized, Account.class);
+        Assert.assertNull(account2.getHref());
         verifyAccount(account2);
     }
 
@@ -88,13 +104,32 @@ public class TestAccount extends TestModelBase {
         Assert.assertNull(account.getAcceptLanguage());
         Assert.assertEquals(account.getHostedLoginToken(), "a92468579e9c4231a6c0031c4716c01d");
         Assert.assertEquals(account.getCreatedAt(), new DateTime("2011-10-25T12:00:00"));
+        Assert.assertEquals(account.getUpdatedAt(), new DateTime("2011-10-25T12:00:00"));
         Assert.assertEquals(account.getAddress().getAddress1(), "123 Main St.");
         Assert.assertNull(account.getAddress().getAddress2());
         Assert.assertEquals(account.getAddress().getCity(), "San Francisco");
         Assert.assertEquals(account.getAddress().getState(), "CA");
         Assert.assertEquals(account.getAddress().getZip(), "94105-1804");
         Assert.assertEquals(account.getAddress().getCountry(), "US");
+        Assert.assertFalse(account.getTaxExempt());
+        Assert.assertEquals(account.getExemptionCertificate(), "Some Certificate");
         Assert.assertNull(account.getAddress().getPhone());
+        Assert.assertEquals(account.getCustomFields(), getTestFields());
+        Assert.assertTrue(account.getHasLiveSubscription());
+        Assert.assertTrue(account.getHasActiveSubscription());
+        Assert.assertFalse(account.getHasFutureSubscription());
+        Assert.assertFalse(account.getHasCanceledSubscription());
+        Assert.assertFalse(account.getHasPastDueInvoice());
+        Assert.assertEquals(account.getVatNumber(), "U12345678");
+    }
+
+    private CustomFields getTestFields() {
+        CustomField cf = new CustomField();
+        cf.setName("acct_field");
+        cf.setValue("some account value");
+        CustomFields fields = new CustomFields();
+        fields.add(cf);
+        return fields;
     }
 
 }

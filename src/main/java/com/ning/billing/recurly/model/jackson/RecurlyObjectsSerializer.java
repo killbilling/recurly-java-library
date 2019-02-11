@@ -31,9 +31,9 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 
 public class RecurlyObjectsSerializer<T extends RecurlyObjects<U>, U extends RecurlyObject> extends StdSerializer<T> {
-	private static final long serialVersionUID = 3364977585605030678L;
-	
-	private final String elementName;
+  private static final long serialVersionUID = 3364977585605030678L;
+  
+  private final String elementName;
 
     public RecurlyObjectsSerializer(final Class<T> recurlyObjectsClassName, final String elementName) {
         super(recurlyObjectsClassName);

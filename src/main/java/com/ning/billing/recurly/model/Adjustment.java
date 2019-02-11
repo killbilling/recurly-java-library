@@ -17,17 +17,21 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.joda.time.DateTime;
-import com.google.common.base.Objects;
+import java.math.BigDecimal;
 
 @XmlRootElement(name = "adjustment")
 public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "account")
     private Account account;
+
+    @XmlElement(name = "subscription")
+    private Subscription subscription;
 
     @XmlElement(name = "uuid")
     private String uuid;
@@ -62,6 +66,12 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "taxable")
     private Boolean taxable;
 
+    @XmlElement(name = "tax_exempt")
+    private Boolean taxExempt;
+
+    @XmlElement(name = "product_code")
+    private String productCode;
+
     @XmlElement(name = "start_date")
     private DateTime startDate;
 
@@ -70,6 +80,33 @@ public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
+
+    @XmlElement(name = "updated_at")
+    private DateTime updatedAt;
+
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
+    @XmlElement(name = "credit_reason_code")
+    private String creditReasonCode;
+
+    @XmlElement(name = "original_adjustment_uuid")
+    private String originalAdjustmentUuid;
+
+    @XmlElement(name = "shipping_address")
+    private ShippingAddress shippingAddress;
+
+    @XmlElement(name = "shipping_address_id")
+    private Long shippingAddressId;
+
+    @XmlElement(name = "refundable_total_in_cents")
+    private Integer refundableTotalInCents;
+
+    @XmlElement(name = "state")
+    private String state;
+
+    @XmlElement(name = "proration_rate")
+    private BigDecimal prorationRate;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -80,6 +117,18 @@ public class Adjustment extends RecurlyObject {
 
     public void setAccount(final Account account) {
         this.account = account;
+    }
+
+    public String getSubscriptionId() {
+        if (subscription != null && subscription.getHref() != null) {
+            String[] parts = subscription.getHref().split("/");
+            return parts[parts.length - 1];
+        }
+        return null;
+    }
+
+    public void setSubscription(final Subscription subscription) {
+        this.subscription = subscription;
     }
 
     public String getUuid() {
@@ -170,6 +219,18 @@ public class Adjustment extends RecurlyObject {
         this.taxable = booleanOrNull(taxable);
     }
 
+    public Boolean getTaxExempt() {
+        return taxExempt;
+    }
+
+    public void setTaxExempt(final Object taxExempt) {
+        this.taxExempt = booleanOrNull(taxExempt);
+    }
+
+    public String getProductCode() { return productCode; }
+
+    public void setProductCode(final Object productCode) { this.productCode = stringOrNull(productCode); }
+
     public DateTime getStartDate() {
         return startDate;
     }
@@ -194,6 +255,86 @@ public class Adjustment extends RecurlyObject {
         this.createdAt = dateTimeOrNull(createdAt);
     }
 
+    public DateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(final Object updatedAt) {
+        this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
+    public AdjustmentRefund toAdjustmentRefund() {
+        final AdjustmentRefund adjustmentRefund = new AdjustmentRefund();
+        adjustmentRefund.setUuid(uuid);
+        adjustmentRefund.setQuantity(quantity);
+        adjustmentRefund.setProrate(false);
+        return adjustmentRefund;
+    }
+
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final Object revenueScheduleType) {
+        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
+    }
+
+    public String getCreditReasonCode() {
+        return creditReasonCode;
+    }
+
+    public void setCreditReasonCode(final Object creditReasonCode) {
+        this.creditReasonCode = stringOrNull(creditReasonCode);
+    }
+
+    public String getOriginalAdjustmentUuid() {
+        return originalAdjustmentUuid;
+    }
+
+    public void setOriginalAdjustmentUuid(final Object originalAdjustmentUuid) {
+        this.originalAdjustmentUuid = stringOrNull(originalAdjustmentUuid);
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(final ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public Long getShippingAddressId() {
+        return shippingAddressId;
+    }
+
+    public void setShippingAddressId(final Object shippingAddressId) {
+        this.shippingAddressId = longOrNull(shippingAddressId);
+    }
+
+    public Integer getRefundableTotalInCents() {
+        return refundableTotalInCents;
+    }
+
+    public void setRefundableTotalInCents(final Object refundableTotalInCents) {
+        this.refundableTotalInCents = integerOrNull(refundableTotalInCents);
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(final Object state) {
+        this.state = stringOrNull(state);
+    }
+
+    public BigDecimal getProrationRate() {
+        return prorationRate;
+    }
+
+    public void setProrationRate(final Object prorationRate) {
+        this.prorationRate = bigDecimalOrNull(prorationRate);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -207,12 +348,23 @@ public class Adjustment extends RecurlyObject {
         sb.append(", quantity=").append(quantity);
         sb.append(", discountInCents=").append(discountInCents);
         sb.append(", taxInCents=").append(taxInCents);
+        sb.append(", taxExempt=").append(taxExempt);
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", taxable=").append(taxable);
+        sb.append(", productCode=").append(productCode);
         sb.append(", startDate=").append(startDate);
         sb.append(", endDate=").append(endDate);
         sb.append(", createdAt=").append(createdAt);
+        sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", revenueScheduleType=").append(revenueScheduleType);
+        sb.append(", creditReasonCode=").append(creditReasonCode);
+        sb.append(", originalAdjustmentUuid=").append(originalAdjustmentUuid);
+        sb.append(", shippingAddress=").append(shippingAddress);
+        sb.append(", shippingAddressId=").append(shippingAddressId);
+        sb.append(", refundableTotalInCents=").append(refundableTotalInCents);
+        sb.append(", state=").append(state);
+        sb.append(", prorationRate=").append(prorationRate);
         sb.append('}');
         return sb.toString();
     }
@@ -236,6 +388,9 @@ public class Adjustment extends RecurlyObject {
         if (currency != null ? !currency.equals(that.currency) : that.currency != null) {
             return false;
         }
+        if (creditReasonCode != null ? !creditReasonCode.equals(that.creditReasonCode) : that.creditReasonCode != null) {
+            return false;
+        }
         if (description != null ? !description.equals(that.description) : that.description != null) {
             return false;
         }
@@ -248,7 +403,19 @@ public class Adjustment extends RecurlyObject {
         if (origin != null ? !origin.equals(that.origin) : that.origin != null) {
             return false;
         }
+        if (originalAdjustmentUuid != null ? !originalAdjustmentUuid.equals(that.originalAdjustmentUuid) : that.originalAdjustmentUuid != null) {
+            return false;
+        }
+        if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
+            return false;
+        }
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
+            return false;
+        }
+        if (shippingAddress != null ? !shippingAddress.equals(that.shippingAddress) : that.shippingAddress != null) {
+            return false;
+        }
+        if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
             return false;
         }
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) {
@@ -260,6 +427,9 @@ public class Adjustment extends RecurlyObject {
         if (taxable != null ? !taxable.equals(that.taxable) : that.taxable != null) {
             return false;
         }
+        if (taxExempt != null ? !taxExempt.equals(that.taxExempt) : that.taxExempt != null) {
+            return false;
+        }
         if (totalInCents != null ? !totalInCents.equals(that.totalInCents) : that.totalInCents != null) {
             return false;
         }
@@ -269,7 +439,21 @@ public class Adjustment extends RecurlyObject {
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
-
+        if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
+            return false;
+        }
+        if (refundableTotalInCents != null ? !refundableTotalInCents.equals(that.refundableTotalInCents) : that.refundableTotalInCents != null) {
+            return false;
+        }
+        if (state != null ? !state.equals(that.state) : that.state != null) {
+            return false;
+        }
+        if (prorationRate != null ? !prorationRate.equals(that.prorationRate) : that.prorationRate != null) {
+            return false;
+        }
         return true;
     }
 
@@ -283,14 +467,26 @@ public class Adjustment extends RecurlyObject {
                 origin,
                 unitAmountInCents,
                 quantity,
+                productCode,
                 discountInCents,
                 taxInCents,
                 totalInCents,
                 currency,
                 taxable,
+                taxExempt,
                 startDate,
                 endDate,
-                createdAt
+                createdAt,
+                updatedAt,
+                revenueScheduleType,
+                creditReasonCode,
+                originalAdjustmentUuid,
+                shippingAddress,
+                shippingAddressId,
+                refundableTotalInCents,
+                state,
+                prorationRate
         );
     }
+
 }

@@ -48,9 +48,11 @@ public class TestPlan extends TestModelBase {
                                 "  <plan_interval_unit>months</plan_interval_unit>\n" +
                                 "  <trial_interval_length type=\"integer\">0</trial_interval_length>\n" +
                                 "  <trial_interval_unit>days</trial_interval_unit>\n" +
+                                "  <total_billing_cycles type=\"integer\">24</total_billing_cycles>\n" +
                                 "  <accounting_code nil=\"nil\"></accounting_code>\n" +
-                                "  <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
-                                "  <tax_code nil=\"nil\"></tax_code>\n" +
+                                "  <setup_fee_accounting_code nil=\"nil\"></setup_fee_accounting_code>\n" +
+                                "  <created_at type=\"dateTime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                "  <updated_at type=\"dateTime\">2011-04-19T07:00:00Z</updated_at>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "    <USD type=\"integer\">1000</USD>\n" +
                                 "    <EUR type=\"integer\">800</EUR>\n" +
@@ -71,6 +73,7 @@ public class TestPlan extends TestModelBase {
         Assert.assertFalse(plan.getDisplayDonationAmounts());
         Assert.assertFalse(plan.getDisplayQuantity());
         Assert.assertEquals(plan.getCreatedAt(), new DateTime("2011-04-19T07:00:00Z"));
+        Assert.assertEquals(plan.getUpdatedAt(), new DateTime("2011-04-19T07:00:00Z"));
         Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountUSD(), new Integer(1000));
         Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountEUR(), new Integer(800));
         Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountUSD(), new Integer(6000));
@@ -78,7 +81,9 @@ public class TestPlan extends TestModelBase {
         Assert.assertNull(plan.getDescription());
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());
+        Assert.assertEquals(24, (int) plan.getTotalBillingCycles());
         Assert.assertNull(plan.getAccountingCode());
+        Assert.assertNull(plan.getSetupFeeAccountingCode());
     }
 
     @Test(groups = "fast")
@@ -102,9 +107,13 @@ public class TestPlan extends TestModelBase {
                                 "  <plan_interval_unit>months</plan_interval_unit>\n" +
                                 "  <trial_interval_length type=\"integer\">0</trial_interval_length>\n" +
                                 "  <trial_interval_unit>days</trial_interval_unit>\n" +
+                                "  <total_billing_cycles type=\"integer\">24</total_billing_cycles>\n" +
                                 "  <accounting_code nil=\"nil\"></accounting_code>\n" +
-                                "  <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
-                                "  <tax_code nil=\"nil\"></tax_code>\n" +
+                                "  <setup_fee_accounting_code nil=\"nil\"></setup_fee_accounting_code>\n" +
+                                "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
+                                "  <setup_fee_revenue_schedule_type>evenly</setup_fee_revenue_schedule_type>>\n" +
+                                "  <created_at type=\"dateTime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                "  <updated_at type=\"dateTime\">2011-04-19T07:00:00Z</updated_at>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "  </unit_amount_in_cents>\n" +
                                 "  <setup_fee_in_cents>\n" +
@@ -121,12 +130,17 @@ public class TestPlan extends TestModelBase {
         Assert.assertFalse(plan.getDisplayDonationAmounts());
         Assert.assertFalse(plan.getDisplayQuantity());
         Assert.assertEquals(plan.getCreatedAt(), new DateTime("2011-04-19T07:00:00Z"));
+        Assert.assertEquals(plan.getUpdatedAt(), new DateTime("2011-04-19T07:00:00Z"));
         Assert.assertNull(plan.getUnitAmountInCents().getUnitAmountUSD());
         Assert.assertNull(plan.getSetupFeeInCents().getUnitAmountUSD());
         Assert.assertNull(plan.getDescription());
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());
+        Assert.assertEquals(24, (int) plan.getTotalBillingCycles());
         Assert.assertNull(plan.getAccountingCode());
+        Assert.assertNull(plan.getSetupFeeAccountingCode());
+        Assert.assertEquals(plan.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
+        Assert.assertEquals(plan.getSetupFeeRevenueScheduleType(), RevenueScheduleType.EVENLY);
     }
 
     @Test(groups = "fast")

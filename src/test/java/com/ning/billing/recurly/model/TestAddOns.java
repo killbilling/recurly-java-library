@@ -34,6 +34,7 @@ public class TestAddOns extends TestModelBase {
                                   "<add_ons type=\"array\">\n" +
                                   "  <add_on href=\"https://your-subdomain.recurly.com/v2/plans/gold/add_ons/ipaddresses\">\n" +
                                   "    <plan href=\"https://your-subdomain.recurly.com/v2/plans/gold\"/>\n" +
+                                  "    <measured_unit href=\"https://your-subdomain.recurly.com/v2/measured_units/12345678\"/>\n "+
                                   "    <add_on_code>ipaddresses</add_on_code>\n" +
                                   "    <name>IP Addresses</name>\n" +
                                   "    <display_quantity_on_hosted_page type=\"boolean\">false</display_quantity_on_hosted_page>\n" +
@@ -41,7 +42,11 @@ public class TestAddOns extends TestModelBase {
                                   "    <unit_amount_in_cents>\n" +
                                   "      <USD>200</USD>\n" +
                                   "    </unit_amount_in_cents>\n" +
-                                  "    <created_at type=\"datetime\">2011-06-28T12:34:56Z</created_at>\n" +
+                                  "    <add_on_type>usage</add_on_type>\n" +
+                                  "    <usage_type>price</usage_type>\n" +
+                                  "    <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
+                                  "    <created_at type=\"dateTime\">2011-06-28T12:34:56Z</created_at>\n" +
+                                  "    <updated_at type=\"dateTime\">2011-06-28T12:34:56Z</updated_at>\n" +
                                   "  </add_on>\n" +
                                   "  <!-- Continued... -->\n" +
                                   "</add_ons>";
@@ -72,9 +77,14 @@ public class TestAddOns extends TestModelBase {
         final AddOn addOn = addOns.get(0);
         Assert.assertEquals(addOn.getAddOnCode(), "ipaddresses");
         Assert.assertEquals(addOn.getName(), "IP Addresses");
+        Assert.assertEquals(addOn.getMeasuredUnit().getId(), new Long(12345678));
+        Assert.assertEquals(addOn.getAddOnType(), "usage");
+        Assert.assertEquals(addOn.getUsageType(), "price");
         Assert.assertEquals((boolean) addOn.getDisplayQuantityOnHostedPage(), false);
         Assert.assertEquals((int) addOn.getDefaultQuantity(), 1);
         Assert.assertEquals((int) addOn.getUnitAmountInCents().getUnitAmountUSD(), 200);
+        Assert.assertEquals(addOn.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
         Assert.assertEquals(addOn.getCreatedAt(), new DateTime("2011-06-28T12:34:56Z"));
+        Assert.assertEquals(addOn.getUpdatedAt(), new DateTime("2011-06-28T12:34:56Z"));
     }
 }

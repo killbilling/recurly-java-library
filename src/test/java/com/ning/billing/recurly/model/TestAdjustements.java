@@ -41,9 +41,11 @@ public class TestAdjustements extends TestModelBase {
                                        "    <total_in_cents type=\"integer\">-2000</total_in_cents>\n" +
                                        "    <currency>USD</currency>\n" +
                                        "    <taxable type=\"boolean\">false</taxable>\n" +
-                                       "    <start_date type=\"datetime\">2011-08-31T03:30:00Z</start_date>\n" +
+                                       "    <tax_exempt type=\"boolean\">true</tax_exempt>\n" +
+                                       "    <start_date type=\"dateTime\">2011-08-31T03:30:00Z</start_date>\n" +
                                        "    <end_date nil=\"nil\"></end_date>\n" +
-                                       "    <created_at type=\"datetime\">2011-08-31T03:30:00Z</created_at>\n" +
+                                       "    <created_at type=\"dateTime\">2011-08-31T03:30:00Z</created_at>\n" +
+                                       "    <updated_at type=\"dateTime\">2011-08-31T03:30:00Z</updated_at>\n" +
                                        "  </adjustment>\n" +
                                        "  <!-- Continued... -->\n" +
                                        "</adjustments>";
@@ -64,8 +66,10 @@ public class TestAdjustements extends TestModelBase {
         Assert.assertEquals((int) adjustment.getTotalInCents(), -2000);
         Assert.assertEquals(adjustment.getCurrency(), "USD");
         Assert.assertEquals((boolean) adjustment.getTaxable(), false);
+        Assert.assertEquals((boolean) adjustment.getTaxExempt(), true);
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertNull(adjustment.getEndDate());
         Assert.assertEquals(adjustment.getCreatedAt(), new DateTime("2011-08-31T03:30:00Z"));
+        Assert.assertEquals(adjustment.getUpdatedAt(), new DateTime("2011-08-31T03:30:00Z"));
     }
 }

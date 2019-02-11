@@ -91,8 +91,6 @@ public class PushTransaction extends AbstractTransaction {
         this.message = stringOrNull(message);
     }
 
-
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) {

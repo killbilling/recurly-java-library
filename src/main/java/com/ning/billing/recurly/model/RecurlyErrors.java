@@ -36,16 +36,13 @@ public class RecurlyErrors extends RecurlyObjects<RecurlyError> {
     }
 
     @JsonIgnore
+    @Override
     public RecurlyErrors getStart() {
         return getStart(RecurlyErrors.class);
     }
 
     @JsonIgnore
-    public RecurlyErrors getPrev() {
-        return getPrev(RecurlyErrors.class);
-    }
-
-    @JsonIgnore
+    @Override
     public RecurlyErrors getNext() {
         return getNext(RecurlyErrors.class);
     }

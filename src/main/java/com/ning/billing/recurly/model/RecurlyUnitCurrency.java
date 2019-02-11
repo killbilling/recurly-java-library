@@ -35,6 +35,9 @@ public class RecurlyUnitCurrency {
     // Australian Dollars
     @XmlElement(name = "AUD")
     private Integer unitAmountAUD;
+    
+    @XmlElement(name = "JPY")
+    private Integer unitAmountJPY;
 
     // Canadian Dollars
     @XmlElement(name = "CAD")
@@ -59,6 +62,10 @@ public class RecurlyUnitCurrency {
     // Hungarian Forints
     @XmlElement(name = "HUF")
     private Integer unitAmountHUF;
+
+    // Indian Rupees
+    @XmlElement(name = "INR")
+    private Integer unitAmountINR;
 
     // Norwegian Krones
     @XmlElement(name = "NOK")
@@ -117,6 +124,8 @@ public class RecurlyUnitCurrency {
             recurlyUnitCurrency.setUnitAmountSEK(amounts.get("SEK"));
             recurlyUnitCurrency.setUnitAmountCHF(amounts.get("CHF"));
             recurlyUnitCurrency.setUnitAmountZAR(amounts.get("ZAR"));
+            recurlyUnitCurrency.setUnitAmountJPY(amounts.get("JPY"));
+            recurlyUnitCurrency.setUnitAmountINR(amounts.get("INR"));
         }
 
         return recurlyUnitCurrency;
@@ -186,6 +195,14 @@ public class RecurlyUnitCurrency {
         this.unitAmountHUF = RecurlyObject.integerOrNull(unitAmountHUF);
     }
 
+    public Integer getUnitAmountINR() {
+        return unitAmountINR;
+    }
+
+    public void setUnitAmountINR(final Object unitAmountINR) {
+        this.unitAmountINR = RecurlyObject.integerOrNull(unitAmountINR);
+    }
+
     public Integer getUnitAmountNOK() {
         return unitAmountNOK;
     }
@@ -193,7 +210,15 @@ public class RecurlyUnitCurrency {
     public void setUnitAmountNOK(final Object unitAmountNOK) {
         this.unitAmountNOK = RecurlyObject.integerOrNull(unitAmountNOK);
     }
+    
+    public Integer getUnitAmountJPY() {
+        return unitAmountJPY;
+    }
 
+    public void setUnitAmountJPY(final Object unitAmountJPY) {
+        this.unitAmountJPY = RecurlyObject.integerOrNull(unitAmountJPY);
+    }
+    
     public Integer getUnitAmountNZD() {
         return unitAmountNZD;
     }
@@ -261,6 +286,8 @@ public class RecurlyUnitCurrency {
         sb.append(", unitAmountSEK=").append(unitAmountSEK);
         sb.append(", unitAmountCHF=").append(unitAmountCHF);
         sb.append(", unitAmountZAR=").append(unitAmountZAR);
+        sb.append(", unitAmountJPY=").append(unitAmountJPY);
+        sb.append(", unitAmountINR=").append(unitAmountINR);
         sb.append('}');
         return sb.toString();
     }
@@ -317,7 +344,12 @@ public class RecurlyUnitCurrency {
         if (unitAmountZAR != null ? !unitAmountZAR.equals(that.unitAmountZAR) : that.unitAmountZAR != null) {
             return false;
         }
-
+        if (unitAmountJPY != null ? !unitAmountJPY.equals(that.unitAmountJPY) : that.unitAmountJPY != null) {
+            return false;
+        }
+        if (unitAmountINR != null ? !unitAmountINR.equals(that.unitAmountINR) : that.unitAmountINR != null) {
+            return false;
+        }
         return true;
     }
 
@@ -338,7 +370,9 @@ public class RecurlyUnitCurrency {
                 unitAmountSGD,
                 unitAmountSEK,
                 unitAmountCHF,
-                unitAmountZAR
+                unitAmountZAR,
+                unitAmountJPY,
+                unitAmountINR
         );
     }
 }
