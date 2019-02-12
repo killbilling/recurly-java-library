@@ -39,6 +39,7 @@ import org.joda.time.DateTime;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.stream.XMLInputFactory;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +70,10 @@ public abstract class RecurlyObject {
     }
 
     public static XmlMapper newXmlMapper() {
-        final XmlMapper xmlMapper = new XmlMapper();
+        final XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();
+        xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
+        xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
+        final XmlMapper xmlMapper = new XmlMapper(xmlInputFactory);
         xmlMapper.setSerializerProvider(new RecurlyXmlSerializerProvider());
         final AnnotationIntrospector primary = new JacksonAnnotationIntrospector();
         final AnnotationIntrospector secondary = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
