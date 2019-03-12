@@ -146,6 +146,11 @@ public class BillingInfo extends RecurlyObject {
         return account;
     }
 
+    /**
+     * @deprecated Please do not attach an account to a BillingInfo object. Pass the account code into {@link com.ning.billing.recurly.RecurlyClient#createOrUpdateBillingInfo(String, BillingInfo)}
+     * @param account
+     */
+    @Deprecated
     public void setAccount(final Account account) {
         this.account = account;
     }
@@ -386,7 +391,16 @@ public class BillingInfo extends RecurlyObject {
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("BillingInfo");
-        sb.append("{account='").append(account).append('\'');
+
+        // Prevent infinite loop when printing account.
+        // See https://github.com/killbilling/recurly-java-library/issues/326
+        if (account != null && account.getBillingInfo().equals(this)) {
+            sb.append("{account='").append(account.getAccountCode()).append('\'');
+        }
+        else {
+            sb.append("{account='").append(account).append('\'');
+        }
+
         sb.append(", type='").append(type).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');

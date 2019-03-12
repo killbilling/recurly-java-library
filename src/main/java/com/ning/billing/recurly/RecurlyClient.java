@@ -747,9 +747,34 @@ public class RecurlyClient {
      * Please note: this API end-point may be used to import billing information without security codes (CVV).
      * Recurly recommends requiring CVV from your customers when collecting new or updated billing information.
      *
+     * @param accountCode recurly account id
      * @param billingInfo billing info object to create or update
      * @return the newly created or update billing info object on success, null otherwise
      */
+    public BillingInfo createOrUpdateBillingInfo(final String accountCode, final BillingInfo billingInfo) {
+        return doPUT(Account.ACCOUNT_RESOURCE + "/" + accountCode + BillingInfo.BILLING_INFO_RESOURCE,
+                     billingInfo, BillingInfo.class);
+    }
+
+    /**
+     * Update an account's billing info
+     * <p>
+     * When new or updated credit card information is updated, the billing information is only saved if the credit card
+     * is valid. If the account has a past due invoice, the outstanding balance will be collected to validate the
+     * billing information.
+     * <p>
+     * If the account does not exist before the API request, the account will be created if the billing information
+     * is valid.
+     * <p>
+     * Please note: this API end-point may be used to import billing information without security codes (CVV).
+     * Recurly recommends requiring CVV from your customers when collecting new or updated billing information.
+     *
+     * @deprecated Replaced by {@link #createOrUpdateBillingInfo(String, BillingInfo)} Please pass in the account code rather than setting the account on the BillingInfo object
+     *
+     * @param billingInfo billing info object to create or update
+     * @return the newly created or update billing info object on success, null otherwise
+     */
+    @Deprecated
     public BillingInfo createOrUpdateBillingInfo(final BillingInfo billingInfo) {
         final String accountCode = billingInfo.getAccount().getAccountCode();
         // Unset it to avoid confusing Recurly
