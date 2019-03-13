@@ -107,7 +107,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.18";
+    public static final String RECURLY_API_VERSION = "2.19";
 
     private static final String X_RATELIMIT_REMAINING_HEADER_NAME = "X-RateLimit-Remaining";
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
@@ -341,6 +341,18 @@ public class RecurlyClient {
      */
     public void closeAccount(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + accountCode);
+    }
+
+    /**
+     * Get Child Accounts
+     * <p>
+     * Returns information about a the child accounts of an account.
+     *
+     * @param accountCode recurly account id
+     * @return Accounts on success, null otherwise
+     */
+    public Accounts getChildAccounts(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode + "/child_accounts", Accounts.class, new QueryParams());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////
