@@ -1019,6 +1019,14 @@ public class RecurlyClient {
         doDELETE(url);
     }
 
+    public Subscriptions getTransactionSubscriptions(final String transactionId) {
+        return doGET(Transactions.TRANSACTIONS_RESOURCE
+                        + "/" + transactionId
+                        + Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                Subscriptions.class,
+                new QueryParams());
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // User invoices
 
@@ -2598,4 +2606,5 @@ public class RecurlyClient {
         final Matcher matcher = TAG_FROM_GIT_DESCRIBE_PATTERN.matcher(gitDescribe);
         return matcher.find() ? matcher.group(1) : null;
     }
+
 }
