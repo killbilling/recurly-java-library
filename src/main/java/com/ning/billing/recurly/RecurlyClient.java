@@ -307,6 +307,9 @@ public class RecurlyClient {
      * @return account object on success, null otherwise
      */
     public Account getAccount(final String accountCode) {
+        if (accountCode == null || accountCode.isEmpty())
+            throw new RuntimeException("accountCode cannot be empty!");
+
         return doGET(Account.ACCOUNT_RESOURCE + "/" + accountCode, Account.class);
     }
 
@@ -418,6 +421,9 @@ public class RecurlyClient {
     }
 
     public Adjustment getAdjustment(final String adjustmentUuid) {
+        if (adjustmentUuid == null || adjustmentUuid.isEmpty())
+            throw new RuntimeException("adjustmentUuid cannot be empty!");
+
         return doGET(Adjustments.ADJUSTMENTS_RESOURCE + "/" + adjustmentUuid, Adjustment.class);
     }
 
@@ -473,6 +479,9 @@ public class RecurlyClient {
      * @return Subscription
      */
     public Subscription getSubscription(final String uuid) {
+        if (uuid == null || uuid.isEmpty())
+            throw new RuntimeException("uuid cannot be empty!");
+
         return doGET(Subscriptions.SUBSCRIPTIONS_RESOURCE
                      + "/" + uuid,
                      Subscription.class);
@@ -921,6 +930,9 @@ public class RecurlyClient {
      * @return the transaction if found, null otherwise
      */
     public Transaction getTransaction(final String transactionId) {
+        if (transactionId == null || transactionId.isEmpty())
+            throw new RuntimeException("transactionId cannot be empty!");
+
         return doGET(Transactions.TRANSACTIONS_RESOURCE + "/" + transactionId,
                      Transaction.class);
     }
@@ -980,6 +992,9 @@ public class RecurlyClient {
      * @return the invoice
      */
     public Invoice getInvoice(final String invoiceId) {
+        if (invoiceId == null || invoiceId.isEmpty())
+            throw new RuntimeException("invoiceId cannot be empty!");
+
         return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId, Invoice.class);
     }
 
@@ -1019,6 +1034,9 @@ public class RecurlyClient {
      * @return the invoice pdf as an inputStream
      */
     public InputStream getInvoicePdf(final String invoiceId) {
+        if (invoiceId == null || invoiceId.isEmpty())
+            throw new RuntimeException("invoiceId cannot be empty!");
+
         return doGETPdf(Invoices.INVOICES_RESOURCE + "/" + invoiceId);
     }
 
@@ -1357,6 +1375,9 @@ public class RecurlyClient {
      * @return the plan object as identified by the passed in ID
      */
     public Plan getPlan(final String planCode) {
+        if (planCode == null || planCode.isEmpty())
+            throw new RuntimeException("planCode cannot be empty!");
+
         return doGET(Plan.PLANS_RESOURCE + "/" + planCode, Plan.class);
     }
 
@@ -1431,6 +1452,9 @@ public class RecurlyClient {
      * @return the {@link AddOn} object as identified by the passed in plan and add-on IDs
      */
     public AddOn getAddOn(final String planCode, final String addOnCode) {
+        if (addOnCode == null || addOnCode.isEmpty())
+            throw new RuntimeException("addOnCode cannot be empty!");
+
         return doGET(Plan.PLANS_RESOURCE +
                      "/" +
                      planCode +
@@ -1530,6 +1554,9 @@ public class RecurlyClient {
      * @return The {@link Coupon} object as identified by the passed in code
      */
     public Coupon getCoupon(final String couponCode) {
+        if (couponCode == null || couponCode.isEmpty())
+            throw new RuntimeException("couponCode cannot be empty!");
+
         return doGET(Coupon.COUPON_RESOURCE + "/" + couponCode, Coupon.class);
     }
 
