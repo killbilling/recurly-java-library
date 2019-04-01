@@ -320,7 +320,7 @@ public class Plan extends RecurlyObject {
         return this.autoRenew;
     }
 
-    public void setAutoRenew(final Object trialRequiresBillingInfo) {
+    public void setAutoRenew(final Object autoRenew) {
         this.autoRenew = booleanOrNull(autoRenew);
     }
 
