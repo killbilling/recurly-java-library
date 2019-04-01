@@ -110,6 +110,12 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "auto_renew")
     private Boolean autoRenew;
 
+    @XmlElement(name = "tax_exempt")
+    private Boolean taxExempt;
+
+    @XmlElement(name = "tax_code")
+    private String taxCode;
+
     public String getPlanCode() {
         return planCode;
     }
@@ -318,6 +324,22 @@ public class Plan extends RecurlyObject {
         this.autoRenew = booleanOrNull(autoRenew);
     }
 
+    public Boolean getTaxExempt() {
+        return this.taxExempt;
+    }
+
+    public void setTaxExempt(final Object taxExempt) {
+        this.taxExempt = booleanOrNull(taxExempt);
+    }
+
+    public String getTaxCode() {
+        return this.taxCode;
+    }
+
+    public void setTaxCode(final Object taxCode) {
+        this.taxCode = stringOrNull(taxCode);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -348,6 +370,8 @@ public class Plan extends RecurlyObject {
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", setupFeeRevenueScheduleType=").append(setupFeeRevenueScheduleType);
         sb.append(", autoRenew=").append(autoRenew);
+        sb.append(", taxExempt=").append(taxExempt);
+        sb.append(", taxCode=").append(taxCode);
         sb.append('}');
         return sb.toString();
     }
@@ -437,6 +461,12 @@ public class Plan extends RecurlyObject {
         if (setupFeeAccountingCode != null ? setupFeeAccountingCode.compareTo(plan.setupFeeAccountingCode) != 0: plan.setupFeeAccountingCode != null) {
             return false;
         }
+        if (taxExempt != null ? taxExempt.compareTo(plan.taxExempt) != 0: plan.taxExempt != null) {
+            return false;
+        }
+        if (taxCode != null ? taxCode.compareTo(plan.taxCode) != 0: plan.taxCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -469,7 +499,9 @@ public class Plan extends RecurlyObject {
                 revenueScheduleType,
                 setupFeeRevenueScheduleType,
                 trialRequiresBillingInfo,
-                autoRenew
+                autoRenew,
+                taxExempt,
+                taxCode
         );
     }
 }
