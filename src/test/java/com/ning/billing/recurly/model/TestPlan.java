@@ -53,6 +53,9 @@ public class TestPlan extends TestModelBase {
                                 "  <setup_fee_accounting_code nil=\"nil\"></setup_fee_accounting_code>\n" +
                                 "  <created_at type=\"dateTime\">2011-04-19T07:00:00Z</created_at>\n" +
                                 "  <updated_at type=\"dateTime\">2011-04-19T07:00:00Z</updated_at>\n" +
+                                "  <tax_exempt>false</tax_exempt>\n" +
+                                "  <tax_code>digital</tax_code>\n" +
+                                "  <accounting_code nil=\"nil\"></accounting_code>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "    <USD type=\"integer\">1000</USD>\n" +
                                 "    <EUR type=\"integer\">800</EUR>\n" +
@@ -78,6 +81,8 @@ public class TestPlan extends TestModelBase {
         Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountEUR(), new Integer(800));
         Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountUSD(), new Integer(6000));
         Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountEUR(), new Integer(4500));
+        Assert.assertEquals(plan.getTaxExempt(), new Boolean(false));
+        Assert.assertEquals(plan.getTaxCode(), "digital");
         Assert.assertNull(plan.getDescription());
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());
@@ -114,6 +119,8 @@ public class TestPlan extends TestModelBase {
                                 "  <setup_fee_revenue_schedule_type>evenly</setup_fee_revenue_schedule_type>>\n" +
                                 "  <created_at type=\"dateTime\">2011-04-19T07:00:00Z</created_at>\n" +
                                 "  <updated_at type=\"dateTime\">2011-04-19T07:00:00Z</updated_at>\n" +
+                                "  <tax_exempt>false</tax_exempt>\n" +
+                                "  <tax_code>digital</tax_code>\n" +
                                 "  <unit_amount_in_cents>\n" +
                                 "  </unit_amount_in_cents>\n" +
                                 "  <setup_fee_in_cents>\n" +
@@ -141,6 +148,8 @@ public class TestPlan extends TestModelBase {
         Assert.assertNull(plan.getSetupFeeAccountingCode());
         Assert.assertEquals(plan.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
         Assert.assertEquals(plan.getSetupFeeRevenueScheduleType(), RevenueScheduleType.EVENLY);
+        Assert.assertEquals(plan.getTaxExempt(), new Boolean(false));
+        Assert.assertEquals(plan.getTaxCode(), "digital");
     }
 
     @Test(groups = "fast")
