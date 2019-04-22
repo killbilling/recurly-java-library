@@ -22,7 +22,10 @@ import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import java.math.BigDecimal;
+import java.util.List;
 
 @XmlRootElement(name = "adjustment")
 public class Adjustment extends RecurlyObject {
@@ -35,6 +38,9 @@ public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "uuid")
     private String uuid;
+
+    @XmlElement(name = "type")
+    private String type;
 
     @XmlElement(name = "description")
     private String description;
@@ -66,8 +72,24 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "taxable")
     private Boolean taxable;
 
+    @XmlElement(name = "tax_type")
+    private String taxType;
+
+    @XmlElement(name = "tax_region")
+    private String taxRegion;
+
+    @XmlElement(name = "tax_rate")
+    private String taxRate;
+
+    @XmlElement(name = "tax_code")
+    private String taxCode;
+
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
+
+    @XmlList
+    @XmlElementWrapper(name = "tax_details")
+    private List<TaxDetail> taxDetails;
 
     @XmlElement(name = "product_code")
     private String productCode;
@@ -137,6 +159,14 @@ public class Adjustment extends RecurlyObject {
 
     public void setUuid(final Object uuid) {
         this.uuid = stringOrNull(uuid);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final Object type) {
+        this.type = stringOrNull(type);
     }
 
     public String getDescription() {
@@ -219,12 +249,52 @@ public class Adjustment extends RecurlyObject {
         this.taxable = booleanOrNull(taxable);
     }
 
+    public String getTaxType() {
+        return taxType;
+    }
+
+    public void setTaxType(final Object taxType) {
+        this.taxType = stringOrNull(taxType);
+    }
+
+    public String getTaxRegion() {
+        return taxRegion;
+    }
+
+    public void setTaxRegion(final Object taxRegion) {
+        this.taxRegion = stringOrNull(taxRegion);
+    }
+
+    public String getTaxRate() {
+        return taxRate;
+    }
+
+    public void setTaxRate(final Object taxRate) {
+        this.taxRate = stringOrNull(taxRate);
+    }
+
+    public String getTaxCode() {
+        return taxCode;
+    }
+
+    public void setTaxCode(final Object taxCode) {
+        this.taxCode = stringOrNull(taxCode);
+    }
+
     public Boolean getTaxExempt() {
         return taxExempt;
     }
 
     public void setTaxExempt(final Object taxExempt) {
         this.taxExempt = booleanOrNull(taxExempt);
+    }
+
+    public List<TaxDetail> getTaxDetails() {
+        return taxDetails;
+    }
+
+    public void setTaxDetails(final List<TaxDetail> taxDetails) {
+        this.taxDetails = taxDetails;
     }
 
     public String getProductCode() { return productCode; }
@@ -341,6 +411,7 @@ public class Adjustment extends RecurlyObject {
         sb.append("Adjustment");
         sb.append("{account=").append(account);
         sb.append(", uuid='").append(uuid).append('\'');
+        sb.append(", type=").append(type);
         sb.append(", description='").append(description).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
         sb.append(", origin='").append(origin).append('\'');
@@ -348,7 +419,12 @@ public class Adjustment extends RecurlyObject {
         sb.append(", quantity=").append(quantity);
         sb.append(", discountInCents=").append(discountInCents);
         sb.append(", taxInCents=").append(taxInCents);
+        sb.append(", taxType=").append(taxType);
+        sb.append(", taxRegion=").append(taxRegion);
+        sb.append(", taxRate=").append(taxRate);
+        sb.append(", taxCode=").append(taxCode);
         sb.append(", taxExempt=").append(taxExempt);
+        sb.append(", taxDetails=").append(taxDetails);
         sb.append(", totalInCents=").append(totalInCents);
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", taxable=").append(taxable);
@@ -427,7 +503,25 @@ public class Adjustment extends RecurlyObject {
         if (taxable != null ? !taxable.equals(that.taxable) : that.taxable != null) {
             return false;
         }
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
+        if (taxType != null ? !taxType.equals(that.taxType) : that.taxType != null) {
+            return false;
+        }
+        if (taxRegion != null ? !taxRegion.equals(that.taxRegion) : that.taxRegion != null) {
+            return false;
+        }
+        if (taxRate != null ? !taxRate.equals(that.taxRate) : that.taxRate != null) {
+            return false;
+        }
+        if (taxCode != null ? !taxCode.equals(that.taxCode) : that.taxCode != null) {
+            return false;
+        }
         if (taxExempt != null ? !taxExempt.equals(that.taxExempt) : that.taxExempt != null) {
+            return false;
+        }
+        if (taxDetails != null ? !taxDetails.equals(that.taxDetails) : that.taxDetails != null) {
             return false;
         }
         if (totalInCents != null ? !totalInCents.equals(that.totalInCents) : that.totalInCents != null) {
@@ -462,6 +556,7 @@ public class Adjustment extends RecurlyObject {
         return Objects.hashCode(
                 account,
                 uuid,
+                type,
                 description,
                 accountingCode,
                 origin,
@@ -473,7 +568,12 @@ public class Adjustment extends RecurlyObject {
                 totalInCents,
                 currency,
                 taxable,
+                taxType,
+                taxRegion,
+                taxRate,
+                taxCode,
                 taxExempt,
+                taxDetails,
                 startDate,
                 endDate,
                 createdAt,

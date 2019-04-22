@@ -31,6 +31,9 @@ public class SubscriptionAddOn extends AbstractAddOn {
     @XmlElement(name = "quantity")
     private Integer quantity;
 
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
     public Integer getUnitAmountInCents() {
         return unitAmountInCents;
     }
@@ -47,11 +50,20 @@ public class SubscriptionAddOn extends AbstractAddOn {
         this.quantity = integerOrNull(quantity);
     }
 
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("SubscriptionAddOn{");
         sb.append("unitAmountInCents=").append(unitAmountInCents);
         sb.append(", quantity=").append(quantity);
+        sb.append(", gatewayCode=").append(gatewayCode);
         sb.append('}');
         return sb.toString();
     }
@@ -69,6 +81,9 @@ public class SubscriptionAddOn extends AbstractAddOn {
         if (unitAmountInCents != null ? !unitAmountInCents.equals(addOn.unitAmountInCents) : addOn.unitAmountInCents != null) {
             return false;
         }
+        if (gatewayCode != null ? !gatewayCode.equals(addOn.gatewayCode) : addOn.gatewayCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -77,7 +92,8 @@ public class SubscriptionAddOn extends AbstractAddOn {
     public int hashCode() {
         return Objects.hashCode(
                 unitAmountInCents,
-                quantity
+                quantity,
+                gatewayCode
         );
     }
 }
