@@ -42,9 +42,6 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
 
-    @XmlElement(name = "revenue_schedule_type")
-    private RevenueScheduleType revenueScheduleType;
-
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -56,6 +53,15 @@ public class AddOn extends AbstractAddOn {
 
     @XmlElement(name = "add_on_type")
     private String addOnType;
+
+    @XmlElement(name = "tax_code")
+    private String taxCode;
+
+    @XmlElement(name = "accounting_code")
+    private String accountingCode;
+
+    @XmlElement(name = "optional")
+    private Boolean optional;
 
     public String getName() {
         return name;
@@ -79,14 +85,6 @@ public class AddOn extends AbstractAddOn {
 
     public void setDefaultQuantity(final Object defaultQuantity) {
         this.defaultQuantity = integerOrNull(defaultQuantity);
-    }
-
-    public RevenueScheduleType getRevenueScheduleType() {
-        return revenueScheduleType;
-    }
-
-    public void setRevenueScheduleType(final Object revenueScheduleType) {
-        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
     }
 
     public RecurlyUnitCurrency getUnitAmountInCents() {
@@ -132,6 +130,30 @@ public class AddOn extends AbstractAddOn {
         this.addOnType = stringOrNull(addOnType);
     }
 
+    public String getTaxCode() {
+        return taxCode;
+    }
+
+    public void setTaxCode(final Object taxCode) {
+        this.taxCode = stringOrNull(taxCode);
+    }
+
+    public String getAccountingCode() {
+        return accountingCode;
+    }
+
+    public void setAccountingCode(final Object accountingCode) {
+        this.accountingCode = stringOrNull(accountingCode);
+    }
+
+    public Boolean getOptional() {
+        return optional;
+    }
+
+    public void setOptional(final Object optional) {
+        this.optional = booleanOrNull(optional);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
@@ -141,9 +163,11 @@ public class AddOn extends AbstractAddOn {
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
-        sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", taxCode=").append(taxCode);
+        sb.append(", accountingCode=").append(accountingCode);
+        sb.append(", optional=").append(optional);
         sb.append('}');
         return sb.toString();
     }
@@ -173,13 +197,19 @@ public class AddOn extends AbstractAddOn {
         if (displayQuantityOnHostedPage != null ? !displayQuantityOnHostedPage.equals(addOn.displayQuantityOnHostedPage) : addOn.displayQuantityOnHostedPage != null) {
             return false;
         }
-        if (revenueScheduleType != null ? !revenueScheduleType.equals(addOn.revenueScheduleType) : addOn.revenueScheduleType != null) {
-            return false;
-        }
         if (name != null ? !name.equals(addOn.name) : addOn.name != null) {
             return false;
         }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(addOn.unitAmountInCents) : addOn.unitAmountInCents != null) {
+            return false;
+        }
+        if (taxCode != null ? !taxCode.equals(addOn.taxCode) : addOn.taxCode != null) {
+            return false;
+        }
+        if (accountingCode != null ? !accountingCode.equals(addOn.accountingCode) : addOn.accountingCode != null) {
+            return false;
+        }
+        if (optional != null ? !optional.equals(addOn.optional) : addOn.optional != null) {
             return false;
         }
 
@@ -195,9 +225,11 @@ public class AddOn extends AbstractAddOn {
                 displayQuantityOnHostedPage,
                 defaultQuantity,
                 unitAmountInCents,
-                revenueScheduleType,
                 createdAt,
-                updatedAt
+                updatedAt,
+                taxCode,
+                accountingCode,
+                optional
         );
     }
 }

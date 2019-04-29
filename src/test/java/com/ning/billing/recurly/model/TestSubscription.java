@@ -139,6 +139,8 @@ public class TestSubscription extends TestModelBase {
                                         "      <add_on_code>extra_users</add_on_code>\n" +
                                         "      <quantity>2</quantity>\n" +
                                         "      <unit_amount_in_cents>1000</unit_amount_in_cents>\n" +
+                                        "      <usage_percentage type=\"float\">2.1</usage_percentage>\n" +
+                                        "      <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                         "    </subscription_add_on>\n" +
                                         "    <subscription_add_on>\n" +
                                         "      <add_on_code>extra_ip</add_on_code>\n" +
@@ -235,6 +237,8 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getAddOns().get(0).getAddOnCode(), "extra_users");
         Assert.assertEquals(subscription.getAddOns().get(0).getQuantity(), (Integer) 2);
         Assert.assertEquals(subscription.getAddOns().get(0).getUnitAmountInCents(), (Integer) 1000);
+        Assert.assertEquals(subscription.getAddOns().get(0).getUsagePercentage(), BigDecimal.valueOf(2.1));
+        Assert.assertEquals(subscription.getAddOns().get(0).getRevenueScheduleType(), RevenueScheduleType.EVENLY);
         Assert.assertEquals(subscription.getAddOns().get(1).getAddOnCode(), "extra_ip");
         Assert.assertEquals(subscription.getAddOns().get(1).getQuantity(), (Integer) 3);
         Assert.assertEquals(subscription.getAddOns().get(1).getUnitAmountInCents(), (Integer) 200);
