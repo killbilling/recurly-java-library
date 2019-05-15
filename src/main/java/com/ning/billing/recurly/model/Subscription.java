@@ -140,6 +140,12 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
+    @XmlElement(name = "shipping_method_code")
+    private String shippingMethodCode;
+
+    @XmlElement(name = "shipping_amount_in_cents")
+    private Integer shippingAmountInCents;
+
     @XmlElement(name = "no_billing_info_reason")
     private String noBillingInfoReason;
 
@@ -434,6 +440,22 @@ public class Subscription extends AbstractSubscription {
         this.shippingAddressId = longOrNull(shippingAddressId);
     }
 
+    public String getShippingMethodCode() {
+        return shippingMethodCode;
+    }
+
+    public void setShippingMethodCode(final Object shippingMethodCode) {
+        this.shippingMethodCode = stringOrNull(shippingMethodCode);
+    }
+
+    public Integer getShippingAmountInCents() {
+        return shippingAmountInCents;
+    }
+
+    public void setShippingAmountInCents(final Object shippingAmountInCents) {
+        this.shippingAmountInCents = integerOrNull(shippingAmountInCents);
+    }
+
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -590,6 +612,8 @@ public class Subscription extends AbstractSubscription {
         sb.append(", taxRate=").append(taxRate);
         sb.append(", shippingAddress=").append(shippingAddress);
         sb.append(", shippingAddressId=").append(shippingAddressId);
+        sb.append(", shippingMethodCode=").append(shippingMethodCode);
+        sb.append(", shippingAmountInCents=").append(shippingAmountInCents);
         sb.append(", startedWithGift=").append(startedWithGift);
         sb.append(", convertedAt=").append(convertedAt);
         sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
@@ -727,6 +751,12 @@ public class Subscription extends AbstractSubscription {
         if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
             return false;
         }
+        if (shippingMethodCode != null ? !shippingMethodCode.equals(that.shippingMethodCode) : that.shippingMethodCode != null) {
+            return false;
+        }
+        if (shippingAmountInCents != null ? !shippingAmountInCents.equals(that.shippingAmountInCents) : that.shippingAmountInCents != null) {
+            return false;
+        }
         if (noBillingInfoReason != null ? !noBillingInfoReason.equals(that.noBillingInfoReason) : that.noBillingInfoReason != null) {
             return false;
         }
@@ -792,6 +822,8 @@ public class Subscription extends AbstractSubscription {
                 taxRate,
                 shippingAddress,
                 shippingAddressId,
+                shippingMethodCode,
+                shippingAmountInCents,
                 couponCode,
                 couponCodes,
                 convertedAt,
