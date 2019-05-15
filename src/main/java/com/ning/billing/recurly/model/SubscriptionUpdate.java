@@ -30,7 +30,8 @@ public class SubscriptionUpdate extends AbstractSubscription {
 
     public static enum Timeframe {
         now,
-        renewal
+        renewal,
+        bill_date
     }
 
     @XmlElement
