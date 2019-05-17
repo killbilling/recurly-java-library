@@ -94,6 +94,7 @@ public abstract class RecurlyObject {
         m.addSerializer(Plans.class, new RecurlyObjectsSerializer<Plans, Plan>(Plans.class, "plan"));
         m.addSerializer(RecurlyErrors.class, new RecurlyObjectsSerializer<RecurlyErrors, RecurlyError>(RecurlyErrors.class, "error"));
         m.addSerializer(ShippingAddresses.class, new RecurlyObjectsSerializer<ShippingAddresses, ShippingAddress>(ShippingAddresses.class, "shipping_address"));
+        m.addSerializer(ShippingFees.class, new RecurlyObjectsSerializer<ShippingFees, ShippingFee>(ShippingFees.class, "shipping_fee"));
         m.addSerializer(SubscriptionAddOns.class, new RecurlyObjectsSerializer<SubscriptionAddOns, SubscriptionAddOn>(SubscriptionAddOns.class, "subscription_add_on"));
         m.addSerializer(Subscriptions.class, new RecurlyObjectsSerializer<Subscriptions, Subscription>(Subscriptions.class, "subscription"));
         m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<Transactions, Transaction>(Transactions.class, "transaction"));

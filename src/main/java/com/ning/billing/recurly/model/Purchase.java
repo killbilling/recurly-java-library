@@ -54,6 +54,10 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "subscription")
     private Subscriptions subscriptions;
 
+    @XmlElementWrapper(name = "shipping_fees")
+    @XmlElement(name = "shipping_fee")
+    private ShippingFees shippingFees;
+
     @XmlElement(name = "gift_card")
     private GiftCard giftCard;
 
@@ -141,6 +145,14 @@ public class Purchase extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
+    public void setShippingFees(final ShippingFees shippingFees) {
+        this.shippingFees = shippingFees;
+    }
+
+    public ShippingFees getShippingFees() {
+        return shippingFees;
+    }
+
     public void setSubscriptions(final Subscriptions subscriptions) {
         this.subscriptions = subscriptions;
     }
@@ -200,6 +212,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", poNumber='").append(poNumber).append('\'');
         sb.append(", netTerms='").append(netTerms).append('\'');
         sb.append(", giftCard='").append(giftCard).append('\'');
+        sb.append(", shippingFees=").append(shippingFees);
         sb.append(", subscriptions='").append(subscriptions).append('\'');
         sb.append(", couponCodes='").append(couponCodes).append('\'');
         sb.append(", customerNotes='").append(customerNotes).append('\'');
@@ -251,6 +264,9 @@ public class Purchase extends RecurlyObject {
         if (shippingAddressId != null ? !shippingAddressId.equals(purchase.shippingAddressId) : purchase.shippingAddressId != null) {
             return false;
         }
+        if (shippingFees != null ? !shippingFees.equals(purchase.shippingFees) : purchase.shippingFees != null) {
+            return false;
+        }
         if (subscriptions != null ? !subscriptions.equals(purchase.subscriptions) : purchase.subscriptions != null) {
             return false;
         }
@@ -274,6 +290,7 @@ public class Purchase extends RecurlyObject {
                 giftCard,
                 poNumber,
                 netTerms,
+                shippingFees,
                 subscriptions,
                 couponCodes,
                 customerNotes,
