@@ -48,6 +48,27 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
+    @XmlElement(name = "net_terms")
+    private Integer netTerms;
+
+    @XmlElement(name = "po_number")
+    private String poNumber;
+
+    @XmlElement(name = "revenue_schedule_type")
+    private RevenueScheduleType revenueScheduleType;
+
+    @XmlElement(name = "remaining_billing_cycles")
+    private Integer remainingBillingCycles;
+
+    @XmlElement(name = "imported_trial")
+    private Boolean importedTrial;
+
+    @XmlElement(name = "renewal_billing_cycles")
+    private Integer renewalBillingCycles;
+
+    @XmlElement(name = "auto_renew")
+    private Boolean autoRenew;
+
     public Timeframe getTimeframe() {
         return timeframe;
     }
@@ -84,6 +105,62 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.shippingAddressId = longOrNull(shippingAddressId);
     }
 
+    public Integer getNetTerms() {
+        return netTerms;
+    }
+
+    public void setNetTerms(final Object netTerms) {
+        this.netTerms = integerOrNull(netTerms);
+    }
+
+    public String getPoNumber() {
+        return poNumber;
+    }
+
+    public void setPoNumber(Object poNumber) {
+        this.poNumber = stringOrNull(poNumber);
+    }
+
+    public RevenueScheduleType getRevenueScheduleType() {
+        return revenueScheduleType;
+    }
+
+    public void setRevenueScheduleType(final Object revenueScheduleType) {
+        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
+    }
+
+    public Integer getRemainingBillingCycles() {
+        return remainingBillingCycles;
+    }
+
+    public void setRemainingBillingCycles(final Object remainingBillingCycles) {
+        this.remainingBillingCycles = integerOrNull(remainingBillingCycles);
+    }
+
+    public Boolean getImportedTrial() {
+        return this.importedTrial;
+    }
+
+    public void setImportedTrial(final Object importedTrial) {
+        this.importedTrial = booleanOrNull(importedTrial);
+    }
+
+    public Integer getRenewalBillingCycles() {
+        return renewalBillingCycles;
+    }
+
+    public void setRenewalBillingCycles(final Object renewalBillingCycles) {
+        this.renewalBillingCycles = integerOrNull(renewalBillingCycles);
+    }
+
+    public Boolean getAutoRenew() {
+        return this.autoRenew;
+    }
+
+    public void setAutoRenew(final Object autoRenew) {
+        this.autoRenew = booleanOrNull(autoRenew);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -109,6 +186,27 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
             return false;
         }
+        if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
+            return false;
+        }
+        if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
+            return false;
+        }
+        if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
+            return false;
+        }
+        if (remainingBillingCycles != null ? !remainingBillingCycles.equals(that.remainingBillingCycles) : that.remainingBillingCycles != null) {
+            return false;
+        }
+        if (importedTrial != null ? !importedTrial.equals(that.importedTrial) : that.importedTrial != null) {
+            return false;
+        }
+        if (renewalBillingCycles != null ? !renewalBillingCycles.equals(that.renewalBillingCycles) : that.renewalBillingCycles != null) {
+            return false;
+        }
+        if (autoRenew != null ? !autoRenew.equals(that.autoRenew) : that.autoRenew != null) {
+            return false;
+        }
 
         return true;
     }
@@ -121,7 +219,14 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 collectionMethod,
                 shippingAddress,
                 shippingAddressId,
-                customFields
+                customFields,
+                netTerms,
+                poNumber,
+                revenueScheduleType,
+                remainingBillingCycles,
+                importedTrial,
+                renewalBillingCycles,
+                autoRenew
         );
     }
 }
