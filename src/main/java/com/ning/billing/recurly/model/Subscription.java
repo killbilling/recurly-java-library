@@ -742,6 +742,9 @@ public class Subscription extends AbstractSubscription {
         if (renewalBillingCycles != null ? !renewalBillingCycles.equals(that.renewalBillingCycles) : that.renewalBillingCycles != null) {
             return false;
         }
+        if (autoRenew != null ? !autoRenew.equals(that.autoRenew) : that.autoRenew != null) {
+            return false;
+        }
         if (firstBillDate != null ? firstBillDate.compareTo(that.firstBillDate) != 0 : that.firstBillDate != null) {
             return false;
         }
