@@ -65,6 +65,8 @@ import com.ning.billing.recurly.model.Usages;
 import com.ning.billing.recurly.model.MeasuredUnit;
 import com.ning.billing.recurly.model.MeasuredUnits;
 import com.ning.billing.recurly.model.AccountAcquisition;
+import com.ning.billing.recurly.model.ShippingMethod;
+import com.ning.billing.recurly.model.ShippingMethods;
 
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.annotations.VisibleForTesting;
@@ -109,7 +111,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.19";
+    public static final String RECURLY_API_VERSION = "2.20";
 
     private static final String X_RATELIMIT_REMAINING_HEADER_NAME = "X-RateLimit-Remaining";
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
@@ -2037,6 +2039,44 @@ public class RecurlyClient {
     public CreditPayments getCreditPayments(final String accountCode, final QueryParams params) {
         final String path = Accounts.ACCOUNTS_RESOURCE + "/" + accountCode + CreditPayments.CREDIT_PAYMENTS_RESOURCE;
         return doGET(path, CreditPayments.class, params);
+    }
+
+    /**
+     * Get Shipping Methods for the site
+     * <p>
+     * https://dev.recurly.com/docs/list-shipping-methods
+     *
+     * @return ShippingMethods on success, null otherwise
+     */
+    public ShippingMethods getShippingMethods() {
+        return doGET(ShippingMethods.SHIPPING_METHODS_RESOURCE, ShippingMethods.class, new QueryParams());
+    }
+
+    /**
+     * Get Shipping Methods for the site
+     * <p>
+     * https://dev.recurly.com/docs/list-shipping-methods
+     *
+     * @param params {@link QueryParams}
+     * @return ShippingMethods on success, null otherwise
+     */
+    public ShippingMethods getShippingMethods(final QueryParams params) {
+        return doGET(ShippingMethods.SHIPPING_METHODS_RESOURCE, ShippingMethods.class, params);
+    }
+
+    /**
+     * Look up a shipping method
+     * <p>
+     * https://dev.recurly.com/docs/lookup-shipping-method
+     *
+     * @param shippingMethodCode The code for the {@link ShippingMethod}
+     * @return The {@link ShippingMethod} object as identified by the passed in code
+     */
+    public ShippingMethod getShippingMethod(final String shippingMethodCode) {
+        if (shippingMethodCode == null || shippingMethodCode.isEmpty())
+            throw new RuntimeException("shippingMethodCode cannot be empty!");
+
+        return doGET(ShippingMethod.SHIPPING_METHOD_RESOURCE + "/" + shippingMethodCode, ShippingMethod.class);
     }
 
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {
