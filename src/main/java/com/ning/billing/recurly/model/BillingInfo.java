@@ -124,6 +124,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "amazon_region")
     private String amazonRegion;
 
+    @XmlElement(name = "three_d_secure_action_result_token_id")
+    private String threeDSecureActionResultTokenId;
+
     public String getType() {
         return type;
     }
@@ -387,6 +390,14 @@ public class BillingInfo extends RecurlyObject {
         this.amazonRegion = stringOrNull(amazonRegion);
     }
 
+    public String getThreeDSecureActionResultTokenId() {
+        return threeDSecureActionResultTokenId;
+    }
+
+    public void setThreeDSecureActionResultTokenId(final Object threeDSecureActionResultTokenId) {
+        this.threeDSecureActionResultTokenId = stringOrNull(threeDSecureActionResultTokenId);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -427,6 +438,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
+        sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -519,6 +531,9 @@ public class BillingInfo extends RecurlyObject {
         if (amazonRegion != null ? !amazonRegion.equals(that.amazonRegion) : that.amazonRegion != null) {
             return false;
         }
+        if (threeDSecureActionResultTokenId != null ? !threeDSecureActionResultTokenId.equals(that.threeDSecureActionResultTokenId) : that.threeDSecureActionResultTokenId != null) {
+            return false;
+        }
 
         return true;
     }
@@ -552,7 +567,8 @@ public class BillingInfo extends RecurlyObject {
                 gatewayToken,
                 gatewayCode,
                 amazonBillingAgreementId,
-                amazonRegion
+                amazonRegion,
+                threeDSecureActionResultTokenId
         );
     }
 }

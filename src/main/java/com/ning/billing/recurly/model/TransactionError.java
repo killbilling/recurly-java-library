@@ -40,6 +40,9 @@ public class TransactionError extends RecurlyObject {
     @XmlElement(name = "gateway_error_code")
     private String gatewayErrorCode;
 
+    @XmlElement(name = "three_d_secure_action_token_id")
+    private String threeDSecureActionTokenId;
+
     public String getErrorCode() {
         return errorCode;
     }
@@ -80,6 +83,14 @@ public class TransactionError extends RecurlyObject {
         this.gatewayErrorCode = stringOrNull(gatewayErrorCode);
     }
 
+    public String getThreeDSecureActionTokenId() {
+        return threeDSecureActionTokenId;
+    }
+
+    public void setThreeDSecureActionTokenId(final Object threeDSecureActionTokenId) {
+        this.threeDSecureActionTokenId = stringOrNull(threeDSecureActionTokenId);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,12 +106,14 @@ public class TransactionError extends RecurlyObject {
             return false;
         if (customerMessage != null ? !customerMessage.equals(that.customerMessage) : that.customerMessage != null)
             return false;
+        if (threeDSecureActionTokenId != null ? !threeDSecureActionTokenId.equals(that.threeDSecureActionTokenId) : that.threeDSecureActionTokenId != null)
+            return false;
         return gatewayErrorCode != null ? gatewayErrorCode.equals(that.gatewayErrorCode) : that.gatewayErrorCode == null;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(errorCode, errorCategory, merchantMessage, customerMessage, gatewayErrorCode);
+        return Objects.hashCode(errorCode, errorCategory, merchantMessage, customerMessage, gatewayErrorCode, threeDSecureActionTokenId);
     }
 
     @Override
@@ -111,6 +124,7 @@ public class TransactionError extends RecurlyObject {
                 ", merchantMessage='" + merchantMessage + '\'' +
                 ", customerMessage='" + customerMessage + '\'' +
                 ", gatewayErrorCode='" + gatewayErrorCode + '\'' +
+                ", threeDSecureActionTokenId='" + threeDSecureActionTokenId + '\'' +
                 '}';
     }
 
