@@ -17,14 +17,15 @@
 
 package com.ning.billing.recurly.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "subscription")
@@ -99,11 +100,11 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
-    @XmlElement(name = "coupon_code")
+    @JsonIgnore
     private String couponCode;
 
-    @XmlList
     @XmlElementWrapper(name = "coupon_codes")
+    @XmlElement(name = "coupon_code")
     private List<String> couponCodes;
 
     //Purchase Order Number
@@ -398,6 +399,8 @@ public class Subscription extends AbstractSubscription {
 
     public void setCouponCode(final String couponCode) {
         this.couponCode = couponCode;
+        if (this.couponCodes == null) this.couponCodes = new ArrayList<String>();
+        this.couponCodes.add(couponCode);
     }
 
     public void setCouponCodes(final List<String> couponCodes) {
