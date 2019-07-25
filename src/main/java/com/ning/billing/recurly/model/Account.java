@@ -428,7 +428,7 @@ public class Account extends RecurlyObject {
         sb.append(", subscriptions=").append(subscriptions);
         sb.append(", transactions=").append(transactions);
         sb.append(", accountCode='").append(accountCode).append('\'');
-        sb.append(", parent_account_code=''").append(parentAccountCode).append('\'');
+        sb.append(", parent_account_code='").append(parentAccountCode).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append(", email='").append(email).append('\'');
