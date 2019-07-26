@@ -21,7 +21,13 @@ public enum InvoiceState {
     OPEN("open"),
     FAILED("failed"),
     COLLECTED("collected"),
-    PAST_DUE("past_due");
+    PAST_DUE("past_due"),
+    PENDING("pending"),
+    PAID("paid"),
+    CLOSED("closed"),
+    VOIDED("voided"),
+    PROCESSING("processing");
+
 
     private final String type;
 

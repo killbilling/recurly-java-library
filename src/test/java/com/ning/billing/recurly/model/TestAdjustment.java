@@ -17,6 +17,12 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ning.billing.recurly.model.TaxDetail;
+
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.ArrayList;
+
 import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -30,7 +36,10 @@ public class TestAdjustment extends TestModelBase {
                                       "<adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n" +
                                       "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n" +
                                       "  <uuid>626db120a84102b1809909071c701c60</uuid>\n" +
+                                      "  <type>charge</type>\n" +
+                                      "  <state>invoiced</state>\n" +
                                       "  <description>Charge for extra bandwidth</description>\n" +
+                                      "  <refundable_total_in_cents type=\"integer\">1000</refundable_total_in_cents>\n" +
                                       "  <accounting_code>bandwidth</accounting_code>\n" +
                                       "  <origin>charge</origin>\n" +
                                       "  <unit_amount_in_cents type=\"integer\">5000</unit_amount_in_cents>\n" +
@@ -39,8 +48,22 @@ public class TestAdjustment extends TestModelBase {
                                       "  <tax_in_cents type=\"integer\">0</tax_in_cents>\n" +
                                       "  <total_in_cents type=\"integer\">5000</total_in_cents>\n" +
                                       "  <currency>USD</currency>\n" +
+                                      "  <proration_rate type=\"float\">0.133</proration_rate>\n" +
                                       "  <product_code>product123</product_code>\n" +
                                       "  <taxable type=\"boolean\">false</taxable>\n" +
+                                      "  <tax_type>usst</tax_type>\n" +
+                                      "  <tax_region>CA</tax_region>\n" +
+                                      "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
+                                      "  <tax_exempt type=\"boolean\">false</tax_exempt>\n" +
+                                      "  <tax_code>digital</tax_code>\n" +
+                                      "  <tax_details type=\"array\">\n" +
+                                      "    <tax_detail>\n" +
+                                      "      <name>Special Tax</name>\n" +
+                                      "      <type>state</type>\n" +
+                                      "      <tax_rate type=\"float\">0.065</tax_rate>\n" +
+                                      "      <tax_in_cents type=\"integer\">-52</tax_in_cents>\n" +
+                                      "    </tax_detail>\n" +
+                                      "  </tax_details>\n" +
                                       "  <start_date type=\"dateTime\">2011-08-31T03:30:00Z</start_date>\n" +
                                       "  <revenue_schedule_type>at_invoice</revenue_schedule_type>\n" +
                                       "  <end_date nil=\"nil\"></end_date>\n" +
@@ -52,6 +75,9 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals(adjustment.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
         Assert.assertEquals(adjustment.getUuid(), "626db120a84102b1809909071c701c60");
         Assert.assertEquals(adjustment.getDescription(), "Charge for extra bandwidth");
+        Assert.assertEquals(adjustment.getRefundableTotalInCents(), new Integer(1000));
+        Assert.assertEquals(adjustment.getState(), "invoiced");
+        Assert.assertEquals(adjustment.getProrationRate(), new BigDecimal("0.133"));
         Assert.assertEquals(adjustment.getAccountingCode(), "bandwidth");
         Assert.assertEquals(adjustment.getOrigin(), "charge");
         Assert.assertEquals((int) adjustment.getUnitAmountInCents(), 5000);
@@ -60,6 +86,11 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals((int) adjustment.getTotalInCents(), 5000);
         Assert.assertEquals(adjustment.getCurrency(), "USD");
         Assert.assertEquals((boolean) adjustment.getTaxable(), false);
+        Assert.assertEquals(adjustment.getType(), "charge");
+        Assert.assertEquals(adjustment.getTaxType(), "usst");
+        Assert.assertEquals(adjustment.getTaxRegion(), "CA");
+        Assert.assertEquals(adjustment.getTaxCode(), "digital");
+        Assert.assertEquals(adjustment.getTaxDetails(), this.getTaxDetails());
         Assert.assertEquals(adjustment.getProductCode(), "product123");
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertNull(adjustment.getEndDate());
@@ -84,5 +115,18 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals(readValue.getEndDate(), adjustment.getEndDate());
         Assert.assertEquals(readValue.getCreatedAt(), adjustment.getCreatedAt());
         Assert.assertEquals(readValue.getRevenueScheduleType(), adjustment.getRevenueScheduleType());
+    }
+
+    private List<TaxDetail> getTaxDetails() {
+        final List<TaxDetail> taxDetails = new ArrayList<TaxDetail>();
+        final TaxDetail taxDetail = new TaxDetail();
+
+        taxDetail.setName("Special Tax");
+        taxDetail.setType("state");
+        taxDetail.setTaxRate(BigDecimal.valueOf(0.065));
+        taxDetail.setTaxInCents(Integer.valueOf(-52));
+        taxDetails.add(taxDetail);
+
+        return taxDetails;
     }
 }

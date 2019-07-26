@@ -17,14 +17,21 @@
 
 package com.ning.billing.recurly.model.push.subscription;
 
+import com.google.common.base.Objects;
+
 import javax.xml.bind.annotation.XmlElement;
 
 import com.ning.billing.recurly.model.Subscription;
+
+import org.joda.time.DateTime;
 
 public class PushSubscription extends Subscription {
 
     @XmlElement(name = "total_amount_in_cents")
     private Integer totalAmountInCents;
+
+    @XmlElement(name = "resume_at")
+    private DateTime resumeAt;
 
     public Integer getTotalAmountInCents() {
         return totalAmountInCents;
@@ -32,6 +39,14 @@ public class PushSubscription extends Subscription {
 
     public void setTotalAmountInCents(final Object totalAmountInCents) {
         this.totalAmountInCents = integerOrNull(totalAmountInCents);
+    }
+
+    public DateTime getResumeAt() {
+        return resumeAt;
+    }
+
+    public void setResumeAt(final Object resumeAt) {
+        this.resumeAt = dateTimeOrNull(resumeAt);
     }
 
     @Override
@@ -52,13 +67,18 @@ public class PushSubscription extends Subscription {
             return false;
         }
 
+        if (resumeAt != null ? !resumeAt.equals(that.resumeAt) : that.resumeAt != null) {
+            return false;
+        }
+
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (totalAmountInCents != null ? totalAmountInCents.hashCode() : 0);
-        return result;
+        return Objects.hashCode(
+            totalAmountInCents,
+            resumeAt
+        );
     }
 }

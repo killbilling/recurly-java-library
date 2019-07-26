@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -24,8 +24,6 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.joda.time.DateTime;
 import com.google.common.base.Objects;
-
-import java.util.List;
 
 /**
  * Class that represents the Concept of a Coupon within the Recurly API.
@@ -53,11 +51,17 @@ public class Coupon extends RecurlyObject {
     }
 
     public enum Type {
-        single_code, bulk
+        single_code, bulk, unique_code
     }
 
     @XmlTransient
     public static final String COUPON_RESOURCE = "/coupons";
+
+    @XmlTransient
+    public static final String GENERATE_RESOURCE = "/generate";
+
+    @XmlTransient
+    public static final String UNIQUE_CODES_RESOURCE = "/unique_coupon_codes";
 
     @XmlElement(name = "id")
     private Long id;
@@ -139,17 +143,17 @@ public class Coupon extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
-    public List<String> getPlanCodes() {
+    public PlanCodes getPlanCodes() {
         return planCodes;
     }
 
-    public void setPlanCodes(List<String> planCodes) {
+    public void setPlanCodes(final PlanCodes planCodes) {
         this.planCodes = planCodes;
     }
 
-    @XmlElement( name="plan_code" )
-    @XmlElementWrapper( name="plan_codes" )
-    private List<String> planCodes;
+    @XmlElement(name = "plan_code")
+    @XmlElementWrapper(name = "plan_codes")
+    private PlanCodes planCodes;
 
     /**
      * forever, single_use, or temporal. If single_use, the coupon applies to
@@ -212,6 +216,15 @@ public class Coupon extends RecurlyObject {
      */
     @XmlElement(name = "unique_code_template")
     private String uniqueCodeTemplate;
+
+    /**
+     * The number of unique codes to generate.
+     *
+     * @see <a href=
+     *      "https://dev.recurly.com/docs/generate-unique-codes">https://dev.recurly.com/docs/generate-unique-codes</a>
+     */
+    @XmlElement(name = "number_of_unique_codes")
+    private Integer numberOfUniqueCodes;
 
     public void setId(final Object id) {
         this.id = longOrNull(id);
@@ -456,6 +469,14 @@ public class Coupon extends RecurlyObject {
       this.uniqueCodeTemplate = stringOrNull(uniqueCodeTemplate);
     }
 
+    public Integer getNumberOfUniqueCodes() {
+        return numberOfUniqueCodes;
+    }
+
+    public void setNumberOfUniqueCodes(Integer numberOfUniqueCodes) {
+        this.numberOfUniqueCodes = numberOfUniqueCodes;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -488,6 +509,9 @@ public class Coupon extends RecurlyObject {
             return false;
         }
         if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
+            return false;
+        }
+        if (planCodes != null ? !planCodes.equals(coupon.planCodes) : coupon.planCodes != null) {
             return false;
         }
         if (createdAt != null ? createdAt.compareTo(coupon.createdAt) != 0 : coupon.createdAt != null) {
@@ -562,6 +586,7 @@ public class Coupon extends RecurlyObject {
                 appliesToNonPlanCharges,
                 name,
                 couponCode,
+                planCodes,
                 description,
                 discountType,
                 discountPercent,

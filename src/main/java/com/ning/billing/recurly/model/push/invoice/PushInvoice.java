@@ -18,10 +18,17 @@ package com.ning.billing.recurly.model.push.invoice;
 
 import com.ning.billing.recurly.model.Invoice;
 import org.joda.time.DateTime;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 
 public class PushInvoice extends Invoice {
+
+    @XmlList
+    @XmlElementWrapper(name = "subscription_ids")
+    private List<String> subscriptionIds;
 
     @XmlElement(name = "subscription_id")
     private String subscriptionId;
@@ -35,10 +42,32 @@ public class PushInvoice extends Invoice {
     @XmlElement(name = "closed_at")
     private DateTime closedAt;
 
+    @XmlElement(name = "dunning_events_count")
+    private Integer dunningEventsCount;
+
+    @XmlElement(name = "final_dunning_event")
+    private Boolean isFinalDunningEvent;
+
+    public List<String> getSubscriptionIds() {
+        return subscriptionIds;
+    }
+
+    public void setSubscriptionIds(final List<String> subscriptionIds) {
+        this.subscriptionIds = subscriptionIds;
+    }
+
+    /**
+     * @deprecated Use getSubscriptionIds instead
+     */
+    @Deprecated
     public String getSubscriptionId() {
         return subscriptionId;
     }
 
+    /**
+     * @deprecated Use setSubscriptionIds instead
+     */
+    @Deprecated
     public void setSubscriptionId(final Object subscriptionId) {
         this.subscriptionId = stringOrNull(subscriptionId);
     }
@@ -67,6 +96,22 @@ public class PushInvoice extends Invoice {
         this.closedAt = dateTimeOrNull(closedAt);
     }
 
+    public Integer getDunningEventsCount() {
+       return dunningEventsCount;
+    }
+
+    public void setDunningEventsCount(final Object dunningEventsCount) {
+       this.dunningEventsCount = integerOrNull(dunningEventsCount);
+    }
+
+    public Boolean isFinalDunningEvent() {
+       return isFinalDunningEvent;
+    }
+
+    public void setIsFinalDunningEvent(final Object isFinalDunningEvent) {
+       this.isFinalDunningEvent = booleanOrNull(isFinalDunningEvent);
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) {
@@ -80,6 +125,10 @@ public class PushInvoice extends Invoice {
         }
 
         final PushInvoice that = (PushInvoice) o;
+
+        if (subscriptionIds != null ? !subscriptionIds.equals(that.subscriptionIds) : that.subscriptionIds != null) {
+            return false;
+        }
 
         if (subscriptionId != null ? !subscriptionId.equals(that.subscriptionId) : that.subscriptionId != null) {
             return false;
@@ -103,6 +152,7 @@ public class PushInvoice extends Invoice {
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (subscriptionIds != null ? subscriptionIds.hashCode() : 0);
         result = 31 * result + (subscriptionId != null ? subscriptionId.hashCode() : 0);
         result = 31 * result + (invoiceNumberPrefix != null ? invoiceNumberPrefix.hashCode() : 0);
         result = 31 * result + (date != null ? date.hashCode() : 0);

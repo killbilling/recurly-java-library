@@ -45,12 +45,6 @@ public class PushTransaction extends AbstractTransaction {
     @XmlElement
     private String message;
 
-    @XmlElement(name = "failure_type")
-    private String failureType;
-
-    @XmlElement(name = "gateway_error_codes")
-    private String gatewayErrorCodes;
-
     public String getId() {
         return id;
     }
@@ -97,22 +91,6 @@ public class PushTransaction extends AbstractTransaction {
 
     public void setMessage(final Object message) {
         this.message = stringOrNull(message);
-    }
-
-    public String getFailureType() {
-        return failureType;
-    }
-
-    public void setFailureType(final Object failureType) {
-        this.failureType = stringOrNull(failureType);
-    }
-
-    public String getGatewayErrorCodes() {
-        return gatewayErrorCodes;
-    }
-
-    public void setGatewayErrorCodes(final Object gatewayErrorCodes) {
-        this.gatewayErrorCodes = stringOrNull(gatewayErrorCodes);
     }
 
     @Override

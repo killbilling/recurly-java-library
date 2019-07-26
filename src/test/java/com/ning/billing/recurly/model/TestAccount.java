@@ -31,6 +31,8 @@ public class TestAccount extends TestModelBase {
     public void testSerialization() throws Exception {
         // See https://dev.recurly.com/docs/list-accounts
         final String accountData = "<account href=\"https://api.recurly.com/v2/accounts/1\">\n" +
+                                   "  <parent_account href=\"https://api.recurly.com/v2/accounts/2\"/>\n" +
+                                   "  <child_accounts href=\"https://api.recurly.com/v2/accounts/1/child_accounts\"/>\n" +
                                    "  <adjustments href=\"https://api.recurly.com/v2/accounts/1/adjustments\"/>\n" +
                                    "  <billing_info href=\"https://api.recurly.com/v2/accounts/1/billing_info\"/>\n" +
                                    "  <invoices href=\"https://api.recurly.com/v2/accounts/1/invoices\"/>\n" +
@@ -38,12 +40,14 @@ public class TestAccount extends TestModelBase {
                                    "  <subscriptions href=\"https://api.recurly.com/v2/accounts/1/subscriptions\"/>\n" +
                                    "  <transactions href=\"https://api.recurly.com/v2/accounts/1/transactions\"/>\n" +
                                    "  <account_code>1</account_code>\n" +
+                                   "  <parent_account_code>2</parent_account_code>\n" +
                                    "  <state>active</state>\n" +
                                    "  <username nil=\"nil\"></username>\n" +
                                    "  <email>verena@example.com</email>\n" +
                                    "  <first_name>Verena</first_name>\n" +
                                    "  <last_name>Example</last_name>\n" +
                                    "  <tax_exempt type=\"boolean\">false</tax_exempt>\n\n" +
+                                   "  <exemption_certificate>Some Certificate</exemption_certificate>\n" +
                                    "  <accept_language nil=\"nil\"></accept_language>\n" +
                                    "  <hosted_login_token>a92468579e9c4231a6c0031c4716c01d</hosted_login_token>\n" +
                                    "  <created_at type=\"dateTime\">2011-10-25T12:00:00</created_at>\n" +
@@ -62,7 +66,13 @@ public class TestAccount extends TestModelBase {
                                    "      <zip>94105-1804</zip>\n" +
                                    "      <country>US</country>\n" +
                                    "      <phone nil=\"nil\"></phone>\n" +
-                                   "  </address>" +
+                                   "  </address>\n" +
+                                   "  <custom_fields type=\"array\">\n" +
+                                   "    <custom_field>\n" +
+                                   "      <name>acct_field</name>\n" +
+                                   "      <value>some account value</value>\n" +
+                                   "    </custom_field>\n" +
+                                   "  </custom_fields>\n" +
                                    "</account>";
 
         final Account account = xmlMapper.readValue(accountData, Account.class);
@@ -72,6 +82,7 @@ public class TestAccount extends TestModelBase {
         // Verify serialization
         final String accountSerialized = xmlMapper.writeValueAsString(account);
         final Account account2 = xmlMapper.readValue(accountSerialized, Account.class);
+        Assert.assertNull(account2.getHref());
         verifyAccount(account2);
     }
 
@@ -104,13 +115,25 @@ public class TestAccount extends TestModelBase {
         Assert.assertEquals(account.getAddress().getZip(), "94105-1804");
         Assert.assertEquals(account.getAddress().getCountry(), "US");
         Assert.assertFalse(account.getTaxExempt());
+        Assert.assertEquals(account.getExemptionCertificate(), "Some Certificate");
         Assert.assertNull(account.getAddress().getPhone());
+        Assert.assertEquals(account.getCustomFields(), getTestFields());
         Assert.assertTrue(account.getHasLiveSubscription());
         Assert.assertTrue(account.getHasActiveSubscription());
         Assert.assertFalse(account.getHasFutureSubscription());
         Assert.assertFalse(account.getHasCanceledSubscription());
         Assert.assertFalse(account.getHasPastDueInvoice());
         Assert.assertEquals(account.getVatNumber(), "U12345678");
+        Assert.assertEquals(account.getParentAccountCode(), "2");
+    }
+
+    private CustomFields getTestFields() {
+        CustomField cf = new CustomField();
+        cf.setName("acct_field");
+        cf.setValue("some account value");
+        CustomFields fields = new CustomFields();
+        fields.add(cf);
+        return fields;
     }
 
 }

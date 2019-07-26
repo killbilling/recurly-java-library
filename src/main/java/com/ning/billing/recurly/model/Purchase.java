@@ -17,14 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlList;
-
 import com.google.common.base.Objects;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.List;
 
 @XmlRootElement(name = "purchase")
@@ -55,6 +54,10 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "subscription")
     private Subscriptions subscriptions;
 
+    @XmlElementWrapper(name = "shipping_fees")
+    @XmlElement(name = "shipping_fee")
+    private ShippingFees shippingFees;
+
     @XmlElement(name = "gift_card")
     private GiftCard giftCard;
 
@@ -66,6 +69,12 @@ public class Purchase extends RecurlyObject {
 
     @XmlElement(name = "terms_and_conditions")
     private String termsAndConditions;
+
+    @XmlElement(name = "shipping_address_id")
+    private Long shippingAddressId;
+
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
 
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
@@ -136,6 +145,14 @@ public class Purchase extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
+    public void setShippingFees(final ShippingFees shippingFees) {
+        this.shippingFees = shippingFees;
+    }
+
+    public ShippingFees getShippingFees() {
+        return shippingFees;
+    }
+
     public void setSubscriptions(final Subscriptions subscriptions) {
         this.subscriptions = subscriptions;
     }
@@ -168,6 +185,22 @@ public class Purchase extends RecurlyObject {
         this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
     }
 
+    public Long getShippingAddressId() {
+        return shippingAddressId;
+    }
+
+    public void setShippingAddressId(final Object shippingAddressId) {
+        this.shippingAddressId = longOrNull(shippingAddressId);
+    }
+
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -179,11 +212,14 @@ public class Purchase extends RecurlyObject {
         sb.append(", poNumber='").append(poNumber).append('\'');
         sb.append(", netTerms='").append(netTerms).append('\'');
         sb.append(", giftCard='").append(giftCard).append('\'');
+        sb.append(", shippingFees=").append(shippingFees);
         sb.append(", subscriptions='").append(subscriptions).append('\'');
         sb.append(", couponCodes='").append(couponCodes).append('\'');
         sb.append(", customerNotes='").append(customerNotes).append('\'');
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
+        sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
+        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -213,6 +249,9 @@ public class Purchase extends RecurlyObject {
         if (customerNotes != null ? !customerNotes.equals(purchase.customerNotes) : purchase.customerNotes != null) {
             return false;
         }
+        if (gatewayCode != null ? !gatewayCode.equals(purchase.gatewayCode) : purchase.gatewayCode != null) {
+            return false;
+        }
         if (giftCard != null ? !giftCard.equals(purchase.giftCard) : purchase.giftCard != null) {
             return false;
         }
@@ -220,6 +259,12 @@ public class Purchase extends RecurlyObject {
             return false;
         }
         if (netTerms != null ? !netTerms.equals(purchase.netTerms) : purchase.netTerms != null) {
+            return false;
+        }
+        if (shippingAddressId != null ? !shippingAddressId.equals(purchase.shippingAddressId) : purchase.shippingAddressId != null) {
+            return false;
+        }
+        if (shippingFees != null ? !shippingFees.equals(purchase.shippingFees) : purchase.shippingFees != null) {
             return false;
         }
         if (subscriptions != null ? !subscriptions.equals(purchase.subscriptions) : purchase.subscriptions != null) {
@@ -245,11 +290,14 @@ public class Purchase extends RecurlyObject {
                 giftCard,
                 poNumber,
                 netTerms,
+                shippingFees,
                 subscriptions,
                 couponCodes,
                 customerNotes,
                 termsAndConditions,
-                vatReverseChargeNotes
+                vatReverseChargeNotes,
+                shippingAddressId,
+                gatewayCode
         );
     }
 

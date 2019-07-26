@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -32,7 +32,6 @@ import static org.testng.Assert.assertTrue;
 import static org.testng.Assert.assertNotEquals;
 
 public class TestCoupon extends TestModelBase {
-
 
     @Test(groups = "fast")
     public void testDeserializationPercent() throws Exception {
@@ -216,7 +215,6 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getType(), Type.single_code);
     }
 
-
     @Test(groups = "fast")
     public void testPlanCodes() throws Exception {
         // See https://dev.recurly.com/docs/list-active-coupons
@@ -276,8 +274,13 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getMaxRedemptionsPerAccount().intValue(), 1);
         assertEquals(coupon.getType(), Type.single_code);
         assertEquals(coupon.getPlanCodes().size(), 2);
-        assertTrue(coupon.getPlanCodes().contains("platinum"));
-        assertTrue(coupon.getPlanCodes().contains("gold"));
+        assertTrue(coupon.getPlanCodes().contains(new PlanCode("platinum")));
+        assertTrue(coupon.getPlanCodes().contains(new PlanCode("gold")));
+
+        // Verify serialization
+        final String couponSerialized = xmlMapper.writeValueAsString(coupon);
+        final Coupon coupon2 = xmlMapper.readValue(couponSerialized, Coupon.class);
+        assertEquals(coupon2, coupon);
     }
 
     @Test(groups = "fast")

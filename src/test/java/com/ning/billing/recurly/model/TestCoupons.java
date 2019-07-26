@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -24,8 +24,8 @@ public class TestCoupons extends TestModelBase {
 
     @Test(groups = "fast")
     public void testDeserialization() throws Exception {
-        // See https://dev.recurly.com/docs/list-accounts
-        final String accountsData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+        // See https://dev.recurly.com/docs/list-active-coupons
+        final String couponData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                     "<coupons type=\"array\">\n" +
                                     "  <coupon href=\"https://api.recurly.com/v2/coupons/cdeb2\">\n" +
                                     "    <redemptions href=\"https://api.recurly.com/v2/coupons/cdeb2/redemptions\"/>\n" +
@@ -96,6 +96,7 @@ public class TestCoupons extends TestModelBase {
                                     "    <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
                                     "    <created_at type=\"dateTime\">2013-05-08T11:25:02Z</created_at>\n" +
                                     "    <plan_codes type=\"array\">\n" +
+                                    "      <plan_code>gold</plan_code>\n" +
                                     "    </plan_codes>\n" +
                                     "    <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/9442c/redeem\" method=\"post\"/>\n" +
                                     "  </coupon>\n" +
@@ -114,12 +115,22 @@ public class TestCoupons extends TestModelBase {
                                     "    <applies_to_all_plans type=\"boolean\">true</applies_to_all_plans>\n" +
                                     "    <created_at type=\"dateTime\">2013-05-08T11:24:31Z</created_at>\n" +
                                     "    <plan_codes type=\"array\">\n" +
+                                    "      <plan_code>gold</plan_code>\n" +
+                                    "      <plan_code>silver</plan_code>" +
                                     "    </plan_codes>\n" +
                                     "    <a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/f15a9/redeem\" method=\"post\"/>\n" +
                                     "  </coupon>\n" +
                                     "</coupons>\n";
 
-        final Coupons coupons = xmlMapper.readValue(accountsData, Coupons.class);
+        final Coupons coupons = xmlMapper.readValue(couponData, Coupons.class);
         Assert.assertEquals(coupons.size(), 5);
+        Assert.assertEquals(coupons.get(0).getPlanCodes().size(), 0);
+        Assert.assertEquals(coupons.get(1).getPlanCodes().size(), 0);
+        Assert.assertEquals(coupons.get(2).getPlanCodes().size(), 0);
+        Assert.assertEquals(coupons.get(3).getPlanCodes().size(), 1);
+        Assert.assertEquals(coupons.get(3).getPlanCodes().get(0).getName(), "gold");
+        Assert.assertEquals(coupons.get(4).getPlanCodes().size(), 2);
+        Assert.assertEquals(coupons.get(4).getPlanCodes().get(0).getName(), "gold");
+        Assert.assertEquals(coupons.get(4).getPlanCodes().get(1).getName(), "silver");
     }
 }

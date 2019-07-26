@@ -17,15 +17,17 @@
 
 package com.ning.billing.recurly;
 
-import java.util.Random;
-
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountAcquisition;
+import com.ning.billing.recurly.model.AcquisitionChannel;
 import com.ning.billing.recurly.model.AddOn;
 import com.ning.billing.recurly.model.Address;
-import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.Adjustments;
+import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.CustomField;
+import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.Delivery;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
@@ -41,10 +43,9 @@ import com.ning.billing.recurly.model.SubscriptionAddOns;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
-import com.ning.billing.recurly.model.AccountAcquisition;
-import com.ning.billing.recurly.model.AcquisitionChannel;
-
 import org.joda.time.DateTime;
+
+import java.util.Random;
 
 public class TestUtils {
 
@@ -257,7 +258,8 @@ public class TestUtils {
     public static Account createRandomAccount(final int seed) {
         final Account account = new Account();
 
-        account.setAcceptLanguage("en_US");
+        account.setAcceptLanguage("en-US");
+        account.setPreferredLocale("en-US");
         account.setAccountCode(randomAlphaNumericString(10, seed));
         account.setCompanyName(randomAlphaNumericString(10, seed));
         account.setEmail(randomAlphaNumericString(4, seed) + "@test.com");
@@ -287,6 +289,9 @@ public class TestUtils {
     public static Address createRandomAddress(final int seed) {
         final Address address = new Address();
 
+        address.setFirstName(randomAlphaNumericString(10, seed));
+        address.setLastName(randomAlphaNumericString(10, seed));
+        address.setCompany(randomAlphaNumericString(10, seed));
         address.setAddress1(randomAlphaNumericString(10, seed));
         address.setAddress2(randomAlphaNumericString(10, seed));
         address.setCity(randomAlphaNumericString(10, seed));
@@ -331,6 +336,30 @@ public class TestUtils {
         address.setEmail(randomAlphaNumericString(10, seed) + "@email.com");
 
         return address;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.CustomField} object for testing use
+     *
+     * @return The random {@link com.ning.billing.recurly.model.CustomField} object
+     */
+    public static CustomField createRandomCustomField(String name) {
+        return createRandomCustomField(name, randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.CustomField} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.CustomField} object
+     */
+    public static CustomField createRandomCustomField(String name, final int seed) {
+        final CustomField field = new CustomField();
+
+        field.setName(name);
+        field.setValue(randomAlphaNumericString(50, seed));
+
+        return field;
     }
 
     /**
@@ -457,7 +486,7 @@ public class TestUtils {
         price.setUnitAmountUSD(LifecycleTest.randomInteger(10));
         price.setUnitAmountSEK(LifecycleTest.randomInteger(10));
         */
-        price.setUnitAmountEUR(10);
+        price.setUnitAmountUSD(10);
 
         return price;
     }

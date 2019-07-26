@@ -17,16 +17,15 @@
 
 package com.ning.billing.recurly.model;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
-import javax.xml.bind.annotation.XmlList;
-import javax.xml.bind.annotation.XmlRootElement;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
-import com.google.common.base.Objects;
-
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 @XmlRootElement(name = "subscription")
@@ -101,11 +100,11 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
-    @XmlElement(name = "coupon_code")
+    @JsonIgnore
     private String couponCode;
 
-    @XmlList
     @XmlElementWrapper(name = "coupon_codes")
+    @XmlElement(name = "coupon_code")
     private List<String> couponCodes;
 
     //Purchase Order Number
@@ -142,11 +141,47 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
+    @XmlElement(name = "shipping_method_code")
+    private String shippingMethodCode;
+
+    @XmlElement(name = "shipping_amount_in_cents")
+    private Integer shippingAmountInCents;
+
     @XmlElement(name = "no_billing_info_reason")
-    public String noBillingInfoReason;
+    private String noBillingInfoReason;
 
     @XmlElement(name = "imported_trial")
-    public Boolean importedTrial;
+    private Boolean importedTrial;
+
+    @XmlElement(name = "credit_customer_notes")
+    private String creditCustomerNotes;
+
+    @XmlElement(name = "invoice_collection")
+    private InvoiceCollection invoiceCollection;
+
+    @XmlElement(name = "remaining_pause_cycles")
+    private Integer remainingPauseCycles;
+
+    @XmlElement(name = "paused_at")
+    private DateTime pausedAt;
+
+    @XmlElement(name = "auto_renew")
+    private Boolean autoRenew;
+
+    @XmlElement(name = "renewal_billing_cycles")
+    private Integer renewalBillingCycles;
+
+    @XmlElement(name = "first_bill_date")
+    private DateTime firstBillDate;
+
+    @XmlElement(name = "next_bill_date")
+    private DateTime nextBillDate;
+
+    @XmlElement(name = "current_term_started_at")
+    private DateTime currentTermStartedAt;
+
+    @XmlElement(name = "current_term_ends_at")
+    private DateTime currentTermEndsAt;
 
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
@@ -364,6 +399,8 @@ public class Subscription extends AbstractSubscription {
 
     public void setCouponCode(final String couponCode) {
         this.couponCode = couponCode;
+        if (this.couponCodes == null) this.couponCodes = new ArrayList<String>();
+        this.couponCodes.add(couponCode);
     }
 
     public void setCouponCodes(final List<String> couponCodes) {
@@ -382,8 +419,8 @@ public class Subscription extends AbstractSubscription {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(final RevenueScheduleType revenueScheduleType) {
-        this.revenueScheduleType = revenueScheduleType;
+    public void setRevenueScheduleType(final Object revenueScheduleType) {
+        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
     }
 
     public GiftCard getGiftCard() {
@@ -394,16 +431,32 @@ public class Subscription extends AbstractSubscription {
         this.giftCard = giftCard;
     }
 
-    public ShippingAddress getShippingAddress() {
-        return shippingAddress;
-    }
-
     public void setShippingAddress(final ShippingAddress shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
 
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
     public void setShippingAddressId(final Object shippingAddressId) {
         this.shippingAddressId = longOrNull(shippingAddressId);
+    }
+
+    public String getShippingMethodCode() {
+        return shippingMethodCode;
+    }
+
+    public void setShippingMethodCode(final Object shippingMethodCode) {
+        this.shippingMethodCode = stringOrNull(shippingMethodCode);
+    }
+
+    public Integer getShippingAmountInCents() {
+        return shippingAmountInCents;
+    }
+
+    public void setShippingAmountInCents(final Object shippingAmountInCents) {
+        this.shippingAmountInCents = integerOrNull(shippingAmountInCents);
     }
 
     public DateTime getUpdatedAt() {
@@ -447,6 +500,86 @@ public class Subscription extends AbstractSubscription {
     }
 
 
+    public String getCreditCustomerNotes() {
+        return creditCustomerNotes;
+    }
+
+    public void setCreditCustomerNotes(final Object creditCustomerNotes) {
+        this.creditCustomerNotes = stringOrNull(creditCustomerNotes);
+    }
+
+    public InvoiceCollection getInvoiceCollection() {
+        return invoiceCollection;
+    }
+
+    public void setInvoiceCollection(final InvoiceCollection invoiceCollection) {
+        this.invoiceCollection = invoiceCollection;
+    }
+
+    public Integer getRemainingPauseCycles() {
+        return remainingPauseCycles;
+    }
+
+    public void setRemainingPauseCycles(final Object remainingPauseCycles) {
+        this.remainingPauseCycles = integerOrNull(remainingPauseCycles);
+    }
+
+    public DateTime getPausedAt() {
+        return this.pausedAt;
+    }
+
+    public void setPausedAt(final Object pausedAt) {
+        this.pausedAt = dateTimeOrNull(pausedAt);
+    }
+
+    public Boolean getAutoRenew() {
+        return this.autoRenew;
+    }
+
+    public void setAutoRenew(final Object autoRenew) {
+        this.autoRenew = booleanOrNull(autoRenew);
+    }
+
+    public Integer getRenewalBillingCycles() {
+        return renewalBillingCycles;
+    }
+
+    public void setRenewalBillingCycles(final Object renewalBillingCycles) {
+        this.renewalBillingCycles = integerOrNull(renewalBillingCycles);
+    }
+
+    public DateTime getFirstBillDate() {
+        return firstBillDate;
+    }
+
+    protected void setFirstBillDate(final Object firstBillDate) {
+        this.firstBillDate = dateTimeOrNull(firstBillDate);
+    }
+
+    public DateTime getNextBillDate() {
+        return nextBillDate;
+    }
+
+    protected void setNextBillDate(final Object nextBillDate) {
+        this.nextBillDate = dateTimeOrNull(nextBillDate);
+    }
+
+    public DateTime getCurrentTermStartedAt() {
+        return currentTermStartedAt;
+    }
+
+    protected void setCurrentTermStartedAt(final Object currentTermStartedAt) {
+        this.currentTermStartedAt = dateTimeOrNull(currentTermStartedAt);
+    }
+
+    public DateTime getCurrentTermEndsAt() {
+        return currentTermEndsAt;
+    }
+
+    protected void setCurrentTermEndsAt(final Object currentTermEndsAt) {
+        this.currentTermEndsAt = dateTimeOrNull(currentTermEndsAt);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -482,10 +615,23 @@ public class Subscription extends AbstractSubscription {
         sb.append(", taxRate=").append(taxRate);
         sb.append(", shippingAddress=").append(shippingAddress);
         sb.append(", shippingAddressId=").append(shippingAddressId);
+        sb.append(", shippingMethodCode=").append(shippingMethodCode);
+        sb.append(", shippingAmountInCents=").append(shippingAmountInCents);
         sb.append(", startedWithGift=").append(startedWithGift);
         sb.append(", convertedAt=").append(convertedAt);
         sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
         sb.append(", importedTrial=").append(importedTrial);
+        sb.append(", creditCustomerNotes=").append(creditCustomerNotes);
+        sb.append(", invoiceCollection=").append(invoiceCollection);
+        sb.append(", customFields=").append(customFields);
+        sb.append(", remainingPauseCycles=").append(remainingPauseCycles);
+        sb.append(", pausedAt=").append(pausedAt);
+        sb.append(", autoRenew=").append(autoRenew);
+        sb.append(", renewalBillingCycles=").append(renewalBillingCycles);
+        sb.append(", firstBillDate=").append(firstBillDate);
+        sb.append(", nextBillDate=").append(nextBillDate);
+        sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
+        sb.append(", currentPeriodEndsAt=").append(currentPeriodEndsAt);
         sb.append('}');
         return sb.toString();
     }
@@ -533,6 +679,9 @@ public class Subscription extends AbstractSubscription {
         if (remainingBillingCycles != null ? !remainingBillingCycles.equals(that.remainingBillingCycles) : that.remainingBillingCycles != null) {
             return false;
         }
+        if (remainingPauseCycles != null ? !remainingPauseCycles.equals(that.remainingPauseCycles) : that.remainingPauseCycles != null) {
+            return false;
+        }
         if (plan != null ? !plan.equals(that.plan) : that.plan != null) {
             return false;
         }
@@ -569,6 +718,9 @@ public class Subscription extends AbstractSubscription {
         if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
             return false;
         }
+        if (pausedAt != null ? pausedAt.compareTo(that.pausedAt) != 0 : that.pausedAt != null) {
+            return false;
+        }
         if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
             return false;
         }
@@ -602,9 +754,43 @@ public class Subscription extends AbstractSubscription {
         if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
             return false;
         }
+        if (shippingMethodCode != null ? !shippingMethodCode.equals(that.shippingMethodCode) : that.shippingMethodCode != null) {
+            return false;
+        }
+        if (shippingAmountInCents != null ? !shippingAmountInCents.equals(that.shippingAmountInCents) : that.shippingAmountInCents != null) {
+            return false;
+        }
         if (noBillingInfoReason != null ? !noBillingInfoReason.equals(that.noBillingInfoReason) : that.noBillingInfoReason != null) {
             return false;
         }
+        if (creditCustomerNotes != null ? !creditCustomerNotes.equals(that.creditCustomerNotes) : that.creditCustomerNotes != null) {
+            return false;
+        }
+        if (invoiceCollection != null ? !invoiceCollection.equals(that.invoiceCollection) : that.invoiceCollection != null) {
+            return false;
+        }
+        if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
+            return false;
+        }
+        if (renewalBillingCycles != null ? !renewalBillingCycles.equals(that.renewalBillingCycles) : that.renewalBillingCycles != null) {
+            return false;
+        }
+        if (autoRenew != null ? !autoRenew.equals(that.autoRenew) : that.autoRenew != null) {
+            return false;
+        }
+        if (firstBillDate != null ? firstBillDate.compareTo(that.firstBillDate) != 0 : that.firstBillDate != null) {
+            return false;
+        }
+        if (nextBillDate != null ? nextBillDate.compareTo(that.nextBillDate) != 0 : that.nextBillDate != null) {
+            return false;
+        }
+        if (currentPeriodStartedAt != null ? currentPeriodStartedAt.compareTo(that.currentPeriodStartedAt) != 0 : that.currentPeriodStartedAt != null) {
+            return false;
+        }
+        if (currentPeriodEndsAt != null ? currentPeriodEndsAt.compareTo(that.currentPeriodEndsAt) != 0 : that.currentPeriodEndsAt != null) {
+            return false;
+        }
+
 
         return true;
     }
@@ -642,12 +828,24 @@ public class Subscription extends AbstractSubscription {
                 taxRate,
                 shippingAddress,
                 shippingAddressId,
+                shippingMethodCode,
+                shippingAmountInCents,
                 couponCode,
                 couponCodes,
                 convertedAt,
                 startedWithGift,
                 noBillingInfoReason,
-                importedTrial
+                importedTrial,
+                invoiceCollection,
+                customFields,
+                remainingPauseCycles,
+                pausedAt,
+                autoRenew,
+                renewalBillingCycles,
+                firstBillDate,
+                nextBillDate,
+                currentPeriodStartedAt,
+                currentPeriodEndsAt
         );
     }
 

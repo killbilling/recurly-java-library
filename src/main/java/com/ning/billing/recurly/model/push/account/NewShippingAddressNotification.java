@@ -15,11 +15,14 @@
  * under the License.
  */
 
-package com.ning.billing.recurly.model;
+package com.ning.billing.recurly.model.push.account;
 
-/**
- * The order in which to apply an invoice refund
- */
-public enum RefundApplyOrder {
-    transaction, credit
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "new_shipping_address_notification")
+public class NewShippingAddressNotification extends AccountNotification {
+
+    public static NewShippingAddressNotification read(final String payload) {
+        return read(payload, NewShippingAddressNotification.class);
+    }
 }

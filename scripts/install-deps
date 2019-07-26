@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e
+
+if ! hash brew 2>/dev/null; then
+  echo "✖ Homebrew not found. Please install: https://brew.sh/"
+  exit 1
+else
+  echo "✓ Found homebrew"
+fi
+
+if ! hash mvn 2>/dev/null; then
+  read -p "✖ 'mvn' not found. Would you like to install it? [Y/n] " -n 1 -r
+  echo
+  if [[ $REPLY =~ ^[Yy]$ ]]
+  then
+    brew install maven
+  else
+    exit 1
+  fi
+else
+  echo "✓ Found mvn"
+fi
