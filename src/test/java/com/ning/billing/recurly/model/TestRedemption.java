@@ -57,7 +57,7 @@ public class TestRedemption extends TestModelBase {
         redemption.setSubscriptionUuid("374a1c75374bd81493a3f7425db0a2b8");
 
         final String xml = xmlMapper.writeValueAsString(redemption);
-        Assert.assertEquals(xml, "<redemption>" +
+        Assert.assertEquals(xml, "<redemption xmlns=\"\">" +
                 "<account_code>1</account_code>" +
                 "<subscription_uuid>374a1c75374bd81493a3f7425db0a2b8</subscription_uuid>" +
                 "<currency>USD</currency>" +
@@ -68,7 +68,7 @@ public class TestRedemption extends TestModelBase {
         redemptionWithoutUuid.setCurrency("USD");
 
         final String secondXml = xmlMapper.writeValueAsString(redemptionWithoutUuid);
-        Assert.assertEquals(secondXml, "<redemption>" +
+        Assert.assertEquals(secondXml, "<redemption xmlns=\"\">" +
             "<account_code>1</account_code>" +
             "<currency>USD</currency>" +
             "</redemption>");
