@@ -92,7 +92,6 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.ConnectException;
-import java.net.URI;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.security.KeyManagementException;
@@ -104,7 +103,6 @@ import java.util.concurrent.ExecutionException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.List;
-import java.util.Arrays;
 
 public class RecurlyClient {
 
@@ -123,8 +121,6 @@ public class RecurlyClient {
     private static final Pattern TAG_FROM_GIT_DESCRIBE_PATTERN = Pattern.compile("recurly-java-library-([0-9]*\\.[0-9]*\\.[0-9]*)(-[0-9]*)?");
 
     public static final String FETCH_RESOURCE = "/recurly_js/result";
-
-    private static final List<String> validHosts = Arrays.asList("recurly.com");
 
     /**
      * Checks a system property to see if debugging output is
@@ -2105,7 +2101,6 @@ public class RecurlyClient {
         if (debug()) {
             log.info("Msg to Recurly API [GET] :: URL : {}", url);
         }
-        validateHost(url);
         return callRecurlySafeXmlContent(client.prepareGet(url), clazz);
     }
 
@@ -2118,8 +2113,6 @@ public class RecurlyClient {
     }
 
     private InputStream callRecurlySafeGetPdf(String url) {
-        validateHost(url);
-
         final Response response;
         final InputStream pdfInputStream;
         try {
@@ -2162,8 +2155,6 @@ public class RecurlyClient {
             return null;
         }
 
-        validateHost(baseUrl + resource);
-
         return callRecurlySafeXmlContent(client.preparePost(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
@@ -2185,8 +2176,6 @@ public class RecurlyClient {
             return null;
         }
 
-        validateHost(baseUrl + resource);
-
         return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
     }
 
@@ -2199,15 +2188,10 @@ public class RecurlyClient {
         if (debug()) {
             log.info("Msg to Recurly API [HEAD]:: URL : {}", url);
         }
-
-        validateHost(url);
-
         return callRecurlyNoContent(client.prepareHead(url));
     }
 
     private void doDELETE(final String resource) {
-        validateHost(baseUrl + resource);
-
         callRecurlySafeXmlContent(client.prepareDelete(baseUrl + resource), null);
     }
 
@@ -2396,18 +2380,6 @@ public class RecurlyClient {
         builder.setSSLContext(SslUtils.getInstance().getSSLContext());
 
         return new AsyncHttpClient(builder.build());
-    }
-
-    private void validateHost(String url) {
-        String host = URI.create(url).getHost();
-
-        // Remove the subdomain from the host
-        host = host.substring(host.indexOf(".")+1);
-
-        if (!validHosts.contains(host)) {
-            String exc = String.format("Attempted to make call to %s instead of Recurly", host);
-            throw new RuntimeException(exc);
-        }
     }
 
     @VisibleForTesting
