@@ -17,7 +17,11 @@
 
 package com.ning.billing.recurly.model.push;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.ning.billing.recurly.model.RecurlyObject;
 import com.ning.billing.recurly.model.TestModelBase;
+import com.ning.billing.recurly.model.push.Notification.Type;
 import com.ning.billing.recurly.model.push.payment.VoidPaymentNotification;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -67,4 +71,12 @@ public class TestVoidNotification extends TestModelBase {
         Assert.assertNotNull(voidPaymentNotification);
     }
 
+    @Test(groups = "fast")
+    public void testDetect() throws JsonProcessingException {
+        final VoidPaymentNotification voidPaymentNotification = new VoidPaymentNotification();
+        XmlMapper xmlMapper = RecurlyObject.newXmlMapper();
+        String xml = xmlMapper.writeValueAsString(voidPaymentNotification);
+        Type type = Notification.detect(xml);
+        Assert.assertEquals(type, Type.VoidPaymentNotification);
+    }
 }

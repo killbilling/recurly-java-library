@@ -17,24 +17,12 @@
 
 package com.ning.billing.recurly.model;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Nullable;
-import javax.xml.bind.annotation.XmlTransient;
-
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
-import org.joda.time.DateTime;
-
-import com.ning.billing.recurly.RecurlyClient;
-import com.ning.billing.recurly.model.jackson.RecurlyObjectsSerializer;
-import com.ning.billing.recurly.model.jackson.RecurlyXmlSerializerProvider;
-
+import com.ctc.wstx.stax.WstxInputFactory;
+import com.ctc.wstx.stax.WstxOutputFactory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -42,9 +30,22 @@ import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
+import com.fasterxml.jackson.module.jaxb.JaxbAnnotationModule;
+import com.ning.billing.recurly.RecurlyClient;
+import com.ning.billing.recurly.model.jackson.RecurlyObjectsSerializer;
+import com.ning.billing.recurly.model.jackson.RecurlyXmlSerializerProvider;
+import org.joda.time.DateTime;
+
+import javax.annotation.Nullable;
+import javax.xml.bind.annotation.XmlTransient;
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public abstract class RecurlyObject {
@@ -65,12 +66,16 @@ public abstract class RecurlyObject {
         return href;
     }
 
+    @JsonProperty
     public void setHref(final Object href) {
         this.href = stringOrNull(href);
     }
 
     public static XmlMapper newXmlMapper() {
-        final XmlMapper xmlMapper = new XmlMapper();
+        WstxOutputFactory outputFactory = new WstxOutputFactory();
+        outputFactory.getConfig().enableAutomaticEmptyElements(false);
+        XmlFactory factory = new XmlFactory(new WstxInputFactory(), outputFactory);
+        XmlMapper xmlMapper = new XmlMapper(factory);
         xmlMapper.setSerializerProvider(new RecurlyXmlSerializerProvider());
         final AnnotationIntrospector primary = new JacksonAnnotationIntrospector();
         final AnnotationIntrospector secondary = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
@@ -86,13 +91,16 @@ public abstract class RecurlyObject {
         m.addSerializer(AddOns.class, new RecurlyObjectsSerializer<AddOns, AddOn>(AddOns.class, "add_on"));
         m.addSerializer(Adjustments.class, new RecurlyObjectsSerializer<Adjustments, Adjustment>(Adjustments.class, "adjustment"));
         m.addSerializer(Coupons.class, new RecurlyObjectsSerializer<Coupons, Coupon>(Coupons.class, "coupon"));
+        m.addSerializer(CustomFields.class, new RecurlyObjectsSerializer<CustomFields, CustomField>(CustomFields.class, "custom_field"));
         m.addSerializer(Invoices.class, new RecurlyObjectsSerializer<Invoices, Invoice>(Invoices.class, "invoice"));
         m.addSerializer(Plans.class, new RecurlyObjectsSerializer<Plans, Plan>(Plans.class, "plan"));
         m.addSerializer(RecurlyErrors.class, new RecurlyObjectsSerializer<RecurlyErrors, RecurlyError>(RecurlyErrors.class, "error"));
         m.addSerializer(ShippingAddresses.class, new RecurlyObjectsSerializer<ShippingAddresses, ShippingAddress>(ShippingAddresses.class, "shipping_address"));
+        m.addSerializer(ShippingFees.class, new RecurlyObjectsSerializer<ShippingFees, ShippingFee>(ShippingFees.class, "shipping_fee"));
         m.addSerializer(SubscriptionAddOns.class, new RecurlyObjectsSerializer<SubscriptionAddOns, SubscriptionAddOn>(SubscriptionAddOns.class, "subscription_add_on"));
         m.addSerializer(Subscriptions.class, new RecurlyObjectsSerializer<Subscriptions, Subscription>(Subscriptions.class, "subscription"));
         m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<Transactions, Transaction>(Transactions.class, "transaction"));
+        m.addSerializer(Usages.class, new RecurlyObjectsSerializer<Usages, Usage>(Usages.class, "usage"));
         xmlMapper.registerModule(m);
 
         return xmlMapper;
@@ -124,14 +132,25 @@ public abstract class RecurlyObject {
     }
 
     @SuppressWarnings("unchecked")
-    public static <E extends Enum<E>> E enumOrNull(Class<E> enumClass, @Nullable final Object object) {
+    public static <E extends Enum<E>> E enumOrNull(Class<E> enumClass, @Nullable final Object object, final Boolean upCase) {
         if (isNull(object)) {
             return null;
         } else if (enumClass.isAssignableFrom(object.getClass())) {
             return (E) object;
         }
 
-        return (E) Enum.valueOf(enumClass, object.toString().trim());
+        String value =  object.toString().trim();
+
+        if (upCase) {
+            value = value.toUpperCase();
+        }
+
+        return (E) Enum.valueOf(enumClass, value);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <E extends Enum<E>> E enumOrNull(Class<E> enumClass, @Nullable final Object object) {
+        return enumOrNull(enumClass, object, false);
     }
 
     public static Integer integerOrNull(@Nullable final Object object) {
