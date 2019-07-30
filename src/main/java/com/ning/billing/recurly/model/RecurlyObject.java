@@ -17,6 +17,8 @@
 
 package com.ning.billing.recurly.model;
 
+import com.ctc.wstx.stax.WstxInputFactory;
+import com.ctc.wstx.stax.WstxOutputFactory;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -28,6 +30,7 @@ import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.type.TypeFactory;
+import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.fasterxml.jackson.module.jaxb.JaxbAnnotationIntrospector;
@@ -39,7 +42,6 @@ import org.joda.time.DateTime;
 
 import javax.annotation.Nullable;
 import javax.xml.bind.annotation.XmlTransient;
-import javax.xml.stream.XMLInputFactory;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -70,10 +72,8 @@ public abstract class RecurlyObject {
     }
 
     public static XmlMapper newXmlMapper() {
-        final XMLInputFactory xmlInputFactory = XMLInputFactory.newFactory();
-        xmlInputFactory.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, Boolean.FALSE);
-        xmlInputFactory.setProperty(XMLInputFactory.SUPPORT_DTD, Boolean.FALSE);
-        final XmlMapper xmlMapper = new XmlMapper(xmlInputFactory);
+        XmlFactory factory = new XmlFactory(new WstxInputFactory(), new WstxOutputFactory());
+        XmlMapper xmlMapper = new XmlMapper(factory);
         xmlMapper.setSerializerProvider(new RecurlyXmlSerializerProvider());
         final AnnotationIntrospector primary = new JacksonAnnotationIntrospector();
         final AnnotationIntrospector secondary = new JaxbAnnotationIntrospector(TypeFactory.defaultInstance());
