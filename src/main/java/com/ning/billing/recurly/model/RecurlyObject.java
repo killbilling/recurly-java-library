@@ -72,7 +72,9 @@ public abstract class RecurlyObject {
     }
 
     public static XmlMapper newXmlMapper() {
-        XmlFactory factory = new XmlFactory(new WstxInputFactory(), new WstxOutputFactory());
+        WstxOutputFactory outputFactory = new WstxOutputFactory();
+        outputFactory.getConfig().enableAutomaticEmptyElements(false);
+        XmlFactory factory = new XmlFactory(new WstxInputFactory(), outputFactory);
         XmlMapper xmlMapper = new XmlMapper(factory);
         xmlMapper.setSerializerProvider(new RecurlyXmlSerializerProvider());
         final AnnotationIntrospector primary = new JacksonAnnotationIntrospector();
