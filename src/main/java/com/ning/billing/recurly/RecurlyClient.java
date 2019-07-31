@@ -353,6 +353,19 @@ public class RecurlyClient {
     }
 
     /**
+     * Reopen Account
+     * <p>
+     * Transitions a closed account back to active.
+     *
+     * @param accountCode recurly account id
+     */
+    public Account reopenAccount(final String accountCode) {
+        return doPUT(Account.ACCOUNT_RESOURCE + "/" + accountCode + "/reopen",
+                     null, Account.class);
+    }
+
+
+    /**
      * Get Child Accounts
      * <p>
      * Returns information about a the child accounts of an account.

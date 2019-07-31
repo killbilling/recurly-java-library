@@ -152,6 +152,33 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testReopenAccount() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+
+        try {
+            // Create account
+            final Account newAccount = recurlyClient.createAccount(accountData);
+            Assert.assertNull(newAccount.getClosedAt());
+
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            final Account closedAccount = recurlyClient.getAccount(accountData.getAccountCode());
+            Assert.assertNotNull(closedAccount.getClosedAt());
+
+            // Reopen the account
+            final Account reopenedAccount = recurlyClient.reopenAccount(accountData.getAccountCode());
+
+            // Confirm that the reopened account is the same as the original
+            // (besides `updated_at`, which may differ)
+            newAccount.setUpdatedAt(reopenedAccount.getUpdatedAt());
+            Assert.assertEquals(reopenedAccount, newAccount);
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
     public void testGetBillingInfo() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
