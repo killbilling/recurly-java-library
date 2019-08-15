@@ -130,6 +130,9 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "proration_rate")
     private BigDecimal prorationRate;
 
+    @XmlElement(name = "surcharge_in_cents")
+    private Integer surchargeInCents;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -405,6 +408,14 @@ public class Adjustment extends RecurlyObject {
         this.prorationRate = bigDecimalOrNull(prorationRate);
     }
 
+    public Integer getSurchargeInCents() {
+        return surchargeInCents;
+    }
+
+    public void setSurchargeInCents(final Object surchargeInCents) {
+        this.surchargeInCents = integerOrNull(surchargeInCents);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -441,6 +452,7 @@ public class Adjustment extends RecurlyObject {
         sb.append(", refundableTotalInCents=").append(refundableTotalInCents);
         sb.append(", state=").append(state);
         sb.append(", prorationRate=").append(prorationRate);
+        sb.append(", surchargeInCents=").append(surchargeInCents);
         sb.append('}');
         return sb.toString();
     }
@@ -495,6 +507,9 @@ public class Adjustment extends RecurlyObject {
             return false;
         }
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) {
+            return false;
+        }
+        if (surchargeInCents != null ? !surchargeInCents.equals(that.surchargeInCents) : that.surchargeInCents != null) {
             return false;
         }
         if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
@@ -585,7 +600,8 @@ public class Adjustment extends RecurlyObject {
                 shippingAddressId,
                 refundableTotalInCents,
                 state,
-                prorationRate
+                prorationRate,
+                surchargeInCents
         );
     }
 
