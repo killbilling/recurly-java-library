@@ -27,7 +27,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
         // See https://dev.recurly.com/docs/list-subscriptions
         final String subscriptionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                         "<subscription>\n" +
-                                        "  <timeframe>now</timeframe>\n" +
+                                        "  <timeframe>term_end</timeframe>\n" +
                                         "  <plan_code>gold</plan_code>\n" +
                                         "  <unit_amount_in_cents type=\"integer\">800</unit_amount_in_cents>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
@@ -36,7 +36,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
                                         "</subscription>";
 
         final SubscriptionUpdate subscription = xmlMapper.readValue(subscriptionData, SubscriptionUpdate.class);
-        Assert.assertEquals(subscription.getTimeframe(), SubscriptionUpdate.Timeframe.now);
+        Assert.assertEquals(subscription.getTimeframe(), SubscriptionUpdate.Timeframe.term_end);
         Assert.assertEquals(subscription.getPlanCode(), "gold");
         Assert.assertEquals(subscription.getUnitAmountInCents(), (Integer) 800);
         Assert.assertEquals(subscription.getQuantity(), (Integer) 1);

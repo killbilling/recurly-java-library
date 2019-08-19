@@ -516,6 +516,22 @@ public class RecurlyClient {
     }
 
     /**
+     * Cancel a subscription
+     * <p>
+     * Cancel a subscription so it remains active and then expires at the end of the current bill cycle.
+     *
+     * @param subscriptionUuid String uuid of the subscription to cancel
+     * @param timeframe SubscriptionUpdate.TimeFrame the timeframe in which to cancel. Only accepts bill_date or term_end
+     * @return Subscription
+     */
+    public Subscription cancelSubscription(final String subscriptionUuid, final SubscriptionUpdate.Timeframe timeframe) {
+        final QueryParams qp = new QueryParams();
+        if (timeframe != null) qp.put("timeframe", timeframe.toString());
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + "/cancel",
+                     null, Subscription.class, qp);
+    }
+
+    /**
      * Pause a subscription or cancel a scheduled pause on a subscription.
      * <p>
      * * For an active subscription without a pause scheduled already, this will
@@ -2119,10 +2135,10 @@ public class RecurlyClient {
     }
 
     private <T> T doGET(final String resource, final Class<T> clazz, QueryParams params) {
-        return doGETWithFullURL(clazz, constructGetUrl(resource, params));
+        return doGETWithFullURL(clazz, constructUrl(resource, params));
     }
 
-    private String constructGetUrl(final String resource, QueryParams params) {
+    private String constructUrl(final String resource, QueryParams params) {
         return baseUrl + resource + params.toString();
     }
 
@@ -2193,6 +2209,10 @@ public class RecurlyClient {
     }
 
     private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz) {
+        return doPUT(resource, payload, clazz, new QueryParams());
+    }
+
+    private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz, final QueryParams params) {
         final String xmlPayload;
         try {
             if (payload != null) {
@@ -2210,9 +2230,10 @@ public class RecurlyClient {
             return null;
         }
 
-        validateHost(baseUrl + resource);
+        final String url = baseUrl + resource;
+        validateHost(url);
 
-        return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXmlContent(client.preparePut(url).setBody(xmlPayload), clazz);
     }
 
     private FluentCaseInsensitiveStringsMap doHEAD(final String resource, QueryParams params) {
@@ -2220,7 +2241,7 @@ public class RecurlyClient {
             params = new QueryParams();
         }
 
-        final String url = constructGetUrl(resource, params);
+        final String url = constructUrl(resource, params);
         if (debug()) {
             log.info("Msg to Recurly API [HEAD]:: URL : {}", url);
         }
