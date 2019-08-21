@@ -127,6 +127,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "three_d_secure_action_result_token_id")
     private String threeDSecureActionResultTokenId;
 
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
+
     public String getType() {
         return type;
     }
@@ -398,6 +401,14 @@ public class BillingInfo extends RecurlyObject {
         this.threeDSecureActionResultTokenId = stringOrNull(threeDSecureActionResultTokenId);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -534,6 +545,9 @@ public class BillingInfo extends RecurlyObject {
         if (threeDSecureActionResultTokenId != null ? !threeDSecureActionResultTokenId.equals(that.threeDSecureActionResultTokenId) : that.threeDSecureActionResultTokenId != null) {
             return false;
         }
+        if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -568,7 +582,8 @@ public class BillingInfo extends RecurlyObject {
                 gatewayCode,
                 amazonBillingAgreementId,
                 amazonRegion,
-                threeDSecureActionResultTokenId
+                threeDSecureActionResultTokenId,
+                transactionType
         );
     }
 }

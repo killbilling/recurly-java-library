@@ -76,6 +76,9 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "gateway_code")
     private String gatewayCode;
 
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
+
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
     @XmlElement(name = "coupon_code")
@@ -201,6 +204,14 @@ public class Purchase extends RecurlyObject {
         this.gatewayCode = stringOrNull(gatewayCode);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -220,6 +231,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
         sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
+        sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -273,6 +285,9 @@ public class Purchase extends RecurlyObject {
         if (termsAndConditions != null ? !termsAndConditions.equals(purchase.termsAndConditions) : purchase.termsAndConditions != null) {
             return false;
         }
+        if (transactionType != null ? !transactionType.equals(purchase.transactionType) : purchase.transactionType != null) {
+            return false;
+        }
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(purchase.vatReverseChargeNotes) : purchase.vatReverseChargeNotes != null) {
             return false;
         }
@@ -297,7 +312,8 @@ public class Purchase extends RecurlyObject {
                 termsAndConditions,
                 vatReverseChargeNotes,
                 shippingAddressId,
-                gatewayCode
+                gatewayCode,
+                transactionType
         );
     }
 
