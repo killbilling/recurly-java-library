@@ -147,6 +147,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "surcharge_in_cents")
     private Integer surchargeInCents;
 
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -485,6 +488,14 @@ public class Invoice extends RecurlyObject {
         this.surchargeInCents = integerOrNull(surchargeInCents);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
@@ -652,6 +663,9 @@ public class Invoice extends RecurlyObject {
         if (gatewayCode != null ? !gatewayCode.equals(invoice.gatewayCode) : invoice.gatewayCode != null) {
             return false;
         }
+        if (transactionType != null ? !transactionType.equals(invoice.transactionType) : invoice.transactionType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -696,7 +710,8 @@ public class Invoice extends RecurlyObject {
                 origin,
                 address,
                 shippingAddress,
-                surchargeInCents
+                surchargeInCents,
+                transactionType
         );
     }
 

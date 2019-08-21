@@ -1327,6 +1327,18 @@ public class RecurlyClient {
     }
 
     /**
+     * Force collect an invoice
+     *
+     * @param transactionType String The gateway transaction type. Currency accepts value "moto".
+     * @param invoiceId String Recurly Invoice ID
+     */
+    public Invoice forceCollectInvoice(final String invoiceId, final String transactionType) {
+        Invoice request = new Invoice();
+        request.setTransactionType(transactionType);
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/collect", request, Invoice.class);
+    }
+
+    /**
      * Void Invoice
      *
      * @param invoiceId String Recurly Invoice ID

@@ -147,6 +147,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "preferred_locale")
     private String preferredLocale;
 
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -429,6 +432,14 @@ public class Account extends RecurlyObject {
         this.preferredLocale = stringOrNull(preferredLocale);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
@@ -466,6 +477,7 @@ public class Account extends RecurlyObject {
         sb.append(", vatNumber=").append(vatNumber);
         sb.append(", accountAcquisition=").append(accountAcquisition);
         sb.append(", preferredLocale=").append(preferredLocale);
+        sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -576,6 +588,9 @@ public class Account extends RecurlyObject {
         if (vatNumber != null ? !vatNumber.equals(account.vatNumber) : account.vatNumber != null) {
             return false;
         }
+        if (transactionType != null ? !transactionType.equals(account.transactionType) : account.transactionType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -616,7 +631,8 @@ public class Account extends RecurlyObject {
                 vatNumber,
                 accountAcquisition,
                 preferredLocale,
-                closedAt
+                closedAt,
+                transactionType
         );
     }
 }
