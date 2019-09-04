@@ -2315,8 +2315,13 @@ public class RecurlyClient {
                         return null;
                     }
 
-                    // Sometimes a single `Error` response is returned rather than `Errors`
-                    if (errors.getRecurlyErrors() == null && errors.getTransaction() == null && errors.getTransactionError() == null) {
+                    // Sometimes a single `Error` response is returned rather than `Errors`.
+                    // In this case, all fields will be null.
+                    if (errors == null || (
+                        errors.getRecurlyErrors() == null &&
+                        errors.getTransaction() == null &&
+                        errors.getTransactionError() == null
+                    )) {
                         recurlyError = RecurlyAPIError.buildFromXml(xmlMapper, payload, response);
                         throw new RecurlyAPIException(recurlyError);
                     }
