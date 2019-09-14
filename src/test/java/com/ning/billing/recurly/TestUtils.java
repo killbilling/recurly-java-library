@@ -950,6 +950,8 @@ public class TestUtils {
 
         purchase.setAccount(createRandomAccount(seed));
 
+        purchase.setShippingAddress(createRandomShippingAddress(seed));
+
         Adjustments adjustments = new Adjustments();
         adjustments.add(createRandomAdjustment(seed));
         purchase.setAdjustments(adjustments);

@@ -36,6 +36,17 @@ public class TestPurchase extends TestModelBase {
                 "  <customer_notes>Customer Notes</customer_notes>" +
                 "  <terms_and_conditions>Terms and Conditions</terms_and_conditions>" +
                 "  <vat_reverse_charge_notes>VAT Reverse Charge Notes</vat_reverse_charge_notes>" +
+                "  <shipping_address>\n" +
+                "      <first_name>Rumple</first_name>\n" +
+                "      <last_name>Violet</last_name>\n" +
+                "      <address1>43 Baobab Lane</address1>\n" +
+                "      <address2 nil=\"nil\"></address2>\n" +
+                "      <city>San Francisco</city>\n" +
+                "      <state>CA</state>\n" +
+                "      <zip>94105-1804</zip>\n" +
+                "      <country>US</country>\n" +
+                "      <phone nil=\"nil\"></phone>\n" +
+                "  </shipping_address>\n" +
                 "  <account>" +
                 "    <account_code>test</account_code>" +
                 "    <billing_info>" +
@@ -109,6 +120,15 @@ public class TestPurchase extends TestModelBase {
         assertEquals(billingInfo.getMonth(), new Integer(12));
         assertEquals(billingInfo.getYear(), new Integer(2019));
         assertEquals(billingInfo.getNumber(), "4000-0000-0000-0000");
+
+        final ShippingAddress shippingAddress = purchase.getShippingAddress();
+        assertEquals(shippingAddress.getFirstName(), "Rumple");
+        assertEquals(shippingAddress.getLastName(), "Violet");
+        assertEquals(shippingAddress.getAddress1(), "43 Baobab Lane");
+        assertEquals(shippingAddress.getCity(), "San Francisco");
+        assertEquals(shippingAddress.getState(), "CA");
+        assertEquals(shippingAddress.getZip(), "94105-1804");
+        assertEquals(shippingAddress.getCountry(), "US");
 
         final Adjustment adjustment = purchase.getAdjustments().get(0);
         assertEquals(adjustment.getCurrency(), "USD");
