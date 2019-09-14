@@ -179,6 +179,38 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testInvalidTokenError() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        RecurlyAPIException error = null;
+
+        try {
+            // Create account with invalid billing token
+            final BillingInfo billingInfo = new BillingInfo();
+            billingInfo.setTokenId("invalid token");
+            accountData.setBillingInfo(billingInfo);
+
+            final Subscription subscription = new Subscription();
+            subscription.setPlanCode("anything");
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.setRecurlyObject(subscription);
+
+            final Purchase purchase = new Purchase();
+            purchase.setCurrency(CURRENCY);
+            purchase.setAccount(accountData);
+            purchase.setSubscriptions(subscriptions);
+            recurlyClient.previewPurchase(purchase);
+        } catch (RecurlyAPIException expected) {
+            error = expected;
+        }
+
+        // Despite being a 422 error, this case returns a single Error
+        // object rather than Errors. Check that we're deserializing it
+        // properly.
+        Assert.assertEquals(error.getRecurlyError().getHttpStatusCode(), 422);
+        Assert.assertEquals(error.getRecurlyError().getSymbol(), "token_invalid");
+    }
+
+    @Test(groups = "integration")
     public void testGetBillingInfo() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
