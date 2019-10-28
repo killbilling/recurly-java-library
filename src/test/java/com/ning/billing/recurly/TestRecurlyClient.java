@@ -1264,15 +1264,12 @@ public class TestRecurlyClient {
         Coupon coupon = recurlyClient.createCoupon(couponData);
 
         Coupon genCouponData = new Coupon();
-        genCouponData.setNumberOfUniqueCodes(50);
 
-        recurlyClient.generateUniqueCodes(coupon.getCouponCode(), genCouponData);
-
-        QueryParams qp = new QueryParams();
-        qp.setPerPage(50);
-        Coupons coupons = recurlyClient.getUniqueCouponCodes(couponData.getCouponCode(), qp);
-
-        Assert.assertEquals(coupons.size(), 50);
+        genCouponData.setNumberOfUniqueCodes(3);
+        Coupons coupons = recurlyClient.generateUniqueCodes(coupon.getCouponCode(), genCouponData);
+        Coupon c = coupons.get(0);
+        System.out.println("Coupon c " + c.toString());
+        Assert.assertEquals(coupons.size(), 3);
     }
 
     @Test(groups = "integration")
