@@ -1771,9 +1771,9 @@ public class RecurlyClient {
      * @param couponCode recurly coupon code (must have been created as type: bulk)
      * @param coupon A coupon with number of unique codes set
      */
-    public void generateUniqueCodes(final String couponCode, final Coupon coupon) {
-        doPOST(Coupon.COUPON_RESOURCE + "/" + couponCode + Coupon.GENERATE_RESOURCE,
-                      coupon, null);
+    public Coupons generateUniqueCodes(final String couponCode, final Coupon coupon) {
+        Coupons coupons = doPOST(Coupon.COUPON_RESOURCE + "/" + couponCode + Coupon.GENERATE_RESOURCE, coupon, Coupons.class);
+        return coupons.getStart();
     }
 
     /**
@@ -2152,7 +2152,7 @@ public class RecurlyClient {
 
     private InputStream doGETPdfWithFullURL(final String url) {
         if (debug()) {
-            log.info("Msg to Recurly API [GET] :: URL : {}", url);
+            log.info(" [GET] :: URL : {}", url);
         }
 
         return callRecurlySafeGetPdf(url);
@@ -2365,6 +2365,14 @@ public class RecurlyClient {
 
             if (clazz == null) {
                 return null;
+            }
+
+            String location = response.getHeader("Location");
+            if (clazz == Coupons.class && location != null && !location.isEmpty()) {
+                final RecurlyObjects recurlyObjects = new Coupons();
+                recurlyObjects.setRecurlyClient(this);
+                recurlyObjects.setStartUrl(location);
+                return (T) recurlyObjects;
             }
 
             final T obj = xmlMapper.readValue(payload, clazz);

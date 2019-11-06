@@ -233,6 +233,7 @@
                                 <!-- For some reason, useIdeaDefaultExcludes
                                     doesn't pick up .idea directory -->
                                 <exclude>.github/**</exclude>
+                                <exclude>.vscode/**</exclude>
                                 <exclude>.idea/**</exclude>
                                 <exclude>**/.project</exclude>
                                 <exclude>.git/**</exclude>
