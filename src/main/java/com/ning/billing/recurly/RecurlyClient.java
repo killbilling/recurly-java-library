@@ -38,6 +38,8 @@ import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.InvoiceState;
 import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.Item;
+import com.ning.billing.recurly.model.Items;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Purchase;
@@ -111,7 +113,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.22";
+    public static final String RECURLY_API_VERSION = "2.24";
 
     private static final String X_RATELIMIT_REMAINING_HEADER_NAME = "X-RateLimit-Remaining";
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
@@ -1368,6 +1370,79 @@ public class RecurlyClient {
      */
     public Transaction enterOfflinePayment(final String invoiceId, final Transaction payment) {
         return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/transactions", payment, Transaction.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Create an Item's info
+     * <p>
+     *
+     * @param item The item to create on recurly
+     * @return the item object as identified by the passed in ID
+     */
+    public Item createItem(final Item item) {
+        return doPOST(Item.ITEMS_RESOURCE, item, Item.class);
+    }
+
+    /**
+     * Update an Item's info
+     * <p>
+     *
+     * @param item The Item to update on recurly
+     * @return the updated item object
+     */
+    public Item updateItem(final String itemCode, final Item item) {
+        return doPUT(Item.ITEMS_RESOURCE + "/" + itemCode, item, Item.class);
+    }
+
+    /**
+     * Get a Item's details
+     * <p>
+     *
+     * @param itemCode recurly id of item
+     * @return the item object as identified by the passed in ID
+     */
+    public Item getItem(final String itemCode) {
+        if (itemCode == null || itemCode.isEmpty())
+            throw new RuntimeException("itemCode cannot be empty!");
+
+        return doGET(Item.ITEMS_RESOURCE + "/" + itemCode, Item.class);
+    }
+
+    /**
+     * Return all the items
+     * <p>
+     *
+     * @return the item object as identified by the passed in ID
+     */
+    public Items getItems() {
+        return doGET(Items.ITEMS_RESOURCE, Items.class, new QueryParams());
+    }
+
+    /**
+     * Deletes a {@link Item}
+     * <p>
+     *
+     * @param itemCode The {@link Item} object to delete.
+     */
+    public void deleteItem(final String itemCode) {
+        doDELETE(Item.ITEMS_RESOURCE +
+                "/" +
+                itemCode);
+    }
+
+    /**
+     * Reactivating a canceled item
+     * <p>
+     * Reactivate a canceled item.
+     *
+     * @param item Item object
+     * @return Item
+     */
+    public Item reactivateItem(final String itemCode) {
+        return doPUT(Item.ITEMS_RESOURCE + "/" + itemCode + "/reactivate",
+                null, Item.class);
     }
 
     ///////////////////////////////////////////////////////////////////////////

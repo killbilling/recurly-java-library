@@ -31,6 +31,7 @@ import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.Delivery;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.MeasuredUnit;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Purchase;
@@ -427,6 +428,29 @@ public class TestUtils {
         info.setVerificationValue(createTestCCVerificationNumber());
 
         return info;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Item} object for testing use.
+     *
+     * @return The random {@link com.ning.billing.recurly.model.Item} object
+     */
+    public static Item createRandomItem() {
+        return createRandomItem(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Item} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Item} object
+     */
+    public static Item createRandomItem(final int seed) {
+        final Item item = new Item();
+        item.setItemCode(randomAlphaNumericString(15).toLowerCase());
+        item.setName("A New Item");
+        item.setDescription("A random description");
+        return item;
     }
 
     /**
