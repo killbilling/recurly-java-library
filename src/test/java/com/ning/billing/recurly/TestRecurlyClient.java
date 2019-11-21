@@ -46,6 +46,7 @@ import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.PlanCode;
 import com.ning.billing.recurly.model.PlanCodes;
@@ -625,6 +626,86 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testCreateItem() throws Exception {
+        final Item itemData = TestUtils.createRandomItem();
+        
+        try {
+            // Create an item
+            final Item item = recurlyClient.createItem(itemData);
+            Assert.assertNotNull(item);
+            Assert.assertTrue(recurlyClient.getItems().size() > 0);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Delete the item
+            recurlyClient.deleteItem(itemData.getItemCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testUpdateItem() throws Exception {
+        final Item itemData = TestUtils.createRandomItem();
+
+        try {
+            // Create an item
+            final Item item = recurlyClient.createItem(itemData);
+            final Item itemChanges = new Item(); // Start with a fresh item object for changes
+            Assert.assertNotNull(item);
+
+            // Set the itemcode to identify which item to change
+            itemChanges.setItemCode(itemData.getItemCode());
+
+            // Change some attributes
+            itemChanges.setName("A new name");
+            itemChanges.setDescription("A new description");
+            // **custom fields must be configured through ui**
+            // final CustomFields customFields = new CustomFields();
+            // final CustomField field = new CustomField();
+            // field.setName("size");
+            // field.setValue("small");
+            // customFields.add(field);
+            // itemChanges.setCustomFields(customFields);
+
+            // Send off the changes and get the updated object
+            final Item updatedItem = recurlyClient.updateItem(itemChanges.getItemCode(), itemChanges);
+
+            Assert.assertNotNull(updatedItem);
+            Assert.assertEquals(updatedItem.getName(), "A new name");
+            Assert.assertEquals(updatedItem.getDescription(), "A new description");
+            // Assert.assertEquals(updatedItem.getCustomFields(), itemChanges.getCustomFields());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Delete the item
+            recurlyClient.deleteItem(itemData.getItemCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testReactivateItem() throws Exception {
+        final Item itemData = TestUtils.createRandomItem();
+
+        try {
+            // Create an item
+            final Item item = recurlyClient.createItem(itemData);
+            Assert.assertNotNull(item);
+            Assert.assertTrue(recurlyClient.getItems().size() > 0);
+            // Delete the item
+            recurlyClient.deleteItem(item.getItemCode());
+            final Item deletedItem = recurlyClient.getItem(item.getItemCode());
+            Assert.assertEquals(deletedItem.getState(), "inactive");
+            // Reactivate the item
+            recurlyClient.reactivateItem(item.getItemCode());
+            final Item reactivatedItem = recurlyClient.getItem(item.getItemCode());
+            Assert.assertEquals(reactivatedItem.getState(), "active");
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        } finally {
+            // Delete the item
+            recurlyClient.deleteItem(itemData.getItemCode());
+        }
+    }
 
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
