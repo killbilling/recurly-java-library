@@ -24,6 +24,7 @@ import com.ning.billing.recurly.model.push.payment.*;
 import com.ning.billing.recurly.model.push.usage.*;
 import com.ning.billing.recurly.model.push.giftcard.*;
 import com.ning.billing.recurly.model.push.creditpayment.*;
+import com.ning.billing.recurly.model.push.item.*;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ import com.ning.billing.recurly.model.CreditPayment;
 import com.ning.billing.recurly.model.Usage;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Plan;
+import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.TestModelBase;
 
 
@@ -123,6 +125,31 @@ public class TestNotification extends TestModelBase {
                                               "  <final_dunning_event type=\"boolean\">true</final_dunning_event>\n" +
                                               "</invoice>";
 
+    private static final String ITEMDATA =    "<item>\n" +
+                                              "  <item_code>gray_socks</item_code>\n" +
+                                              "  <name>Gray Socks</name>\n" +
+                                              "  <description>Gray Socks</description>\n" +
+                                              "  <external_sku>socks-12345</external_sku>\n" +
+                                              "  <accounting_code>acc-12345</accounting_code>\n" +
+                                              "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
+                                              "  <tax_exempt type=\"boolean\">true</tax_exempt>\n" +
+                                              "  <tax_code nil=\"nil\"/>\n" +
+                                              "  <pricing_type>fixed</pricing_type>\n" +
+                                              "  <custom_fields type=\"array\">\n" +
+                                              "    <custom_field>\n" +
+                                              "      <name>color</name>\n" +
+                                              "      <value>gray</value>\n" +
+                                              "    </custom_field>\n" +
+                                              "  </custom_fields>\n" +
+                                              "  <unit_amount_in_cents>\n" +
+                                              "    <CAD type=\"integer\">6000</CAD>\n" +
+                                              "    <USD type=\"integer\">1000</USD>\n" +
+                                              "  </unit_amount_in_cents>\n" +
+                                              "  <created_at type=\"datetime\">2019-07-15T18:48:01Z</created_at>\n" +
+                                              "  <updated_at type=\"datetime\">2019-07-15T18:48:01Z</updated_at>\n" +
+                                              "  <deleted_at nil=\"nil\"/>\n" +
+                                              "</item>";
+
     private static final String USAGEDATA = "<usage>\n" +
                                               "  <id type=\"integer\">394729929104688227</id>\n" +
                                               "  <subscription_id>35cda8d4ae0a214f69779e4ddbbc2ebd</subscription_id>\n" +
@@ -198,7 +225,7 @@ public class TestNotification extends TestModelBase {
                 .append("<").append(xmlElement).append(">\n");
 
         boolean isAccount = false, isSubscription = false, isPayment = false,
-                isInvoice = false, isUsage = false, isGiftCard = false, isCreditPayment = false;
+                isInvoice = false, isItem = false, isUsage = false, isGiftCard = false, isCreditPayment = false;
 
         if (AccountNotification.class.isAssignableFrom(clazz)) {
             notificationDataBuilder.append(ACCOUNTDATA).append("\n");
@@ -218,6 +245,11 @@ public class TestNotification extends TestModelBase {
         if(InvoiceNotification.class.isAssignableFrom(clazz)) {
             notificationDataBuilder.append(INVOICEDATA).append("\n");
             isInvoice = true;
+        }
+
+        if(ItemNotification.class.isAssignableFrom(clazz)) {
+            notificationDataBuilder.append(ITEMDATA).append("\n");
+            isItem = true;
         }
 
         if(UsageNotification.class.isAssignableFrom(clazz)) {
@@ -256,6 +288,9 @@ public class TestNotification extends TestModelBase {
         }
         if (isInvoice) {
             testInvoiceNotification((InvoiceNotification) notification);
+        }
+        if (isItem) {
+            testItemNotification((ItemNotification) notification);
         }
         if (isUsage) {
             testUsageNotification((UsageNotification) notification);
@@ -356,6 +391,19 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(invoice.getCollectionMethod(), "automatic");
         Assert.assertEquals(invoice.getDunningEventsCount(), new Integer(2));
         Assert.assertEquals(invoice.isFinalDunningEvent(), Boolean.TRUE);
+    }
+
+    private void testItemNotification(final ItemNotification itemNotification) {
+        Item item = itemNotification.getItem();
+        Assert.assertNotNull(item);
+        Assert.assertEquals(item.getItemCode(),"gray_socks");
+        Assert.assertEquals(item.getName(), "Gray Socks");
+        Assert.assertEquals(item.getDescription(), "Gray Socks");
+        Assert.assertEquals(item.getExternalSku(), "socks-12345");
+        Assert.assertEquals(item.getAccountingCode(), "acc-12345");
+        Assert.assertEquals(item.getRevenueScheduleType(), "evenly");
+        Assert.assertEquals(item.getCustomFields().get(0).getName(), "color");
+        Assert.assertEquals(item.getCustomFields().get(0).getValue(), "gray");
     }
 
     private void testUsageNotification(final UsageNotification usageNotification) {
@@ -705,4 +753,25 @@ public class TestNotification extends TestModelBase {
     public void testLowBalanceGiftCardNotification() {
         deserialize(LowBalanceGiftCardNotification.class);
     }
+
+    @Test(groups = "fast")
+    public void testNewItemNotification() {
+        deserialize(NewItemNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testUpdatedItemNotification() {
+        deserialize(UpdatedItemNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testDeactivatedItemNotification() {
+        deserialize(DeactivatedItemNotification.class);
+    }
+
+    @Test(groups = "fast")
+    public void testReactivatedItemNotification() {
+        deserialize(ReactivatedItemNotification.class);
+    }
+
 }
