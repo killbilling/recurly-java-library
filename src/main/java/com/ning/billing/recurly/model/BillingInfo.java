@@ -177,7 +177,7 @@ public class BillingInfo extends RecurlyObject {
         return nameOnAccount;
     }
 
-    public void setNameOnAccount(String nameOnAccount) {
+    public void setNameOnAccount(final Object nameOnAccount) {
         this.nameOnAccount = stringOrNull(nameOnAccount);
     }
 
@@ -289,7 +289,7 @@ public class BillingInfo extends RecurlyObject {
         return accountType;
     }
 
-    public void setAccountType(String accountType) {
+    public void setAccountType(final Object accountType) {
         this.accountType = stringOrNull(accountType);
     }
 
@@ -337,7 +337,7 @@ public class BillingInfo extends RecurlyObject {
         return routingNumber;
     }
 
-    public void setRoutingNumber(String routingNumber) {
+    public void setRoutingNumber(final Object routingNumber) {
         this.routingNumber = stringOrNull(routingNumber);
     }
 
@@ -345,7 +345,7 @@ public class BillingInfo extends RecurlyObject {
         return accountNumber;
     }
 
-    public void setAccountNumber(String accountNumber) {
+    public void setAccountNumber(final Object accountNumber) {
         this.accountNumber = stringOrNull(accountNumber);
     }
 
