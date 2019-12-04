@@ -105,6 +105,10 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @XmlElementWrapper(name = "credit_payments")
+    @XmlElement(name = "credit_payment")
+    private CreditPayments creditPayments;
+
     @XmlElement(name = "customer_notes")
     private String customerNotes;
 
@@ -375,6 +379,14 @@ public class Invoice extends RecurlyObject {
         this.transactions = transactions;
     }
 
+    public CreditPayments getCreditPayments() {
+        return creditPayments;
+    }
+
+    public void setCreditPayments(final CreditPayments creditPayments) {
+        this.creditPayments = creditPayments;
+    }
+
     public String getCustomerNotes() {
         return customerNotes;
     }
@@ -524,6 +536,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", recoveryReason=").append(recoveryReason);
         sb.append(", lineItems=").append(lineItems);
         sb.append(", transactions=").append(transactions);
+        sb.append(", creditPayments=").append(creditPayments);
         sb.append(", customerNotes='").append(customerNotes).append('\'');
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
@@ -645,6 +658,9 @@ public class Invoice extends RecurlyObject {
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
             return false;
         }
+        if (creditPayments != null ? !creditPayments.equals(invoice.creditPayments) : invoice.creditPayments != null) {
+            return false;
+        }
         if (type != null ? !type.equals(invoice.type) : invoice.type != null) {
             return false;
         }
@@ -698,6 +714,7 @@ public class Invoice extends RecurlyObject {
                 recoveryReason,
                 lineItems,
                 transactions,
+                creditPayments,
                 customerNotes,
                 termsAndConditions,
                 vatReverseChargeNotes,
