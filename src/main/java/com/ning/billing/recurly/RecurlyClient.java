@@ -731,6 +731,31 @@ public class RecurlyClient {
     }
 
     /**
+     * Return all the subscriptions on an invoice.
+     *
+     * @param invoiceId String Recurly Invoice ID
+     * @return all the subscriptions on the invoice
+     */
+    public Subscriptions getInvoiceSubscriptions(final String invoiceId) {
+        return getInvoiceSubscriptions(invoiceId, new QueryParams());
+    }
+
+    /**
+     * Return all the subscriptions on an invoice given query params.
+     *
+     * @param invoiceId String Recurly Invoice ID
+     * @param params {@link QueryParams}
+     * @return all the subscriptions on the invoice
+     */
+    public Subscriptions getInvoiceSubscriptions(final String invoiceId, final QueryParams params) {
+        return doGET(Invoices.INVOICES_RESOURCE
+                        + "/" + invoiceId 
+                        + Subscriptions.SUBSCRIPTIONS_RESOURCE,
+                Subscriptions.class, 
+                params);
+    }
+
+    /**
      * Post usage to subscription
      * <p>
      *
