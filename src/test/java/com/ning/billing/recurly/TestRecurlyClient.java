@@ -910,6 +910,55 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void getInvoiceSubscriptions() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+            account.setAccountCode(accountData.getAccountCode());
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+            
+            // Set up a subscription to invoice
+            final Subscription invoiceSubscription = new Subscription();
+            invoiceSubscription.setPlanCode(plan.getPlanCode());
+
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(invoiceSubscription);
+
+            // Set account and subscriptions to purchase
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setCurrency("USD");
+
+            // // Create invoice collection
+            final InvoiceCollection collection = recurlyClient.purchase(purchaseData);
+            final Invoice invoiceData = collection.getChargeInvoice();
+            // Do a lookup for subs for given invoice
+            final Subscriptions isubs = recurlyClient.getInvoiceSubscriptions(invoiceData.getId());
+            Assert.assertNotNull(isubs);
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
     public void testCreateSubscriptionWithCustomFields() throws Exception {
         final List<AddOn> addons = new ArrayList<AddOn>();
         final Plan planData = TestUtils.createRandomPlan();
