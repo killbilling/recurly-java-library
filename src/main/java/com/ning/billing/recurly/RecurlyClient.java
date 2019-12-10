@@ -1019,6 +1019,14 @@ public class RecurlyClient {
         doDELETE(url);
     }
 
+    /**
+     * Get the subscriptions for a {@link Transaction}.
+     * <p>
+     * Returns subscriptions associated with a transaction
+     *
+     * @param transactionId recurly transaction id
+     * @return Subscriptions on the transaction
+     */
     public Subscriptions getTransactionSubscriptions(final String transactionId) {
         return doGET(Transactions.TRANSACTIONS_RESOURCE
                         + "/" + transactionId
