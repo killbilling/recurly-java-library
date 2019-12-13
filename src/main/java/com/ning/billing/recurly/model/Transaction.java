@@ -33,9 +33,6 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "invoice")
     private Invoice invoice;
 
-    @XmlElement(name = "subscription")
-    private String subscription;
-
     @XmlElement(name = "uuid")
     private String uuid;
 
@@ -95,14 +92,6 @@ public class Transaction extends AbstractTransaction {
 
     public void setInvoice(final Invoice invoice) {
         this.invoice = invoice;
-    }
-
-    public String getSubscription() {
-        return subscription;
-    }
-
-    public void setSubscription(final Object subscription) {
-        this.subscription = stringOrNull(subscription);
     }
 
     public String getUuid() {
@@ -208,7 +197,6 @@ public class Transaction extends AbstractTransaction {
         final StringBuilder sb = new StringBuilder("Transaction{");
         sb.append("account=").append(account);
         sb.append(", invoice=").append(invoice);
-        sb.append(", subscription='").append(subscription).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", currency='").append(currency).append('\'');
@@ -257,9 +245,6 @@ public class Transaction extends AbstractTransaction {
         if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
             return false;
         }
-        if (subscription != null ? !subscription.equals(that.subscription) : that.subscription != null) {
-            return false;
-        }
         if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
             return false;
         }
@@ -290,7 +275,6 @@ public class Transaction extends AbstractTransaction {
         return Objects.hashCode(
                 account,
                 invoice,
-                subscription,
                 uuid,
                 taxInCents,
                 currency,

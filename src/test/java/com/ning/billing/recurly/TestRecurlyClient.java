@@ -1245,7 +1245,14 @@ public class TestRecurlyClient {
             subscriptionData.setAccount(accountData);
             subscriptionData.setUnitAmountInCents(150);
             subscriptionData.setCurrency(CURRENCY);
-            recurlyClient.createSubscription(subscriptionData);
+            final Subscription sub = recurlyClient.createSubscription(subscriptionData);
+
+            // Create transaction from subscription
+            final Transaction subTransaction = sub.getInvoice().getTransactions().get(0);
+            // Fetch subscriptions from created transaction
+            final Subscription fetchedSub = recurlyClient.getTransactionSubscriptions(subTransaction.getUuid()).get(0);
+            // Test that the original subscription equals the fetched subscription
+            Assert.assertEquals(sub.getUuid(), fetchedSub.getUuid());
 
             // Create a transaction
             final Transaction t = new Transaction();
