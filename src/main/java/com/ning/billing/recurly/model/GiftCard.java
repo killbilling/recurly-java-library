@@ -265,10 +265,19 @@ public class GiftCard extends RecurlyObject {
         if (redemptionCode != null ? !redemptionCode.equals(that.redemptionCode) : that.redemptionCode != null) {
             return false;
         }
+        if (gifterAccountCode != null ? !gifterAccountCode.equals(that.gifterAccountCode) : that.gifterAccountCode != null) {
+            return false;
+        }
+        if (recipientAccountCode != null ? !recipientAccountCode.equals(that.recipientAccountCode) : that.recipientAccountCode != null) {
+            return false;
+        }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(that.unitAmountInCents) : that.unitAmountInCents != null) {
             return false;
         }
         if (balanceInCents != null ? !balanceInCents.equals(that.balanceInCents) : that.balanceInCents != null) {
+            return false;
+        }
+        if (invoiceNumber != null ? !invoiceNumber.equals(that.invoiceNumber) : that.invoiceNumber != null) {
             return false;
         }
         if (gifterAccount != null ? !gifterAccount.equals(that.gifterAccount) : that.gifterAccount != null) {
