@@ -268,7 +268,7 @@ public class Coupon extends RecurlyObject {
     /**
      * Sets the discount type for a {@link Coupon}
      *
-     * @param discountType Object
+     * @param discountType
      */
     public void setDiscountType(final Object discountType) {
         this.discountType = enumOrNull(DiscountType.class, discountType);
