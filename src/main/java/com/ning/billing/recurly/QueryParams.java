@@ -70,7 +70,7 @@ public class QueryParams {
         Integer pageSize;
 
         try {
-            pageSize = new Integer(System.getProperty(RECURLY_PAGE_SIZE_KEY));
+            pageSize = Integer.valueOf(System.getProperty(RECURLY_PAGE_SIZE_KEY));
         } catch (NumberFormatException nfex) {
             pageSize = DEFAULT_PAGE_SIZE;
         }

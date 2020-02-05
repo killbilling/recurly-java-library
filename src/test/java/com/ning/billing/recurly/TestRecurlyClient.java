@@ -501,7 +501,7 @@ public class TestRecurlyClient {
             recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustment);
             final AccountBalance balance = recurlyClient.getAccountBalance(account.getAccountCode());
 
-            Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), new Integer(150));
+            Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), Integer.valueOf(150));
             Assert.assertEquals(balance.getPastDue(), Boolean.FALSE);
         } finally {
             // Clean up
@@ -624,7 +624,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subscriptionPreview);
             Assert.assertEquals(subscriptionPreview.getCurrency(), subscriptionData.getCurrency());
             if (null == subscriptionData.getQuantity()) {
-                Assert.assertEquals(subscriptionPreview.getQuantity(), new Integer(1));
+                Assert.assertEquals(subscriptionPreview.getQuantity(), Integer.valueOf(1));
             } else {
                 Assert.assertEquals(subscriptionPreview.getQuantity(), subscriptionData.getQuantity());
             }
@@ -639,7 +639,7 @@ public class TestRecurlyClient {
             Assert.assertNotNull(subscription.getInvoice());
             Assert.assertEquals(subscription.getCurrency(), subscriptionData.getCurrency());
             if (null == subscriptionData.getQuantity()) {
-                Assert.assertEquals(subscription.getQuantity(), new Integer(1));
+                Assert.assertEquals(subscription.getQuantity(), Integer.valueOf(1));
             } else {
                 Assert.assertEquals(subscription.getQuantity(), subscriptionData.getQuantity());
             }
@@ -1471,7 +1471,7 @@ public class TestRecurlyClient {
 
             final Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData);
 
-            Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
+            Assert.assertEquals(invoice.getTotalInCents(), Integer.valueOf(200));
 
             // wait for the invoice to be marked paid
             // has to happen asynchronously on the server
@@ -1479,8 +1479,8 @@ public class TestRecurlyClient {
 
             final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), 100, RefundApplyOrder.transaction);
 
-            Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
-            Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getTotalInCents(), Integer.valueOf(-100));
+            Assert.assertEquals(refundInvoice.getSubtotalInCents(), Integer.valueOf(-100));
             Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
@@ -1521,7 +1521,7 @@ public class TestRecurlyClient {
 
             Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData);
 
-            Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
+            Assert.assertEquals(invoice.getTotalInCents(), Integer.valueOf(200));
 
             // wait for the invoice to be marked paid
             // has to happen asynchronously on the server
@@ -1543,13 +1543,13 @@ public class TestRecurlyClient {
 
             final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), lineItems, RefundApplyOrder.transaction);
 
-            Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
-            Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getTotalInCents(), Integer.valueOf(-100));
+            Assert.assertEquals(refundInvoice.getSubtotalInCents(), Integer.valueOf(-100));
             Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
 
             Assert.assertEquals(refundInvoice.getLineItems().size(), 1);
             final Adjustment lineItem = refundInvoice.getLineItems().get(0);
-            Assert.assertEquals(lineItem.getQuantity(), new Integer(-1));
+            Assert.assertEquals(lineItem.getQuantity(), Integer.valueOf(-1));
         } finally {
             recurlyClient.closeAccount(accountData.getAccountCode());
             recurlyClient.deletePlan(planData.getPlanCode());

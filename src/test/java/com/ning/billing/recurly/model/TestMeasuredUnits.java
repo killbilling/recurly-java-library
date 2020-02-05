@@ -45,13 +45,13 @@ public class TestMeasuredUnits extends TestModelBase {
         Assert.assertEquals(measuredUnits.size(), 2);
 
         final MeasuredUnit measuredUnit1 = measuredUnits.get(0);
-        Assert.assertEquals(measuredUnit1.getId(), new Long(12345678));
+        Assert.assertEquals(measuredUnit1.getId(), Long.valueOf(12345678));
         Assert.assertEquals(measuredUnit1.getName(), "Ad Impressions");
         Assert.assertEquals(measuredUnit1.getDisplayName(), "Impression");
         Assert.assertEquals(measuredUnit1.getDescription(), "Number of ad impressions");
 
         final MeasuredUnit measuredUnit2 = measuredUnits.get(1);
-        Assert.assertEquals(measuredUnit2.getId(), new Long(12345679));
+        Assert.assertEquals(measuredUnit2.getId(), Long.valueOf(12345679));
         Assert.assertEquals(measuredUnit2.getName(), "Streaming Bandwidth");
         Assert.assertEquals(measuredUnit2.getDisplayName(), "GB");
         Assert.assertEquals(measuredUnit2.getDescription(), "Video steaming bandwidth measured in gigabytes");

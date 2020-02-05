@@ -77,7 +77,7 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getState(), "redeemable");
         assertEquals(coupon.getDescription(), "test description.");
         assertEquals(coupon.getDiscountType(), DiscountType.percent);
-        assertEquals(coupon.getDiscountPercent(), new Integer(100));
+        assertEquals(coupon.getDiscountPercent(), Integer.valueOf(100));
         assertEquals(coupon.getRedeemByDate(), new DateTime("2017-12-31T00:00:00Z"));
         assertEquals(coupon.getSingleUse(), Boolean.TRUE);
         assertNull(coupon.getAppliesForMonths());
@@ -92,7 +92,7 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getRedemptionResource(), RedemptionResource.account);
         assertEquals(coupon.getMaxRedemptionsPerAccount().intValue(), 1);
         assertEquals(coupon.getType(), Type.single_code);
-        assertEquals(coupon.getId(), new Long(1234567890));
+        assertEquals(coupon.getId(), Long.valueOf(1234567890));
     }
 
     @Test(groups = "fast", description = "https://github.com/killbilling/recurly-java-library/issues/162")
@@ -137,7 +137,7 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getState(), "redeemable");
         assertEquals(coupon.getDescription(), "test description.");
         assertEquals(coupon.getDiscountType(), DiscountType.percent);
-        assertEquals(coupon.getDiscountPercent(), new Integer(100));
+        assertEquals(coupon.getDiscountPercent(), Integer.valueOf(100));
         assertEquals(coupon.getRedeemByDate(), new DateTime("2017-12-31T00:00:00Z"));
         assertEquals(coupon.getSingleUse(), Boolean.FALSE);
         assertNull(coupon.getAppliesForMonths());
@@ -260,7 +260,7 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getState(), "redeemable");
         assertEquals(coupon.getDescription(), "test description.");
         assertEquals(coupon.getDiscountType(), DiscountType.percent);
-        assertEquals(coupon.getDiscountPercent(), new Integer(100));
+        assertEquals(coupon.getDiscountPercent(), Integer.valueOf(100));
         assertEquals(coupon.getRedeemByDate(), new DateTime("2017-12-31T00:00:00Z"));
         assertEquals(coupon.getSingleUse(), Boolean.TRUE);
         assertNull(coupon.getAppliesForMonths());

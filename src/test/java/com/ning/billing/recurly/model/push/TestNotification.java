@@ -194,9 +194,9 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(plan.getName(), "Subscription One");
         Assert.assertEquals(subscription.getUuid(), "292332928954ca62fa48048be5ac98ec");
         Assert.assertEquals(subscription.getState(), "active");
-        Assert.assertEquals(subscription.getQuantity(), new Integer(1));
+        Assert.assertEquals(subscription.getQuantity(), Integer.valueOf(1));
         Assert.assertNull(subscription.getUnitAmountInCents());
-        Assert.assertEquals(subscription.getTotalAmountInCents(), new Integer(200));
+        Assert.assertEquals(subscription.getTotalAmountInCents(), Integer.valueOf(200));
         Assert.assertEquals(subscription.getActivatedAt(), new DateTime("2010-09-23T22:12:39Z"));
         Assert.assertNull(subscription.getCanceledAt());
         Assert.assertNull(subscription.getExpiresAt());
@@ -212,11 +212,11 @@ public class TestNotification extends TestModelBase {
         Assert.assertNotNull(transaction);
         Assert.assertEquals(transaction.getId(), "a5143c1d3a6f4a8287d0e2cc1d4c0427");
         Assert.assertEquals(transaction.getInvoiceId(), "1974a09kj90s0789dsf099798326881c");
-        Assert.assertEquals(transaction.getInvoiceNumber(), new Integer(2059));
+        Assert.assertEquals(transaction.getInvoiceNumber(),Integer.valueOf(2059));
         Assert.assertEquals(transaction.getSubscriptionId(), "1974a098jhlkjasdfljkha898326881c");
         Assert.assertEquals(transaction.getDate(), new DateTime("2009-11-22T13:10:38Z"));
         Assert.assertEquals(transaction.getAction(), "purchase");
-        Assert.assertEquals(transaction.getAmountInCents(), new Integer(1000));
+        Assert.assertEquals(transaction.getAmountInCents(), Integer.valueOf(1000));
         Assert.assertEquals(transaction.getStatus(), "Success");
         Assert.assertEquals(transaction.getMessage(), "Bogus Gateway: Forced success");
         Assert.assertEquals(transaction.getFailureType(), "Declined by the gateway");
@@ -247,14 +247,14 @@ public class TestNotification extends TestModelBase {
         Assert.assertNull(invoice.getSubscriptionId());
         Assert.assertEquals(invoice.getState(), "collected");
         Assert.assertNull(invoice.getInvoiceNumberPrefix());
-        Assert.assertEquals(invoice.getInvoiceNumber(), new Integer(1000));
+        Assert.assertEquals(invoice.getInvoiceNumber(), Integer.valueOf(1000));
         Assert.assertEquals(invoice.getPoNumber(), "PO-12345");
         Assert.assertNull(invoice.getVatNumber());
-        Assert.assertEquals(invoice.getTotalInCents(), new Integer(1100));
+        Assert.assertEquals(invoice.getTotalInCents(), Integer.valueOf(1100));
         Assert.assertEquals(invoice.getCurrency(), "USD");
         Assert.assertEquals(invoice.getDate(), new DateTime("2014-01-01T20:20:29Z"));
         Assert.assertEquals(invoice.getClosedAt(), new DateTime("2014-01-01T20:24:02Z"));
-        Assert.assertEquals(invoice.getNetTerms(), new Integer(0));
+        Assert.assertEquals(invoice.getNetTerms(), Integer.valueOf(0));
         Assert.assertEquals(invoice.getCollectionMethod(), "automatic");
     }
 

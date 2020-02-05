@@ -72,10 +72,10 @@ public class TestPlan extends TestModelBase {
         Assert.assertFalse(plan.getDisplayQuantity());
         Assert.assertEquals(plan.getCreatedAt(), new DateTime("2011-04-19T07:00:00Z"));
         Assert.assertEquals(plan.getUpdatedAt(), new DateTime("2011-04-19T07:00:00Z"));
-        Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountUSD(), new Integer(1000));
-        Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountEUR(), new Integer(800));
-        Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountUSD(), new Integer(6000));
-        Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountEUR(), new Integer(4500));
+        Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountUSD(), Integer.valueOf(1000));
+        Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountEUR(), Integer.valueOf(800));
+        Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountUSD(), Integer.valueOf(6000));
+        Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountEUR(), Integer.valueOf(4500));
         Assert.assertNull(plan.getDescription());
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());

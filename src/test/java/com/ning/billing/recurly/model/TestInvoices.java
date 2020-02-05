@@ -87,7 +87,7 @@ public class TestInvoices extends TestModelBase {
         Assert.assertNotNull(invoice.getLineItems());
         Assert.assertEquals(invoice.getLineItems().size(), 1);
         Assert.assertEquals(invoice.getTransactions().size(), 0);
-        Assert.assertEquals(invoice.getSubtotalAfterDiscountInCents(), new Integer(300));
+        Assert.assertEquals(invoice.getSubtotalAfterDiscountInCents(), Integer.valueOf(300));
         Assert.assertEquals(invoice.getAttemptNextCollectionAt(), new DateTime("2017-08-31T00:00:00Z"));
         Assert.assertEquals(invoice.getRecoveryReason(), "Reason");
         Assert.assertNull(invoice.getTaxType());

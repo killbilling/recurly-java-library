@@ -39,7 +39,7 @@ public class TestRecurlyClientUserAgent {
     public void testNormalUserAgent() throws Exception {
         // In case of exception
         Assert.assertNotEquals(recurlyClient.getUserAgent(), "KillBill/0.0.0; 0.0.0");
-        Assert.assertTrue(Pattern.compile("KillBill/0\\.[0-9]+\\.[0-9]; 1\\.[6-9]\\..*").matcher(recurlyClient.getUserAgent()).matches());
+        Assert.assertTrue(Pattern.compile("KillBill/0[.]\\d+[.]\\d; 1*\\d[.]\\d[.]*\\d*").matcher(recurlyClient.getUserAgent()).matches());
     }
 
     @Test(groups = "fast")

@@ -77,7 +77,7 @@ public class TestAddOns extends TestModelBase {
         final AddOn addOn = addOns.get(0);
         Assert.assertEquals(addOn.getAddOnCode(), "ipaddresses");
         Assert.assertEquals(addOn.getName(), "IP Addresses");
-        Assert.assertEquals(addOn.getMeasuredUnit().getId(), new Long(12345678));
+        Assert.assertEquals(addOn.getMeasuredUnit().getId(), Long.valueOf(12345678));
         Assert.assertEquals(addOn.getAddOnType(), "usage");
         Assert.assertEquals(addOn.getUsageType(), "price");
         Assert.assertEquals((boolean) addOn.getDisplayQuantityOnHostedPage(), false);

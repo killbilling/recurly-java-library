@@ -38,7 +38,7 @@ public class TestMeasuredUnit extends TestModelBase {
                                 "  </measured_unit>";
 
         final MeasuredUnit measuredUnit = xmlMapper.readValue(measuredUnitData, MeasuredUnit.class);
-        Assert.assertEquals(measuredUnit.getId(), new Long(1234567890));
+        Assert.assertEquals(measuredUnit.getId(), Long.valueOf(1234567890));
         Assert.assertEquals(measuredUnit.getName(), "Streaming Bandwidth");
         Assert.assertEquals(measuredUnit.getDisplayName(), "GB");
         Assert.assertEquals(measuredUnit.getDescription(), "Video steaming bandwidth measured in gigabytes");

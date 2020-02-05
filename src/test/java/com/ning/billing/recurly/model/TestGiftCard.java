@@ -70,9 +70,9 @@ public class TestGiftCard extends TestModelBase {
         Assert.assertEquals(giftCard.getCurrency(), "USD");
         Assert.assertEquals(giftCard.getRedemptionCode(), "AI4VOVO1RC74H9E2");
         Assert.assertEquals(giftCard.getProductCode(), "gift_card");
-        Assert.assertEquals(giftCard.getBalanceInCents(), new Integer(2000));
-        Assert.assertEquals(giftCard.getUnitAmountInCents(), new Integer(2000));
-        Assert.assertEquals(giftCard.getId(), new Long(1988596967980562362L));
+        Assert.assertEquals(giftCard.getBalanceInCents(), Integer.valueOf(2000));
+        Assert.assertEquals(giftCard.getUnitAmountInCents(), Integer.valueOf(2000));
+        Assert.assertEquals(giftCard.getId(), Long.valueOf(1988596967980562362L));
         Assert.assertEquals(giftCard.getCreatedAt(), new DateTime("2016-04-15T07:00:00Z"));
         Assert.assertEquals(giftCard.getUpdatedAt(), new DateTime("2016-12-27T07:00:00Z"));
         Assert.assertEquals(giftCard.getRedeemedAt(), new DateTime("2016-12-27T07:00:00Z"));

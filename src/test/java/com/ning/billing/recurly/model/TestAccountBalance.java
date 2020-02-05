@@ -36,6 +36,6 @@ public class TestAccountBalance extends TestModelBase {
 
         Assert.assertEquals(balance.getHref(), "https://api.recurly.com/v2/accounts/1/balance");
         Assert.assertEquals(balance.getPastDue(), Boolean.TRUE);
-        Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), new Integer(400));
+        Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), Integer.valueOf(400));
     }
 }
