@@ -45,8 +45,11 @@ public class TestAddOns extends TestModelBase {
                                   "    <add_on_type>usage</add_on_type>\n" +
                                   "    <usage_type>price</usage_type>\n" +
                                   "    <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
-                                  "    <created_at type=\"datetime\">2011-06-28T12:34:56Z</created_at>\n" +
-                                  "    <updated_at type=\"datetime\">2011-06-28T12:34:56Z</updated_at>\n" +
+                                  "    <created_at type=\"dateTime\">2011-06-28T12:34:56Z</created_at>\n" +
+                                  "    <updated_at type=\"dateTime\">2011-06-28T12:34:56Z</updated_at>\n" +
+                                  "    <accounting_code>ABC123</accounting_code>\n" +
+                                  "    <tax_code>digital</tax_code>\n" +
+                                  "    <optional type=\"boolean\">true</optional>\n" +
                                   "  </add_on>\n" +
                                   "  <!-- Continued... -->\n" +
                                   "</add_ons>";
@@ -86,5 +89,8 @@ public class TestAddOns extends TestModelBase {
         Assert.assertEquals(addOn.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
         Assert.assertEquals(addOn.getCreatedAt(), new DateTime("2011-06-28T12:34:56Z"));
         Assert.assertEquals(addOn.getUpdatedAt(), new DateTime("2011-06-28T12:34:56Z"));
+        Assert.assertEquals(addOn.getTaxCode(), "digital");
+        Assert.assertEquals(addOn.getAccountingCode(), "ABC123");
+        Assert.assertEquals(addOn.getOptional(), (Boolean) true);
     }
 }

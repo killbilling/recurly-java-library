@@ -1,6 +1,6 @@
 /*
  * Copyright 2010-2014 Ning, Inc.
- * Copyright 2014-2015 The Billing Project, LLC
+ * Copyright 2014-2018 The Billing Project, LLC
  *
  * The Billing Project licenses this file to you under the Apache License, version 2.0
  * (the "License"); you may not use this file except in compliance with the
@@ -33,7 +33,6 @@ import static org.testng.Assert.assertNotEquals;
 
 public class TestCoupon extends TestModelBase {
 
-
     @Test(groups = "fast")
     public void testDeserializationPercent() throws Exception {
         final String couponData = 
@@ -47,13 +46,13 @@ public class TestCoupon extends TestModelBase {
                     "<discount_type>percent</discount_type>" +
                     "<discount_percent type=\"integer\">100</discount_percent>" +
                     "<invoice_description>invoice description</invoice_description>" +
-                    "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                    "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                     "<single_use type=\"boolean\">true</single_use>" +
                     "<applies_for_months nil=\"nil\"/>" +
                     "<max_redemptions type=\"integer\">200</max_redemptions>" +
                     "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                    "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                    "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                    "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                    "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                     "<deleted_at nil=\"nil\"/>" +
                     "<duration>single_use</duration>" +
                     "<temporal_unit nil=\"nil\"/>" +
@@ -107,13 +106,13 @@ public class TestCoupon extends TestModelBase {
                     "<discount_type>percent</discount_type>" +
                     "<discount_percent type=\"integer\">100</discount_percent>" +
                     "<invoice_description>invoice description</invoice_description>" +
-                    "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                    "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                     "<single_use type=\"boolean\">false</single_use>" +
                     "<applies_for_months nil=\"nil\"/>" +
                     "<max_redemptions type=\"integer\">200</max_redemptions>" +
                     "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                    "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                    "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                    "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                    "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                     "<deleted_at nil=\"nil\"/>" +
                     "<duration>temporal</duration>" +
                     "<temporal_unit>day</temporal_unit>" +
@@ -169,13 +168,13 @@ public class TestCoupon extends TestModelBase {
                     "    <USD type=\"integer\">199</USD>\n" +
                     "</discount_in_cents>" +
                     "<invoice_description>invoice description</invoice_description>" +
-                    "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                    "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                     "<single_use type=\"boolean\">true</single_use>" +
                     "<applies_for_months nil=\"nil\"/>" +
                     "<max_redemptions type=\"integer\">200</max_redemptions>" +
                     "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                    "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                    "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                    "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                    "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                     "<deleted_at nil=\"nil\"/>" +
                     "<duration>single_use</duration>" +
                     "<temporal_unit nil=\"nil\"/>" +
@@ -216,7 +215,6 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getType(), Type.single_code);
     }
 
-
     @Test(groups = "fast")
     public void testPlanCodes() throws Exception {
         // See https://dev.recurly.com/docs/list-active-coupons
@@ -230,13 +228,13 @@ public class TestCoupon extends TestModelBase {
                         "<discount_type>percent</discount_type>" +
                         "<discount_percent type=\"integer\">100</discount_percent>" +
                         "<invoice_description>invoice description</invoice_description>" +
-                        "<redeem_by_date type=\"datetime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                        "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
                         "<single_use type=\"boolean\">true</single_use>" +
                         "<applies_for_months nil=\"nil\"/>" +
                         "<max_redemptions type=\"integer\">200</max_redemptions>" +
                         "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
-                        "<created_at type=\"datetime\">2016-07-11T18:50:17Z</created_at>" +
-                        "<updated_at type=\"datetime\">2016-07-11T18:50:17Z</updated_at>" +
+                        "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                        "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
                         "<deleted_at nil=\"nil\"/>" +
                         "<duration>single_use</duration>" +
                         "<temporal_unit nil=\"nil\"/>" +
@@ -276,8 +274,13 @@ public class TestCoupon extends TestModelBase {
         assertEquals(coupon.getMaxRedemptionsPerAccount().intValue(), 1);
         assertEquals(coupon.getType(), Type.single_code);
         assertEquals(coupon.getPlanCodes().size(), 2);
-        assertTrue(coupon.getPlanCodes().contains("platinum"));
-        assertTrue(coupon.getPlanCodes().contains("gold"));
+        assertTrue(coupon.getPlanCodes().contains(new PlanCode("platinum")));
+        assertTrue(coupon.getPlanCodes().contains(new PlanCode("gold")));
+
+        // Verify serialization
+        final String couponSerialized = xmlMapper.writeValueAsString(coupon);
+        final Coupon coupon2 = xmlMapper.readValue(couponSerialized, Coupon.class);
+        assertEquals(coupon2, coupon);
     }
 
     @Test(groups = "fast")

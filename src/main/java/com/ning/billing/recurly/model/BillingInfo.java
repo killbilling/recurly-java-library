@@ -20,6 +20,7 @@ package com.ning.billing.recurly.model;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlAttribute;
 
 import com.google.common.base.Objects;
 import org.joda.time.DateTime;
@@ -30,8 +31,14 @@ public class BillingInfo extends RecurlyObject {
     @XmlTransient
     public static final String BILLING_INFO_RESOURCE = "/billing_info";
 
+    @XmlAttribute(name = "type")
+    private String type;
+
     @XmlElement(name = "account")
     private Account account;
+
+    @XmlElement(name = "name_on_account")
+    private String nameOnAccount;
 
     @XmlElement(name = "first_name")
     private String firstName;
@@ -72,6 +79,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "ip_address_country")
     private String ipAddressCountry;
 
+    @XmlElement(name = "account_type")
+    private String accountType;
+
     @XmlElement(name = "card_type")
     private String cardType;
 
@@ -90,17 +100,55 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "number")
     private String number;
 
+    @XmlElement(name = "routing_number")
+    private String routingNumber;
+
+    @XmlElement(name = "account_number")
+    private String accountNumber;
+
     @XmlElement(name = "verification_value")
     private String verificationValue;
 
     @XmlElement(name = "token_id")
     private String tokenId;
 
+    @XmlElement(name = "currency")
+    private String currency;
+
     @XmlElement(name = "geo_code")
     private String geoCode;
 
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
+
+    @XmlElement(name = "external_hpp_type")
+    private String externalHppType;
+
+    @XmlElement(name = "gateway_token")
+    private String gatewayToken;
+
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
+    @XmlElement(name = "amazon_billing_agreement_id")
+    private String amazonBillingAgreementId;
+
+    @XmlElement(name = "amazon_region")
+    private String amazonRegion;
+
+    @XmlElement(name = "three_d_secure_action_result_token_id")
+    private String threeDSecureActionResultTokenId;
+
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
+
+    public String getType() {
+        return type;
+    }
+
+    protected void setType(final Object type) {
+        this.type = stringOrNull(type);
+    }
 
     /**
      * Account object associated to this BillingInfo
@@ -116,8 +164,21 @@ public class BillingInfo extends RecurlyObject {
         return account;
     }
 
+    /**
+     * @deprecated Please do not attach an account to a BillingInfo object. Pass the account code into {@link com.ning.billing.recurly.RecurlyClient#createOrUpdateBillingInfo(String, BillingInfo)}
+     * @param account
+     */
+    @Deprecated
     public void setAccount(final Account account) {
         this.account = account;
+    }
+
+    public String getNameOnAccount() {
+        return nameOnAccount;
+    }
+
+    public void setNameOnAccount(final Object nameOnAccount) {
+        this.nameOnAccount = stringOrNull(nameOnAccount);
     }
 
     public String getFirstName() {
@@ -224,6 +285,14 @@ public class BillingInfo extends RecurlyObject {
         this.ipAddressCountry = stringOrNull(ipAddressCountry);
     }
 
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(final Object accountType) {
+        this.accountType = stringOrNull(accountType);
+    }
+
     public String getCardType() {
         return cardType;
     }
@@ -264,6 +333,22 @@ public class BillingInfo extends RecurlyObject {
         this.lastFour = stringOrNull(lastFour);
     }
 
+    public String getRoutingNumber() {
+        return routingNumber;
+    }
+
+    public void setRoutingNumber(final Object routingNumber) {
+        this.routingNumber = stringOrNull(routingNumber);
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(final Object accountNumber) {
+        this.accountNumber = stringOrNull(accountNumber);
+    }
+
     public String getNumber() {
         return number;
     }
@@ -280,17 +365,29 @@ public class BillingInfo extends RecurlyObject {
         this.verificationValue = stringOrNull(verificationValue);
     }
 
-    public String getTokenId(){
+    public String getTokenId() {
         return tokenId;
     }
 
-    public void setTokenId(final String tokenId){
+    public void setTokenId(final String tokenId) {
         this.tokenId = tokenId;
     }
 
-    public String getGeoCode() { return geoCode; }
+    public String getCurrency() {
+        return currency;
+    }
 
-    public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
+    public void setCurrency(final Object currency) {
+        this.currency = stringOrNull(currency);
+    }
+
+    public String getGeoCode() {
+        return geoCode;
+    }
+
+    public void setGeoCode(final Object geoCode) {
+        this.geoCode = stringOrNull(geoCode);
+    }
 
     public DateTime getUpdatedAt() {
         return updatedAt;
@@ -300,11 +397,78 @@ public class BillingInfo extends RecurlyObject {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public String getExternalHppType() {
+        return externalHppType;
+    }
+
+    public void setExternalHppType(final Object externalHppType) {
+        this.externalHppType = stringOrNull(externalHppType);
+    }
+
+    public String getGatewayToken() {
+        return gatewayToken;
+    }
+
+    public void setGatewayToken(final Object gatewayToken) {
+        this.gatewayToken = stringOrNull(gatewayToken);
+    }
+
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
+
+    public String getAmazonBillingAgreementId() {
+        return amazonBillingAgreementId;
+    }
+
+    public void setAmazonBillingAgreementId(final Object amazonBillingAgreementId) {
+        this.amazonBillingAgreementId = stringOrNull(amazonBillingAgreementId);
+    }
+
+    public String getAmazonRegion() {
+        return amazonRegion;
+    }
+
+    public void setAmazonRegion(final Object amazonRegion) {
+        this.amazonRegion = stringOrNull(amazonRegion);
+    }
+
+    public String getThreeDSecureActionResultTokenId() {
+        return threeDSecureActionResultTokenId;
+    }
+
+    public void setThreeDSecureActionResultTokenId(final Object threeDSecureActionResultTokenId) {
+        this.threeDSecureActionResultTokenId = stringOrNull(threeDSecureActionResultTokenId);
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("BillingInfo");
-        sb.append("{account='").append(account).append('\'');
+
+        // Prevent infinite loop when printing account.
+        // See https://github.com/killbilling/recurly-java-library/issues/326
+        if (account != null && account.getBillingInfo().equals(this)) {
+            sb.append("{account='").append(account.getAccountCode()).append('\'');
+        }
+        else {
+            sb.append("{account='").append(account).append('\'');
+        }
+
+        sb.append(", type='").append(type).append('\'');
+        sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", company='").append(company).append('\'');
@@ -318,13 +482,21 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", vatNumber='").append(vatNumber).append('\'');
         sb.append(", ipAddress='").append(ipAddress).append('\'');
         sb.append(", ipAddressCountry='").append(ipAddressCountry).append('\'');
+        sb.append(", accountType='").append(accountType).append('\'');
         sb.append(", cardType='").append(cardType).append('\'');
         sb.append(", year=").append(year);
         sb.append(", month=").append(month);
         sb.append(", firstSix='").append(firstSix).append('\'');
         sb.append(", lastFour='").append(lastFour).append('\'');
+        sb.append(", routingNumber='").append(routingNumber).append('\'');
         sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
+        sb.append(", externalHppType='").append(externalHppType).append('\'');
+        sb.append(", gatewayToken='").append(gatewayToken).append('\'');
+        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
+        sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
+        sb.append(", amazonRegion='").append(amazonRegion).append('\'');
+        sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -337,6 +509,9 @@ public class BillingInfo extends RecurlyObject {
         final BillingInfo that = (BillingInfo) o;
 
         if (account != null ? !account.equals(that.account) : that.account != null) {
+            return false;
+        }
+        if (nameOnAccount != null ? !nameOnAccount.equals(that.nameOnAccount) : that.nameOnAccount != null) {
             return false;
         }
         if (address1 != null ? !address1.equals(that.address1) : that.address1 != null) {
@@ -369,7 +544,19 @@ public class BillingInfo extends RecurlyObject {
         if (ipAddressCountry != null ? !ipAddressCountry.equals(that.ipAddressCountry) : that.ipAddressCountry != null) {
             return false;
         }
+        if (accountType != null ? !accountType.equals(that.accountType) : that.accountType != null) {
+            return false;
+        }
         if (lastFour != null ? !lastFour.equals(that.lastFour) : that.lastFour != null) {
+            return false;
+        }
+        if (routingNumber != null ? !routingNumber.equals(that.routingNumber) : that.routingNumber != null) {
+            return false;
+        }
+        if (accountNumber != null ? !accountNumber.equals(that.accountNumber) : that.accountNumber != null) {
+            return false;
+        }
+        if (number != null ? !number.equals(that.number) : that.number != null) {
             return false;
         }
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
@@ -384,6 +571,9 @@ public class BillingInfo extends RecurlyObject {
         if (state != null ? !state.equals(that.state) : that.state != null) {
             return false;
         }
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
         if (vatNumber != null ? !vatNumber.equals(that.vatNumber) : that.vatNumber != null) {
             return false;
         }
@@ -396,7 +586,28 @@ public class BillingInfo extends RecurlyObject {
         if (geoCode != null ? !geoCode.equals(that.geoCode) : that.geoCode != null) {
             return false;
         }
+        if (gatewayToken != null ? !gatewayToken.equals(that.gatewayToken) : that.gatewayToken != null) {
+            return false;
+        }
+        if (gatewayCode != null ? !gatewayCode.equals(that.gatewayCode) : that.gatewayCode != null) {
+            return false;
+        }
         if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
+            return false;
+        }
+        if (externalHppType != null ? !externalHppType.equals(that.externalHppType) : that.externalHppType != null) {
+            return false;
+        }
+        if (amazonBillingAgreementId != null ? !amazonBillingAgreementId.equals(that.amazonBillingAgreementId) : that.amazonBillingAgreementId != null) {
+            return false;
+        }
+        if (amazonRegion != null ? !amazonRegion.equals(that.amazonRegion) : that.amazonRegion != null) {
+            return false;
+        }
+        if (threeDSecureActionResultTokenId != null ? !threeDSecureActionResultTokenId.equals(that.threeDSecureActionResultTokenId) : that.threeDSecureActionResultTokenId != null) {
+            return false;
+        }
+        if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
             return false;
         }
 
@@ -407,6 +618,7 @@ public class BillingInfo extends RecurlyObject {
     public int hashCode() {
         return Objects.hashCode(
                 account,
+                nameOnAccount,
                 firstName,
                 lastName,
                 company,
@@ -420,13 +632,25 @@ public class BillingInfo extends RecurlyObject {
                 vatNumber,
                 ipAddress,
                 ipAddressCountry,
+                accountType,
                 cardType,
                 year,
                 month,
                 firstSix,
                 lastFour,
+                number,
+                routingNumber,
+                accountNumber,
                 updatedAt,
-                geoCode
+                geoCode,
+                type,
+                externalHppType,
+                gatewayToken,
+                gatewayCode,
+                amazonBillingAgreementId,
+                amazonRegion,
+                threeDSecureActionResultTokenId,
+                transactionType
         );
     }
 }

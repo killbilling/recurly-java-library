@@ -69,6 +69,9 @@ public class ShippingAddress extends RecurlyObject {
     @XmlElement(name = "geo_code")
     private String geoCode;
 
+    @XmlElement(name = "vat_number")
+    private String vatNumber;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -183,6 +186,10 @@ public class ShippingAddress extends RecurlyObject {
 
     public void setGeoCode(final Object geoCode) { this.geoCode = stringOrNull(geoCode); }
 
+    public String getVatNumber() { return vatNumber; }
+
+    public void setVatNumber(final Object vatNumber) { this.vatNumber = stringOrNull(vatNumber); }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -218,6 +225,7 @@ public class ShippingAddress extends RecurlyObject {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", zip=").append(zip);
         sb.append(", geoCode='").append(geoCode).append('\'');
+        sb.append(", vatNumber=").append(vatNumber);
         sb.append('}');
         return sb.toString();
     }
@@ -274,6 +282,9 @@ public class ShippingAddress extends RecurlyObject {
         if (geoCode != null ? !geoCode.equals(that.geoCode) : that.geoCode != null) {
             return false;
         }
+        if (vatNumber != null ? !vatNumber.equals(that.vatNumber) : that.vatNumber != null) {
+            return false;
+        }
 
         return true;
     }
@@ -295,7 +306,8 @@ public class ShippingAddress extends RecurlyObject {
                 phone,
                 state,
                 zip,
-                geoCode
+                geoCode,
+                vatNumber
         );
     }
 }

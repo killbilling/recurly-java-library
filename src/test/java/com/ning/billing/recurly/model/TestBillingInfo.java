@@ -30,6 +30,7 @@ public class TestBillingInfo extends TestModelBase {
     @Test(groups = "fast")
     public void testSerialization() throws Exception {
         final BillingInfo billingInfo = new BillingInfo();
+        billingInfo.setType(randomString());
         billingInfo.setAddress1(randomString());
         billingInfo.setAddress2(randomString());
         billingInfo.setCardType(randomString());
@@ -40,7 +41,10 @@ public class TestBillingInfo extends TestModelBase {
         billingInfo.setFirstSix(randomString());
         billingInfo.setIpAddress(randomString());
         billingInfo.setIpAddressCountry(randomString());
+        billingInfo.setAccountType(randomString());
         billingInfo.setLastFour(randomString());
+        billingInfo.setRoutingNumber(randomString());
+        billingInfo.setAccountNumber(randomString());
         billingInfo.setLastName(randomString());
         billingInfo.setMonth(3);
         billingInfo.setNumber(randomString());
@@ -51,6 +55,10 @@ public class TestBillingInfo extends TestModelBase {
         billingInfo.setYear(Integer.MIN_VALUE);
         billingInfo.setZip(randomString());
         billingInfo.setGeoCode(randomString());
+        billingInfo.setGatewayToken(randomString());
+        billingInfo.setGatewayCode(randomString());
+        billingInfo.setAmazonBillingAgreementId(randomString());
+        billingInfo.setAmazonRegion(randomString());
 
         final String xml = xmlMapper.writeValueAsString(billingInfo);
         Assert.assertEquals(xmlMapper.readValue(xml, BillingInfo.class), billingInfo);

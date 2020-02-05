@@ -27,7 +27,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
         // See https://dev.recurly.com/docs/list-subscriptions
         final String subscriptionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                         "<subscription>\n" +
-                                        "  <timeframe>now</timeframe>\n" +
+                                        "  <timeframe>term_end</timeframe>\n" +
                                         "  <plan_code>gold</plan_code>\n" +
                                         "  <unit_amount_in_cents type=\"integer\">800</unit_amount_in_cents>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
@@ -36,7 +36,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
                                         "</subscription>";
 
         final SubscriptionUpdate subscription = xmlMapper.readValue(subscriptionData, SubscriptionUpdate.class);
-        Assert.assertEquals(subscription.getTimeframe(), SubscriptionUpdate.Timeframe.now);
+        Assert.assertEquals(subscription.getTimeframe(), SubscriptionUpdate.Timeframe.term_end);
         Assert.assertEquals(subscription.getPlanCode(), "gold");
         Assert.assertEquals(subscription.getUnitAmountInCents(), (Integer) 800);
         Assert.assertEquals(subscription.getQuantity(), (Integer) 1);
@@ -108,6 +108,36 @@ public class TestSubscriptionUpdate extends TestModelBase {
                                  "</subscription_add_ons>" +
                                  "<plan_code>gold</plan_code>" +
                                  "</subscription>");
+    }
+
+
+    @Test(groups = "fast")
+    public void testSerializationWithCustomFields() throws Exception {
+        final SubscriptionUpdate subscription = new SubscriptionUpdate();
+        subscription.setPlanCode("gold");
+        subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
+        subscription.setUnitAmountInCents(800);
+        subscription.setQuantity(1);
+        final CustomFields fields = new CustomFields();
+        final CustomField customField= new CustomField();
+        customField.setName("name1");
+        customField.setValue("value1");
+        fields.add(customField);
+        subscription.setCustomFields(fields);
+
+        final String xml = xmlMapper.writeValueAsString(subscription);
+        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+                "<timeframe>now</timeframe>" +
+                "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                "<quantity>1</quantity>" +
+                "<custom_fields>" +
+                "<custom_field>" +
+                "<name>name1</name>" +
+                "<value>value1</value>" +
+                "</custom_field>" +
+                "</custom_fields>" +
+                "<plan_code>gold</plan_code>" +
+                "</subscription>");
     }
 
     @Test(groups = "fast")

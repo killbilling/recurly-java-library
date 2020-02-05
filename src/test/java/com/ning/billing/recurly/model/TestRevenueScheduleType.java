@@ -17,7 +17,7 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fasterxml.jackson.databind.exc.InvalidFormatException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.ning.billing.recurly.TestUtils;
 import org.testng.annotations.Test;
 
@@ -69,7 +69,7 @@ public class TestRevenueScheduleType extends TestModelBase {
         assertEquals(adjustment.getRevenueScheduleType(), null);
     }
 
-    @Test(groups = "fast", expectedExceptions = InvalidFormatException.class)
+    @Test(groups = "fast", expectedExceptions = JsonMappingException.class)
     public void testDeserializationWhenValueUnknown() throws IOException {
         final String xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                       "<adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n" +

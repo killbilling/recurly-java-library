@@ -20,6 +20,7 @@ package com.ning.billing.recurly.model;
 public enum SubscriptionState {
     ACTIVE("active"),
     CANCELED("canceled"),
+    PAUSED("paused"),
     EXPIRED("expired"),
     FUTURE("future"),
     IN_TRIAL("in_trial"),

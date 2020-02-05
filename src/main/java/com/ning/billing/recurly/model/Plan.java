@@ -17,13 +17,13 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.joda.time.DateTime;
-import com.google.common.base.Objects;
 
 @XmlRootElement(name = "plan")
 public class Plan extends RecurlyObject {
@@ -77,11 +77,17 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "trial_interval_unit")
     private String trialIntervalUnit;
 
+    @XmlElement(name = "total_billing_cycles")
+    private Integer totalBillingCycles;
+
     @XmlElement(name = "trial_requires_billing_info")
     private Boolean trialRequiresBillingInfo;
 
     @XmlElement(name = "accounting_code")
     private String accountingCode;
+
+    @XmlElement(name = "setup_fee_accounting_code")
+    private String setupFeeAccountingCode;
 
     @XmlElement(name = "revenue_schedule_type")
     private RevenueScheduleType revenueScheduleType;
@@ -100,6 +106,15 @@ public class Plan extends RecurlyObject {
 
     @XmlElement(name = "setup_fee_in_cents")
     private RecurlyUnitCurrency setupFeeInCents;
+
+    @XmlElement(name = "auto_renew")
+    private Boolean autoRenew;
+
+    @XmlElement(name = "tax_exempt")
+    private Boolean taxExempt;
+
+    @XmlElement(name = "tax_code")
+    private String taxCode;
 
     public String getPlanCode() {
         return planCode;
@@ -205,6 +220,14 @@ public class Plan extends RecurlyObject {
         this.trialIntervalUnit = stringOrNull(trialIntervalUnit);
     }
 
+    public Integer getTotalBillingCycles() {
+        return totalBillingCycles;
+    }
+
+    public void setTotalBillingCycles(final Object totalBillingCycles) {
+        this.totalBillingCycles = integerOrNull(totalBillingCycles);
+    }
+
     public Boolean getTrialRequiresBillingInfo() {
         return this.trialRequiresBillingInfo;
     }
@@ -227,6 +250,14 @@ public class Plan extends RecurlyObject {
 
     public void setAccountingCode(final Object accountingCode) {
         this.accountingCode = stringOrNull(accountingCode);
+    }
+
+    public String getSetupFeeAccountingCode() {
+        return setupFeeAccountingCode;
+    }
+
+    public void setSetupFeeAccountingCode(final Object setupFeeAccountingCode) {
+        this.setupFeeAccountingCode = stringOrNull(setupFeeAccountingCode);
     }
 
     public DateTime getCreatedAt() {
@@ -273,16 +304,40 @@ public class Plan extends RecurlyObject {
         return setupFeeRevenueScheduleType;
     }
 
-    public void setSetupFeeRevenueScheduleType(final RevenueScheduleType setupFeeRevenueScheduleType) {
-        this.setupFeeRevenueScheduleType = revenueScheduleType;
+    public void setSetupFeeRevenueScheduleType(final Object setupFeeRevenueScheduleType) {
+        this.setupFeeRevenueScheduleType = enumOrNull(RevenueScheduleType.class, setupFeeRevenueScheduleType, true);
     }
 
     public RevenueScheduleType getRevenueScheduleType() {
         return revenueScheduleType;
     }
 
-    public void setRevenueScheduleType(final String revenueScheduleType) {
-        this.revenueScheduleType = RevenueScheduleType.valueOf(revenueScheduleType.toUpperCase());
+    public void setRevenueScheduleType(final Object revenueScheduleType) {
+        this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
+    }
+
+    public Boolean getAutoRenew() {
+        return this.autoRenew;
+    }
+
+    public void setAutoRenew(final Object autoRenew) {
+        this.autoRenew = booleanOrNull(autoRenew);
+    }
+
+    public Boolean getTaxExempt() {
+        return this.taxExempt;
+    }
+
+    public void setTaxExempt(final Object taxExempt) {
+        this.taxExempt = booleanOrNull(taxExempt);
+    }
+
+    public String getTaxCode() {
+        return this.taxCode;
+    }
+
+    public void setTaxCode(final Object taxCode) {
+        this.taxCode = stringOrNull(taxCode);
     }
 
     @Override
@@ -304,14 +359,19 @@ public class Plan extends RecurlyObject {
         sb.append(", planIntervalLength=").append(planIntervalLength);
         sb.append(", trialIntervalLength=").append(trialIntervalLength);
         sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
+        sb.append(", totalBillingCycles").append(totalBillingCycles);
         sb.append(", trialRequiresBillingInfo='").append(trialRequiresBillingInfo).append('\'');
         sb.append(", accountingCode='").append(accountingCode).append('\'');
+        sb.append(", setupFeeAccountingCode='").append(setupFeeAccountingCode).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", setupFeeInCents=").append(setupFeeInCents);
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
         sb.append(", setupFeeRevenueScheduleType=").append(setupFeeRevenueScheduleType);
+        sb.append(", autoRenew=").append(autoRenew);
+        sb.append(", taxExempt=").append(taxExempt);
+        sb.append(", taxCode=").append(taxCode);
         sb.append('}');
         return sb.toString();
     }
@@ -333,6 +393,9 @@ public class Plan extends RecurlyObject {
             return false;
         }
         if (addOns != null ? !addOns.equals(plan.addOns) : plan.addOns != null) {
+            return false;
+        }
+        if (autoRenew != null ? !autoRenew.equals(plan.autoRenew) : plan.autoRenew != null) {
             return false;
         }
         if (cancelLink != null ? !cancelLink.equals(plan.cancelLink) : plan.cancelLink != null) {
@@ -392,6 +455,18 @@ public class Plan extends RecurlyObject {
         if (updatedAt != null ? updatedAt.compareTo(plan.updatedAt) != 0: plan.updatedAt != null) {
             return false;
         }
+        if (totalBillingCycles != null ? totalBillingCycles.compareTo(plan.totalBillingCycles) != 0: plan.totalBillingCycles != null) {
+            return false;
+        }
+        if (setupFeeAccountingCode != null ? setupFeeAccountingCode.compareTo(plan.setupFeeAccountingCode) != 0: plan.setupFeeAccountingCode != null) {
+            return false;
+        }
+        if (taxExempt != null ? taxExempt.compareTo(plan.taxExempt) != 0: plan.taxExempt != null) {
+            return false;
+        }
+        if (taxCode != null ? taxCode.compareTo(plan.taxCode) != 0: plan.taxCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -414,14 +489,19 @@ public class Plan extends RecurlyObject {
                 planIntervalLength,
                 trialIntervalUnit,
                 trialIntervalLength,
+                totalBillingCycles,
                 accountingCode,
+                setupFeeAccountingCode,
                 createdAt,
                 updatedAt,
                 unitAmountInCents,
                 setupFeeInCents,
                 revenueScheduleType,
                 setupFeeRevenueScheduleType,
-                trialRequiresBillingInfo
+                trialRequiresBillingInfo,
+                autoRenew,
+                taxExempt,
+                taxCode
         );
     }
 }

@@ -18,15 +18,14 @@
 package com.ning.billing.recurly.model;
 
 import com.google.common.base.Objects;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-
-import org.joda.time.DateTime;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @XmlRootElement(name = "account")
 public class Account extends RecurlyObject {
@@ -39,6 +38,9 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "address")
     private Address address;
+
+    @XmlElement(name = "parent_account_code")
+    private String parentAccountCode;
 
     @XmlElementWrapper(name = "adjustments")
     @XmlElement(name = "adjustment")
@@ -68,6 +70,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "email")
     private String email;
 
+    @XmlElement(name = "cc_emails")
+    private String ccEmails;
+
     @XmlElement(name = "first_name")
     private String firstName;
 
@@ -76,6 +81,12 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "company_name")
     private String companyName;
+
+    // This property appears instead of "company_name" on some Account xml,
+    // such as when listing invoices:
+    // invoices -> invoice -> transactions -> transaction -> details -> account -> company
+    @XmlElement(name = "company")
+    private String company;
 
     @XmlElement(name = "accept_language")
     private String acceptLanguage;
@@ -89,15 +100,25 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
+    @XmlElement(name = "closed_at")
+    private DateTime closedAt;
+
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
 
+    @XmlElement(name = "exemption_certificate")
+    private String exemptionCertificate;
+
     @XmlElementWrapper(name = "shipping_addresses")
     @XmlElement(name = "shipping_address")
     private ShippingAddresses shippingAddresses;
+
+    @XmlElementWrapper(name = "custom_fields")
+    @XmlElement(name = "custom_field")
+    private CustomFields customFields;
 
     @XmlElement(name = "has_live_subscription")
     private Boolean hasLiveSubscription;
@@ -114,8 +135,20 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "has_past_due_invoice")
     private Boolean hasPastDueInvoice;
 
+    @XmlElement(name = "has_paused_subscription")
+    private Boolean hasPausedSubscription;
+
     @XmlElement(name = "vat_number")
     private String vatNumber;
+
+    @XmlElement(name = "account_acquisition")
+    private AccountAcquisition accountAcquisition;
+
+    @XmlElement(name = "preferred_locale")
+    private String preferredLocale;
+
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
 
     @Override
     public void setHref(final Object href) {
@@ -179,6 +212,14 @@ public class Account extends RecurlyObject {
         this.accountCode = stringOrNull(accountCode);
     }
 
+    public String getParentAccountCode() {
+        return this.parentAccountCode;
+    }
+
+    public void setParentAccountCode(final Object parentAccountCode) {
+        this.parentAccountCode = stringOrNull(parentAccountCode);
+    }
+
     public String getState() {
         return state;
     }
@@ -203,6 +244,14 @@ public class Account extends RecurlyObject {
         this.email = stringOrNull(email);
     }
 
+    public String getCcEmails() {
+        return ccEmails;
+    }
+
+    public void setCcEmails(final Object ccEmails) {
+        this.ccEmails = stringOrNull(ccEmails);
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -220,11 +269,15 @@ public class Account extends RecurlyObject {
     }
 
     public String getCompanyName() {
-        return companyName;
+        return companyName != null ? companyName : company;
     }
 
     public void setCompanyName(final Object companyName) {
         this.companyName = stringOrNull(companyName);
+    }
+
+    public void setCompany(final Object company) {
+        this.company = stringOrNull(company);
     }
 
     public String getAcceptLanguage() {
@@ -259,6 +312,14 @@ public class Account extends RecurlyObject {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public DateTime getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(final Object closedAt) {
+        this.closedAt = dateTimeOrNull(closedAt);
+    }
+
     public BillingInfo getBillingInfo() {
         return billingInfo;
     }
@@ -273,6 +334,14 @@ public class Account extends RecurlyObject {
 
     public void setTaxExempt(final Object taxExempt) {
         this.taxExempt = booleanOrNull(taxExempt);
+    }
+
+    public String getExemptionCertificate() {
+        return exemptionCertificate;
+    }
+
+    public void setExemptionCertificate(final Object exemptionCertificate) {
+        this.exemptionCertificate = stringOrNull(exemptionCertificate);
     }
 
     public Boolean getHasLiveSubscription() {
@@ -315,6 +384,14 @@ public class Account extends RecurlyObject {
         this.hasPastDueInvoice = booleanOrNull(hasPastDueInvoice);
     }
 
+    public Boolean getHasPausedSubscription() {
+        return hasPausedSubscription;
+    }
+
+    protected void setHasPausedSubscription(final Object hasPausedSubscription) {
+        this.hasPausedSubscription = booleanOrNull(hasPausedSubscription);
+    }
+
     public ShippingAddresses getShippingAddresses() {
         return shippingAddresses;
     }
@@ -323,12 +400,44 @@ public class Account extends RecurlyObject {
         this.shippingAddresses = shippingAddresses;
     }
 
+    public CustomFields getCustomFields() {
+        return customFields;
+    }
+
+    public void setCustomFields(final CustomFields customFields) {
+        this.customFields = customFields;
+    }
+
     public String getVatNumber() {
         return vatNumber;
     }
 
     public void setVatNumber(final Object vatNumber) {
         this.vatNumber = stringOrNull(vatNumber);
+    }
+
+    public AccountAcquisition getAccountAcquisition() {
+        return accountAcquisition;
+    }
+
+    public void setAccountAcquisition(final AccountAcquisition accountAcquisition) {
+        this.accountAcquisition = accountAcquisition;
+    }
+
+    public String getPreferredLocale() {
+        return preferredLocale;
+    }
+
+    public void setPreferredLocale(final Object preferredLocale) {
+        this.preferredLocale = stringOrNull(preferredLocale);
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
     }
 
     @Override
@@ -341,25 +450,34 @@ public class Account extends RecurlyObject {
         sb.append(", subscriptions=").append(subscriptions);
         sb.append(", transactions=").append(transactions);
         sb.append(", accountCode='").append(accountCode).append('\'');
+        sb.append(", parentAccountCode='").append(parentAccountCode).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append(", email='").append(email).append('\'');
+        sb.append(", ccEmails='").append(ccEmails).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", companyName='").append(companyName).append('\'');
+        sb.append(", companyName='").append(this.getCompanyName()).append('\'');
         sb.append(", acceptLanguage='").append(acceptLanguage).append('\'');
         sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", closedAt=").append(closedAt);
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
+        sb.append(", exemptionCertificate='").append(exemptionCertificate).append('\'');
         sb.append(", shippingAddresses=").append(shippingAddresses);
+        sb.append(", customFields=").append(customFields);
         sb.append(", hasLiveSubscription=").append(hasLiveSubscription);
         sb.append(", hasActiveSubscription=").append(hasActiveSubscription);
         sb.append(", hasFutureSubscription=").append(hasFutureSubscription);
         sb.append(", hasCanceledSubscription=").append(hasCanceledSubscription);
         sb.append(", hasPastDueInvoice=").append(hasPastDueInvoice);
+        sb.append(", hasPausedSubscription=").append(hasPausedSubscription);
         sb.append(", vatNumber=").append(vatNumber);
+        sb.append(", accountAcquisition=").append(accountAcquisition);
+        sb.append(", preferredLocale=").append(preferredLocale);
+        sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -374,7 +492,13 @@ public class Account extends RecurlyObject {
         if (acceptLanguage != null ? !acceptLanguage.equals(account.acceptLanguage) : account.acceptLanguage != null) {
             return false;
         }
+        if (accountAcquisition != null ? !accountAcquisition.equals(account.accountAcquisition) : account.accountAcquisition != null) {
+            return false;
+        }
         if (accountCode != null ? !accountCode.equals(account.accountCode) : account.accountCode != null) {
+            return false;
+        }
+        if (parentAccountCode != null ? !parentAccountCode.equals(account.parentAccountCode) : account.parentAccountCode != null) {
             return false;
         }
         if (address != null ? !address.equals(account.address) : account.address != null) {
@@ -386,13 +510,19 @@ public class Account extends RecurlyObject {
         if (billingInfo != null ? !billingInfo.equals(account.billingInfo) : account.billingInfo != null) {
             return false;
         }
-        if (companyName != null ? !companyName.equals(account.companyName) : account.companyName != null) {
+        if (closedAt != null ? closedAt.compareTo(account.closedAt) != 0 : account.closedAt != null) {
+            return false;
+        }
+        if (this.getCompanyName() != null ? !this.getCompanyName().equals(account.getCompanyName()) : account.getCompanyName() != null) {
             return false;
         }
         if (createdAt != null ? createdAt.compareTo(account.createdAt) != 0 : account.createdAt != null) {
             return false;
         }
         if (email != null ? !email.equals(account.email) : account.email != null) {
+            return false;
+        }
+        if (ccEmails != null ? !ccEmails.equals(account.ccEmails) : account.ccEmails != null) {
             return false;
         }
         if (firstName != null ? !firstName.equals(account.firstName) : account.firstName != null) {
@@ -410,6 +540,9 @@ public class Account extends RecurlyObject {
         if (hasCanceledSubscription != null ? !hasCanceledSubscription.equals(account.hasCanceledSubscription) : account.hasCanceledSubscription != null) {
             return false;
         }
+        if (hasPausedSubscription != null ? !hasPausedSubscription.equals(account.hasPausedSubscription) : account.hasPausedSubscription != null) {
+            return false;
+        }
         if (href != null ? !href.equals(account.href) : account.href != null) {
             return false;
         }
@@ -420,6 +553,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (lastName != null ? !lastName.equals(account.lastName) : account.lastName != null) {
+            return false;
+        }
+        if (preferredLocale != null ? !preferredLocale.equals(account.preferredLocale) : account.preferredLocale != null) {
             return false;
         }
         if (state != null ? !state.equals(account.state) : account.state != null) {
@@ -440,10 +576,19 @@ public class Account extends RecurlyObject {
         if (taxExempt != null ? !taxExempt.equals(account.taxExempt) : account.taxExempt != null) {
             return false;
         }
+        if (exemptionCertificate != null ? !exemptionCertificate.equals(account.exemptionCertificate) : account.exemptionCertificate != null) {
+            return false;
+        }
         if (shippingAddresses != null ? !shippingAddresses.equals(account.shippingAddresses) : account.shippingAddresses != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(account.customFields) : account.customFields != null) {
+            return false;
+        }
         if (vatNumber != null ? !vatNumber.equals(account.vatNumber) : account.vatNumber != null) {
+            return false;
+        }
+        if (transactionType != null ? !transactionType.equals(account.transactionType) : account.transactionType != null) {
             return false;
         }
 
@@ -454,6 +599,7 @@ public class Account extends RecurlyObject {
     public int hashCode() {
         return Objects.hashCode(
                 address,
+                parentAccountCode,
                 href,
                 adjustments,
                 invoices,
@@ -463,22 +609,30 @@ public class Account extends RecurlyObject {
                 state,
                 username,
                 email,
+                ccEmails,
                 firstName,
                 hasLiveSubscription,
                 hasActiveSubscription,
                 hasCanceledSubscription,
                 hasFutureSubscription,
                 hasPastDueInvoice,
+                hasPausedSubscription,
                 lastName,
-                companyName,
+                this.getCompanyName(),
                 acceptLanguage,
                 hostedLoginToken,
                 createdAt,
                 billingInfo,
                 updatedAt,
                 taxExempt,
+                exemptionCertificate,
                 shippingAddresses,
-                vatNumber
+                customFields,
+                vatNumber,
+                accountAcquisition,
+                preferredLocale,
+                closedAt,
+                transactionType
         );
     }
 }

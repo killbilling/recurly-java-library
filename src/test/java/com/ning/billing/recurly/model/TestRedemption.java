@@ -38,7 +38,7 @@ public class TestRedemption extends TestModelBase {
                 "  <total_discounted_in_cents type=\"integer\">100</total_discounted_in_cents>\n" +
                 "  <currency>USD</currency>\n" +
                 "  <state>active</state>\n" +
-                "  <created_at type=\"datetime\">2011-06-27T12:34:56Z</created_at>\n" +
+                "  <created_at type=\"dateTime\">2011-06-27T12:34:56Z</created_at>\n" +
                 "</redemption>";
 
         final Redemption redemption = xmlMapper.readValue(redemptionData, Redemption.class);
@@ -54,12 +54,24 @@ public class TestRedemption extends TestModelBase {
         final Redemption redemption = new Redemption();
         redemption.setAccountCode("1");
         redemption.setCurrency("USD");
+        redemption.setSubscriptionUuid("374a1c75374bd81493a3f7425db0a2b8");
 
         final String xml = xmlMapper.writeValueAsString(redemption);
         Assert.assertEquals(xml, "<redemption xmlns=\"\">" +
                 "<account_code>1</account_code>" +
+                "<subscription_uuid>374a1c75374bd81493a3f7425db0a2b8</subscription_uuid>" +
                 "<currency>USD</currency>" +
                 "</redemption>");
+
+        final Redemption redemptionWithoutUuid = new Redemption();
+        redemptionWithoutUuid.setAccountCode("1");
+        redemptionWithoutUuid.setCurrency("USD");
+
+        final String secondXml = xmlMapper.writeValueAsString(redemptionWithoutUuid);
+        Assert.assertEquals(secondXml, "<redemption xmlns=\"\">" +
+            "<account_code>1</account_code>" +
+            "<currency>USD</currency>" +
+            "</redemption>");
     }
 
     @Test(groups = "fast")

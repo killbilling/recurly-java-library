@@ -46,7 +46,7 @@ public class TestPlans extends TestModelBase {
                                  "    <trial_interval_length type=\"integer\">0</trial_interval_length>\n" +
                                  "    <trial_interval_unit>days</trial_interval_unit>\n" +
                                  "    <accounting_code nil=\"nil\"></accounting_code>\n" +
-                                 "    <created_at type=\"datetime\">2011-04-19T07:00:00Z</created_at>\n" +
+                                 "    <created_at type=\"dateTime\">2011-04-19T07:00:00Z</created_at>\n" +
                                  "    <unit_amount_in_cents>\n" +
                                  "      <USD type=\"integer\">1000</USD>\n" +
                                  "      <EUR type=\"integer\">800</EUR>\n" +

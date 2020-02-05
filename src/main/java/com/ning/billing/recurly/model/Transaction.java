@@ -33,9 +33,6 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "invoice")
     private Invoice invoice;
 
-    @XmlElement(name = "subscription")
-    private String subscription;
-
     @XmlElement(name = "uuid")
     private String uuid;
 
@@ -63,9 +60,6 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "details")
     private TransactionDetails details;
 
-    @XmlElement(name = "payment_method")
-    private String paymentMethod;
-
     @XmlElement(name = "collected_at")
     private DateTime collectedAt;
 
@@ -74,9 +68,6 @@ public class Transaction extends AbstractTransaction {
 
     @XmlElement(name = "origin")
     private String origin;
-
-    @XmlElement(name = "message")
-    private String message;
 
     @XmlElement(name = "approval_code")
     private String approvalCode;
@@ -101,14 +92,6 @@ public class Transaction extends AbstractTransaction {
 
     public void setInvoice(final Invoice invoice) {
         this.invoice = invoice;
-    }
-
-    public String getSubscription() {
-        return subscription;
-    }
-
-    public void setSubscription(final Object subscription) {
-        this.subscription = stringOrNull(subscription);
     }
 
     public String getUuid() {
@@ -177,14 +160,6 @@ public class Transaction extends AbstractTransaction {
         this.details = details;
     }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    public void setPaymentMethod(final Object paymentMethod) {
-        this.paymentMethod = stringOrNull(paymentMethod);
-    }
-
     public DateTime getCollectedAt() {
         return collectedAt;
     }
@@ -209,12 +184,6 @@ public class Transaction extends AbstractTransaction {
         this.origin = stringOrNull(origin);
     }
 
-    public String getMessage() { return this.message; }
-
-    protected void setMessage(final Object message) {
-        this.message = stringOrNull(message);
-    }
-
     public String getApprovalCode() {
         return this.approvalCode;
     }
@@ -228,7 +197,6 @@ public class Transaction extends AbstractTransaction {
         final StringBuilder sb = new StringBuilder("Transaction{");
         sb.append("account=").append(account);
         sb.append(", invoice=").append(invoice);
-        sb.append(", subscription='").append(subscription).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", currency='").append(currency).append('\'');
@@ -237,12 +205,10 @@ public class Transaction extends AbstractTransaction {
         sb.append(", productCode=").append(productCode);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", details=").append(details);
-        sb.append(", paymentMethod=").append(paymentMethod);
         sb.append(", collectedAt=").append(collectedAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", origin=").append(origin);
         sb.append(", gatewayType=").append(gatewayType);
-        sb.append(", message=").append(message);
         sb.append(", approvalCode=").append(approvalCode);
         sb.append('}');
         return sb.toString();
@@ -279,9 +245,6 @@ public class Transaction extends AbstractTransaction {
         if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
             return false;
         }
-        if (subscription != null ? !subscription.equals(that.subscription) : that.subscription != null) {
-            return false;
-        }
         if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
             return false;
         }
@@ -289,9 +252,6 @@ public class Transaction extends AbstractTransaction {
             return false;
         }
         if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
-            return false;
-        }
-        if (paymentMethod != null ? !paymentMethod.equals(that.paymentMethod) : that.paymentMethod != null) {
             return false;
         }
         if (collectedAt != null ? collectedAt.compareTo(that.collectedAt) != 0 : that.collectedAt != null) {
@@ -306,9 +266,6 @@ public class Transaction extends AbstractTransaction {
         if (gatewayType != null ? !gatewayType.equals(that.gatewayType) : that.gatewayType != null) {
             return false;
         }
-        if (message != null ? !message.equals(that.message) : that.message != null) {
-            return false;
-        }
 
         return true;
     }
@@ -318,7 +275,6 @@ public class Transaction extends AbstractTransaction {
         return Objects.hashCode(
                 account,
                 invoice,
-                subscription,
                 uuid,
                 taxInCents,
                 currency,
@@ -328,7 +284,6 @@ public class Transaction extends AbstractTransaction {
                 createdAt,
                 updatedAt,
                 details,
-                message,
                 gatewayType,
                 origin,
                 approvalCode

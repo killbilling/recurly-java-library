@@ -17,13 +17,12 @@
 
 package com.ning.billing.recurly.model;
 
+import com.google.common.base.Objects;
+import org.joda.time.DateTime;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import org.joda.time.DateTime;
-import com.google.common.base.Objects;
-
 import java.math.BigDecimal;
 
 @XmlRootElement(name = "invoice")
@@ -34,6 +33,9 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "original_invoice")
     private Invoice originalInvoice;
+
+    @XmlElement(name = "original_invoices")
+    private Invoice originalInvoices;
 
     @XmlElement(name = "uuid")
     private String uuid;
@@ -89,9 +91,6 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
-    @XmlElement(name = "subtotal_after_discount_in_cents")
-    private Integer subtotalAfterDiscountInCents;
-
     @XmlElement(name = "attempt_next_collection_at")
     private DateTime attemptNextCollectionAt;
 
@@ -105,6 +104,55 @@ public class Invoice extends RecurlyObject {
     @XmlElementWrapper(name = "transactions")
     @XmlElement(name = "transaction")
     private Transactions transactions;
+
+    @XmlElementWrapper(name = "credit_payments")
+    @XmlElement(name = "credit_payment")
+    private CreditPayments creditPayments;
+
+    @XmlElement(name = "customer_notes")
+    private String customerNotes;
+
+    @XmlElement(name = "terms_and_conditions")
+    private String termsAndConditions;
+
+    @XmlElement(name = "vat_reverse_charge_notes")
+    private String vatReverseChargeNotes;
+
+    @XmlElement(name = "gateway_code")
+    private String gatewayCode;
+
+    @XmlElement(name = "subtotal_before_discount_in_cents")
+    private Integer subtotalBeforeDiscountInCents;
+
+    @XmlElement(name = "discount_in_cents")
+    private Integer discountInCents;
+
+    @XmlElement(name = "balance_in_cents")
+    private Integer balanceInCents;
+
+    @XmlElement(name = "refundable_total_in_cents")
+    private Integer refundableTotalInCents;
+
+    @XmlElement(name = "due_on")
+    private DateTime dueOn;
+
+    @XmlElement(name = "type")
+    private String type;
+
+    @XmlElement(name = "origin")
+    private String origin;
+
+    @XmlElement(name = "address")
+    private Address address;
+
+    @XmlElement(name = "shipping_address")
+    private ShippingAddress shippingAddress;
+
+    @XmlElement(name = "surcharge_in_cents")
+    private Integer surchargeInCents;
+
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -133,6 +181,16 @@ public class Invoice extends RecurlyObject {
             originalInvoice = fetch(originalInvoice, Invoice.class);
         }
         return originalInvoice;
+    }
+
+    /**
+     * For use with RecurlyClient.getOriginalInvoices(). Check if an invoice had an <original_invoices> link
+     * in the XML from the API.
+     *
+     * @return true if there are original invoices associated with this invoice
+     */
+    public Boolean hasOriginalInvoices() {
+        return originalInvoices != null && originalInvoices.getHref() != null && !originalInvoices.getHref().isEmpty();
     }
 
     public String getId() {
@@ -289,14 +347,6 @@ public class Invoice extends RecurlyObject {
         this.netTerms = integerOrNull(netTerms);
     }
 
-    public Integer getSubtotalAfterDiscountInCents() {
-        return this.subtotalAfterDiscountInCents;
-    }
-
-    public void setSubtotalAfterDiscountInCents(final Object subtotalAfterDiscountInCents) {
-        this.subtotalAfterDiscountInCents = integerOrNull(subtotalAfterDiscountInCents);
-    }
-
     public DateTime getAttemptNextCollectionAt() {
         return this.attemptNextCollectionAt;
     }
@@ -329,11 +379,141 @@ public class Invoice extends RecurlyObject {
         this.transactions = transactions;
     }
 
+    public CreditPayments getCreditPayments() {
+        return creditPayments;
+    }
+
+    public void setCreditPayments(final CreditPayments creditPayments) {
+        this.creditPayments = creditPayments;
+    }
+
+    public String getCustomerNotes() {
+        return customerNotes;
+    }
+
+    public void setCustomerNotes(final Object customerNotes) {
+        this.customerNotes = stringOrNull(customerNotes);
+    }
+
+    public String getTermsAndConditions() {
+        return termsAndConditions;
+    }
+
+    public void setTermsAndConditions(final Object termsAndConditions) {
+        this.termsAndConditions = stringOrNull(termsAndConditions);
+    }
+
+    public String getVatReverseChargeNotes() {
+        return vatReverseChargeNotes;
+    }
+
+    public void setVatReverseChargeNotes(final Object vatReverseChargeNotes) {
+        this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
+    }
+
+    public String getGatewayCode() {
+        return gatewayCode;
+    }
+
+    public void setGatewayCode(final Object gatewayCode) {
+        this.gatewayCode = stringOrNull(gatewayCode);
+    }
+
+    public Integer getSubtotalBeforeDiscountInCents() {
+        return subtotalBeforeDiscountInCents;
+    }
+
+    public void setSubtotalBeforeDiscountInCents(final Object subtotalBeforeDiscountInCents) {
+        this.subtotalBeforeDiscountInCents = integerOrNull(subtotalBeforeDiscountInCents);
+    }
+
+    public Integer getDiscountInCents() {
+        return discountInCents;
+    }
+
+    public void setDiscountInCents(final Object discountInCents) {
+        this.discountInCents = integerOrNull(discountInCents);
+    }
+
+    public Integer getBalanceInCents() {
+        return balanceInCents;
+    }
+
+    public void setBalanceInCents(final Object balanceInCents) {
+        this.balanceInCents = integerOrNull(balanceInCents);
+    }
+
+    public Integer getRefundableTotalInCents() {
+        return refundableTotalInCents;
+    }
+
+    public void setRefundableTotalInCents(final Object refundableTotalInCents) {
+        this.refundableTotalInCents = integerOrNull(refundableTotalInCents);
+    }
+
+
+    public DateTime getDueOn() {
+        return dueOn;
+    }
+
+    public void setDueOn(final Object dueOn) {
+        this.dueOn = dateTimeOrNull(dueOn);
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(final Object type) {
+        this.type = stringOrNull(type);
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(final Object origin) {
+        this.origin = stringOrNull(origin);
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(final Address address) {
+        this.address = address;
+    }
+
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(final ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
+    public Integer getSurchargeInCents() {
+        return surchargeInCents;
+    }
+
+    public void setSurchargeInCents(final Object surchargeInCents) {
+        this.surchargeInCents = integerOrNull(surchargeInCents);
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
         sb.append("account=").append(account);
         sb.append(", originalInvoice='").append(originalInvoice).append('\'');
+        sb.append(", originalInvoices='").append(originalInvoices).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
@@ -352,11 +532,25 @@ public class Invoice extends RecurlyObject {
         sb.append(", closedAt=").append(closedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", netTerms=").append(netTerms);
-        sb.append(", subtotalAfterDiscountInCents=").append(subtotalAfterDiscountInCents);
         sb.append(", attemptNextCollectionAt=").append(attemptNextCollectionAt);
         sb.append(", recoveryReason=").append(recoveryReason);
         sb.append(", lineItems=").append(lineItems);
         sb.append(", transactions=").append(transactions);
+        sb.append(", creditPayments=").append(creditPayments);
+        sb.append(", customerNotes='").append(customerNotes).append('\'');
+        sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
+        sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
+        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
+        sb.append(", subtotalBeforeDiscountInCents=").append(subtotalBeforeDiscountInCents);
+        sb.append(", discountInCents=").append(discountInCents);
+        sb.append(", balanceInCents=").append(balanceInCents);
+        sb.append(", refundableTotalInCents=").append(refundableTotalInCents);
+        sb.append(", dueOn=").append(dueOn);
+        sb.append(", type=").append(type);
+        sb.append(", origin=").append(origin);
+        sb.append(", address=").append(address);
+        sb.append(", shippingAddress=").append(shippingAddress);
+        sb.append(", surchargeInCents=").append(surchargeInCents);
         sb.append('}');
         return sb.toString();
     }
@@ -371,10 +565,13 @@ public class Invoice extends RecurlyObject {
         if (account != null ? !account.equals(invoice.account) : invoice.account != null) {
             return false;
         }
+        if (address != null ? !address.equals(invoice.address) : invoice.address != null) {
+            return false;
+        }
         if (attemptNextCollectionAt != null ? attemptNextCollectionAt.compareTo(invoice.attemptNextCollectionAt) != 0 : invoice.attemptNextCollectionAt != null) {
             return false;
         }
-        if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
+        if (balanceInCents != null ? !balanceInCents.equals(invoice.balanceInCents) : invoice.balanceInCents != null) {
             return false;
         }
         if (closedAt != null ? closedAt.compareTo(invoice.closedAt) != 0 : invoice.closedAt != null) {
@@ -389,6 +586,12 @@ public class Invoice extends RecurlyObject {
         if (currency != null ? !currency.equals(invoice.currency) : invoice.currency != null) {
             return false;
         }
+        if (customerNotes != null ? !customerNotes.equals(invoice.customerNotes) : invoice.customerNotes != null) {
+            return false;
+        }
+        if (discountInCents != null ? !discountInCents.equals(invoice.discountInCents) : invoice.discountInCents != null) {
+            return false;
+        }
         if (invoiceNumber != null ? !invoiceNumber.equals(invoice.invoiceNumber) : invoice.invoiceNumber != null) {
             return false;
         }
@@ -401,19 +604,37 @@ public class Invoice extends RecurlyObject {
         if (netTerms != null ? !netTerms.equals(invoice.netTerms) : invoice.netTerms != null) {
             return false;
         }
+        if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
+            return false;
+        }
+        if (originalInvoices != null ? !originalInvoices.equals(invoice.originalInvoices) : invoice.originalInvoices != null) {
+            return false;
+        }
+        if (origin != null ? !origin.equals(invoice.origin) : invoice.origin != null) {
+            return false;
+        }
         if (poNumber != null ? !poNumber.equals(invoice.poNumber) : invoice.poNumber != null) {
             return false;
         }
         if (recoveryReason != null ? !recoveryReason.equals(invoice.recoveryReason) : invoice.recoveryReason != null) {
             return false;
         }
+        if (shippingAddress != null ? !shippingAddress.equals(invoice.shippingAddress) : invoice.shippingAddress != null) {
+            return false;
+        }
         if (state != null ? !state.equals(invoice.state) : invoice.state != null) {
             return false;
         }
-        if (subtotalAfterDiscountInCents != null ? !subtotalAfterDiscountInCents.equals(invoice.subtotalAfterDiscountInCents) : invoice.subtotalAfterDiscountInCents != null) {
+        if (subtotalBeforeDiscountInCents != null ? !subtotalBeforeDiscountInCents.equals(invoice.subtotalBeforeDiscountInCents) : invoice.subtotalBeforeDiscountInCents != null) {
             return false;
         }
         if (subtotalInCents != null ? !subtotalInCents.equals(invoice.subtotalInCents) : invoice.subtotalInCents != null) {
+            return false;
+        }
+        if (surchargeInCents != null ? !surchargeInCents.equals(invoice.surchargeInCents) : invoice.surchargeInCents != null) {
+            return false;
+        }
+        if (refundableTotalInCents != null ? !refundableTotalInCents.equals(invoice.refundableTotalInCents) : invoice.refundableTotalInCents != null) {
             return false;
         }
         if (taxInCents != null ? !taxInCents.equals(invoice.taxInCents) : invoice.taxInCents != null) {
@@ -423,15 +644,24 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (taxRegion != null ? !taxRegion.equals(invoice.taxRegion) : invoice.taxRegion != null) {
-          return false;
+            return false;
         }
         if (taxType != null ? !taxType.equals(invoice.taxType) : invoice.taxType != null) {
-          return false;
+            return false;
         }
         if (taxRate != null ? !taxRate.equals(invoice.taxRate) : invoice.taxRate != null) {
-          return false;
+            return false;
+        }
+        if (termsAndConditions != null ? !termsAndConditions.equals(invoice.termsAndConditions) : invoice.termsAndConditions != null) {
+            return false;
         }
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
+            return false;
+        }
+        if (creditPayments != null ? !creditPayments.equals(invoice.creditPayments) : invoice.creditPayments != null) {
+            return false;
+        }
+        if (type != null ? !type.equals(invoice.type) : invoice.type != null) {
             return false;
         }
         if (updatedAt != null ? updatedAt.compareTo(invoice.updatedAt) != 0 : invoice.updatedAt != null) {
@@ -443,6 +673,15 @@ public class Invoice extends RecurlyObject {
         if (vatNumber != null ? !vatNumber.equals(invoice.vatNumber) : invoice.vatNumber != null) {
             return false;
         }
+        if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(invoice.vatReverseChargeNotes) : invoice.vatReverseChargeNotes != null) {
+            return false;
+        }
+        if (gatewayCode != null ? !gatewayCode.equals(invoice.gatewayCode) : invoice.gatewayCode != null) {
+            return false;
+        }
+        if (transactionType != null ? !transactionType.equals(invoice.transactionType) : invoice.transactionType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -452,6 +691,7 @@ public class Invoice extends RecurlyObject {
         return Objects.hashCode(
                 account,
                 originalInvoice,
+                originalInvoices,
                 uuid,
                 state,
                 invoiceNumber,
@@ -470,11 +710,26 @@ public class Invoice extends RecurlyObject {
                 closedAt,
                 collectionMethod,
                 netTerms,
-                subtotalAfterDiscountInCents,
                 attemptNextCollectionAt,
                 recoveryReason,
                 lineItems,
-                transactions
+                transactions,
+                creditPayments,
+                customerNotes,
+                termsAndConditions,
+                vatReverseChargeNotes,
+                gatewayCode,
+                subtotalBeforeDiscountInCents,
+                discountInCents,
+                balanceInCents,
+                refundableTotalInCents,
+                type,
+                origin,
+                address,
+                shippingAddress,
+                surchargeInCents,
+                transactionType
         );
     }
+
 }
