@@ -151,7 +151,10 @@ public class RecurlyClient {
 
     /**
      * Open the underlying http client
-     */
+     *
+     * @throws NoSuchAlgorithmException throws NoSuchAlgorithmException
+     * @throws KeyManagementException throws KeyManagementException
+    */
     public synchronized void open() throws NoSuchAlgorithmException, KeyManagementException {
         client = createHttpClient();
     }
@@ -430,8 +433,8 @@ public class RecurlyClient {
      * Postpone a subscription
      * <p>
      * postpone a subscription, setting a new renewal date.
-     *
      * @param subscription Subscription object
+     * @param renewaldate DateTime renewalDate
      * @return -?-
      */
     public Subscription postponeSubscription(final Subscription subscription, final DateTime renewaldate) {
@@ -443,6 +446,7 @@ public class RecurlyClient {
      * Terminate a particular {@link Subscription} by it's UUID
      *
      * @param subscription Subscription to terminate
+     * @param refund RefundOption object
      */
     public void terminateSubscription(final Subscription subscription, final RefundOption refund) {
         doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscription.getUuid() + "/terminate?refund=" + refund,
@@ -484,6 +488,7 @@ public class RecurlyClient {
      * Returns information about a single subscription.
      *
      * @param uuid UUID of the subscription to preview an update for
+     * @param subscriptionUpdate SubscriptionUpdate object
      * @return Subscription the updated subscription preview
      */
     public Subscription updateSubscriptionPreview(final String uuid, final SubscriptionUpdate subscriptionUpdate) {
@@ -843,7 +848,6 @@ public class RecurlyClient {
 
     /**
      * Refund an invoice given an open amount
-     * <p/>
      * Returns the refunded invoice
      *
      * @param invoiceId The id of the invoice to refund
@@ -861,7 +865,6 @@ public class RecurlyClient {
 
     /**
      * Refund an invoice given some line items
-     * <p/>
      * Returns the refunded invoice
      *
      * @param invoiceId The id of the invoice to refund
@@ -911,7 +914,8 @@ public class RecurlyClient {
      * <p>
      * Returns an invoice
      *
-     * @param accountCode
+     * @param accountCode the account code
+     * @param invoice Invoice object
      * @return the invoice that was generated on success, null otherwise
      */
     public Invoice postAccountInvoice(final String accountCode, final Invoice invoice) {
@@ -924,6 +928,7 @@ public class RecurlyClient {
      * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
      *
      * @param invoiceId Recurly Invoice ID
+     * @return invoice Invoice Object
      */
     @Deprecated
     public Invoice markInvoiceSuccessful(final Integer invoiceId) {
@@ -934,6 +939,7 @@ public class RecurlyClient {
      * Mark an invoice as paid successfully - Recurly Enterprise Feature
      *
      * @param invoiceId String Recurly Invoice ID
+     * @return invoice Invoice Object
      */
     public Invoice markInvoiceSuccessful(final String invoiceId) {
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_successful", null, Invoice.class);
@@ -945,6 +951,7 @@ public class RecurlyClient {
      * @deprecated Prefer using Invoice#getId() as the id param (which is a String)
      *
      * @param invoiceId Recurly Invoice ID
+     * @return invoice Invoice Object
      */
     @Deprecated
     public Invoice markInvoiceFailed(final Integer invoiceId) {
@@ -955,6 +962,7 @@ public class RecurlyClient {
      * Mark an invoice as failed collection
      *
      * @param invoiceId String Recurly Invoice ID
+     * @return invoice Invoice Object
      */
     public Invoice markInvoiceFailed(final String invoiceId) {
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/mark_failed", null, Invoice.class);
@@ -964,6 +972,7 @@ public class RecurlyClient {
      * Force collect an invoice
      *
      * @param invoiceId String Recurly Invoice ID
+     * @return invoice Invoice Object
      */
     public Invoice forceCollectInvoice(final String invoiceId) {
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/collect", null, Invoice.class);
@@ -976,6 +985,7 @@ public class RecurlyClient {
      *
      * @param invoiceId Recurly Invoice ID
      * @param payment   The external payment
+     * @return transaction Transaction Object
      */
     @Deprecated
     public Transaction enterOfflinePayment(final Integer invoiceId, final Transaction payment) {
@@ -987,6 +997,7 @@ public class RecurlyClient {
      *
      * @param invoiceId String Recurly Invoice ID
      * @param payment   The external payment
+     * @return transaction Transaction Object
      */
     public Transaction enterOfflinePayment(final String invoiceId, final Transaction payment) {
         return doPOST(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/transactions", payment, Transaction.class);
@@ -1110,7 +1121,7 @@ public class RecurlyClient {
      * Return all the {@link AddOn} for a {@link Plan}
      * <p>
      *
-     * @param planCode
+     * @param planCode the plan code
      * @return the {@link AddOn} objects as identified by the passed plan ID
      */
     public AddOns getAddOns(final String planCode) {
@@ -1125,7 +1136,7 @@ public class RecurlyClient {
      * Return all the {@link AddOn} for a {@link Plan}
      * <p>
      *
-     * @param planCode
+     * @param planCode the plan code
      * @param params {@link QueryParams}
      * @return the {@link AddOn} objects as identified by the passed plan ID
      */
@@ -1194,6 +1205,7 @@ public class RecurlyClient {
      * Redeem a {@link Coupon} on an account.
      *
      * @param couponCode redeemed coupon id
+     * @param redemption Redemption Object
      * @return the {@link Coupon} object
      */
     public Redemption redeemCoupon(final String couponCode, final Redemption redemption) {

@@ -80,7 +80,7 @@ public abstract class Notification extends RecurlyObject {
     /**
      * Detect notification type based on the xml root name.
      *
-     * @param payload
+     * @param payload payload parameter
      * @return notification type or null if root name is not found or if there
      *         is no type corresponding to the root name
      */
