@@ -485,6 +485,40 @@ public class TestUtils {
         return plan;
     }
 
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Plan} object with trial period for testing use.
+     *
+     * @return The random {@link com.ning.billing.recurly.model.Plan} object
+     */
+
+    public static Plan createRandomTrialPlan() {
+        return createRandomTrialPlan(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Plan} object with trial period for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Plan} object
+     */
+    public static Plan createRandomTrialPlan(final int seed) {
+        final Plan plan = new Plan();
+
+        plan.setPlanCode(randomAlphaNumericString(10, seed));
+        plan.setName(randomAlphaNumericString(10, seed));
+        plan.setTrialIntervalLength(randomInteger(50, seed) + 1);
+        plan.setTrialIntervalUnit("months");
+        plan.setSetupFeeInCents(createRandomPrice());
+        plan.setUnitAmountInCents(createRandomPrice());
+        plan.setDisplayDonationAmounts(true);
+        plan.setDisplayPhoneNumber(true);
+        plan.setDisplayQuantity(true);
+        plan.setBypassHostedConfirmation(true);
+
+        return plan;
+    }
+
     /**
      * Creates a random {@link Plan} object for testing use.
      */
