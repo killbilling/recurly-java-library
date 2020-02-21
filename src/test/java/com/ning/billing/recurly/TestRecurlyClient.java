@@ -2218,8 +2218,9 @@ public class TestRecurlyClient {
             try {
                 recurlyClient.convertTrial(subscription.getUuid(), "token");
                 Assert.fail("Should throw an exception");
-            } catch (Exception ex) {
-                System.out.print(ex.getMessage());
+            } catch (RecurlyAPIException ex) {
+                final RecurlyAPIError error = ex.getRecurlyError();
+                Assert.assertEquals(error.getDescription(), "Token (billing_info.three_d_secure_action_result_token_id) is either invalid or expired");
             }
         } finally {
             // Close the account
