@@ -69,7 +69,6 @@ import com.ning.billing.recurly.model.MeasuredUnits;
 import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.ShippingMethod;
 import com.ning.billing.recurly.model.ShippingMethods;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.None;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
@@ -568,7 +567,7 @@ public class RecurlyClient {
     public Subscription convertTrialMoto(final String subscriptionUuid) {
         Subscription request = new Subscription();
         request.setTransactionType("moto");
-        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + "/convert_trial",
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscriptionUuid) + "/convert_trial",
             request, Subscription.class);
     }
 
@@ -599,7 +598,7 @@ public class RecurlyClient {
             account.setBillingInfo(billingInfo);
             request.setAccount(account);   
         }
-        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + "/convert_trial",
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscriptionUuid) + "/convert_trial",
             request, Subscription.class);
     }
 
