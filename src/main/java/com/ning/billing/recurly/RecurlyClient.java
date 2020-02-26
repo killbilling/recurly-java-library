@@ -69,7 +69,7 @@ import com.ning.billing.recurly.model.MeasuredUnits;
 import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.ShippingMethod;
 import com.ning.billing.recurly.model.ShippingMethods;
-
+import com.fasterxml.jackson.annotation.JsonTypeInfo.None;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
@@ -116,7 +116,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.24";
+    public static final String RECURLY_API_VERSION = "2.25";
 
     private static final String X_RATELIMIT_REMAINING_HEADER_NAME = "X-RateLimit-Remaining";
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
@@ -558,6 +558,49 @@ public class RecurlyClient {
         request.setRemainingPauseCycles(remainingPauseCycles);
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscriptionUuid) + "/pause",
                      request, Subscription.class);
+    }
+
+    /**
+     * Convert trial to paid subscription when TransactionType = "moto".
+     * @param subscriptionUuid The uuid for the subscription you want to convert from trial to paid.
+     * @return Subscription
+     */
+    public Subscription convertTrialMoto(final String subscriptionUuid) {
+        Subscription request = new Subscription();
+        request.setTransactionType("moto");
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + "/convert_trial",
+            request, Subscription.class);
+    }
+
+    /**
+     * Convert trial to paid subscription without 3DS token
+     * @param subscriptionUuid The uuid for the subscription you want to convert from trial to paid.
+     * @return Subscription
+     */
+    public Subscription convertTrial(final String subscriptionUuid) {
+        return convertTrial(subscriptionUuid, null);
+    }
+
+    /**
+     * Convert trial to paid subscription with 3DS token
+     * @param subscriptionUuid The uuid for the subscription you want to convert from trial to paid.
+     * @param ThreeDSecureActionResultTokenId 3DS secure action result token id in billing info.
+     * @return Subscription
+     */
+    public Subscription convertTrial(final String subscriptionUuid, final String ThreeDSecureActionResultTokenId) {
+        Subscription request;
+        if (ThreeDSecureActionResultTokenId == null) {
+            request = null;
+        } else {
+            request = new Subscription();
+            Account account = new Account();
+            BillingInfo billingInfo = new BillingInfo();
+            billingInfo.setThreeDSecureActionResultTokenId(ThreeDSecureActionResultTokenId); 
+            account.setBillingInfo(billingInfo);
+            request.setAccount(account);   
+        }
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + subscriptionUuid + "/convert_trial",
+            request, Subscription.class);
     }
 
     /**
