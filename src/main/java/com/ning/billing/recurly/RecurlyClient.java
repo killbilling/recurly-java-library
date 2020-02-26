@@ -2660,12 +2660,16 @@ public class RecurlyClient {
         return matcher.find() ? matcher.group(1) : null;
     }
 
+    /**
+     * RFC 3986 URL encoding
+     */
     private static String urlEncode(String s) {
-    	try {
-			return URLEncoder.encode(s, Charsets.UTF_8.name());
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException(e); // should not happen
-		}
+        try {
+            return URLEncoder.encode(s, Charsets.UTF_8.name())
+                    .replace("+", "%20").replace("*", "%2A").replace("%7E", "~");
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e); // should not happen
+        }
     }
 
 }
