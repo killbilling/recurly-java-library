@@ -1889,7 +1889,7 @@ public class RecurlyClient {
      * @return the coupon redemptions for this invoice on success, null otherwise
      */
     public Redemptions getCouponRedemptionsByInvoice(final String invoiceId, final QueryParams params) {
-        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + Redemption.REDEMPTION_RESOURCE,
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + Redemption.REDEMPTIONS_RESOURCE,
                 Redemptions.class, params);
     }
 
