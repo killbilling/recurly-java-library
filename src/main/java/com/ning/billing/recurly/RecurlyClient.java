@@ -1228,7 +1228,7 @@ public class RecurlyClient {
      * @return the original invoices associated with this invoice on success. Throws RecurlyAPIError if not found
      */
     public Invoices getOriginalInvoices(final String invoiceId) {
-        return doGET(Invoices.INVOICES_RESOURCE + "/" + invoiceId + "/original_invoices",
+        return doGET(Invoices.INVOICES_RESOURCE + "/" + urlEncode(invoiceId) + "/original_invoices",
                     Invoices.class, new QueryParams());
     }
 
@@ -1923,7 +1923,7 @@ public class RecurlyClient {
      * @param redemptionUuid recurly coupon redemption uuid
      */
     public void deleteCouponRedemption(final String accountCode, final String redemptionUuid) {
-        doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + urlEncode(accountCode) + Redemption.REDEMPTIONS_RESOURCE + "/" + redemptionUuid);
+        doDELETE(Accounts.ACCOUNTS_RESOURCE + "/" + urlEncode(accountCode) + Redemption.REDEMPTIONS_RESOURCE + "/" + urlEncode(redemptionUuid));
     }
 
     /**
