@@ -426,7 +426,17 @@ public class TestUtils {
         info.setMonth(createTestCCMonth());
         info.setNumber(createTestCCNumber());
         info.setVerificationValue(createTestCCVerificationNumber());
+        return info;
+    }
 
+    public static BillingInfo createRandomIbanBillingInfo() {
+        return createRandomIbanBillingInfo(randomSeed());
+    }
+
+    public static BillingInfo createRandomIbanBillingInfo(final int seed) {
+        final BillingInfo info = new BillingInfo();
+        info.setIban("FR1420041010050500013M02606");
+        info.setNameOnAccount(randomAlphaNumericString(10, seed));
         return info;
     }
 
