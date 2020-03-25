@@ -33,6 +33,9 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "name")
     private String name;
 
+    @XmlElement(name = "item_code")
+    private String itemCode;
+
     @XmlElement(name = "display_quantity_on_hosted_page")
     private Boolean displayQuantityOnHostedPage;
 
@@ -71,6 +74,14 @@ public class AddOn extends AbstractAddOn {
         this.name = stringOrNull(name);
     }
 
+    public String getItemCode() {
+        return itemCode;
+    }
+
+    public void setItemCode(final Object itemCode) {
+        this.itemCode = stringOrNull(itemCode);
+    }
+
     public Boolean getDisplayQuantityOnHostedPage() {
         return displayQuantityOnHostedPage;
     }
@@ -91,8 +102,8 @@ public class AddOn extends AbstractAddOn {
         return unitAmountInCents;
     }
 
-    public void setUnitAmountInCents(final RecurlyUnitCurrency unitAmountInCents) {
-        this.unitAmountInCents = unitAmountInCents;
+    public void setUnitAmountInCents(final Object unitAmountInCents) {
+        this.unitAmountInCents = RecurlyUnitCurrency.build(unitAmountInCents);
     }
 
     public DateTime getCreatedAt() {
@@ -158,6 +169,7 @@ public class AddOn extends AbstractAddOn {
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
         sb.append("name='").append(name).append('\'');
+        sb.append(", itemCode='").append(itemCode).append('\'');
         sb.append(", measuredUnit='").append(measuredUnit).append('\'');
         sb.append(", addOnType='").append(addOnType).append('\'');
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
@@ -212,6 +224,9 @@ public class AddOn extends AbstractAddOn {
         if (optional != null ? !optional.equals(addOn.optional) : addOn.optional != null) {
             return false;
         }
+        if (itemCode != null ? !itemCode.equals(addOn.itemCode) : addOn.itemCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -220,6 +235,7 @@ public class AddOn extends AbstractAddOn {
     public int hashCode() {
         return Objects.hashCode(
                 name,
+                itemCode,
                 measuredUnit,
                 addOnType,
                 displayQuantityOnHostedPage,
