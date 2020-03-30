@@ -58,6 +58,8 @@ import com.ning.billing.recurly.model.SubscriptionState;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
+import com.ning.billing.recurly.model.Tier;
+import com.ning.billing.recurly.model.Tiers;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.TransactionState;
 import com.ning.billing.recurly.model.TransactionType;

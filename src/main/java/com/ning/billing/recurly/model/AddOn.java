@@ -21,6 +21,7 @@ import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -62,6 +63,13 @@ public class AddOn extends AbstractAddOn {
 
     @XmlElement(name = "optional")
     private Boolean optional;
+
+    @XmlElement(name = "tier_type")
+    private String tierType;
+
+    @XmlElementWrapper(name = "tiers")
+    @XmlElement(name = "tier")
+    protected Tiers tiers;
 
     public String getName() {
         return name;
@@ -154,6 +162,22 @@ public class AddOn extends AbstractAddOn {
         this.optional = booleanOrNull(optional);
     }
 
+    public String getTierType() {
+        return tierType;
+    }
+
+    public void setTierType(final Object tierType) {
+        this.tierType = stringOrNull(tierType);
+    }
+
+    public Tiers getTiers() {
+        return tiers;
+    }
+
+    public void setTiers(final Tiers tiers) {
+        this.tiers = tiers;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
@@ -168,6 +192,8 @@ public class AddOn extends AbstractAddOn {
         sb.append(", taxCode=").append(taxCode);
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", optional=").append(optional);
+        sb.append(", tierType=").append(tierType);
+        sb.append(", tiers=").append(tiers);
         sb.append('}');
         return sb.toString();
     }
@@ -213,6 +239,14 @@ public class AddOn extends AbstractAddOn {
             return false;
         }
 
+        if (tierType != null ? !tierType.equals(addOn.tierType) : addOn.tierType != null) {
+            return false;
+        }
+
+        if (tiers != null ? !tiers.equals(addOn.tiers) : addOn.tiers != null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -229,7 +263,9 @@ public class AddOn extends AbstractAddOn {
                 updatedAt,
                 taxCode,
                 accountingCode,
-                optional
+                optional,
+                tierType,
+                tiers
         );
     }
 }
