@@ -142,6 +142,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "transaction_type")
     private String transactionType;
 
+    @XmlElement(name = "iban")
+    private String iban;
+
     public String getType() {
         return type;
     }
@@ -453,6 +456,14 @@ public class BillingInfo extends RecurlyObject {
         this.transactionType = stringOrNull(transactionType);
     }
 
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(final Object iban) {
+        this.iban = stringOrNull(iban);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -497,6 +508,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
+        sb.append(", iban='").append(iban).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -610,6 +622,9 @@ public class BillingInfo extends RecurlyObject {
         if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
             return false;
         }
+        if(iban != null ? !iban.equals(that.iban) : that.iban != null) {
+            return false;
+        }
 
         return true;
     }
@@ -650,7 +665,8 @@ public class BillingInfo extends RecurlyObject {
                 amazonBillingAgreementId,
                 amazonRegion,
                 threeDSecureActionResultTokenId,
-                transactionType
+                transactionType,
+                iban
         );
     }
 }
