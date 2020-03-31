@@ -46,6 +46,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "last_name")
     private String lastName;
 
+    @XmlElement(name = "mandate_reference")
+    private String mandateReference;
+
     @XmlElement(name = "company")
     private String company;
 
@@ -198,6 +201,14 @@ public class BillingInfo extends RecurlyObject {
 
     public void setLastName(final Object lastName) {
         this.lastName = stringOrNull(lastName);
+    }
+
+    public String getMandateReference() {
+        return mandateReference;
+    }
+
+    public void setMandateReference(final Object mandateReference) {
+        this.mandateReference = stringOrNull(mandateReference);
     }
 
     public String getCompany() {
@@ -482,6 +493,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", mandateReference='").append(mandateReference).append('\'');
         sb.append(", company='").append(company).append('\'');
         sb.append(", address1='").append(address1).append('\'');
         sb.append(", address2='").append(address2).append('\'');
@@ -545,6 +557,9 @@ public class BillingInfo extends RecurlyObject {
             return false;
         }
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
+            return false;
+        }
+        if (mandateReference != null ? !mandateReference.equals(that.mandateReference) : that.mandateReference != null) {
             return false;
         }
         if (firstSix != null ? !firstSix.equals(that.firstSix) : that.firstSix != null) {
@@ -636,6 +651,7 @@ public class BillingInfo extends RecurlyObject {
                 nameOnAccount,
                 firstName,
                 lastName,
+                mandateReference,
                 company,
                 address1,
                 address2,
