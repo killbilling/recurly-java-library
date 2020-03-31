@@ -41,6 +41,8 @@ import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOn;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
+import com.ning.billing.recurly.model.Tier;
+import com.ning.billing.recurly.model.Tiers;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
@@ -426,7 +428,17 @@ public class TestUtils {
         info.setMonth(createTestCCMonth());
         info.setNumber(createTestCCNumber());
         info.setVerificationValue(createTestCCVerificationNumber());
+        return info;
+    }
 
+    public static BillingInfo createRandomIbanBillingInfo() {
+        return createRandomIbanBillingInfo(randomSeed());
+    }
+
+    public static BillingInfo createRandomIbanBillingInfo(final int seed) {
+        final BillingInfo info = new BillingInfo();
+        info.setIban("FR1420041010050500013M02606");
+        info.setNameOnAccount(randomAlphaNumericString(10, seed));
         return info;
     }
 
@@ -729,6 +741,84 @@ public class TestUtils {
         addOn.setUnitAmountInCents(createRandomPrice());
         addOn.setDefaultQuantity(5);
         addOn.setDisplayQuantityOnHostedPage(false);
+
+        return addOn;
+    }
+
+
+        /**
+     * Creates a random tiered {@link AddOn} for use in Tests.
+     *
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomTieredAddOn() {
+        final AddOn addOn = new AddOn();
+
+        addOn.setAddOnCode(randomAlphaNumericString(10));
+        addOn.setName(randomAlphaNumericString(10));
+        addOn.setTierType("tiered");
+
+        final RecurlyUnitCurrency price = new RecurlyUnitCurrency();
+        final Tiers tiers = new Tiers();
+
+        final Tier tierData = new Tier();
+        price.setUnitAmountUSD(100);
+        tierData.setUnitAmountInCents(price);
+        tierData.setEndingQuantity(20);
+        tiers.add(tierData);
+
+        final Tier tierData2 = new Tier();
+        price.setUnitAmountUSD(75);
+        tierData2.setUnitAmountInCents(price);
+        tiers.add(tierData2);
+
+        addOn.setTiers(tiers);
+        return addOn;
+    }
+
+        /**
+     * Creates a random tiered {@link AddOn} for use in Tests given a seed.
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomAddOnTiered(final int seed) {
+        final AddOn addOn = new AddOn();
+
+        addOn.setAddOnCode(randomAlphaNumericString(10, seed));
+        addOn.setName(randomAlphaNumericString(10, seed));
+        addOn.setTierType("tiered");
+
+        final RecurlyUnitCurrency price = new RecurlyUnitCurrency();
+        final Tiers tiers = new Tiers();
+
+        final Tier tierData = new Tier();
+        price.setUnitAmountUSD(100);
+        tierData.setUnitAmountInCents(price);
+        tierData.setEndingQuantity(20);
+        tiers.add(tierData);
+
+        final Tier tierData2 = new Tier();
+        price.setUnitAmountUSD(75);
+        tierData2.setUnitAmountInCents(price);
+        tiers.add(tierData2);
+
+        addOn.setTiers(tiers);
+        return addOn;
+    }
+
+
+    /**
+     * Creates a random item-backed {@link AddOn} for use in Tests given a seed.
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomItemBackedAddOn(final int seed) {
+        final AddOn addOn = new AddOn();
+
+        addOn.setItemCode(randomAlphaNumericString(10, seed));
+        addOn.setUnitAmountInCents(createRandomPrice());
 
         return addOn;
     }

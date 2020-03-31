@@ -596,6 +596,20 @@ public class TestRecurlyClient {
     }
 
     @Test(groups = "integration")
+    public void testCreateAccountIbanBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomIbanBillingInfo();
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            billingInfoData.setAccount(account);
+            recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.fail("Should have thrown transaction exception");
+        } catch(TransactionErrorException e) {
+            Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "no_gateway");
+        }
+    }
+
+    @Test(groups = "integration")
     public void testGetAccountBalance() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();

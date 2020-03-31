@@ -46,6 +46,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "last_name")
     private String lastName;
 
+    @XmlElement(name = "mandate_reference")
+    private String mandateReference;
+
     @XmlElement(name = "company")
     private String company;
 
@@ -142,6 +145,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "transaction_type")
     private String transactionType;
 
+    @XmlElement(name = "iban")
+    private String iban;
+
     public String getType() {
         return type;
     }
@@ -195,6 +201,14 @@ public class BillingInfo extends RecurlyObject {
 
     public void setLastName(final Object lastName) {
         this.lastName = stringOrNull(lastName);
+    }
+
+    public String getMandateReference() {
+        return mandateReference;
+    }
+
+    public void setMandateReference(final Object mandateReference) {
+        this.mandateReference = stringOrNull(mandateReference);
     }
 
     public String getCompany() {
@@ -453,6 +467,14 @@ public class BillingInfo extends RecurlyObject {
         this.transactionType = stringOrNull(transactionType);
     }
 
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(final Object iban) {
+        this.iban = stringOrNull(iban);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -471,6 +493,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", mandateReference='").append(mandateReference).append('\'');
         sb.append(", company='").append(company).append('\'');
         sb.append(", address1='").append(address1).append('\'');
         sb.append(", address2='").append(address2).append('\'');
@@ -497,6 +520,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
+        sb.append(", iban='").append(iban).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -533,6 +557,9 @@ public class BillingInfo extends RecurlyObject {
             return false;
         }
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
+            return false;
+        }
+        if (mandateReference != null ? !mandateReference.equals(that.mandateReference) : that.mandateReference != null) {
             return false;
         }
         if (firstSix != null ? !firstSix.equals(that.firstSix) : that.firstSix != null) {
@@ -610,6 +637,9 @@ public class BillingInfo extends RecurlyObject {
         if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
             return false;
         }
+        if(iban != null ? !iban.equals(that.iban) : that.iban != null) {
+            return false;
+        }
 
         return true;
     }
@@ -621,6 +651,7 @@ public class BillingInfo extends RecurlyObject {
                 nameOnAccount,
                 firstName,
                 lastName,
+                mandateReference,
                 company,
                 address1,
                 address2,
@@ -650,7 +681,8 @@ public class BillingInfo extends RecurlyObject {
                 amazonBillingAgreementId,
                 amazonRegion,
                 threeDSecureActionResultTokenId,
-                transactionType
+                transactionType,
+                iban
         );
     }
 }
