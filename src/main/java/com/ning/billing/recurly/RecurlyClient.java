@@ -2669,7 +2669,7 @@ public class RecurlyClient {
     private static String urlEncode(String s) {
         try {
             return URLEncoder.encode(s, Charsets.UTF_8.name())
-                    .replace("+", "%20").replace("*", "%2A").replace("%7E", "~");
+                    .replace("+", "%20").replace("*", "%2A");
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e); // should not happen
         }
