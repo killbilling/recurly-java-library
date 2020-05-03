@@ -2663,7 +2663,7 @@ public class RecurlyClient {
     }
 
     /**
-     * RFC 3986 URL encoding. The vanilla {@link URLEncoder} does not work since
+     * (Not quite) RFC 3986 URL encoding. The vanilla {@link URLEncoder} does not work since
      * Recurly does not decode '+' back to ' '.
      */
     private static String urlEncode(String s) {
