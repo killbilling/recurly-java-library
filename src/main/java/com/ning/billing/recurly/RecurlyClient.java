@@ -1776,6 +1776,19 @@ public class RecurlyClient {
         doDELETE(Coupon.COUPON_RESOURCE + "/" + urlEncode(couponCode));
     }
 
+    /**
+     * Restore a {@link Coupon}
+     * <p>
+     *
+     * @param couponCode The code for the {@link Coupon}
+     * @return
+     */
+    public Coupon restoreCoupon(final String couponCode) {
+        final Coupon coupon = new Coupon(); // This is required
+        return doPUT(Coupon.COUPON_RESOURCE + "/" + urlEncode(couponCode) + Coupon.RESTORE_RESOURCE,
+                coupon, Coupon.class);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
 
     /**
