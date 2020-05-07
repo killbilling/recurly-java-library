@@ -1777,10 +1777,10 @@ public class RecurlyClient {
     }
 
     /**
-     * Restore a {@link Coupon}
+     * Restore a {@link Coupon} by the coupon code
      * <p>
      *
-     * @param couponCode The code for the {@link Coupon}
+     * @param couponCode The coupon code to restore
      * @return
      */
     public Coupon restoreCoupon(final String couponCode) {
