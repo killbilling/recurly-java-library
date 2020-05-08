@@ -1776,6 +1776,19 @@ public class RecurlyClient {
         doDELETE(Coupon.COUPON_RESOURCE + "/" + urlEncode(couponCode));
     }
 
+    /**
+     * Restore a {@link Coupon} by the coupon code and potentially update its editable fields
+     * <p>
+     *
+     * @param couponCode The coupon code to restore
+     * @param coupon A {@link Coupon} containing fields to update
+     * @return
+     */
+    public Coupon restoreCoupon(final String couponCode, final Coupon coupon) {
+        return doPUT(Coupon.COUPON_RESOURCE + "/" + urlEncode(couponCode) + Coupon.RESTORE_RESOURCE,
+                coupon, Coupon.class);
+    }
+
     ///////////////////////////////////////////////////////////////////////////
 
     /**
