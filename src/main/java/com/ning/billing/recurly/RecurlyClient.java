@@ -200,24 +200,13 @@ public class RecurlyClient {
 
     /**
      * Open the underlying http client
-     * If you are supplying your own http client, do not call this method.
      */
     public synchronized void open() throws NoSuchAlgorithmException, KeyManagementException {
         client = createHttpClient();
     }
 
     /**
-     * Set the underlying http client with your custom client. This allows the creation of
-     * "lightweight" {@link RecurlyClient}s where each can have its own apiKey, etc.
-     * If {@link #open()} had already been called, do not call this method.
-     */
-    public synchronized void open(CloseableHttpClient client) {
-        this.client = client;
-    }
-
-    /**
      * Close the underlying http client
-     * If you are supplying your own http client, do not call this method.
      */
     public synchronized void close() {
         if (client != null) {
