@@ -2617,6 +2617,16 @@ public class RecurlyClient {
         return entityString == null ? "" : entityString;
     }
 
+    private void closeResponse(final CloseableHttpResponse response) {
+        if (response != null) {
+            try {
+                response.close();
+            } catch (IOException e) {
+                log.warn("Failed to close {}: {}", response.getClass().getSimpleName(), e.getLocalizedMessage());
+            }
+        }
+    }
+
     protected CloseableHttpClient createHttpClient() throws KeyManagementException, NoSuchAlgorithmException {
         // Don't limit the number of connections per host
         // See https://github.com/ning/async-http-client/issues/issue/28
@@ -2633,16 +2643,6 @@ public class RecurlyClient {
                         .setConnectTimeout(5000).setSocketTimeout(60000).build())
                 .setSSLContext(SslUtils.getInstance().getSSLContext());
         return httpClientBuilder.build();
-    }
-
-    private void closeResponse(final CloseableHttpResponse response) {
-        if (response != null) {
-            try {
-                response.close();
-            } catch (IOException e) {
-                log.warn("Failed to close {}: {}", response.getClass().getSimpleName(), e.getLocalizedMessage());
-            }
-        }
     }
 
     private void validateHost(URI uri) {
