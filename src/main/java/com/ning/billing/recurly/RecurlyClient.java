@@ -68,7 +68,6 @@ import com.ning.billing.recurly.model.MeasuredUnits;
 import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.ShippingMethod;
 import com.ning.billing.recurly.model.ShippingMethods;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.base.MoreObjects;
@@ -164,7 +163,6 @@ public class RecurlyClient {
         }
     }
 
-    private static final XmlMapper xmlMapper = RecurlyObject.newXmlMapper();
     private final String userAgent;
 
     private final String key;
@@ -2391,7 +2389,7 @@ public class RecurlyClient {
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {
         final String xmlPayload;
         try {
-            xmlPayload = xmlMapper.writeValueAsString(payload);
+            xmlPayload = RecurlyObject.sharedXmlMapper().writeValueAsString(payload);
             if (debug()) {
                 log.info("Msg to Recurly API [POST]:: URL : {}", baseUrl + resource);
                 log.info("Payload for [POST]:: {}", xmlPayload);
@@ -2417,7 +2415,7 @@ public class RecurlyClient {
         final String xmlPayload;
         try {
             if (payload != null) {
-                xmlPayload = xmlMapper.writeValueAsString(payload);
+                xmlPayload = RecurlyObject.sharedXmlMapper().writeValueAsString(payload);
             } else {
                 xmlPayload = null;
             }
@@ -2516,7 +2514,7 @@ public class RecurlyClient {
                     // as well as bad input payloads
                     final Errors errors;
                     try {
-                        errors = xmlMapper.readValue(payload, Errors.class);
+                        errors = RecurlyObject.sharedXmlMapper().readValue(payload, Errors.class);
                     } catch (Exception e) {
                         log.warn("Unable to extract error", e);
                         return null;
@@ -2529,7 +2527,7 @@ public class RecurlyClient {
                         errors.getTransaction() == null &&
                         errors.getTransactionError() == null
                     )) {
-                        recurlyError = RecurlyAPIError.buildFromXml(xmlMapper, payload, response);
+                        recurlyError = RecurlyAPIError.buildFromXml(RecurlyObject.sharedXmlMapper(), payload, response);
                         throw new RecurlyAPIException(recurlyError);
                     }
                     throw new TransactionErrorException(errors);
@@ -2540,7 +2538,7 @@ public class RecurlyClient {
                     throw new RecurlyAPIException(recurlyError);
                 } else {
                     try {
-                        recurlyError = RecurlyAPIError.buildFromXml(xmlMapper, payload, response);
+                        recurlyError = RecurlyAPIError.buildFromXml(RecurlyObject.sharedXmlMapper(), payload, response);
                     } catch (Exception e) {
                         log.debug("Unable to extract error", e);
                     }
@@ -2564,7 +2562,7 @@ public class RecurlyClient {
                 return castResult;
             }
 
-            final T obj = xmlMapper.readValue(payload, clazz);
+            final T obj = RecurlyObject.sharedXmlMapper().readValue(payload, clazz);
             if (obj instanceof RecurlyObject) {
                 ((RecurlyObject) obj).setRecurlyClient(this);
             } else if (obj instanceof RecurlyObjects) {

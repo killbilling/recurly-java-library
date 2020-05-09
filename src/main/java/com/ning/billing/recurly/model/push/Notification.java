@@ -113,8 +113,7 @@ public abstract class Notification extends RecurlyObject {
 
     public static <T> T read(final String payload, final Class<T> clazz) {
         try {
-            // TODO Should we cache the mapper?
-            return RecurlyObject.newXmlMapper().readValue(payload, clazz);
+            return RecurlyObject.sharedXmlMapper().readValue(payload, clazz);
         } catch (IOException e) {
             log.warn("Enable to read notification, de-serialization failed : {}", e.getMessage());
             return null;
