@@ -585,11 +585,7 @@ public class TestRecurlyClient {
             Account getAccount = recurlyClient.getAccount(updateAccount.getAccountCode());
             Assert.assertEquals(getAccount.getCustomFields().size(), 1);
             Assert.assertEquals(getAccount.getCustomFields().get(0).getValue(), "update this value");
-
-        } catch(Exception e) {
-          System.out.print(e.getMessage());
         } finally {
-
             // Clean up
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
@@ -649,8 +645,6 @@ public class TestRecurlyClient {
             final Item item = recurlyClient.createItem(itemData);
             Assert.assertNotNull(item);
             Assert.assertTrue(recurlyClient.getItems().size() > 0);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         } finally {
             // Delete the item
             recurlyClient.deleteItem(itemData.getItemCode());
@@ -688,8 +682,6 @@ public class TestRecurlyClient {
             Assert.assertEquals(updatedItem.getName(), "A new name");
             Assert.assertEquals(updatedItem.getDescription(), "A new description");
             // Assert.assertEquals(updatedItem.getCustomFields(), itemChanges.getCustomFields());
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         } finally {
             // Delete the item
             recurlyClient.deleteItem(itemData.getItemCode());
@@ -713,8 +705,6 @@ public class TestRecurlyClient {
             recurlyClient.reactivateItem(item.getItemCode());
             final Item reactivatedItem = recurlyClient.getItem(item.getItemCode());
             Assert.assertEquals(reactivatedItem.getState(), "active");
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
         } finally {
             // Delete the item
             recurlyClient.deleteItem(itemData.getItemCode());
