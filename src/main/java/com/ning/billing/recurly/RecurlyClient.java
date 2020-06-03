@@ -641,8 +641,10 @@ public class RecurlyClient {
      * @return Subscription
      */
     public Subscription postponeSubscription(final Subscription subscription, final DateTime renewaldate) {
-        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscription.getUuid()) + "/postpone?next_renewal_date=" + renewaldate,
-                     subscription, Subscription.class);
+        final QueryParams params = new QueryParams();
+        params.put("next_renewal_date", renewaldate.toString());
+        return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscription.getUuid()) + "/postpone",
+                     subscription, Subscription.class, params);
     }
 
     /**
@@ -651,8 +653,10 @@ public class RecurlyClient {
      * @param subscription Subscription to terminate
      */
     public void terminateSubscription(final Subscription subscription, final RefundOption refund) {
-        doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscription.getUuid()) + "/terminate?refund=" + refund,
-              subscription, Subscription.class);
+        final QueryParams params = new QueryParams();
+        params.put("refund", refund.toString());
+        doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscription.getUuid()) + "/terminate",
+              subscription, Subscription.class, params);
     }
 
     /**
