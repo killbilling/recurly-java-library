@@ -183,6 +183,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "current_term_ends_at")
     private DateTime currentTermEndsAt;
 
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
+
     public Account getAccount() {
         if (account != null && account.getHref() != null && !account.getHref().isEmpty()) {
             account = fetch(account, Account.class);
@@ -580,6 +583,14 @@ public class Subscription extends AbstractSubscription {
         this.currentTermEndsAt = dateTimeOrNull(currentTermEndsAt);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -632,6 +643,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", nextBillDate=").append(nextBillDate);
         sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
         sb.append(", currentPeriodEndsAt=").append(currentPeriodEndsAt);
+        sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -790,7 +802,9 @@ public class Subscription extends AbstractSubscription {
         if (currentPeriodEndsAt != null ? currentPeriodEndsAt.compareTo(that.currentPeriodEndsAt) != 0 : that.currentPeriodEndsAt != null) {
             return false;
         }
-
+        if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -845,7 +859,8 @@ public class Subscription extends AbstractSubscription {
                 firstBillDate,
                 nextBillDate,
                 currentPeriodStartedAt,
-                currentPeriodEndsAt
+                currentPeriodEndsAt,
+                transactionType
         );
     }
 

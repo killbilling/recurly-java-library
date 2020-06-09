@@ -94,6 +94,12 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "product_code")
     private String productCode;
 
+    @XmlElement(name = "item_code")
+    private String itemCode;
+
+    @XmlElement(name = "external_sku")
+    private String externalSku;
+
     @XmlElement(name = "start_date")
     private DateTime startDate;
 
@@ -129,6 +135,9 @@ public class Adjustment extends RecurlyObject {
 
     @XmlElement(name = "proration_rate")
     private BigDecimal prorationRate;
+
+    @XmlElement(name = "surcharge_in_cents")
+    private Integer surchargeInCents;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -301,6 +310,14 @@ public class Adjustment extends RecurlyObject {
 
     public void setProductCode(final Object productCode) { this.productCode = stringOrNull(productCode); }
 
+    public String getItemCode() { return itemCode; }
+
+    public void setItemCode(final Object itemCode) { this.itemCode = stringOrNull(itemCode); }
+
+    public String getExternalSku() { return externalSku; }
+
+    public void setExternalSku(final Object externalSku) { this.externalSku = stringOrNull(externalSku); }
+
     public DateTime getStartDate() {
         return startDate;
     }
@@ -405,6 +422,14 @@ public class Adjustment extends RecurlyObject {
         this.prorationRate = bigDecimalOrNull(prorationRate);
     }
 
+    public Integer getSurchargeInCents() {
+        return surchargeInCents;
+    }
+
+    public void setSurchargeInCents(final Object surchargeInCents) {
+        this.surchargeInCents = integerOrNull(surchargeInCents);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -429,6 +454,8 @@ public class Adjustment extends RecurlyObject {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", taxable=").append(taxable);
         sb.append(", productCode=").append(productCode);
+        sb.append(", itemCode=").append(itemCode);
+        sb.append(", externalSku=").append(externalSku);
         sb.append(", startDate=").append(startDate);
         sb.append(", endDate=").append(endDate);
         sb.append(", createdAt=").append(createdAt);
@@ -441,6 +468,7 @@ public class Adjustment extends RecurlyObject {
         sb.append(", refundableTotalInCents=").append(refundableTotalInCents);
         sb.append(", state=").append(state);
         sb.append(", prorationRate=").append(prorationRate);
+        sb.append(", surchargeInCents=").append(surchargeInCents);
         sb.append('}');
         return sb.toString();
     }
@@ -485,6 +513,12 @@ public class Adjustment extends RecurlyObject {
         if (productCode != null ? !productCode.equals(that.productCode) : that.productCode != null) {
             return false;
         }
+        if (itemCode != null ? !itemCode.equals(that.itemCode) : that.itemCode != null) {
+            return false;
+        }
+        if (externalSku != null ? !externalSku.equals(that.externalSku) : that.externalSku != null) {
+            return false;
+        }
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
             return false;
         }
@@ -495,6 +529,9 @@ public class Adjustment extends RecurlyObject {
             return false;
         }
         if (startDate != null ? !startDate.equals(that.startDate) : that.startDate != null) {
+            return false;
+        }
+        if (surchargeInCents != null ? !surchargeInCents.equals(that.surchargeInCents) : that.surchargeInCents != null) {
             return false;
         }
         if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
@@ -563,6 +600,8 @@ public class Adjustment extends RecurlyObject {
                 unitAmountInCents,
                 quantity,
                 productCode,
+                itemCode,
+                externalSku,
                 discountInCents,
                 taxInCents,
                 totalInCents,
@@ -585,7 +624,8 @@ public class Adjustment extends RecurlyObject {
                 shippingAddressId,
                 refundableTotalInCents,
                 state,
-                prorationRate
+                prorationRate,
+                surchargeInCents
         );
     }
 

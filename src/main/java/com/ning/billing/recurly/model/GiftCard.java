@@ -41,11 +41,20 @@ public class GiftCard extends RecurlyObject {
     @XmlElement(name = "redemption_code")
     private String redemptionCode;
 
+    @XmlElement(name = "gifter_account_code")
+    private String gifterAccountCode;
+
+    @XmlElement(name = "recipient_account_code")
+    private String recipientAccountCode;
+
     @XmlElement(name = "unit_amount_in_cents")
     private Integer unitAmountInCents;
 
     @XmlElement(name = "balance_in_cents")
     private Integer balanceInCents;
+
+    @XmlElement(name = "invoice_number")
+    private Integer invoiceNumber;
 
     @XmlElement(name = "gifter_account")
     private Account gifterAccount;
@@ -90,6 +99,22 @@ public class GiftCard extends RecurlyObject {
         this.redemptionCode = stringOrNull(redemptionCode);
     }
 
+    public String getGifterAccountCode() {
+        return gifterAccountCode;
+    }
+
+    public void setGifterAccountCode(final Object gifterAccountCode) {
+        this.gifterAccountCode = stringOrNull(gifterAccountCode);
+    }
+
+    public String getRecipientAccountCode() {
+        return recipientAccountCode;
+    }
+
+    public void setRecipientAccountCode(final Object recipientAccountCode) {
+        this.recipientAccountCode = stringOrNull(recipientAccountCode);
+    }
+
     public String getCurrency() {
         return currency;
     }
@@ -120,6 +145,14 @@ public class GiftCard extends RecurlyObject {
 
     public void setBalanceInCents(final Object balanceInCents) {
         this.balanceInCents = integerOrNull(balanceInCents);
+    }
+
+    public Integer getInvoiceNumber() {
+        return invoiceNumber;
+    }
+
+    public void setInvoiceNumber(final Object invoiceNumber) {
+        this.invoiceNumber = integerOrNull(invoiceNumber);
     }
 
     public DateTime getCreatedAt() {
@@ -198,8 +231,11 @@ public class GiftCard extends RecurlyObject {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", id='").append(id).append('\'');
         sb.append(", redemptionCode='").append(redemptionCode).append('\'');
+        sb.append(", gifterAccountCode='").append(gifterAccountCode).append('\'');
+        sb.append(", recipientAccountCode='").append(recipientAccountCode).append('\'');
         sb.append(", unitAmountInCents='").append(unitAmountInCents).append('\'');
         sb.append(", balanceInCents='").append(balanceInCents).append('\'');
+        sb.append(", invoiceNumber='").append(invoiceNumber).append('\'');
         sb.append(", gifterAccount='").append(gifterAccount).append('\'');
         sb.append(", delivery='").append(delivery).append('\'');
         sb.append(", createdAt='").append(createdAt).append('\'');
@@ -229,10 +265,19 @@ public class GiftCard extends RecurlyObject {
         if (redemptionCode != null ? !redemptionCode.equals(that.redemptionCode) : that.redemptionCode != null) {
             return false;
         }
+        if (gifterAccountCode != null ? !gifterAccountCode.equals(that.gifterAccountCode) : that.gifterAccountCode != null) {
+            return false;
+        }
+        if (recipientAccountCode != null ? !recipientAccountCode.equals(that.recipientAccountCode) : that.recipientAccountCode != null) {
+            return false;
+        }
         if (unitAmountInCents != null ? !unitAmountInCents.equals(that.unitAmountInCents) : that.unitAmountInCents != null) {
             return false;
         }
         if (balanceInCents != null ? !balanceInCents.equals(that.balanceInCents) : that.balanceInCents != null) {
+            return false;
+        }
+        if (invoiceNumber != null ? !invoiceNumber.equals(that.invoiceNumber) : that.invoiceNumber != null) {
             return false;
         }
         if (gifterAccount != null ? !gifterAccount.equals(that.gifterAccount) : that.gifterAccount != null) {
@@ -264,8 +309,11 @@ public class GiftCard extends RecurlyObject {
             currency,
             id,
             redemptionCode,
+            gifterAccountCode,
+            recipientAccountCode,
             unitAmountInCents,
             balanceInCents,
+            invoiceNumber,
             gifterAccount,
             delivery,
             createdAt,

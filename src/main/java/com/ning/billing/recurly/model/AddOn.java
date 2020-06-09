@@ -21,6 +21,7 @@ import com.google.common.base.Objects;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -32,6 +33,9 @@ public class AddOn extends AbstractAddOn {
 
     @XmlElement(name = "name")
     private String name;
+
+    @XmlElement(name = "item_code")
+    private String itemCode;
 
     @XmlElement(name = "display_quantity_on_hosted_page")
     private Boolean displayQuantityOnHostedPage;
@@ -63,12 +67,27 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "optional")
     private Boolean optional;
 
+    @XmlElement(name = "tier_type")
+    private String tierType;
+
+    @XmlElementWrapper(name = "tiers")
+    @XmlElement(name = "tier")
+    protected Tiers tiers;
+
     public String getName() {
         return name;
     }
 
     public void setName(final Object name) {
         this.name = stringOrNull(name);
+    }
+
+    public String getItemCode() {
+        return itemCode;
+    }
+
+    public void setItemCode(final Object itemCode) {
+        this.itemCode = stringOrNull(itemCode);
     }
 
     public Boolean getDisplayQuantityOnHostedPage() {
@@ -91,8 +110,8 @@ public class AddOn extends AbstractAddOn {
         return unitAmountInCents;
     }
 
-    public void setUnitAmountInCents(final RecurlyUnitCurrency unitAmountInCents) {
-        this.unitAmountInCents = unitAmountInCents;
+    public void setUnitAmountInCents(final Object unitAmountInCents) {
+        this.unitAmountInCents = RecurlyUnitCurrency.build(unitAmountInCents);
     }
 
     public DateTime getCreatedAt() {
@@ -154,10 +173,27 @@ public class AddOn extends AbstractAddOn {
         this.optional = booleanOrNull(optional);
     }
 
+    public String getTierType() {
+        return tierType;
+    }
+
+    public void setTierType(final Object tierType) {
+        this.tierType = stringOrNull(tierType);
+    }
+
+    public Tiers getTiers() {
+        return tiers;
+    }
+
+    public void setTiers(final Tiers tiers) {
+        this.tiers = tiers;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
         sb.append("name='").append(name).append('\'');
+        sb.append(", itemCode='").append(itemCode).append('\'');
         sb.append(", measuredUnit='").append(measuredUnit).append('\'');
         sb.append(", addOnType='").append(addOnType).append('\'');
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
@@ -168,6 +204,8 @@ public class AddOn extends AbstractAddOn {
         sb.append(", taxCode=").append(taxCode);
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", optional=").append(optional);
+        sb.append(", tierType=").append(tierType);
+        sb.append(", tiers=").append(tiers);
         sb.append('}');
         return sb.toString();
     }
@@ -212,6 +250,17 @@ public class AddOn extends AbstractAddOn {
         if (optional != null ? !optional.equals(addOn.optional) : addOn.optional != null) {
             return false;
         }
+        if (itemCode != null ? !itemCode.equals(addOn.itemCode) : addOn.itemCode != null) {
+            return false;
+        }
+
+        if (tierType != null ? !tierType.equals(addOn.tierType) : addOn.tierType != null) {
+            return false;
+        }
+
+        if (tiers != null ? !tiers.equals(addOn.tiers) : addOn.tiers != null) {
+            return false;
+        }
 
         return true;
     }
@@ -220,6 +269,7 @@ public class AddOn extends AbstractAddOn {
     public int hashCode() {
         return Objects.hashCode(
                 name,
+                itemCode,
                 measuredUnit,
                 addOnType,
                 displayQuantityOnHostedPage,
@@ -229,7 +279,9 @@ public class AddOn extends AbstractAddOn {
                 updatedAt,
                 taxCode,
                 accountingCode,
-                optional
+                optional,
+                tierType,
+                tiers
         );
     }
 }

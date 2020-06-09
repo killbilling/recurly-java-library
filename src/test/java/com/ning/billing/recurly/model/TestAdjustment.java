@@ -51,6 +51,7 @@ public class TestAdjustment extends TestModelBase {
                                       "  <proration_rate type=\"float\">0.133</proration_rate>\n" +
                                       "  <product_code>product123</product_code>\n" +
                                       "  <taxable type=\"boolean\">false</taxable>\n" +
+                                      "  <surcharge_in_cents type=\"integer\">100</surcharge_in_cents>\n" +
                                       "  <tax_type>usst</tax_type>\n" +
                                       "  <tax_region>CA</tax_region>\n" +
                                       "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
@@ -96,6 +97,7 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertNull(adjustment.getEndDate());
         Assert.assertEquals(adjustment.getCreatedAt(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertEquals(adjustment.getRevenueScheduleType(), RevenueScheduleType.AT_INVOICE);
+        Assert.assertEquals(adjustment.getSurchargeInCents(), new Integer(100));
 
         // Test Serialization
         final String xml = xmlMapper.writeValueAsString(adjustment);

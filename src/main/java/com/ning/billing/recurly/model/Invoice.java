@@ -105,6 +105,10 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @XmlElementWrapper(name = "credit_payments")
+    @XmlElement(name = "credit_payment")
+    private CreditPayments creditPayments;
+
     @XmlElement(name = "customer_notes")
     private String customerNotes;
 
@@ -143,6 +147,12 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "shipping_address")
     private ShippingAddress shippingAddress;
+
+    @XmlElement(name = "surcharge_in_cents")
+    private Integer surchargeInCents;
+
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -369,6 +379,14 @@ public class Invoice extends RecurlyObject {
         this.transactions = transactions;
     }
 
+    public CreditPayments getCreditPayments() {
+        return creditPayments;
+    }
+
+    public void setCreditPayments(final CreditPayments creditPayments) {
+        this.creditPayments = creditPayments;
+    }
+
     public String getCustomerNotes() {
         return customerNotes;
     }
@@ -474,6 +492,22 @@ public class Invoice extends RecurlyObject {
         this.shippingAddress = shippingAddress;
     }
 
+    public Integer getSurchargeInCents() {
+        return surchargeInCents;
+    }
+
+    public void setSurchargeInCents(final Object surchargeInCents) {
+        this.surchargeInCents = integerOrNull(surchargeInCents);
+    }
+
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
@@ -502,6 +536,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", recoveryReason=").append(recoveryReason);
         sb.append(", lineItems=").append(lineItems);
         sb.append(", transactions=").append(transactions);
+        sb.append(", creditPayments=").append(creditPayments);
         sb.append(", customerNotes='").append(customerNotes).append('\'');
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
@@ -515,6 +550,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", origin=").append(origin);
         sb.append(", address=").append(address);
         sb.append(", shippingAddress=").append(shippingAddress);
+        sb.append(", surchargeInCents=").append(surchargeInCents);
         sb.append('}');
         return sb.toString();
     }
@@ -595,6 +631,9 @@ public class Invoice extends RecurlyObject {
         if (subtotalInCents != null ? !subtotalInCents.equals(invoice.subtotalInCents) : invoice.subtotalInCents != null) {
             return false;
         }
+        if (surchargeInCents != null ? !surchargeInCents.equals(invoice.surchargeInCents) : invoice.surchargeInCents != null) {
+            return false;
+        }
         if (refundableTotalInCents != null ? !refundableTotalInCents.equals(invoice.refundableTotalInCents) : invoice.refundableTotalInCents != null) {
             return false;
         }
@@ -619,6 +658,9 @@ public class Invoice extends RecurlyObject {
         if (transactions != null ? !transactions.equals(invoice.transactions) : invoice.transactions != null) {
             return false;
         }
+        if (creditPayments != null ? !creditPayments.equals(invoice.creditPayments) : invoice.creditPayments != null) {
+            return false;
+        }
         if (type != null ? !type.equals(invoice.type) : invoice.type != null) {
             return false;
         }
@@ -635,6 +677,9 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (gatewayCode != null ? !gatewayCode.equals(invoice.gatewayCode) : invoice.gatewayCode != null) {
+            return false;
+        }
+        if (transactionType != null ? !transactionType.equals(invoice.transactionType) : invoice.transactionType != null) {
             return false;
         }
 
@@ -669,6 +714,7 @@ public class Invoice extends RecurlyObject {
                 recoveryReason,
                 lineItems,
                 transactions,
+                creditPayments,
                 customerNotes,
                 termsAndConditions,
                 vatReverseChargeNotes,
@@ -680,7 +726,9 @@ public class Invoice extends RecurlyObject {
                 type,
                 origin,
                 address,
-                shippingAddress
+                shippingAddress,
+                surchargeInCents,
+                transactionType
         );
     }
 

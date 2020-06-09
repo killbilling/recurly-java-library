@@ -37,11 +37,17 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "account")
     private Account account;
 
+    @XmlElement(name = "name_on_account")
+    private String nameOnAccount;
+
     @XmlElement(name = "first_name")
     private String firstName;
 
     @XmlElement(name = "last_name")
     private String lastName;
+
+    @XmlElement(name = "mandate_reference")
+    private String mandateReference;
 
     @XmlElement(name = "company")
     private String company;
@@ -76,6 +82,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "ip_address_country")
     private String ipAddressCountry;
 
+    @XmlElement(name = "account_type")
+    private String accountType;
+
     @XmlElement(name = "card_type")
     private String cardType;
 
@@ -93,6 +102,12 @@ public class BillingInfo extends RecurlyObject {
 
     @XmlElement(name = "number")
     private String number;
+
+    @XmlElement(name = "routing_number")
+    private String routingNumber;
+
+    @XmlElement(name = "account_number")
+    private String accountNumber;
 
     @XmlElement(name = "verification_value")
     private String verificationValue;
@@ -127,6 +142,12 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "three_d_secure_action_result_token_id")
     private String threeDSecureActionResultTokenId;
 
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
+
+    @XmlElement(name = "iban")
+    private String iban;
+
     public String getType() {
         return type;
     }
@@ -158,6 +179,14 @@ public class BillingInfo extends RecurlyObject {
         this.account = account;
     }
 
+    public String getNameOnAccount() {
+        return nameOnAccount;
+    }
+
+    public void setNameOnAccount(final Object nameOnAccount) {
+        this.nameOnAccount = stringOrNull(nameOnAccount);
+    }
+
     public String getFirstName() {
         return firstName;
     }
@@ -172,6 +201,14 @@ public class BillingInfo extends RecurlyObject {
 
     public void setLastName(final Object lastName) {
         this.lastName = stringOrNull(lastName);
+    }
+
+    public String getMandateReference() {
+        return mandateReference;
+    }
+
+    public void setMandateReference(final Object mandateReference) {
+        this.mandateReference = stringOrNull(mandateReference);
     }
 
     public String getCompany() {
@@ -262,6 +299,14 @@ public class BillingInfo extends RecurlyObject {
         this.ipAddressCountry = stringOrNull(ipAddressCountry);
     }
 
+    public String getAccountType() {
+        return accountType;
+    }
+
+    public void setAccountType(final Object accountType) {
+        this.accountType = stringOrNull(accountType);
+    }
+
     public String getCardType() {
         return cardType;
     }
@@ -300,6 +345,22 @@ public class BillingInfo extends RecurlyObject {
 
     public void setLastFour(final Object lastFour) {
         this.lastFour = stringOrNull(lastFour);
+    }
+
+    public String getRoutingNumber() {
+        return routingNumber;
+    }
+
+    public void setRoutingNumber(final Object routingNumber) {
+        this.routingNumber = stringOrNull(routingNumber);
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(final Object accountNumber) {
+        this.accountNumber = stringOrNull(accountNumber);
     }
 
     public String getNumber() {
@@ -398,6 +459,22 @@ public class BillingInfo extends RecurlyObject {
         this.threeDSecureActionResultTokenId = stringOrNull(threeDSecureActionResultTokenId);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public void setIban(final Object iban) {
+        this.iban = stringOrNull(iban);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -413,8 +490,10 @@ public class BillingInfo extends RecurlyObject {
         }
 
         sb.append(", type='").append(type).append('\'');
+        sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", mandateReference='").append(mandateReference).append('\'');
         sb.append(", company='").append(company).append('\'');
         sb.append(", address1='").append(address1).append('\'');
         sb.append(", address2='").append(address2).append('\'');
@@ -426,11 +505,13 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", vatNumber='").append(vatNumber).append('\'');
         sb.append(", ipAddress='").append(ipAddress).append('\'');
         sb.append(", ipAddressCountry='").append(ipAddressCountry).append('\'');
+        sb.append(", accountType='").append(accountType).append('\'');
         sb.append(", cardType='").append(cardType).append('\'');
         sb.append(", year=").append(year);
         sb.append(", month=").append(month);
         sb.append(", firstSix='").append(firstSix).append('\'');
         sb.append(", lastFour='").append(lastFour).append('\'');
+        sb.append(", routingNumber='").append(routingNumber).append('\'');
         sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append(", externalHppType='").append(externalHppType).append('\'');
@@ -439,6 +520,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
+        sb.append(", iban='").append(iban).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -451,6 +533,9 @@ public class BillingInfo extends RecurlyObject {
         final BillingInfo that = (BillingInfo) o;
 
         if (account != null ? !account.equals(that.account) : that.account != null) {
+            return false;
+        }
+        if (nameOnAccount != null ? !nameOnAccount.equals(that.nameOnAccount) : that.nameOnAccount != null) {
             return false;
         }
         if (address1 != null ? !address1.equals(that.address1) : that.address1 != null) {
@@ -474,6 +559,9 @@ public class BillingInfo extends RecurlyObject {
         if (firstName != null ? !firstName.equals(that.firstName) : that.firstName != null) {
             return false;
         }
+        if (mandateReference != null ? !mandateReference.equals(that.mandateReference) : that.mandateReference != null) {
+            return false;
+        }
         if (firstSix != null ? !firstSix.equals(that.firstSix) : that.firstSix != null) {
             return false;
         }
@@ -483,7 +571,19 @@ public class BillingInfo extends RecurlyObject {
         if (ipAddressCountry != null ? !ipAddressCountry.equals(that.ipAddressCountry) : that.ipAddressCountry != null) {
             return false;
         }
+        if (accountType != null ? !accountType.equals(that.accountType) : that.accountType != null) {
+            return false;
+        }
         if (lastFour != null ? !lastFour.equals(that.lastFour) : that.lastFour != null) {
+            return false;
+        }
+        if (routingNumber != null ? !routingNumber.equals(that.routingNumber) : that.routingNumber != null) {
+            return false;
+        }
+        if (accountNumber != null ? !accountNumber.equals(that.accountNumber) : that.accountNumber != null) {
+            return false;
+        }
+        if (number != null ? !number.equals(that.number) : that.number != null) {
             return false;
         }
         if (lastName != null ? !lastName.equals(that.lastName) : that.lastName != null) {
@@ -534,6 +634,12 @@ public class BillingInfo extends RecurlyObject {
         if (threeDSecureActionResultTokenId != null ? !threeDSecureActionResultTokenId.equals(that.threeDSecureActionResultTokenId) : that.threeDSecureActionResultTokenId != null) {
             return false;
         }
+        if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
+            return false;
+        }
+        if(iban != null ? !iban.equals(that.iban) : that.iban != null) {
+            return false;
+        }
 
         return true;
     }
@@ -542,8 +648,10 @@ public class BillingInfo extends RecurlyObject {
     public int hashCode() {
         return Objects.hashCode(
                 account,
+                nameOnAccount,
                 firstName,
                 lastName,
+                mandateReference,
                 company,
                 address1,
                 address2,
@@ -555,11 +663,15 @@ public class BillingInfo extends RecurlyObject {
                 vatNumber,
                 ipAddress,
                 ipAddressCountry,
+                accountType,
                 cardType,
                 year,
                 month,
                 firstSix,
                 lastFour,
+                number,
+                routingNumber,
+                accountNumber,
                 updatedAt,
                 geoCode,
                 type,
@@ -568,7 +680,9 @@ public class BillingInfo extends RecurlyObject {
                 gatewayCode,
                 amazonBillingAgreementId,
                 amazonRegion,
-                threeDSecureActionResultTokenId
+                threeDSecureActionResultTokenId,
+                transactionType,
+                iban
         );
     }
 }
