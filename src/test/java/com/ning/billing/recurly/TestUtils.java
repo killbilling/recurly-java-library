@@ -31,6 +31,7 @@ import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.Delivery;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
+import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.MeasuredUnit;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Purchase;
@@ -40,6 +41,8 @@ import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.Subscription;
 import com.ning.billing.recurly.model.SubscriptionAddOn;
 import com.ning.billing.recurly.model.SubscriptionAddOns;
+import com.ning.billing.recurly.model.Tier;
+import com.ning.billing.recurly.model.Tiers;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
@@ -425,8 +428,41 @@ public class TestUtils {
         info.setMonth(createTestCCMonth());
         info.setNumber(createTestCCNumber());
         info.setVerificationValue(createTestCCVerificationNumber());
-
         return info;
+    }
+
+    public static BillingInfo createRandomIbanBillingInfo() {
+        return createRandomIbanBillingInfo(randomSeed());
+    }
+
+    public static BillingInfo createRandomIbanBillingInfo(final int seed) {
+        final BillingInfo info = new BillingInfo();
+        info.setIban("FR1420041010050500013M02606");
+        info.setNameOnAccount(randomAlphaNumericString(10, seed));
+        return info;
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Item} object for testing use.
+     *
+     * @return The random {@link com.ning.billing.recurly.model.Item} object
+     */
+    public static Item createRandomItem() {
+        return createRandomItem(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Item} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Item} object
+     */
+    public static Item createRandomItem(final int seed) {
+        final Item item = new Item();
+        item.setItemCode(randomAlphaNumericString(15).toLowerCase());
+        item.setName("A New Item");
+        item.setDescription("A random description");
+        return item;
     }
 
     /**
@@ -451,6 +487,40 @@ public class TestUtils {
         plan.setName(randomAlphaNumericString(10, seed));
         plan.setPlanIntervalLength(randomInteger(50, seed) + 1);
         plan.setPlanIntervalUnit("months");
+        plan.setSetupFeeInCents(createRandomPrice());
+        plan.setUnitAmountInCents(createRandomPrice());
+        plan.setDisplayDonationAmounts(true);
+        plan.setDisplayPhoneNumber(true);
+        plan.setDisplayQuantity(true);
+        plan.setBypassHostedConfirmation(true);
+
+        return plan;
+    }
+
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Plan} object with trial period for testing use.
+     *
+     * @return The random {@link com.ning.billing.recurly.model.Plan} object
+     */
+
+    public static Plan createRandomTrialPlan() {
+        return createRandomTrialPlan(randomSeed());
+    }
+
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.Plan} object with trial period for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.Plan} object
+     */
+    public static Plan createRandomTrialPlan(final int seed) {
+        final Plan plan = new Plan();
+
+        plan.setPlanCode(randomAlphaNumericString(10, seed));
+        plan.setName(randomAlphaNumericString(10, seed));
+        plan.setTrialIntervalLength(randomInteger(50, seed) + 1);
+        plan.setTrialIntervalUnit("months");
         plan.setSetupFeeInCents(createRandomPrice());
         plan.setUnitAmountInCents(createRandomPrice());
         plan.setDisplayDonationAmounts(true);
@@ -671,6 +741,84 @@ public class TestUtils {
         addOn.setUnitAmountInCents(createRandomPrice());
         addOn.setDefaultQuantity(5);
         addOn.setDisplayQuantityOnHostedPage(false);
+
+        return addOn;
+    }
+
+
+        /**
+     * Creates a random tiered {@link AddOn} for use in Tests.
+     *
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomTieredAddOn() {
+        final AddOn addOn = new AddOn();
+
+        addOn.setAddOnCode(randomAlphaNumericString(10));
+        addOn.setName(randomAlphaNumericString(10));
+        addOn.setTierType("tiered");
+
+        final RecurlyUnitCurrency price = new RecurlyUnitCurrency();
+        final Tiers tiers = new Tiers();
+
+        final Tier tierData = new Tier();
+        price.setUnitAmountUSD(100);
+        tierData.setUnitAmountInCents(price);
+        tierData.setEndingQuantity(20);
+        tiers.add(tierData);
+
+        final Tier tierData2 = new Tier();
+        price.setUnitAmountUSD(75);
+        tierData2.setUnitAmountInCents(price);
+        tiers.add(tierData2);
+
+        addOn.setTiers(tiers);
+        return addOn;
+    }
+
+        /**
+     * Creates a random tiered {@link AddOn} for use in Tests given a seed.
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomAddOnTiered(final int seed) {
+        final AddOn addOn = new AddOn();
+
+        addOn.setAddOnCode(randomAlphaNumericString(10, seed));
+        addOn.setName(randomAlphaNumericString(10, seed));
+        addOn.setTierType("tiered");
+
+        final RecurlyUnitCurrency price = new RecurlyUnitCurrency();
+        final Tiers tiers = new Tiers();
+
+        final Tier tierData = new Tier();
+        price.setUnitAmountUSD(100);
+        tierData.setUnitAmountInCents(price);
+        tierData.setEndingQuantity(20);
+        tiers.add(tierData);
+
+        final Tier tierData2 = new Tier();
+        price.setUnitAmountUSD(75);
+        tierData2.setUnitAmountInCents(price);
+        tiers.add(tierData2);
+
+        addOn.setTiers(tiers);
+        return addOn;
+    }
+
+
+    /**
+     * Creates a random item-backed {@link AddOn} for use in Tests given a seed.
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomItemBackedAddOn(final int seed) {
+        final AddOn addOn = new AddOn();
+
+        addOn.setItemCode(randomAlphaNumericString(10, seed));
+        addOn.setUnitAmountInCents(createRandomPrice());
 
         return addOn;
     }
@@ -949,6 +1097,8 @@ public class TestUtils {
         final Purchase purchase = new Purchase();
 
         purchase.setAccount(createRandomAccount(seed));
+
+        purchase.setShippingAddress(createRandomShippingAddress(seed));
 
         Adjustments adjustments = new Adjustments();
         adjustments.add(createRandomAdjustment(seed));

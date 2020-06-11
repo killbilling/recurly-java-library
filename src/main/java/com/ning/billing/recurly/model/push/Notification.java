@@ -90,7 +90,11 @@ public abstract class Notification extends RecurlyObject {
         RegeneratedGiftCardNotification(com.ning.billing.recurly.model.push.giftcard.RegeneratedGiftCardNotification.class),
         RedeemedGiftCardNotification(com.ning.billing.recurly.model.push.giftcard.RedeemedGiftCardNotification.class),
         UpdatedBalanceGiftCardNotification(com.ning.billing.recurly.model.push.giftcard.UpdatedBalanceGiftCardNotification.class),
-        LowBalanceGiftCardNotification(com.ning.billing.recurly.model.push.subscription.LowBalanceGiftCardNotification.class);
+        LowBalanceGiftCardNotification(com.ning.billing.recurly.model.push.subscription.LowBalanceGiftCardNotification.class),
+        NewItemNotification(com.ning.billing.recurly.model.push.item.NewItemNotification.class),
+        UpdatedItemNotification(com.ning.billing.recurly.model.push.item.UpdatedItemNotification.class),
+        DeactivatedItemNotification(com.ning.billing.recurly.model.push.item.DeactivatedItemNotification.class),
+        ReactivatedItemNotification(com.ning.billing.recurly.model.push.item.ReactivatedItemNotification.class);
 
         private Class<? extends Notification> javaType;
 

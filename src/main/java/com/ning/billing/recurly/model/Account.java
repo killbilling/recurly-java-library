@@ -100,6 +100,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
+    @XmlElement(name = "closed_at")
+    private DateTime closedAt;
+
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
@@ -143,6 +146,9 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "preferred_locale")
     private String preferredLocale;
+
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
 
     @Override
     public void setHref(final Object href) {
@@ -306,6 +312,14 @@ public class Account extends RecurlyObject {
         this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
+    public DateTime getClosedAt() {
+        return closedAt;
+    }
+
+    public void setClosedAt(final Object closedAt) {
+        this.closedAt = dateTimeOrNull(closedAt);
+    }
+
     public BillingInfo getBillingInfo() {
         return billingInfo;
     }
@@ -418,6 +432,14 @@ public class Account extends RecurlyObject {
         this.preferredLocale = stringOrNull(preferredLocale);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
@@ -428,7 +450,7 @@ public class Account extends RecurlyObject {
         sb.append(", subscriptions=").append(subscriptions);
         sb.append(", transactions=").append(transactions);
         sb.append(", accountCode='").append(accountCode).append('\'');
-        sb.append(", parent_account_code='").append(parentAccountCode).append('\'');
+        sb.append(", parentAccountCode='").append(parentAccountCode).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", username='").append(username).append('\'');
         sb.append(", email='").append(email).append('\'');
@@ -440,6 +462,7 @@ public class Account extends RecurlyObject {
         sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
+        sb.append(", closedAt=").append(closedAt);
         sb.append(", billingInfo=").append(billingInfo);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", exemptionCertificate='").append(exemptionCertificate).append('\'');
@@ -454,6 +477,7 @@ public class Account extends RecurlyObject {
         sb.append(", vatNumber=").append(vatNumber);
         sb.append(", accountAcquisition=").append(accountAcquisition);
         sb.append(", preferredLocale=").append(preferredLocale);
+        sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -484,6 +508,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (billingInfo != null ? !billingInfo.equals(account.billingInfo) : account.billingInfo != null) {
+            return false;
+        }
+        if (closedAt != null ? closedAt.compareTo(account.closedAt) != 0 : account.closedAt != null) {
             return false;
         }
         if (this.getCompanyName() != null ? !this.getCompanyName().equals(account.getCompanyName()) : account.getCompanyName() != null) {
@@ -561,6 +588,9 @@ public class Account extends RecurlyObject {
         if (vatNumber != null ? !vatNumber.equals(account.vatNumber) : account.vatNumber != null) {
             return false;
         }
+        if (transactionType != null ? !transactionType.equals(account.transactionType) : account.transactionType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -600,7 +630,9 @@ public class Account extends RecurlyObject {
                 customFields,
                 vatNumber,
                 accountAcquisition,
-                preferredLocale
+                preferredLocale,
+                closedAt,
+                transactionType
         );
     }
 }

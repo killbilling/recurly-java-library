@@ -54,6 +54,7 @@ public class TestInvoice extends TestModelBase {
                                    + "  <tax_type>usst</tax_type>\n"
                                    + "  <tax_region>CA</tax_region>\n"
                                    + "  <tax_rate type=\"float\">0.0875</tax_rate>\n"
+                                   + "  <surcharge_in_cents type=\"integer\">100</surcharge_in_cents>\n"
                                    + "  <created_at type=\"dateTime\">2011-08-25T12:00:00Z</created_at>\n"
                                    + "  <updated_at type=\"dateTime\">2011-08-25T12:00:00Z</updated_at>\n"
                                    + "  <closed_at type=\"dateTime\">2011-08-25T12:00:00Z</closed_at>\n"
@@ -101,6 +102,12 @@ public class TestInvoice extends TestModelBase {
                                    + "  </line_items>\n"
                                    + "  <transactions type=\"array\">\n"
                                    + "  </transactions>\n"
+                                   + "  <credit_payments type=\"array\">\n"
+                                   + "    <credit_payment href=\"https://api.recurly.com/v2/credit_payments/4f1dd58d3cb9af5a09ba634dcca690a6\">\n"
+                                   + "      <account href=\"https://api.recurly.com/v2/accounts/1\"></account>\n"
+                                   + "      <action>write_off</action>\n"
+                                   + "    </credit_payment>\n"
+                                   + "  </credit_payments>\n"
                                    + "</invoice>";
 
         final Invoice invoice = xmlMapper.readValue(invoiceData, Invoice.class);
@@ -131,6 +138,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getLineItems().size(), 1);
         Assert.assertEquals(invoice.getInvoiceNumberPrefix(), "FR");
         Assert.assertEquals(invoice.getId(), "FR1402");
+        Assert.assertEquals(invoice.getSurchargeInCents(), new Integer(100));
 
         final Adjustment adjustment = invoice.getLineItems().get(0);
         Assert.assertEquals(adjustment.getDescription(), "Charge for extra bandwidth");
@@ -138,6 +146,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(adjustment.getStartDate(), new DateTime("2011-08-31T03:30:00Z"));
 
         Assert.assertEquals(invoice.getTransactions().size(), 0);
+        Assert.assertEquals(invoice.getCreditPayments().size(), 1);
 
         Assert.assertEquals(invoice.getAddress().getAddress1(), "123 Main St.");
         Assert.assertEquals(invoice.getShippingAddress().getAddress1(), "123 Canal St.");

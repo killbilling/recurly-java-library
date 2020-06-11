@@ -54,6 +54,9 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "subscription")
     private Subscriptions subscriptions;
 
+    @XmlElement(name = "shipping_address")
+    private ShippingAddress shippingAddress;
+
     @XmlElementWrapper(name = "shipping_fees")
     @XmlElement(name = "shipping_fee")
     private ShippingFees shippingFees;
@@ -75,6 +78,9 @@ public class Purchase extends RecurlyObject {
 
     @XmlElement(name = "gateway_code")
     private String gatewayCode;
+
+    @XmlElement(name = "transaction_type")
+    private String transactionType;
 
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
@@ -145,6 +151,14 @@ public class Purchase extends RecurlyObject {
         this.currency = stringOrNull(currency);
     }
 
+    public ShippingAddress getShippingAddress() {
+        return shippingAddress;
+    }
+
+    public void setShippingAddress(final ShippingAddress shippingAddress) {
+        this.shippingAddress = shippingAddress;
+    }
+
     public void setShippingFees(final ShippingFees shippingFees) {
         this.shippingFees = shippingFees;
     }
@@ -201,6 +215,14 @@ public class Purchase extends RecurlyObject {
         this.gatewayCode = stringOrNull(gatewayCode);
     }
 
+    public String getTransactionType() {
+        return transactionType;
+    }
+
+    public void setTransactionType(final Object transactionType) {
+        this.transactionType = stringOrNull(transactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -212,6 +234,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", poNumber='").append(poNumber).append('\'');
         sb.append(", netTerms='").append(netTerms).append('\'');
         sb.append(", giftCard='").append(giftCard).append('\'');
+        sb.append(", shippingAddress='").append(shippingAddress).append('\'');
         sb.append(", shippingFees=").append(shippingFees);
         sb.append(", subscriptions='").append(subscriptions).append('\'');
         sb.append(", couponCodes='").append(couponCodes).append('\'');
@@ -220,6 +243,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
         sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
+        sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -261,6 +285,9 @@ public class Purchase extends RecurlyObject {
         if (netTerms != null ? !netTerms.equals(purchase.netTerms) : purchase.netTerms != null) {
             return false;
         }
+        if (shippingAddress != null ? !shippingAddress.equals(purchase.shippingAddress) : purchase.shippingAddress != null) {
+            return false;
+        }    
         if (shippingAddressId != null ? !shippingAddressId.equals(purchase.shippingAddressId) : purchase.shippingAddressId != null) {
             return false;
         }
@@ -271,6 +298,9 @@ public class Purchase extends RecurlyObject {
             return false;
         }
         if (termsAndConditions != null ? !termsAndConditions.equals(purchase.termsAndConditions) : purchase.termsAndConditions != null) {
+            return false;
+        }
+        if (transactionType != null ? !transactionType.equals(purchase.transactionType) : purchase.transactionType != null) {
             return false;
         }
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(purchase.vatReverseChargeNotes) : purchase.vatReverseChargeNotes != null) {
@@ -290,6 +320,7 @@ public class Purchase extends RecurlyObject {
                 giftCard,
                 poNumber,
                 netTerms,
+                shippingAddress,
                 shippingFees,
                 subscriptions,
                 couponCodes,
@@ -297,7 +328,8 @@ public class Purchase extends RecurlyObject {
                 termsAndConditions,
                 vatReverseChargeNotes,
                 shippingAddressId,
-                gatewayCode
+                gatewayCode,
+                transactionType
         );
     }
 

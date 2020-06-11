@@ -17,6 +17,13 @@
 
 package com.ning.billing.recurly;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.AccountBalance;
@@ -30,6 +37,7 @@ import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.Coupon.RedemptionResource;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CustomField;
 import com.ning.billing.recurly.model.CustomFields;
@@ -38,6 +46,7 @@ import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.Invoices;
+import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.PlanCode;
 import com.ning.billing.recurly.model.PlanCodes;
@@ -56,7 +65,6 @@ import com.ning.billing.recurly.model.SubscriptionUpdate;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.Transactions;
-import com.ning.billing.recurly.model.Coupon.RedemptionResource;
 
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
@@ -67,13 +75,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class TestRecurlyClient {
 
@@ -149,6 +150,65 @@ public class TestRecurlyClient {
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
         }
+    }
+
+    @Test(groups = "integration")
+    public void testReopenAccount() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+
+        try {
+            // Create account
+            final Account newAccount = recurlyClient.createAccount(accountData);
+            Assert.assertNull(newAccount.getClosedAt());
+
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            final Account closedAccount = recurlyClient.getAccount(accountData.getAccountCode());
+            Assert.assertNotNull(closedAccount.getClosedAt());
+
+            // Reopen the account
+            final Account reopenedAccount = recurlyClient.reopenAccount(accountData.getAccountCode());
+
+            // Confirm that the reopened account is the same as the original
+            // (besides `updated_at`, which may differ)
+            newAccount.setUpdatedAt(reopenedAccount.getUpdatedAt());
+            Assert.assertEquals(reopenedAccount, newAccount);
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testInvalidTokenError() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        RecurlyAPIException error = null;
+
+        try {
+            // Create account with invalid billing token
+            final BillingInfo billingInfo = new BillingInfo();
+            billingInfo.setTokenId("invalid token");
+            accountData.setBillingInfo(billingInfo);
+
+            final Subscription subscription = new Subscription();
+            subscription.setPlanCode("anything");
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.setRecurlyObject(subscription);
+
+            final Purchase purchase = new Purchase();
+            purchase.setCurrency(CURRENCY);
+            purchase.setAccount(accountData);
+            purchase.setSubscriptions(subscriptions);
+            recurlyClient.previewPurchase(purchase);
+        } catch (RecurlyAPIException expected) {
+            error = expected;
+        }
+
+        // Despite being a 422 error, this case returns a single Error
+        // object rather than Errors. Check that we're deserializing it
+        // properly.
+        Assert.assertEquals(error.getRecurlyError().getHttpStatusCode(), 422);
+        Assert.assertEquals(error.getRecurlyError().getSymbol(), "token_invalid");
     }
 
     @Test(groups = "integration")
@@ -525,13 +585,23 @@ public class TestRecurlyClient {
             Account getAccount = recurlyClient.getAccount(updateAccount.getAccountCode());
             Assert.assertEquals(getAccount.getCustomFields().size(), 1);
             Assert.assertEquals(getAccount.getCustomFields().get(0).getValue(), "update this value");
-
-        } catch(Exception e) {
-          System.out.print(e.getMessage());
         } finally {
-
             // Clean up
             recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCreateAccountIbanBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomIbanBillingInfo();
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            billingInfoData.setAccount(account);
+            recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.fail("Should have thrown transaction exception");
+        } catch(TransactionErrorException e) {
+            Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "no_gateway");
         }
     }
 
@@ -566,6 +636,80 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testCreateItem() throws Exception {
+        final Item itemData = TestUtils.createRandomItem();
+        
+        try {
+            // Create an item
+            final Item item = recurlyClient.createItem(itemData);
+            Assert.assertNotNull(item);
+            Assert.assertTrue(recurlyClient.getItems().size() > 0);
+        } finally {
+            // Delete the item
+            recurlyClient.deleteItem(itemData.getItemCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testUpdateItem() throws Exception {
+        final Item itemData = TestUtils.createRandomItem();
+
+        try {
+            // Create an item
+            final Item item = recurlyClient.createItem(itemData);
+            final Item itemChanges = new Item(); // Start with a fresh item object for changes
+            Assert.assertNotNull(item);
+
+            // Set the itemcode to identify which item to change
+            itemChanges.setItemCode(itemData.getItemCode());
+
+            // Change some attributes
+            itemChanges.setName("A new name");
+            itemChanges.setDescription("A new description");
+            // **custom fields must be configured through ui**
+            // final CustomFields customFields = new CustomFields();
+            // final CustomField field = new CustomField();
+            // field.setName("size");
+            // field.setValue("small");
+            // customFields.add(field);
+            // itemChanges.setCustomFields(customFields);
+
+            // Send off the changes and get the updated object
+            final Item updatedItem = recurlyClient.updateItem(itemChanges.getItemCode(), itemChanges);
+
+            Assert.assertNotNull(updatedItem);
+            Assert.assertEquals(updatedItem.getName(), "A new name");
+            Assert.assertEquals(updatedItem.getDescription(), "A new description");
+            // Assert.assertEquals(updatedItem.getCustomFields(), itemChanges.getCustomFields());
+        } finally {
+            // Delete the item
+            recurlyClient.deleteItem(itemData.getItemCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testReactivateItem() throws Exception {
+        final Item itemData = TestUtils.createRandomItem();
+
+        try {
+            // Create an item
+            final Item item = recurlyClient.createItem(itemData);
+            Assert.assertNotNull(item);
+            Assert.assertTrue(recurlyClient.getItems().size() > 0);
+            // Delete the item
+            recurlyClient.deleteItem(item.getItemCode());
+            final Item deletedItem = recurlyClient.getItem(item.getItemCode());
+            Assert.assertEquals(deletedItem.getState(), "inactive");
+            // Reactivate the item
+            recurlyClient.reactivateItem(item.getItemCode());
+            final Item reactivatedItem = recurlyClient.getItem(item.getItemCode());
+            Assert.assertEquals(reactivatedItem.getState(), "active");
+        } finally {
+            // Delete the item
+            recurlyClient.deleteItem(itemData.getItemCode());
+        }
+    }
 
     @Test(groups = "integration")
     public void testCreatePlan() throws Exception {
@@ -761,6 +905,55 @@ public class TestRecurlyClient {
             recurlyClient.terminateSubscription(subscription, RefundOption.full);
             final Subscription expiredSubscription = recurlyClient.getSubscription(subscription.getUuid());
             Assert.assertEquals(expiredSubscription.getState(), "expired");
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void getInvoiceSubscriptions() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomPlan();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+            account.setAccountCode(accountData.getAccountCode());
+
+            // Create BillingInfo
+            billingInfoData.setAccount(account);
+            final BillingInfo billingInfo = recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            Assert.assertNotNull(billingInfo);
+            final BillingInfo retrievedBillingInfo = recurlyClient.getBillingInfo(account.getAccountCode());
+            Assert.assertNotNull(retrievedBillingInfo);
+
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+            
+            // Set up a subscription to invoice
+            final Subscription invoiceSubscription = new Subscription();
+            invoiceSubscription.setPlanCode(plan.getPlanCode());
+
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(invoiceSubscription);
+
+            // Set account and subscriptions to purchase
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setCurrency("USD");
+
+            // // Create invoice collection
+            final InvoiceCollection collection = recurlyClient.purchase(purchaseData);
+            final Invoice invoiceData = collection.getChargeInvoice();
+            // Do a lookup for subs for given invoice
+            final Subscriptions isubs = recurlyClient.getInvoiceSubscriptions(invoiceData.getId());
+            Assert.assertNotNull(isubs);
         } finally {
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
@@ -1056,7 +1249,14 @@ public class TestRecurlyClient {
             subscriptionData.setAccount(accountData);
             subscriptionData.setUnitAmountInCents(150);
             subscriptionData.setCurrency(CURRENCY);
-            recurlyClient.createSubscription(subscriptionData);
+            final Subscription sub = recurlyClient.createSubscription(subscriptionData);
+
+            // Create transaction from subscription
+            final Transaction subTransaction = sub.getInvoice().getTransactions().get(0);
+            // Fetch subscriptions from created transaction
+            final Subscription fetchedSub = recurlyClient.getTransactionSubscriptions(subTransaction.getUuid()).get(0);
+            // Test that the original subscription equals the fetched subscription
+            Assert.assertEquals(sub.getUuid(), fetchedSub.getUuid());
 
             // Create a transaction
             final Transaction t = new Transaction();
@@ -1205,15 +1405,12 @@ public class TestRecurlyClient {
         Coupon coupon = recurlyClient.createCoupon(couponData);
 
         Coupon genCouponData = new Coupon();
-        genCouponData.setNumberOfUniqueCodes(50);
 
-        recurlyClient.generateUniqueCodes(coupon.getCouponCode(), genCouponData);
-
-        QueryParams qp = new QueryParams();
-        qp.setPerPage(50);
-        Coupons coupons = recurlyClient.getUniqueCouponCodes(couponData.getCouponCode(), qp);
-
-        Assert.assertEquals(coupons.size(), 50);
+        genCouponData.setNumberOfUniqueCodes(3);
+        Coupons coupons = recurlyClient.generateUniqueCodes(coupon.getCouponCode(), genCouponData);
+        Coupon c = coupons.get(0);
+        System.out.println("Coupon c " + c.toString());
+        Assert.assertEquals(coupons.size(), 3);
     }
 
     @Test(groups = "integration")
@@ -1776,11 +1973,7 @@ public class TestRecurlyClient {
 
         billingInfoData.setAccount(null); // null out random account fixture
         accountData.setBillingInfo(billingInfoData); // add the billing info to account data
-
-        // add a shipping address
-        addresses.add(shippingAddress);
-        accountData.setShippingAddresses(addresses);
-
+ 
         try {
             final Plan plan = recurlyClient.createPlan(planData);
             final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
@@ -1798,6 +1991,7 @@ public class TestRecurlyClient {
             purchaseData.setCollectionMethod("automatic");
             purchaseData.setAdjustments(adjustmentsData);
             purchaseData.setCurrency("USD");
+            purchaseData.setShippingAddress(shippingAddress);
             purchaseData.setSubscriptions(subscriptions);
             purchaseData.setGiftCard(redemptionData);
             purchaseData.setCouponCodes(couponCodes);
@@ -1842,10 +2036,6 @@ public class TestRecurlyClient {
         billingInfoData.setExternalHppType("adyen"); // set the external hpp collection to adyen
         accountData.setEmail("benjamin.dumonde@example.com");
 
-        // add a shipping address
-        addresses.add(shippingAddress);
-        accountData.setShippingAddresses(addresses);
-
         try {
             final Plan plan = recurlyClient.createPlan(planData);
             final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
@@ -1863,6 +2053,7 @@ public class TestRecurlyClient {
             purchaseData.setCollectionMethod("automatic");
             purchaseData.setAdjustments(adjustmentsData);
             purchaseData.setCurrency("USD");
+            purchaseData.setShippingAddress(shippingAddress);
             purchaseData.setSubscriptions(subscriptions);
             purchaseData.setGiftCard(redemptionData);
             purchaseData.setCouponCodes(couponCodes);
@@ -1969,6 +2160,115 @@ public class TestRecurlyClient {
             recurlyClient.deletePlan(planData.getPlanCode());
         }
     }
+
+    @Test(groups = "integration")
+    public void testConvertTrialMoto() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomTrialPlan();
+        try {
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Set up a subscription
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setRemainingBillingCycles(2);
+            subscriptionData.setCollectionMethod("manual");
+
+            // Create the subscription
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            // Test subscription creation
+            Assert.assertNotNull(subscription);
+
+            // Convert the trial subscription
+            final Subscription convertedSub = recurlyClient.convertTrialMoto(subscription.getUuid());
+            Assert.assertEquals(convertedSub.getTrialEndsAt(), convertedSub.getCurrentPeriodStartedAt());
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testConvertTrialWith3DS() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomTrialPlan();
+        billingInfoData.setAccount(null);
+        accountData.setBillingInfo(billingInfoData);
+        try {
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Set up a subscription
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setRemainingBillingCycles(2);
+
+            // Create the subscription
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            // Test subscription creation
+            Assert.assertNotNull(subscription);
+
+            // Convert the trial subscription
+            try {
+                recurlyClient.convertTrial(subscription.getUuid(), "token");
+                Assert.fail("Should throw an exception");
+            } catch (RecurlyAPIException ex) {
+                final RecurlyAPIError error = ex.getRecurlyError();
+                Assert.assertEquals(error.getDescription(), "Token (billing_info.three_d_secure_action_result_token_id) is either invalid or expired");
+            }
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testConvertTrial() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        final Plan planData = TestUtils.createRandomTrialPlan();
+        billingInfoData.setAccount(null);
+        accountData.setBillingInfo(billingInfoData);
+        try {
+            // Create a plan
+            final Plan plan = recurlyClient.createPlan(planData);
+
+            // Set up a subscription
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            subscriptionData.setAccount(accountData);
+            subscriptionData.setCurrency(CURRENCY);
+            subscriptionData.setUnitAmountInCents(1242);
+            subscriptionData.setRemainingBillingCycles(2);
+
+            // Create the subscription
+            final Subscription subscription = recurlyClient.createSubscription(subscriptionData);
+            // Test subscription creation
+            Assert.assertNotNull(subscription);
+
+            // Convert the trial subscription
+            final Subscription convertedSub = recurlyClient.convertTrial(subscription.getUuid());
+            Assert.assertEquals(convertedSub.getTrialEndsAt(), convertedSub.getCurrentPeriodStartedAt());
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+            // Delete the Plan
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
 
     @Test(groups = "integration")
     public void testInvoicesCount() throws Exception {

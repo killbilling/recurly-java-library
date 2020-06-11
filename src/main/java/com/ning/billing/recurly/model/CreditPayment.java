@@ -98,6 +98,14 @@ public class CreditPayment extends RecurlyObject {
         this.amountInCents = integerOrNull(amountInCents);
     }
 
+    public String getAppliedToInvoice() {
+        return appliedToInvoice;
+    } 
+
+    public void setAppliedToInvoice(final Object appliedToInvoice) {
+        this.appliedToInvoice = stringOrNull(appliedToInvoice);
+    }
+
 
     @Override
     public String toString() {
@@ -108,6 +116,7 @@ public class CreditPayment extends RecurlyObject {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", voidedAt=").append(voidedAt);
+        sb.append(", appliedToInvoice=").append(appliedToInvoice);
         sb.append('}');
         return sb.toString();
     }
@@ -140,6 +149,9 @@ public class CreditPayment extends RecurlyObject {
         if (voidedAt != null ? voidedAt.compareTo(that.voidedAt) != 0 : that.voidedAt != null) {
             return false;
         }
+        if (appliedToInvoice != null ? appliedToInvoice.equals(that.appliedToInvoice) : that.appliedToInvoice != null) {
+            return false;
+        }
 
         return true;
     }
@@ -153,7 +165,8 @@ public class CreditPayment extends RecurlyObject {
                 currency,
                 updatedAt,
                 uuid,
-                voidedAt
+                voidedAt,
+                appliedToInvoice
         );
     }
 }

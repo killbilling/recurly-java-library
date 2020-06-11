@@ -63,6 +63,9 @@ public class Coupon extends RecurlyObject {
     @XmlTransient
     public static final String UNIQUE_CODES_RESOURCE = "/unique_coupon_codes";
 
+    @XmlTransient
+    public static final String RESTORE_RESOURCE = "/restore";
+
     @XmlElement(name = "id")
     private Long id;
 
