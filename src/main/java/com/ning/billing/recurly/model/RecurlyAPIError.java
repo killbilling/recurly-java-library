@@ -21,9 +21,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.apache.http.HttpResponse;
+
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.common.base.Objects;
-import com.ning.http.client.Response;
 
 import java.io.IOException;
 
@@ -44,13 +45,13 @@ public class RecurlyAPIError extends RecurlyObject {
 
     private int httpStatusCode;
 
-    public static RecurlyAPIError buildFromResponse(final Response response) {
+    public static RecurlyAPIError buildFromResponse(final HttpResponse response) {
         final RecurlyAPIError recurlyAPIError = new RecurlyAPIError();
         recurlyAPIError.setResponse(response);
         return recurlyAPIError;
     }
 
-    public static RecurlyAPIError buildFromXml(final XmlMapper xmlMapper, final String payload, final Response response) throws IOException {
+    public static RecurlyAPIError buildFromXml(final XmlMapper xmlMapper, final String payload, final HttpResponse response) throws IOException {
         final RecurlyAPIError recurlyAPIError = xmlMapper.readValue(payload, RecurlyAPIError.class);
         recurlyAPIError.setResponse(response);
         return recurlyAPIError;
@@ -94,8 +95,8 @@ public class RecurlyAPIError extends RecurlyObject {
         return this.responseMetadata;
     }
 
-    protected void setResponse(final Response response) {
-        this.setHttpStatusCode(response.getStatusCode());
+    protected void setResponse(final HttpResponse response) {
+        this.setHttpStatusCode(response.getStatusLine().getStatusCode());
         this.setResponseMetadata(new ResponseMetadata(response));
     }
 
