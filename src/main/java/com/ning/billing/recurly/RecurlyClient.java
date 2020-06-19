@@ -81,6 +81,7 @@ import com.ning.billing.recurly.util.http.SslUtils;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.NoHttpResponseException;
 import org.apache.http.ParseException;
 import org.apache.http.client.config.RequestConfig;
@@ -2393,10 +2394,7 @@ public class RecurlyClient {
         }
 
         final HttpPost builder = new HttpPost(baseUrl + resource);
-        if (xmlPayload != null) {
-            builder.setEntity(new StringEntity(xmlPayload,
-                    ContentType.APPLICATION_XML.withCharset(Charsets.UTF_8)));
-        }
+        setEntityOrContentLengthZero(xmlPayload, builder);
         return callRecurlySafeXmlContent(builder, clazz);
     }
 
@@ -2423,10 +2421,7 @@ public class RecurlyClient {
         }
 
         final HttpPut builder = new HttpPut(constructUrl(resource, params));
-        if (xmlPayload != null) {
-            builder.setEntity(new StringEntity(xmlPayload,
-                    ContentType.APPLICATION_XML.withCharset(Charsets.UTF_8)));
-        }
+        setEntityOrContentLengthZero(xmlPayload, builder);
         return callRecurlySafeXmlContent(builder, clazz);
     }
 
@@ -2645,6 +2640,15 @@ public class RecurlyClient {
         if (!validHosts.contains(host)) {
             String exc = String.format("Attempted to make call to %s instead of Recurly", host);
             throw new RuntimeException(exc);
+        }
+    }
+
+    private void setEntityOrContentLengthZero(String xmlPayload, HttpEntityEnclosingRequest builder) {
+        if (xmlPayload != null) {
+            builder.setEntity(new StringEntity(xmlPayload,
+                    ContentType.APPLICATION_XML.withCharset(Charsets.UTF_8)));
+        } else {
+            builder.setHeader(HttpHeaders.CONTENT_LENGTH, "0");
         }
     }
 
