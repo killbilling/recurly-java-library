@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
@@ -100,6 +101,7 @@ public abstract class RecurlyObject {
         m.addSerializer(Tiers.class, new RecurlyObjectsSerializer<Tiers,Tier>(Tiers.class, "tier"));
         m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<Transactions, Transaction>(Transactions.class, "transaction"));
         m.addSerializer(Usages.class, new RecurlyObjectsSerializer<Usages, Usage>(Usages.class, "usage"));
+        m.addSerializer(PlanCodes.class, new RecurlyObjectsSerializer<PlanCodes, PlanCode>(PlanCodes.class, "plan_code"));
         xmlMapper.registerModule(m);
 
         return xmlMapper;
@@ -147,7 +149,9 @@ public abstract class RecurlyObject {
         if (upCase) {
             value = value.toUpperCase();
         }
-
+        if (value.isEmpty()) {
+            return null;
+        }
         return (E) Enum.valueOf(enumClass, value);
     }
 

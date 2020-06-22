@@ -46,9 +46,13 @@ public class RecurlyObjectsSerializer<T extends RecurlyObjects<U>, U extends Rec
             return;
         }
 
+
         final ToXmlGenerator xmlgen = (ToXmlGenerator) jgen;
+
         // Nested RecurlyObjects
-        xmlgen.getOutputContext().writeFieldName(elementName);
+        if (!xmlgen.getOutputContext().hasCurrentName()) {
+            xmlgen.writeFieldName(elementName);
+        }
         boolean firstValue = true;
         for (final U value : values) {
             if (firstValue) {
