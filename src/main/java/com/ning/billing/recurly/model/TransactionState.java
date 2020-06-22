@@ -25,7 +25,7 @@ public enum TransactionState {
 
     private final String type;
 
-    private TransactionState(final String type) {
+    TransactionState(final String type) {
         this.type = type;
     }
 

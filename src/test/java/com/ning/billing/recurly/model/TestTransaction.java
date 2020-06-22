@@ -88,10 +88,10 @@ public class TestTransaction extends TestModelBase {
         Assert.assertEquals(transaction.getInvoice().getHref(), "https://your-subdomain.recurly.com/v2/invoices/1108");
         Assert.assertEquals(transaction.getUuid(), "a13acd8fe4294916b79aec87b7ea441f");
         Assert.assertEquals(transaction.getSource(), "transaction");
-        Assert.assertEquals(transaction.getRecurring(), new Boolean(false));
-        Assert.assertEquals(transaction.getTest(), new Boolean(true));
-        Assert.assertEquals(transaction.getVoidable(), new Boolean(true));
-        Assert.assertEquals(transaction.getRefundable(), new Boolean(true));
+        Assert.assertEquals(transaction.getRecurring(), Boolean.FALSE);
+        Assert.assertEquals(transaction.getTest(), Boolean.TRUE);
+        Assert.assertEquals(transaction.getVoidable(), Boolean.TRUE);
+        Assert.assertEquals(transaction.getRefundable(), Boolean.TRUE);
         Assert.assertEquals(transaction.getIpAddress(), "1.2.3.4");
         Assert.assertNull(transaction.getAvsResult());
         Assert.assertNull(transaction.getAvsResultPostal());

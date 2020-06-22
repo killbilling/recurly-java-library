@@ -18,7 +18,6 @@
 package com.ning.billing.recurly.model;
 
 import com.ning.billing.recurly.TestUtils;
-import org.joda.time.DateTime;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

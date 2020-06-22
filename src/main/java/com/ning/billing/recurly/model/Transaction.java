@@ -194,24 +194,23 @@ public class Transaction extends AbstractTransaction {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Transaction{");
-        sb.append("account=").append(account);
-        sb.append(", invoice=").append(invoice);
-        sb.append(", uuid='").append(uuid).append('\'');
-        sb.append(", taxInCents=").append(taxInCents);
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", recurring=").append(recurring);
-        sb.append(", productCode=").append(productCode);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", details=").append(details);
-        sb.append(", collectedAt=").append(collectedAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", origin=").append(origin);
-        sb.append(", gatewayType=").append(gatewayType);
-        sb.append(", approvalCode=").append(approvalCode);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Transaction{" + "account=" + account +
+                ", invoice=" + invoice +
+                ", uuid='" + uuid + '\'' +
+                ", taxInCents=" + taxInCents +
+                ", currency='" + currency + '\'' +
+                ", description='" + description + '\'' +
+                ", recurring=" + recurring +
+                ", productCode=" + productCode +
+                ", createdAt=" + createdAt +
+                ", details=" + details +
+                ", collectedAt=" + collectedAt +
+                ", updatedAt=" + updatedAt +
+                ", origin=" + origin +
+                ", gatewayType=" + gatewayType +
+                ", approvalCode=" + approvalCode +
+                '}';
+        return sb;
     }
 
     @Override

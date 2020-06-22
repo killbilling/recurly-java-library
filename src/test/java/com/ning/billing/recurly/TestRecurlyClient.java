@@ -248,7 +248,7 @@ public class TestRecurlyClient {
             // Create a plan with addons
             final Plan plan = recurlyClient.createPlan(planData);
             Thread.sleep(1000);  // TODO - can remove after Jan 18th 2017
-            final List<AddOn> addons = new ArrayList<AddOn>();
+            final List<AddOn> addons = new ArrayList<>();
             final int nbAddOns = 5;
             for (int i = 0; i < nbAddOns; i++) {
                 final AddOn addOn = TestUtils.createRandomAddOn(CURRENCY);
@@ -472,7 +472,7 @@ public class TestRecurlyClient {
             recurlyClient.createAccount(accountData);
         }
 
-        final Set<String> accountCodes = new HashSet<String>();
+        final Set<String> accountCodes = new HashSet<>();
         Accounts accounts = recurlyClient.getAccounts();
 
         for (int i = 0; i < minNumberOfAccounts; i++) {
@@ -964,7 +964,7 @@ public class TestRecurlyClient {
 
     @Test(groups = "integration")
     public void testCreateSubscriptionWithCustomFields() throws Exception {
-        final List<AddOn> addons = new ArrayList<AddOn>();
+        final List<AddOn> addons = new ArrayList<>();
         final Plan planData = TestUtils.createRandomPlan();
         final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
         final CustomField accountField = TestUtils.createRandomCustomField("acct_field");
@@ -1908,7 +1908,7 @@ public class TestRecurlyClient {
             // refetch the invoice
             invoice = recurlyClient.getInvoice(invoice.getId());
 
-            final ArrayList<AdjustmentRefund> lineItems = new ArrayList<AdjustmentRefund>();
+            final ArrayList<AdjustmentRefund> lineItems = new ArrayList<>();
 
             // let's just refund the first adjustment
             // we can use "toAdjustmentRefund" on the adjustment to turn it
@@ -1979,7 +1979,7 @@ public class TestRecurlyClient {
             final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
             final GiftCard redemptionData = new GiftCard();
             redemptionData.setRedemptionCode(purchasedGiftCard.getRedemptionCode());
-            final ArrayList<String> couponCodes = new ArrayList<String>(Arrays.asList("ascu2wprjk", "vttx1luuwz"));
+            final ArrayList<String> couponCodes = new ArrayList<>(Arrays.asList("ascu2wprjk", "vttx1luuwz"));
             final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             final Subscriptions subscriptions = new Subscriptions();
@@ -2041,7 +2041,7 @@ public class TestRecurlyClient {
             final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
             final GiftCard redemptionData = new GiftCard();
             redemptionData.setRedemptionCode(purchasedGiftCard.getRedemptionCode());
-            final ArrayList<String> couponCodes = new ArrayList<String>(Arrays.asList("ascu2wprjk", "vttx1luuwz"));
+            final ArrayList<String> couponCodes = new ArrayList<>(Arrays.asList("ascu2wprjk", "vttx1luuwz"));
             final Subscription subscriptionData = new Subscription();
             subscriptionData.setPlanCode(plan.getPlanCode());
             final Subscriptions subscriptions = new Subscriptions();

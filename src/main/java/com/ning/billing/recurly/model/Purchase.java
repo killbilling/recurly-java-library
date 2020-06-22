@@ -225,27 +225,26 @@ public class Purchase extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Purchase");
-        sb.append("{account=").append(account);
-        sb.append(", adjustments=").append(adjustments);
-        sb.append(", collectionMethod='").append(collectionMethod).append('\'');
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", poNumber='").append(poNumber).append('\'');
-        sb.append(", netTerms='").append(netTerms).append('\'');
-        sb.append(", giftCard='").append(giftCard).append('\'');
-        sb.append(", shippingAddress='").append(shippingAddress).append('\'');
-        sb.append(", shippingFees=").append(shippingFees);
-        sb.append(", subscriptions='").append(subscriptions).append('\'');
-        sb.append(", couponCodes='").append(couponCodes).append('\'');
-        sb.append(", customerNotes='").append(customerNotes).append('\'');
-        sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
-        sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
-        sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
-        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
-        sb.append(", transactionType='").append(transactionType).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "Purchase" +
+                "{account=" + account +
+                ", adjustments=" + adjustments +
+                ", collectionMethod='" + collectionMethod + '\'' +
+                ", currency='" + currency + '\'' +
+                ", poNumber='" + poNumber + '\'' +
+                ", netTerms='" + netTerms + '\'' +
+                ", giftCard='" + giftCard + '\'' +
+                ", shippingAddress='" + shippingAddress + '\'' +
+                ", shippingFees=" + shippingFees +
+                ", subscriptions='" + subscriptions + '\'' +
+                ", couponCodes='" + couponCodes + '\'' +
+                ", customerNotes='" + customerNotes + '\'' +
+                ", termsAndConditions='" + termsAndConditions + '\'' +
+                ", vatReverseChargeNotes='" + vatReverseChargeNotes + '\'' +
+                ", shippingAddressId='" + shippingAddressId + '\'' +
+                ", gatewayCode='" + gatewayCode + '\'' +
+                ", transactionType='" + transactionType + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

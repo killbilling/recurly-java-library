@@ -25,19 +25,19 @@ public class ResponseMetadata {
      * request by Recurly. Comes from the X-Request-Id
      * header in the response.
      */
-    private String requestId;
+    private final String requestId;
 
     /**
      * Represents the unique id given to this
      * request by Cloudflare (if request is proxied through
      * Cloudflare). Comes from the CF-RAY header in the response.
      */
-    private String cfRay;
+    private final String cfRay;
 
     /**
      * The HTTP Status Code of the response.
      */
-    private int statusCode;
+    private final int statusCode;
 
     public ResponseMetadata(HttpResponse response) {
         final Header requestIdHeader = response.getFirstHeader("X-Request-Id");
@@ -56,16 +56,15 @@ public class ResponseMetadata {
     }
 
     public int getStatusCode() {
-        return this.getStatusCode();
+        return this.statusCode;
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("ResponseMetadata{");
-        sb.append("requestId=").append(requestId);
-        sb.append(", cfRay=").append(cfRay);
-        sb.append(", statusCode=").append(statusCode);
-        sb.append('}');
-        return sb.toString();
+        String sb = "ResponseMetadata{" + "requestId=" + requestId +
+                ", cfRay=" + cfRay +
+                ", statusCode=" + statusCode +
+                '}';
+        return sb;
     }
 }

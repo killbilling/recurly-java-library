@@ -154,15 +154,14 @@ public class InvoiceRefund extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("InvoiceRefund{");
-        sb.append("amountInCents=").append(amountInCents);
-        sb.append(", refundMethod='").append(refundMethod).append('\'');
-        sb.append(", externalRefund='").append(externalRefund).append('\'');
-        sb.append(", creditCustomerNotes='").append(creditCustomerNotes).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", paymentMethod='").append(paymentMethod).append('\'');
-        sb.append(", refundedAt='").append(refundedAt).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "InvoiceRefund{" + "amountInCents=" + amountInCents +
+                ", refundMethod='" + refundMethod + '\'' +
+                ", externalRefund='" + externalRefund + '\'' +
+                ", creditCustomerNotes='" + creditCustomerNotes + '\'' +
+                ", description='" + description + '\'' +
+                ", paymentMethod='" + paymentMethod + '\'' +
+                ", refundedAt='" + refundedAt + '\'' +
+                '}';
+        return sb;
     }
 }

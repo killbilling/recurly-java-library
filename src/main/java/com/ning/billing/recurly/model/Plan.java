@@ -342,38 +342,37 @@ public class Plan extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Plan");
-        sb.append("{addOns=").append(addOns);
-        sb.append(", planCode='").append(planCode).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", successLink='").append(successLink).append('\'');
-        sb.append(", cancelLink='").append(cancelLink).append('\'');
-        sb.append(", displayDonationAmounts=").append(displayDonationAmounts);
-        sb.append(", displayQuantity=").append(displayQuantity);
-        sb.append(", displayPhoneNumber=").append(displayPhoneNumber);
-        sb.append(", bypassHostedConfirmation=").append(bypassHostedConfirmation);
-        sb.append(", unitName='").append(unitName).append('\'');
-        sb.append(", planIntervalUnit='").append(planIntervalUnit).append('\'');
-        sb.append(", planIntervalLength=").append(planIntervalLength);
-        sb.append(", trialIntervalLength=").append(trialIntervalLength);
-        sb.append(", trialIntervalUnit='").append(trialIntervalUnit).append('\'');
-        sb.append(", totalBillingCycles").append(totalBillingCycles);
-        sb.append(", trialRequiresBillingInfo='").append(trialRequiresBillingInfo).append('\'');
-        sb.append(", accountingCode='").append(accountingCode).append('\'');
-        sb.append(", setupFeeAccountingCode='").append(setupFeeAccountingCode).append('\'');
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", unitAmountInCents=").append(unitAmountInCents);
-        sb.append(", setupFeeInCents=").append(setupFeeInCents);
-        sb.append(", revenueScheduleType=").append(revenueScheduleType);
-        sb.append(", setupFeeRevenueScheduleType=").append(setupFeeRevenueScheduleType);
-        sb.append(", autoRenew=").append(autoRenew);
-        sb.append(", taxExempt=").append(taxExempt);
-        sb.append(", taxCode=").append(taxCode);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Plan" +
+                "{addOns=" + addOns +
+                ", planCode='" + planCode + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", successLink='" + successLink + '\'' +
+                ", cancelLink='" + cancelLink + '\'' +
+                ", displayDonationAmounts=" + displayDonationAmounts +
+                ", displayQuantity=" + displayQuantity +
+                ", displayPhoneNumber=" + displayPhoneNumber +
+                ", bypassHostedConfirmation=" + bypassHostedConfirmation +
+                ", unitName='" + unitName + '\'' +
+                ", planIntervalUnit='" + planIntervalUnit + '\'' +
+                ", planIntervalLength=" + planIntervalLength +
+                ", trialIntervalLength=" + trialIntervalLength +
+                ", trialIntervalUnit='" + trialIntervalUnit + '\'' +
+                ", totalBillingCycles" + totalBillingCycles +
+                ", trialRequiresBillingInfo='" + trialRequiresBillingInfo + '\'' +
+                ", accountingCode='" + accountingCode + '\'' +
+                ", setupFeeAccountingCode='" + setupFeeAccountingCode + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", unitAmountInCents=" + unitAmountInCents +
+                ", setupFeeInCents=" + setupFeeInCents +
+                ", revenueScheduleType=" + revenueScheduleType +
+                ", setupFeeRevenueScheduleType=" + setupFeeRevenueScheduleType +
+                ", autoRenew=" + autoRenew +
+                ", taxExempt=" + taxExempt +
+                ", taxCode=" + taxCode +
+                '}';
+        return sb;
     }
 
     @Override

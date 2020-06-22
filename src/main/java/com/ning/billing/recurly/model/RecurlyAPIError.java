@@ -102,14 +102,13 @@ public class RecurlyAPIError extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("RecurlyAPIError{");
-        sb.append("description='").append(description).append('\'');
-        sb.append(", symbol='").append(symbol).append('\'');
-        sb.append(", details='").append(details).append('\'');
-        sb.append(", httpStatusCode='").append(httpStatusCode).append('\'');
-        sb.append(", responseMetadata='").append(responseMetadata).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "RecurlyAPIError{" + "description='" + description + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", details='" + details + '\'' +
+                ", httpStatusCode='" + httpStatusCode + '\'' +
+                ", responseMetadata='" + responseMetadata + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

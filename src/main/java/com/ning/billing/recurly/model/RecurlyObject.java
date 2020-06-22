@@ -23,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.AnnotationIntrospector;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.introspect.AnnotationIntrospectorPair;
 import com.fasterxml.jackson.databind.introspect.JacksonAnnotationIntrospector;
@@ -86,22 +85,22 @@ public abstract class RecurlyObject {
         xmlMapper.registerModule(new JaxbAnnotationModule());
 
         final SimpleModule m = new SimpleModule("module", new Version(1, 0, 0, null, null, null));
-        m.addSerializer(Accounts.class, new RecurlyObjectsSerializer<Accounts, Account>(Accounts.class, "account"));
-        m.addSerializer(AddOns.class, new RecurlyObjectsSerializer<AddOns, AddOn>(AddOns.class, "add_on"));
-        m.addSerializer(Adjustments.class, new RecurlyObjectsSerializer<Adjustments, Adjustment>(Adjustments.class, "adjustment"));
-        m.addSerializer(Coupons.class, new RecurlyObjectsSerializer<Coupons, Coupon>(Coupons.class, "coupon"));
-        m.addSerializer(CustomFields.class, new RecurlyObjectsSerializer<CustomFields, CustomField>(CustomFields.class, "custom_field"));
-        m.addSerializer(Invoices.class, new RecurlyObjectsSerializer<Invoices, Invoice>(Invoices.class, "invoice"));
-        m.addSerializer(Plans.class, new RecurlyObjectsSerializer<Plans, Plan>(Plans.class, "plan"));
-        m.addSerializer(RecurlyErrors.class, new RecurlyObjectsSerializer<RecurlyErrors, RecurlyError>(RecurlyErrors.class, "error"));
-        m.addSerializer(ShippingAddresses.class, new RecurlyObjectsSerializer<ShippingAddresses, ShippingAddress>(ShippingAddresses.class, "shipping_address"));
-        m.addSerializer(ShippingFees.class, new RecurlyObjectsSerializer<ShippingFees, ShippingFee>(ShippingFees.class, "shipping_fee"));
-        m.addSerializer(SubscriptionAddOns.class, new RecurlyObjectsSerializer<SubscriptionAddOns, SubscriptionAddOn>(SubscriptionAddOns.class, "subscription_add_on"));
-        m.addSerializer(Subscriptions.class, new RecurlyObjectsSerializer<Subscriptions, Subscription>(Subscriptions.class, "subscription"));
-        m.addSerializer(Tiers.class, new RecurlyObjectsSerializer<Tiers,Tier>(Tiers.class, "tier"));
-        m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<Transactions, Transaction>(Transactions.class, "transaction"));
-        m.addSerializer(Usages.class, new RecurlyObjectsSerializer<Usages, Usage>(Usages.class, "usage"));
-        m.addSerializer(PlanCodes.class, new RecurlyObjectsSerializer<PlanCodes, PlanCode>(PlanCodes.class, "plan_code"));
+        m.addSerializer(Accounts.class, new RecurlyObjectsSerializer<>(Accounts.class, "account"));
+        m.addSerializer(AddOns.class, new RecurlyObjectsSerializer<>(AddOns.class, "add_on"));
+        m.addSerializer(Adjustments.class, new RecurlyObjectsSerializer<>(Adjustments.class, "adjustment"));
+        m.addSerializer(Coupons.class, new RecurlyObjectsSerializer<>(Coupons.class, "coupon"));
+        m.addSerializer(CustomFields.class, new RecurlyObjectsSerializer<>(CustomFields.class, "custom_field"));
+        m.addSerializer(Invoices.class, new RecurlyObjectsSerializer<>(Invoices.class, "invoice"));
+        m.addSerializer(Plans.class, new RecurlyObjectsSerializer<>(Plans.class, "plan"));
+        m.addSerializer(RecurlyErrors.class, new RecurlyObjectsSerializer<>(RecurlyErrors.class, "error"));
+        m.addSerializer(ShippingAddresses.class, new RecurlyObjectsSerializer<>(ShippingAddresses.class, "shipping_address"));
+        m.addSerializer(ShippingFees.class, new RecurlyObjectsSerializer<>(ShippingFees.class, "shipping_fee"));
+        m.addSerializer(SubscriptionAddOns.class, new RecurlyObjectsSerializer<>(SubscriptionAddOns.class, "subscription_add_on"));
+        m.addSerializer(Subscriptions.class, new RecurlyObjectsSerializer<>(Subscriptions.class, "subscription"));
+        m.addSerializer(Tiers.class, new RecurlyObjectsSerializer<>(Tiers.class, "tier"));
+        m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<>(Transactions.class, "transaction"));
+        m.addSerializer(Usages.class, new RecurlyObjectsSerializer<>(Usages.class, "usage"));
+        m.addSerializer(PlanCodes.class, new RecurlyObjectsSerializer<>(PlanCodes.class, "plan_code"));
         xmlMapper.registerModule(m);
 
         return xmlMapper;
@@ -155,7 +154,6 @@ public abstract class RecurlyObject {
         return (E) Enum.valueOf(enumClass, value);
     }
 
-    @SuppressWarnings("unchecked")
     public static <E extends Enum<E>> E enumOrNull(Class<E> enumClass, @Nullable final Object object) {
         return enumOrNull(enumClass, object, false);
     }

@@ -78,7 +78,7 @@ public class TestInvoices extends TestModelBase {
         Assert.assertEquals(invoice.getState(), "open");
         Assert.assertEquals((int) invoice.getInvoiceNumber(), 1005);
         Assert.assertEquals(invoice.getPoNumber(), "abc-123");
-        Assert.assertNull(invoice.getVatNumber());
+        Assert.assertEquals(invoice.getVatNumber(),"");
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 1200);
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);
         Assert.assertEquals((int) invoice.getTotalInCents(), 1200);

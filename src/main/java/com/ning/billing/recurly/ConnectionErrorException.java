@@ -17,8 +17,6 @@
 
 package com.ning.billing.recurly;
 
-import com.ning.billing.recurly.model.Errors;
-
 public class ConnectionErrorException extends RuntimeException {
 
     public ConnectionErrorException(Throwable cause) {

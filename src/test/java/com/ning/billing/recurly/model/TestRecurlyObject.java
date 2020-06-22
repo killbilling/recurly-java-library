@@ -33,7 +33,7 @@ public class TestRecurlyObject extends TestModelBase {
         Assert.assertEquals(null, RecurlyObject.bigDecimalOrNull(null));
 
         for (final String nil : RecurlyObject.NIL_VAL) {
-            final HashMap<String, String> nilMap = new HashMap<String, String>();
+            final HashMap<String, String> nilMap = new HashMap<>();
             nilMap.put(RecurlyObject.NIL_STR, nil);
             Assert.assertEquals(null, RecurlyObject.booleanOrNull(nilMap));
             Assert.assertEquals(null, RecurlyObject.dateTimeOrNull(nilMap));
@@ -42,7 +42,7 @@ public class TestRecurlyObject extends TestModelBase {
             Assert.assertEquals(null, RecurlyObject.bigDecimalOrNull(nilMap));
         }
 
-        final HashMap<String, String> nonNilMap = new HashMap<String, String>();
+        final HashMap<String, String> nonNilMap = new HashMap<>();
         nonNilMap.put("foo", "bar");
         Assert.assertNotNull(RecurlyObject.isNull(nonNilMap));
     }

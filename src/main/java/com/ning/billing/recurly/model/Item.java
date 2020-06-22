@@ -144,20 +144,19 @@ public class Item extends RecurlyObject {
 
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder();
-    sb.append("Item");
-    sb.append(", itemCode='").append(itemCode).append('\'');
-    sb.append(", name='").append(name).append('\'');
-    sb.append(", description='").append(description).append('\'');
-    sb.append(", externalSku='").append(externalSku).append('\'');
-    sb.append(", accountingCode='").append(accountingCode).append('\'');
-    sb.append(", revenueScheduleType='").append(revenueScheduleType).append('\'');
-    sb.append(", state='").append(state).append('\'');
-    sb.append(", customFields=").append(customFields);
-    sb.append(", createdAt=").append(createdAt);
-    sb.append(", updatedAt=").append(updatedAt);
-    sb.append('}');
-    return sb.toString();
+      String sb = "Item" +
+              ", itemCode='" + itemCode + '\'' +
+              ", name='" + name + '\'' +
+              ", description='" + description + '\'' +
+              ", externalSku='" + externalSku + '\'' +
+              ", accountingCode='" + accountingCode + '\'' +
+              ", revenueScheduleType='" + revenueScheduleType + '\'' +
+              ", state='" + state + '\'' +
+              ", customFields=" + customFields +
+              ", createdAt=" + createdAt +
+              ", updatedAt=" + updatedAt +
+              '}';
+      return sb;
   }
 
   @Override

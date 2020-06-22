@@ -225,25 +225,24 @@ public class GiftCard extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("GiftCard");
-        sb.append("{ productCode='").append(productCode).append('\'');
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", id='").append(id).append('\'');
-        sb.append(", redemptionCode='").append(redemptionCode).append('\'');
-        sb.append(", gifterAccountCode='").append(gifterAccountCode).append('\'');
-        sb.append(", recipientAccountCode='").append(recipientAccountCode).append('\'');
-        sb.append(", unitAmountInCents='").append(unitAmountInCents).append('\'');
-        sb.append(", balanceInCents='").append(balanceInCents).append('\'');
-        sb.append(", invoiceNumber='").append(invoiceNumber).append('\'');
-        sb.append(", gifterAccount='").append(gifterAccount).append('\'');
-        sb.append(", delivery='").append(delivery).append('\'');
-        sb.append(", createdAt='").append(createdAt).append('\'');
-        sb.append(", updatedAt='").append(updatedAt).append('\'');
-        sb.append(", redeemedAt='").append(redeemedAt).append('\'');
-        sb.append(", canceledAt='").append(canceledAt).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "GiftCard" +
+                "{ productCode='" + productCode + '\'' +
+                ", currency='" + currency + '\'' +
+                ", id='" + id + '\'' +
+                ", redemptionCode='" + redemptionCode + '\'' +
+                ", gifterAccountCode='" + gifterAccountCode + '\'' +
+                ", recipientAccountCode='" + recipientAccountCode + '\'' +
+                ", unitAmountInCents='" + unitAmountInCents + '\'' +
+                ", balanceInCents='" + balanceInCents + '\'' +
+                ", invoiceNumber='" + invoiceNumber + '\'' +
+                ", gifterAccount='" + gifterAccount + '\'' +
+                ", delivery='" + delivery + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", redeemedAt='" + redeemedAt + '\'' +
+                ", canceledAt='" + canceledAt + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

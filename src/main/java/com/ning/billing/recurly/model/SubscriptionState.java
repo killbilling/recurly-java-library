@@ -29,7 +29,7 @@ public enum SubscriptionState {
 
     private final String type;
 
-    private SubscriptionState(final String type) {
+    SubscriptionState(final String type) {
         this.type = type;
     }
 

@@ -31,7 +31,7 @@ public enum InvoiceState {
 
     private final String type;
 
-    private InvoiceState(final String type) {
+    InvoiceState(final String type) {
         this.type = type;
     }
 

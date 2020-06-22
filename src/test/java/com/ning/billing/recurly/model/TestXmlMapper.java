@@ -29,7 +29,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonRootName;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -47,14 +46,14 @@ public class TestXmlMapper extends TestModelBase {
         Assert.assertEquals(subscriptions.size(), 0);
     }
 
-    public class ValuesSerializer extends StdSerializer<Values> {
+    public static class ValuesSerializer extends StdSerializer<Values> {
 
         protected ValuesSerializer() {
             super(Values.class);
         }
 
         @Override
-        public void serialize(final Values values, final JsonGenerator jgen, final SerializerProvider provider) throws IOException, JsonGenerationException {
+        public void serialize(final Values values, final JsonGenerator jgen, final SerializerProvider provider) throws IOException {
             for (final String value : values) {
                 jgen.writeFieldName("value");
                 jgen.writeString(value);

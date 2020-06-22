@@ -120,13 +120,13 @@ public class TestAdjustment extends TestModelBase {
     }
 
     private List<TaxDetail> getTaxDetails() {
-        final List<TaxDetail> taxDetails = new ArrayList<TaxDetail>();
+        final List<TaxDetail> taxDetails = new ArrayList<>();
         final TaxDetail taxDetail = new TaxDetail();
 
         taxDetail.setName("Special Tax");
         taxDetail.setType("state");
         taxDetail.setTaxRate(BigDecimal.valueOf(0.065));
-        taxDetail.setTaxInCents(Integer.valueOf(-52));
+        taxDetail.setTaxInCents(-52);
         taxDetails.add(taxDetail);
 
         return taxDetails;

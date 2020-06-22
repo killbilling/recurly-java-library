@@ -59,12 +59,11 @@ public class RecurlyError extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("RecurlyError{");
-        sb.append("field='").append(field).append('\'');
-        sb.append(", symbol='").append(symbol).append('\'');
-        sb.append(", message='").append(message).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "RecurlyError{" + "field='" + field + '\'' +
+                ", symbol='" + symbol + '\'' +
+                ", message='" + message + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

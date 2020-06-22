@@ -208,26 +208,25 @@ public class ShippingAddress extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("ShippingAddress");
-        sb.append("{address1=").append(address1);
-        sb.append(", address2=").append(address2);
-        sb.append(", city=").append(city);
-        sb.append(", company=").append(company);
-        sb.append(", country=").append(country);
-        sb.append(", email=").append(email);
-        sb.append(", firstName=").append(firstName);
-        sb.append(", id=").append(id);
-        sb.append(", lastName=").append(lastName);
-        sb.append(", nickname=").append(nickname);
-        sb.append(", phone=").append(phone);
-        sb.append(", state=").append(state);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", zip=").append(zip);
-        sb.append(", geoCode='").append(geoCode).append('\'');
-        sb.append(", vatNumber=").append(vatNumber);
-        sb.append('}');
-        return sb.toString();
+        String sb = "ShippingAddress" +
+                "{address1=" + address1 +
+                ", address2=" + address2 +
+                ", city=" + city +
+                ", company=" + company +
+                ", country=" + country +
+                ", email=" + email +
+                ", firstName=" + firstName +
+                ", id=" + id +
+                ", lastName=" + lastName +
+                ", nickname=" + nickname +
+                ", phone=" + phone +
+                ", state=" + state +
+                ", updatedAt=" + updatedAt +
+                ", zip=" + zip +
+                ", geoCode='" + geoCode + '\'' +
+                ", vatNumber=" + vatNumber +
+                '}';
+        return sb;
     }
 
     @Override

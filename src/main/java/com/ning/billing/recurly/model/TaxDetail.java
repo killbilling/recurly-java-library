@@ -72,14 +72,13 @@ public class TaxDetail extends RecurlyObject{
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("TaxDetail{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", type='").append(type).append('\'');
-        sb.append(", taxRate=").append(taxRate);
-        sb.append(", taxInCents=").append(taxInCents);
-        sb.append('}');
-        return sb.toString();
+        String sb = "TaxDetail{" +
+                "name='" + name + '\'' +
+                ", type='" + type + '\'' +
+                ", taxRate=" + taxRate +
+                ", taxInCents=" + taxInCents +
+                '}';
+        return sb;
     }
 
     @Override

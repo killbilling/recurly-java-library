@@ -95,7 +95,7 @@ public class TestSubscription extends TestModelBase {
         verifyPendingSubscription(subscription);
         Assert.assertEquals(subscription.getAddOns().size(), 0);
 
-        ArrayList<String> codes = new ArrayList<String>();
+        ArrayList<String> codes = new ArrayList<>();
         codes.add("123");
         codes.add("abc");
         assertEquals(subscription.getCouponCodes(), codes);
@@ -239,7 +239,7 @@ public class TestSubscription extends TestModelBase {
     @Test(groups = "fast")
     public void testSerializationWithMultipleCoupon() throws Exception {
         Subscription subscription = TestUtils.createRandomSubscription(0);
-        ArrayList<String> codes = new ArrayList<String>();
+        ArrayList<String> codes = new ArrayList<>();
         codes.add("my-first-coupon");
         subscription.setCouponCodes(codes);
         String xmlString = xmlMapper.writeValueAsString(subscription);

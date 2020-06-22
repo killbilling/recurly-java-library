@@ -80,7 +80,7 @@ public class TestSubscriptions extends TestModelBase {
         Assert.assertNull(subscription.getPlanCode());
         Assert.assertEquals(subscription.getPlan().getPlanCode(), "gold");
 
-        List<String> coupons = new ArrayList<String>(Arrays.asList("abc", "123"));
+        List<String> coupons = new ArrayList<>(Arrays.asList("abc", "123"));
         Assert.assertEquals(subscription.getCouponCodes(), coupons);
     }
 }

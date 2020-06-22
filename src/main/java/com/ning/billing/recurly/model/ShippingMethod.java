@@ -99,16 +99,15 @@ public class ShippingMethod extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("ShippingMethod");
-        sb.append("{code=").append(code);
-        sb.append(", name=").append(name);
-        sb.append(", accountingCode=").append(accountingCode);
-        sb.append(", taxCode=").append(taxCode);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append('}');
-        return sb.toString();
+        String sb = "ShippingMethod" +
+                "{code=" + code +
+                ", name=" + name +
+                ", accountingCode=" + accountingCode +
+                ", taxCode=" + taxCode +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+        return sb;
     }
 
     @Override

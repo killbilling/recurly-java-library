@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -49,7 +50,7 @@ public class RecurlyJs {
      * @return signature string on success, null otherwise
      */
     public static String getRecurlySignature(String privateJsKey) {
-        return getRecurlySignature(privateJsKey, new ArrayList<String>());
+        return getRecurlySignature(privateJsKey, new ArrayList<>());
     }
 
     /**
@@ -82,7 +83,7 @@ public class RecurlyJs {
      */
     public static String getRecurlySignature(String privateJsKey, Long unixTime, String nonce, List<String> extraParams) {
         // Mandatory parameters shared by all signatures (as per spec)
-        extraParams = (extraParams == null) ? new ArrayList<String>() : extraParams;
+        extraParams = (extraParams == null) ? new ArrayList<>() : extraParams;
         extraParams.add(String.format(PARAMETER_FORMAT, TIMESTAMP_PARAMETER, unixTime));
         extraParams.add(String.format(PARAMETER_FORMAT, NONCE_PARAMETER, nonce));
         String protectedParams = Joiner.on(PARAMETER_SEPARATOR).join(extraParams);
@@ -104,7 +105,7 @@ public class RecurlyJs {
             SecretKey sk = new SecretKeySpec(privateJsKey.getBytes(), "HmacSHA1");
             Mac mac = Mac.getInstance("HmacSHA1");
             mac.init(sk);
-            byte[] result = mac.doFinal(protectedParams.getBytes("UTF-8"));
+            byte[] result = mac.doFinal(protectedParams.getBytes(StandardCharsets.UTF_8));
             return BaseEncoding.base16().encode(result).toLowerCase();
         } catch (Exception e) {
             log.error("Error while trying to generate Recurly HMAC signature", e);

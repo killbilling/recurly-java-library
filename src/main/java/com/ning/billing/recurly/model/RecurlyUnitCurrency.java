@@ -269,27 +269,26 @@ public class RecurlyUnitCurrency {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("RecurlyUnitCurrency");
-        sb.append("{unitAmountUSD=").append(unitAmountUSD);
-        sb.append(", unitAmountAUD=").append(unitAmountAUD);
-        sb.append(", unitAmountCAD=").append(unitAmountCAD);
-        sb.append(", unitAmountEUR=").append(unitAmountEUR);
-        sb.append(", unitAmountGBP=").append(unitAmountGBP);
-        sb.append(", unitAmountCZK=").append(unitAmountCZK);
-        sb.append(", unitAmountDKK=").append(unitAmountDKK);
-        sb.append(", unitAmountHUF=").append(unitAmountHUF);
-        sb.append(", unitAmountNOK=").append(unitAmountNOK);
-        sb.append(", unitAmountNZD=").append(unitAmountNZD);
-        sb.append(", unitAmountPLN=").append(unitAmountPLN);
-        sb.append(", unitAmountSGD=").append(unitAmountSGD);
-        sb.append(", unitAmountSEK=").append(unitAmountSEK);
-        sb.append(", unitAmountCHF=").append(unitAmountCHF);
-        sb.append(", unitAmountZAR=").append(unitAmountZAR);
-        sb.append(", unitAmountJPY=").append(unitAmountJPY);
-        sb.append(", unitAmountINR=").append(unitAmountINR);
-        sb.append('}');
-        return sb.toString();
+        String sb = "RecurlyUnitCurrency" +
+                "{unitAmountUSD=" + unitAmountUSD +
+                ", unitAmountAUD=" + unitAmountAUD +
+                ", unitAmountCAD=" + unitAmountCAD +
+                ", unitAmountEUR=" + unitAmountEUR +
+                ", unitAmountGBP=" + unitAmountGBP +
+                ", unitAmountCZK=" + unitAmountCZK +
+                ", unitAmountDKK=" + unitAmountDKK +
+                ", unitAmountHUF=" + unitAmountHUF +
+                ", unitAmountNOK=" + unitAmountNOK +
+                ", unitAmountNZD=" + unitAmountNZD +
+                ", unitAmountPLN=" + unitAmountPLN +
+                ", unitAmountSGD=" + unitAmountSGD +
+                ", unitAmountSEK=" + unitAmountSEK +
+                ", unitAmountCHF=" + unitAmountCHF +
+                ", unitAmountZAR=" + unitAmountZAR +
+                ", unitAmountJPY=" + unitAmountJPY +
+                ", unitAmountINR=" + unitAmountINR +
+                '}';
+        return sb;
     }
 
     @Override

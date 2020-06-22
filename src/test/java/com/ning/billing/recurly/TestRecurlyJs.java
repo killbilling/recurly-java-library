@@ -46,7 +46,7 @@ public class TestRecurlyJs {
         final String mockNonce = "unique";
         final String expected = "aa2743b6e686bf50940881733f2da37b551804f5|subscription%5Bplan_code%5D=testsub&account%5Baccount_code%5D=johndoe123&timestamp=1329942896&nonce=unique";
 
-        ArrayList<String> customParams = new ArrayList<String>();
+        ArrayList<String> customParams = new ArrayList<>();
         customParams.add(String.format(PARAMETER_FORMAT, SUBSCRIPTION_PARAMETER, "testsub"));
         customParams.add(String.format(PARAMETER_FORMAT, ACCOUNT_CODE_PARAMETER, "johndoe123"));
 

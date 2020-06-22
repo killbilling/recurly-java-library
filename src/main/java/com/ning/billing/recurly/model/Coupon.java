@@ -47,7 +47,7 @@ public class Coupon extends RecurlyObject {
     }
 
     public enum TemporalUnit {
-        day, week, month, year;
+        day, week, month, year
     }
 
     public enum Type {
@@ -482,17 +482,16 @@ public class Coupon extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Coupon");
-        sb.append("{name='").append(name).append('\'');
-        sb.append(", id=").append(id);
-        sb.append(", couponCode='").append(couponCode).append('\'');
-        sb.append(", discountType='").append(discountType).append('\'');
-        sb.append(", discountPercent='").append(discountPercent).append('\'');
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Coupon" +
+                "{name='" + name + '\'' +
+                ", id=" + id +
+                ", couponCode='" + couponCode + '\'' +
+                ", discountType='" + discountType + '\'' +
+                ", discountPercent='" + discountPercent + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+        return sb;
     }
 
     @Override

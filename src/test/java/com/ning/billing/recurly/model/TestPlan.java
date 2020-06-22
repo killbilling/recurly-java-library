@@ -81,7 +81,7 @@ public class TestPlan extends TestModelBase {
         Assert.assertEquals(plan.getUnitAmountInCents().getUnitAmountEUR(), new Integer(800));
         Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountUSD(), new Integer(6000));
         Assert.assertEquals(plan.getSetupFeeInCents().getUnitAmountEUR(), new Integer(4500));
-        Assert.assertEquals(plan.getTaxExempt(), new Boolean(false));
+        Assert.assertEquals(plan.getTaxExempt(), Boolean.FALSE);
         Assert.assertEquals(plan.getTaxCode(), "digital");
         Assert.assertNull(plan.getDescription());
         Assert.assertNull(plan.getSuccessLink());
@@ -148,7 +148,7 @@ public class TestPlan extends TestModelBase {
         Assert.assertNull(plan.getSetupFeeAccountingCode());
         Assert.assertEquals(plan.getRevenueScheduleType(), RevenueScheduleType.EVENLY);
         Assert.assertEquals(plan.getSetupFeeRevenueScheduleType(), RevenueScheduleType.EVENLY);
-        Assert.assertEquals(plan.getTaxExempt(), new Boolean(false));
+        Assert.assertEquals(plan.getTaxExempt(), Boolean.FALSE);
         Assert.assertEquals(plan.getTaxCode(), "digital");
     }
 

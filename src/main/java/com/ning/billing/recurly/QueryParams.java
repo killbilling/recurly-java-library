@@ -43,7 +43,7 @@ public class QueryParams {
 
         private final String type;
 
-        private Sort(final String type) {
+        Sort(final String type) {
             this.type = type;
         }
 
@@ -58,7 +58,7 @@ public class QueryParams {
 
         private final String type;
 
-        private Order(final String type) {
+        Order(final String type) {
             this.type = type;
         }
 
@@ -73,7 +73,7 @@ public class QueryParams {
 
         private final String type;
 
-       private DateTimeType(final String type) {
+       DateTimeType(final String type) {
            this.type = type;
        }
 
@@ -87,7 +87,7 @@ public class QueryParams {
 
         private final String type;
 
-        private BillingStatus(final String type) {
+        BillingStatus(final String type) {
             this.type = type;
         }
 
@@ -96,10 +96,10 @@ public class QueryParams {
         }
     }
 
-    private Map<String,String> params;
+    private final Map<String,String> params;
 
     public QueryParams() {
-        params = new HashMap<String, String>();
+        params = new HashMap<>();
 
         Integer pageSize;
 
@@ -158,7 +158,7 @@ public class QueryParams {
     @Override
     public String toString() {
         if (params.isEmpty()) return "";
-        final List<NameValuePair> pairList = new ArrayList<NameValuePair>(params.size());
+        final List<NameValuePair> pairList = new ArrayList<>(params.size());
         for (Map.Entry<String, String> entry : params.entrySet()) {
             pairList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }

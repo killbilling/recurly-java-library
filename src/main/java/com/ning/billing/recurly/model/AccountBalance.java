@@ -23,9 +23,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import com.google.common.primitives.Booleans;
-import org.joda.time.DateTime;
-
 @XmlRootElement(name = "account_balance")
 public class AccountBalance extends RecurlyObject {
 
@@ -52,11 +49,10 @@ public class AccountBalance extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AccountBalance{");
-        sb.append(", pastDue=").append(pastDue);
-        sb.append(", balanceInCents=").append(balanceInCents);
-        sb.append('}');
-        return sb.toString();
+        String sb = "AccountBalance{" + ", pastDue=" + pastDue +
+                ", balanceInCents=" + balanceInCents +
+                '}';
+        return sb;
     }
 
     @Override

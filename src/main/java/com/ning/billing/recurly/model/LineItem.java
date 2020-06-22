@@ -37,11 +37,10 @@ public class LineItem extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("LineItem");
-        sb.append("{adjustment=").append(adjustment);
-        sb.append('}');
-        return sb.toString();
+        String sb = "LineItem" +
+                "{adjustment=" + adjustment +
+                '}';
+        return sb;
     }
 
     @Override

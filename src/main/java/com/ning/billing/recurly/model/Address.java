@@ -158,21 +158,20 @@ public class Address extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Address{");
-        sb.append("firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
-        sb.append(", company='").append(company).append('\'');
-        sb.append(", address1='").append(address1).append('\'');
-        sb.append(", address2='").append(address2).append('\'');
-        sb.append(", city='").append(city).append('\'');
-        sb.append(", state='").append(state).append('\'');
-        sb.append(", zip=").append(zip);
-        sb.append(", country='").append(country).append('\'');
-        sb.append(", phone='").append(phone).append('\'');
-        sb.append(", geoCode='").append(geoCode).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "Address{" + "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", nameOnAccount='" + nameOnAccount + '\'' +
+                ", company='" + company + '\'' +
+                ", address1='" + address1 + '\'' +
+                ", address2='" + address2 + '\'' +
+                ", city='" + city + '\'' +
+                ", state='" + state + '\'' +
+                ", zip=" + zip +
+                ", country='" + country + '\'' +
+                ", phone='" + phone + '\'' +
+                ", geoCode='" + geoCode + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

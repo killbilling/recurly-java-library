@@ -510,49 +510,48 @@ public class Invoice extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Invoice{");
-        sb.append("account=").append(account);
-        sb.append(", originalInvoice='").append(originalInvoice).append('\'');
-        sb.append(", originalInvoices='").append(originalInvoices).append('\'');
-        sb.append(", uuid='").append(uuid).append('\'');
-        sb.append(", state='").append(state).append('\'');
-        sb.append(", invoiceNumber=").append(invoiceNumber);
-        sb.append(", invoiceNumberPrefix=").append(invoiceNumberPrefix);
-        sb.append(", poNumber=").append(poNumber);
-        sb.append(", vatNumber='").append(vatNumber).append('\'');
-        sb.append(", subtotalInCents=").append(subtotalInCents);
-        sb.append(", taxInCents=").append(taxInCents);
-        sb.append(", totalInCents=").append(totalInCents);
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", taxRegion=").append(taxRegion);
-        sb.append(", taxType=").append(taxType);
-        sb.append(", taxRate=").append(taxRate);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", closedAt=").append(closedAt);
-        sb.append(", collectionMethod='").append(collectionMethod).append('\'');
-        sb.append(", netTerms=").append(netTerms);
-        sb.append(", attemptNextCollectionAt=").append(attemptNextCollectionAt);
-        sb.append(", recoveryReason=").append(recoveryReason);
-        sb.append(", lineItems=").append(lineItems);
-        sb.append(", transactions=").append(transactions);
-        sb.append(", creditPayments=").append(creditPayments);
-        sb.append(", customerNotes='").append(customerNotes).append('\'');
-        sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
-        sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
-        sb.append(", gatewayCode='").append(gatewayCode).append('\'');
-        sb.append(", subtotalBeforeDiscountInCents=").append(subtotalBeforeDiscountInCents);
-        sb.append(", discountInCents=").append(discountInCents);
-        sb.append(", balanceInCents=").append(balanceInCents);
-        sb.append(", refundableTotalInCents=").append(refundableTotalInCents);
-        sb.append(", dueOn=").append(dueOn);
-        sb.append(", type=").append(type);
-        sb.append(", origin=").append(origin);
-        sb.append(", address=").append(address);
-        sb.append(", shippingAddress=").append(shippingAddress);
-        sb.append(", surchargeInCents=").append(surchargeInCents);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Invoice{" + "account=" + account +
+                ", originalInvoice='" + originalInvoice + '\'' +
+                ", originalInvoices='" + originalInvoices + '\'' +
+                ", uuid='" + uuid + '\'' +
+                ", state='" + state + '\'' +
+                ", invoiceNumber=" + invoiceNumber +
+                ", invoiceNumberPrefix=" + invoiceNumberPrefix +
+                ", poNumber=" + poNumber +
+                ", vatNumber='" + vatNumber + '\'' +
+                ", subtotalInCents=" + subtotalInCents +
+                ", taxInCents=" + taxInCents +
+                ", totalInCents=" + totalInCents +
+                ", currency='" + currency + '\'' +
+                ", taxRegion=" + taxRegion +
+                ", taxType=" + taxType +
+                ", taxRate=" + taxRate +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", closedAt=" + closedAt +
+                ", collectionMethod='" + collectionMethod + '\'' +
+                ", netTerms=" + netTerms +
+                ", attemptNextCollectionAt=" + attemptNextCollectionAt +
+                ", recoveryReason=" + recoveryReason +
+                ", lineItems=" + lineItems +
+                ", transactions=" + transactions +
+                ", creditPayments=" + creditPayments +
+                ", customerNotes='" + customerNotes + '\'' +
+                ", termsAndConditions='" + termsAndConditions + '\'' +
+                ", vatReverseChargeNotes='" + vatReverseChargeNotes + '\'' +
+                ", gatewayCode='" + gatewayCode + '\'' +
+                ", subtotalBeforeDiscountInCents=" + subtotalBeforeDiscountInCents +
+                ", discountInCents=" + discountInCents +
+                ", balanceInCents=" + balanceInCents +
+                ", refundableTotalInCents=" + refundableTotalInCents +
+                ", dueOn=" + dueOn +
+                ", type=" + type +
+                ", origin=" + origin +
+                ", address=" + address +
+                ", shippingAddress=" + shippingAddress +
+                ", surchargeInCents=" + surchargeInCents +
+                '}';
+        return sb;
     }
 
     @Override

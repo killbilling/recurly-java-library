@@ -402,7 +402,7 @@ public class Subscription extends AbstractSubscription {
 
     public void setCouponCode(final String couponCode) {
         this.couponCode = couponCode;
-        if (this.couponCodes == null) this.couponCodes = new ArrayList<String>();
+        if (this.couponCodes == null) this.couponCodes = new ArrayList<>();
         this.couponCodes.add(couponCode);
     }
 
@@ -593,59 +593,58 @@ public class Subscription extends AbstractSubscription {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Subscription");
-        sb.append("{account=").append(account);
-        sb.append(", plan=").append(plan);
-        sb.append(", uuid='").append(uuid).append('\'');
-        sb.append(", state='").append(state).append('\'');
-        sb.append(", unitAmountInCents=").append(unitAmountInCents);
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", quantity=").append(quantity);
-        sb.append(", couponCode=").append(couponCode);
-        sb.append(", couponCodes=").append(couponCodes);
-        sb.append(", activatedAt=").append(activatedAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", canceledAt=").append(canceledAt);
-        sb.append(", expiresAt=").append(expiresAt);
-        sb.append(", remainingBillingCycles=").append(remainingBillingCycles);
-        sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
-        sb.append(", currentPeriodEndsAt=").append(currentPeriodEndsAt);
-        sb.append(", trialStartedAt=").append(trialStartedAt);
-        sb.append(", trialEndsAt=").append(trialEndsAt);
-        sb.append(", startsAt=").append(startsAt);
-        sb.append(", addOns=").append(addOns);
-        sb.append(", pendingSubscription=").append(pendingSubscription);
-        sb.append(", firstRenewalDate=").append(firstRenewalDate);
-        sb.append(", bulk=").append(bulk);
-        sb.append(", revenueScheduleType=").append(revenueScheduleType);
-        sb.append(", giftCard=").append(giftCard);
-        sb.append(", taxInCents=").append(taxInCents);
-        sb.append(", taxRegion=").append(taxRegion);
-        sb.append(", taxType=").append(taxType);
-        sb.append(", taxRate=").append(taxRate);
-        sb.append(", shippingAddress=").append(shippingAddress);
-        sb.append(", shippingAddressId=").append(shippingAddressId);
-        sb.append(", shippingMethodCode=").append(shippingMethodCode);
-        sb.append(", shippingAmountInCents=").append(shippingAmountInCents);
-        sb.append(", startedWithGift=").append(startedWithGift);
-        sb.append(", convertedAt=").append(convertedAt);
-        sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
-        sb.append(", importedTrial=").append(importedTrial);
-        sb.append(", creditCustomerNotes=").append(creditCustomerNotes);
-        sb.append(", invoiceCollection=").append(invoiceCollection);
-        sb.append(", customFields=").append(customFields);
-        sb.append(", remainingPauseCycles=").append(remainingPauseCycles);
-        sb.append(", pausedAt=").append(pausedAt);
-        sb.append(", autoRenew=").append(autoRenew);
-        sb.append(", renewalBillingCycles=").append(renewalBillingCycles);
-        sb.append(", firstBillDate=").append(firstBillDate);
-        sb.append(", nextBillDate=").append(nextBillDate);
-        sb.append(", currentPeriodStartedAt=").append(currentPeriodStartedAt);
-        sb.append(", currentPeriodEndsAt=").append(currentPeriodEndsAt);
-        sb.append(", transactionType='").append(transactionType).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "Subscription" +
+                "{account=" + account +
+                ", plan=" + plan +
+                ", uuid='" + uuid + '\'' +
+                ", state='" + state + '\'' +
+                ", unitAmountInCents=" + unitAmountInCents +
+                ", currency='" + currency + '\'' +
+                ", quantity=" + quantity +
+                ", couponCode=" + couponCode +
+                ", couponCodes=" + couponCodes +
+                ", activatedAt=" + activatedAt +
+                ", updatedAt=" + updatedAt +
+                ", canceledAt=" + canceledAt +
+                ", expiresAt=" + expiresAt +
+                ", remainingBillingCycles=" + remainingBillingCycles +
+                ", currentPeriodStartedAt=" + currentPeriodStartedAt +
+                ", currentPeriodEndsAt=" + currentPeriodEndsAt +
+                ", trialStartedAt=" + trialStartedAt +
+                ", trialEndsAt=" + trialEndsAt +
+                ", startsAt=" + startsAt +
+                ", addOns=" + addOns +
+                ", pendingSubscription=" + pendingSubscription +
+                ", firstRenewalDate=" + firstRenewalDate +
+                ", bulk=" + bulk +
+                ", revenueScheduleType=" + revenueScheduleType +
+                ", giftCard=" + giftCard +
+                ", taxInCents=" + taxInCents +
+                ", taxRegion=" + taxRegion +
+                ", taxType=" + taxType +
+                ", taxRate=" + taxRate +
+                ", shippingAddress=" + shippingAddress +
+                ", shippingAddressId=" + shippingAddressId +
+                ", shippingMethodCode=" + shippingMethodCode +
+                ", shippingAmountInCents=" + shippingAmountInCents +
+                ", startedWithGift=" + startedWithGift +
+                ", convertedAt=" + convertedAt +
+                ", noBillingInfoReason=" + noBillingInfoReason +
+                ", importedTrial=" + importedTrial +
+                ", creditCustomerNotes=" + creditCustomerNotes +
+                ", invoiceCollection=" + invoiceCollection +
+                ", customFields=" + customFields +
+                ", remainingPauseCycles=" + remainingPauseCycles +
+                ", pausedAt=" + pausedAt +
+                ", autoRenew=" + autoRenew +
+                ", renewalBillingCycles=" + renewalBillingCycles +
+                ", firstBillDate=" + firstBillDate +
+                ", nextBillDate=" + nextBillDate +
+                ", currentPeriodStartedAt=" + currentPeriodStartedAt +
+                ", currentPeriodEndsAt=" + currentPeriodEndsAt +
+                ", transactionType='" + transactionType + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

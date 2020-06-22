@@ -28,10 +28,10 @@ import org.slf4j.LoggerFactory;
 
 public abstract class Notification extends RecurlyObject {
 
-    private static Logger log = LoggerFactory.getLogger(Notification.class);
-    private static Pattern ROOT_NAME = Pattern.compile("<(\\w+_notification)>");
+    private static final Logger log = LoggerFactory.getLogger(Notification.class);
+    private static final Pattern ROOT_NAME = Pattern.compile("<(\\w+_notification)>");
 
-    public static enum Type {
+    public enum Type {
         BillingInfoUpdatedNotification(com.ning.billing.recurly.model.push.account.BillingInfoUpdatedNotification.class),
         BillingInfoUpdateFailedNotification(com.ning.billing.recurly.model.push.account.BillingInfoUpdateFailedNotification.class),
         NewShippingAddressNotification(com.ning.billing.recurly.model.push.account.NewShippingAddressNotification.class),
@@ -98,7 +98,7 @@ public abstract class Notification extends RecurlyObject {
 
         private Class<? extends Notification> javaType;
 
-        private Type(final Class<? extends Notification> javaType) {
+        Type(final Class<? extends Notification> javaType) {
             this.javaType = javaType;
         }
 

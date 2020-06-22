@@ -354,7 +354,7 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(transaction.getMessage(), "Bogus Gateway: Forced success");
         Assert.assertEquals(transaction.getFailureType(), "Declined by the gateway");
         Assert.assertEquals(transaction.getGatewayErrorCodes(), "00");
-        Assert.assertNull(transaction.getReference());
+        Assert.assertEquals(transaction.getReference(),"");
         Assert.assertTrue(transaction.getTest());
         Assert.assertTrue(transaction.getRefundable());
         Assert.assertTrue(transaction.getVoidable());
@@ -379,10 +379,10 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(invoice.getUuid(), "ffc64d71d4b5404e93f13aac9c63b007");
         Assert.assertEquals(invoice.getSubscriptionIds().get(0), "40b8f5e99df03b8684b99d4993b6e088");
         Assert.assertEquals(invoice.getState(), "collected");
-        Assert.assertNull(invoice.getInvoiceNumberPrefix());
+        Assert.assertEquals(invoice.getInvoiceNumberPrefix(), "");
         Assert.assertEquals(invoice.getInvoiceNumber(), new Integer(1000));
         Assert.assertEquals(invoice.getPoNumber(), "PO-12345");
-        Assert.assertNull(invoice.getVatNumber());
+        Assert.assertEquals(invoice.getVatNumber(),"");
         Assert.assertEquals(invoice.getTotalInCents(), new Integer(1100));
         Assert.assertEquals(invoice.getCurrency(), "USD");
         Assert.assertEquals(invoice.getDate(), new DateTime("2014-01-01T20:20:29Z"));

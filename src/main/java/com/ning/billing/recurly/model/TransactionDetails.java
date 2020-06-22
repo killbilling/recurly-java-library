@@ -37,10 +37,9 @@ public class TransactionDetails extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("TransactionDetails{");
-        sb.append("account=").append(account);
-        sb.append('}');
-        return sb.toString();
+        String sb = "TransactionDetails{" + "account=" + account +
+                '}';
+        return sb;
     }
 
     @Override

@@ -109,17 +109,16 @@ public class AccountAcquisition extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Account{");
-        sb.append("href=").append(href);
-        sb.append(", costInCents=").append(costInCents);
-        sb.append(", currency=").append(currency);
-        sb.append(", channel=").append(channel);
-        sb.append(", subchannel=").append(subchannel);
-        sb.append(", campaign=").append(campaign);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Account{" + "href=" + href +
+                ", costInCents=" + costInCents +
+                ", currency=" + currency +
+                ", channel=" + channel +
+                ", subchannel=" + subchannel +
+                ", campaign=" + campaign +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+        return sb;
     }
 
     @Override

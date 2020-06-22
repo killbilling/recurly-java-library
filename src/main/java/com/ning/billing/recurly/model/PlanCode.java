@@ -16,7 +16,6 @@
 
 package com.ning.billing.recurly.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -43,10 +42,9 @@ public class PlanCode extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("PlanCode{");
-        sb.append("name=").append(name);
-        sb.append('}');
-        return sb.toString();
+        String sb = "PlanCode{" + "name=" + name +
+                '}';
+        return sb;
     }
 
     @Override

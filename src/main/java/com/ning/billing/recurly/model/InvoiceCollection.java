@@ -51,11 +51,10 @@ public class InvoiceCollection extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("InvoiceCollection{");
-        sb.append("chargeInvoice='").append(chargeInvoice).append('\'');
-        sb.append(", creditInvoices='").append(creditInvoices).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "InvoiceCollection{" + "chargeInvoice='" + chargeInvoice + '\'' +
+                ", creditInvoices='" + creditInvoices + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

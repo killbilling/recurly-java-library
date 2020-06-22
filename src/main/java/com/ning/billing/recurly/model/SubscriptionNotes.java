@@ -82,14 +82,13 @@ public class SubscriptionNotes extends AbstractSubscription {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Subscription{");
-        sb.append("termsAndConditions=").append(termsAndConditions).append('\'');
-        sb.append(", customerNotes=").append(customerNotes).append('\'');
-        sb.append(", vatReverseChargeNotes=").append(vatReverseChargeNotes).append('\'');
-        sb.append(", gatewayCode=").append(gatewayCode).append('\'');
-        sb.append(", customFields=").append(customFields);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Subscription{" + "termsAndConditions=" + termsAndConditions + '\'' +
+                ", customerNotes=" + customerNotes + '\'' +
+                ", vatReverseChargeNotes=" + vatReverseChargeNotes + '\'' +
+                ", gatewayCode=" + gatewayCode + '\'' +
+                ", customFields=" + customFields +
+                '}';
+        return sb;
     }
 
     @Override

@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlElement;
  */
 public class SubscriptionUpdate extends AbstractSubscription {
 
-    public static enum Timeframe {
+    public enum Timeframe {
         now,
         renewal,
         bill_date,

@@ -122,7 +122,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getCustomerNotes(), "Some notes");
         Assert.assertEquals(invoice.getTermsAndConditions(), "t and c");
         Assert.assertEquals((int) invoice.getNetTerms(), 0);
-        Assert.assertNull(invoice.getVatNumber());
+        Assert.assertEquals(invoice.getVatNumber(), "");
         Assert.assertEquals(invoice.getGatewayCode(), "Some Gateway Code");
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 9900);
         Assert.assertEquals((int) invoice.getTaxInCents(), 0);

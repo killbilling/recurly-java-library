@@ -117,18 +117,17 @@ public class Delivery extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Delivery");
-        sb.append("{ address='").append(address).append('\'');
-        sb.append(", deliverAt='").append(deliverAt).append('\'');
-        sb.append(", emailAddress='").append(emailAddress).append('\'');
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", gifterName='").append(gifterName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", method='").append(method).append('\'');
-        sb.append(", personalMessage='").append(personalMessage).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "Delivery" +
+                "{ address='" + address + '\'' +
+                ", deliverAt='" + deliverAt + '\'' +
+                ", emailAddress='" + emailAddress + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", gifterName='" + gifterName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", method='" + method + '\'' +
+                ", personalMessage='" + personalMessage + '\'' +
+                '}';
+        return sb;
     }
 
     @Override

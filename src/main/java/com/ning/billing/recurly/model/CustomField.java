@@ -49,11 +49,10 @@ public class CustomField extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("CustomField{");
-        sb.append("name=").append(name);
-        sb.append(", value=").append(value);
-        sb.append('}');
-        return sb.toString();
+        String sb = "CustomField{" + "name=" + name +
+                ", value=" + value +
+                '}';
+        return sb;
     }
 
     @Override

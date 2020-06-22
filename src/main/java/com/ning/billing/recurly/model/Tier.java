@@ -49,11 +49,10 @@ public class Tier extends RecurlyObject {
 
   @Override
   public String toString() {
-    final StringBuilder sb = new StringBuilder("Tier{");
-    sb.append("unitAmountInCents=").append(unitAmountInCents);
-    sb.append(", endingQuantity=").append(endingQuantity);
-    sb.append('}');
-    return sb.toString();
+      String sb = "Tier{" + "unitAmountInCents=" + unitAmountInCents +
+              ", endingQuantity=" + endingQuantity +
+              '}';
+      return sb;
   }
 
   @Override

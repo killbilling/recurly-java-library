@@ -191,23 +191,22 @@ public class AddOn extends AbstractAddOn {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AddOn{");
-        sb.append("name='").append(name).append('\'');
-        sb.append(", itemCode='").append(itemCode).append('\'');
-        sb.append(", measuredUnit='").append(measuredUnit).append('\'');
-        sb.append(", addOnType='").append(addOnType).append('\'');
-        sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
-        sb.append(", defaultQuantity=").append(defaultQuantity);
-        sb.append(", unitAmountInCents=").append(unitAmountInCents);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", taxCode=").append(taxCode);
-        sb.append(", accountingCode=").append(accountingCode);
-        sb.append(", optional=").append(optional);
-        sb.append(", tierType=").append(tierType);
-        sb.append(", tiers=").append(tiers);
-        sb.append('}');
-        return sb.toString();
+        String sb = "AddOn{" + "name='" + name + '\'' +
+                ", itemCode='" + itemCode + '\'' +
+                ", measuredUnit='" + measuredUnit + '\'' +
+                ", addOnType='" + addOnType + '\'' +
+                ", displayQuantityOnHostedPage=" + displayQuantityOnHostedPage +
+                ", defaultQuantity=" + defaultQuantity +
+                ", unitAmountInCents=" + unitAmountInCents +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", taxCode=" + taxCode +
+                ", accountingCode=" + accountingCode +
+                ", optional=" + optional +
+                ", tierType=" + tierType +
+                ", tiers=" + tiers +
+                '}';
+        return sb;
     }
 
     @Override

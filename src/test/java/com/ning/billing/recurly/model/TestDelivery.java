@@ -63,7 +63,7 @@ public class TestDelivery extends TestModelBase {
         final Address address = delivery.getAddress();
 
         Assert.assertEquals(address.getAddress1(), "400 Alabama St");
-        Assert.assertNull(address.getAddress2());
+        Assert.assertEquals(address.getAddress2(), "");
         Assert.assertEquals(address.getCity(), "San Francisco");
         Assert.assertEquals(address.getState(), "CA");
         Assert.assertEquals(address.getCountry(), "US");

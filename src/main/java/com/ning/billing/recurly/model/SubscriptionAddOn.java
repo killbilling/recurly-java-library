@@ -60,12 +60,11 @@ public class SubscriptionAddOn extends AbstractAddOn {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("SubscriptionAddOn{");
-        sb.append("unitAmountInCents=").append(unitAmountInCents);
-        sb.append(", quantity=").append(quantity);
-        sb.append(", gatewayCode=").append(gatewayCode);
-        sb.append('}');
-        return sb.toString();
+        String sb = "SubscriptionAddOn{" + "unitAmountInCents=" + unitAmountInCents +
+                ", quantity=" + quantity +
+                ", gatewayCode=" + gatewayCode +
+                '}';
+        return sb;
     }
 
     @Override

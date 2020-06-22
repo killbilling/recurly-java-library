@@ -27,7 +27,6 @@ import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.CustomField;
-import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.Delivery;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
@@ -52,11 +51,11 @@ import java.util.Random;
 
 public class TestUtils {
 
-    private static enum StringMode {
+    private enum StringMode {
         ALPHA,
         ALPHA_NUMERIC,
         NUMERIC,
-    };
+    }
 
     private static final char[] SYMBOLS;
 

@@ -109,16 +109,15 @@ public class CreditPayment extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("CreditPayment");
-        sb.append("{uuid='").append(uuid).append('\'');
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", voidedAt=").append(voidedAt);
-        sb.append(", appliedToInvoice=").append(appliedToInvoice);
-        sb.append('}');
-        return sb.toString();
+        String sb = "CreditPayment" +
+                "{uuid='" + uuid + '\'' +
+                ", currency='" + currency + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", voidedAt=" + voidedAt +
+                ", appliedToInvoice=" + appliedToInvoice +
+                '}';
+        return sb;
     }
 
     @Override

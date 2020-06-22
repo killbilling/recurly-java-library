@@ -60,13 +60,12 @@ public class AdjustmentRefund extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("AdjustmentRefund");
-        sb.append("{uuid='").append(uuid).append('\'');
-        sb.append(", quantity=").append(quantity);
-        sb.append(", prorate=").append(prorate);
-        sb.append('}');
-        return sb.toString();
+        String sb = "AdjustmentRefund" +
+                "{uuid='" + uuid + '\'' +
+                ", quantity=" + quantity +
+                ", prorate=" + prorate +
+                '}';
+        return sb;
     }
 
     @Override

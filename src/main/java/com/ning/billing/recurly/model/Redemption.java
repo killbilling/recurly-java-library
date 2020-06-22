@@ -177,22 +177,21 @@ public class Redemption extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Redemption");
-        sb.append("{accountCode=").append(accountCode);
-        sb.append(", subscriptionUuid=").append(subscriptionUuid);
-        sb.append(", coupon=").append(coupon);
-        sb.append(", account=").append(account);
-        sb.append(", uuid=").append(uuid);
-        sb.append(", single_use=").append(singleUse);
-        sb.append(", totalDiscountedInCents=").append(totalDiscountedInCents);
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", state='").append(state).append('\'');
-        sb.append(", couponCode='").append(couponCode).append('\'');
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Redemption" +
+                "{accountCode=" + accountCode +
+                ", subscriptionUuid=" + subscriptionUuid +
+                ", coupon=" + coupon +
+                ", account=" + account +
+                ", uuid=" + uuid +
+                ", single_use=" + singleUse +
+                ", totalDiscountedInCents=" + totalDiscountedInCents +
+                ", currency='" + currency + '\'' +
+                ", state='" + state + '\'' +
+                ", couponCode='" + couponCode + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+        return sb;
     }
 
     @Override

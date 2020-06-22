@@ -47,5 +47,5 @@ public enum AcquisitionChannel {
     @XmlEnumValue("public_relations")
     PUBLIC_RELATIONS,
     @XmlEnumValue("other")
-    OTHER;
+    OTHER
 }

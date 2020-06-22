@@ -68,18 +68,17 @@ public class Errors extends RecurlyObject {
             }
             this.recurlyErrors.add(error);
         } else {
-            this.recurlyErrors = (RecurlyErrors) recurlyErrors;
+            this.recurlyErrors = (RecurlyErrors) recurlyError;
         }
     }
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Errors{");
-        sb.append("transactionError=").append(transactionError);
-        sb.append(", transaction=").append(transaction);
-        sb.append(", recurlyErrors=").append(recurlyErrors);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Errors{" + "transactionError=" + transactionError +
+                ", transaction=" + transaction +
+                ", recurlyErrors=" + recurlyErrors +
+                '}';
+        return sb;
     }
 
     @Override

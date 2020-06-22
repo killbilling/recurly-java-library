@@ -44,7 +44,7 @@ public class Adjustments extends RecurlyObjects<Adjustment> {
 
         private final String type;
 
-        private AdjustmentType(final String type) {
+        AdjustmentType(final String type) {
             this.type = type;
         }
 
@@ -59,7 +59,7 @@ public class Adjustments extends RecurlyObjects<Adjustment> {
 
         private final String state;
 
-        private AdjustmentState(final String state) {
+        AdjustmentState(final String state) {
             this.state = state;
         }
 

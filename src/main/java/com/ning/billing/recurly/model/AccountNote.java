@@ -60,12 +60,11 @@ public class AccountNote extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("AccountNote{");
-        sb.append("account=").append(account.getAccountCode());
-        sb.append(", message=").append(message);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append('}');
-        return sb.toString();
+        String sb = "AccountNote{" + "account=" + account.getAccountCode() +
+                ", message=" + message +
+                ", createdAt=" + createdAt +
+                '}';
+        return sb;
     }
 
     @Override

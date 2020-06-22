@@ -432,45 +432,44 @@ public class Adjustment extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append("Adjustment");
-        sb.append("{account=").append(account);
-        sb.append(", uuid='").append(uuid).append('\'');
-        sb.append(", type=").append(type);
-        sb.append(", description='").append(description).append('\'');
-        sb.append(", accountingCode='").append(accountingCode).append('\'');
-        sb.append(", origin='").append(origin).append('\'');
-        sb.append(", unitAmountInCents=").append(unitAmountInCents);
-        sb.append(", quantity=").append(quantity);
-        sb.append(", discountInCents=").append(discountInCents);
-        sb.append(", taxInCents=").append(taxInCents);
-        sb.append(", taxType=").append(taxType);
-        sb.append(", taxRegion=").append(taxRegion);
-        sb.append(", taxRate=").append(taxRate);
-        sb.append(", taxCode=").append(taxCode);
-        sb.append(", taxExempt=").append(taxExempt);
-        sb.append(", taxDetails=").append(taxDetails);
-        sb.append(", totalInCents=").append(totalInCents);
-        sb.append(", currency='").append(currency).append('\'');
-        sb.append(", taxable=").append(taxable);
-        sb.append(", productCode=").append(productCode);
-        sb.append(", itemCode=").append(itemCode);
-        sb.append(", externalSku=").append(externalSku);
-        sb.append(", startDate=").append(startDate);
-        sb.append(", endDate=").append(endDate);
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", revenueScheduleType=").append(revenueScheduleType);
-        sb.append(", creditReasonCode=").append(creditReasonCode);
-        sb.append(", originalAdjustmentUuid=").append(originalAdjustmentUuid);
-        sb.append(", shippingAddress=").append(shippingAddress);
-        sb.append(", shippingAddressId=").append(shippingAddressId);
-        sb.append(", refundableTotalInCents=").append(refundableTotalInCents);
-        sb.append(", state=").append(state);
-        sb.append(", prorationRate=").append(prorationRate);
-        sb.append(", surchargeInCents=").append(surchargeInCents);
-        sb.append('}');
-        return sb.toString();
+        String sb = "Adjustment" +
+                "{account=" + account +
+                ", uuid='" + uuid + '\'' +
+                ", type=" + type +
+                ", description='" + description + '\'' +
+                ", accountingCode='" + accountingCode + '\'' +
+                ", origin='" + origin + '\'' +
+                ", unitAmountInCents=" + unitAmountInCents +
+                ", quantity=" + quantity +
+                ", discountInCents=" + discountInCents +
+                ", taxInCents=" + taxInCents +
+                ", taxType=" + taxType +
+                ", taxRegion=" + taxRegion +
+                ", taxRate=" + taxRate +
+                ", taxCode=" + taxCode +
+                ", taxExempt=" + taxExempt +
+                ", taxDetails=" + taxDetails +
+                ", totalInCents=" + totalInCents +
+                ", currency='" + currency + '\'' +
+                ", taxable=" + taxable +
+                ", productCode=" + productCode +
+                ", itemCode=" + itemCode +
+                ", externalSku=" + externalSku +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", revenueScheduleType=" + revenueScheduleType +
+                ", creditReasonCode=" + creditReasonCode +
+                ", originalAdjustmentUuid=" + originalAdjustmentUuid +
+                ", shippingAddress=" + shippingAddress +
+                ", shippingAddressId=" + shippingAddressId +
+                ", refundableTotalInCents=" + refundableTotalInCents +
+                ", state=" + state +
+                ", prorationRate=" + prorationRate +
+                ", surchargeInCents=" + surchargeInCents +
+                '}';
+        return sb;
     }
 
     @Override

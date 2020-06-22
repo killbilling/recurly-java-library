@@ -442,44 +442,43 @@ public class Account extends RecurlyObject {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("Account{");
-        sb.append("address=").append(address);
-        sb.append(", href=").append(href);
-        sb.append(", adjustments=").append(adjustments);
-        sb.append(", invoices=").append(invoices);
-        sb.append(", subscriptions=").append(subscriptions);
-        sb.append(", transactions=").append(transactions);
-        sb.append(", accountCode='").append(accountCode).append('\'');
-        sb.append(", parentAccountCode='").append(parentAccountCode).append('\'');
-        sb.append(", state='").append(state).append('\'');
-        sb.append(", username='").append(username).append('\'');
-        sb.append(", email='").append(email).append('\'');
-        sb.append(", ccEmails='").append(ccEmails).append('\'');
-        sb.append(", firstName='").append(firstName).append('\'');
-        sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", companyName='").append(this.getCompanyName()).append('\'');
-        sb.append(", acceptLanguage='").append(acceptLanguage).append('\'');
-        sb.append(", hostedLoginToken='").append(hostedLoginToken).append('\'');
-        sb.append(", createdAt=").append(createdAt);
-        sb.append(", updatedAt=").append(updatedAt);
-        sb.append(", closedAt=").append(closedAt);
-        sb.append(", billingInfo=").append(billingInfo);
-        sb.append(", taxExempt=").append(taxExempt);
-        sb.append(", exemptionCertificate='").append(exemptionCertificate).append('\'');
-        sb.append(", shippingAddresses=").append(shippingAddresses);
-        sb.append(", customFields=").append(customFields);
-        sb.append(", hasLiveSubscription=").append(hasLiveSubscription);
-        sb.append(", hasActiveSubscription=").append(hasActiveSubscription);
-        sb.append(", hasFutureSubscription=").append(hasFutureSubscription);
-        sb.append(", hasCanceledSubscription=").append(hasCanceledSubscription);
-        sb.append(", hasPastDueInvoice=").append(hasPastDueInvoice);
-        sb.append(", hasPausedSubscription=").append(hasPausedSubscription);
-        sb.append(", vatNumber=").append(vatNumber);
-        sb.append(", accountAcquisition=").append(accountAcquisition);
-        sb.append(", preferredLocale=").append(preferredLocale);
-        sb.append(", transactionType='").append(transactionType).append('\'');
-        sb.append('}');
-        return sb.toString();
+        String sb = "Account{" + "address=" + address +
+                ", href=" + href +
+                ", adjustments=" + adjustments +
+                ", invoices=" + invoices +
+                ", subscriptions=" + subscriptions +
+                ", transactions=" + transactions +
+                ", accountCode='" + accountCode + '\'' +
+                ", parentAccountCode='" + parentAccountCode + '\'' +
+                ", state='" + state + '\'' +
+                ", username='" + username + '\'' +
+                ", email='" + email + '\'' +
+                ", ccEmails='" + ccEmails + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", companyName='" + this.getCompanyName() + '\'' +
+                ", acceptLanguage='" + acceptLanguage + '\'' +
+                ", hostedLoginToken='" + hostedLoginToken + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", closedAt=" + closedAt +
+                ", billingInfo=" + billingInfo +
+                ", taxExempt=" + taxExempt +
+                ", exemptionCertificate='" + exemptionCertificate + '\'' +
+                ", shippingAddresses=" + shippingAddresses +
+                ", customFields=" + customFields +
+                ", hasLiveSubscription=" + hasLiveSubscription +
+                ", hasActiveSubscription=" + hasActiveSubscription +
+                ", hasFutureSubscription=" + hasFutureSubscription +
+                ", hasCanceledSubscription=" + hasCanceledSubscription +
+                ", hasPastDueInvoice=" + hasPastDueInvoice +
+                ", hasPausedSubscription=" + hasPausedSubscription +
+                ", vatNumber=" + vatNumber +
+                ", accountAcquisition=" + accountAcquisition +
+                ", preferredLocale=" + preferredLocale +
+                ", transactionType='" + transactionType + '\'' +
+                '}';
+        return sb;
     }
 
     @Override
