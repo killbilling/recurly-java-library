@@ -79,6 +79,7 @@ import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import com.ning.billing.recurly.util.http.SslUtils;
 
+import org.apache.commons.codec.net.URLCodec;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.NoHttpResponseException;
@@ -109,7 +110,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.net.ConnectException;
 import java.net.URI;
@@ -121,6 +121,7 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.BitSet;
 import java.util.List;
 
 public class RecurlyClient {
@@ -142,6 +143,22 @@ public class RecurlyClient {
     public static final String FETCH_RESOURCE = "/recurly_js/result";
 
     private static final Set<String> validHosts = ImmutableSet.of("recurly.com");
+
+    /**
+     * RFC-3986 unreserved characters used for standard URL encoding.<br>
+     * <a href="https://tools.ietf.org/html/rfc3986#section-2.3">Source</a>
+     */
+    private static final BitSet RFC_3986_SAFE_CHARS;
+    static {
+        RFC_3986_SAFE_CHARS = new BitSet(256);
+        RFC_3986_SAFE_CHARS.set('a', 'z' + 1);
+        RFC_3986_SAFE_CHARS.set('A', 'Z' + 1);
+        RFC_3986_SAFE_CHARS.set('0', '9' + 1);
+        RFC_3986_SAFE_CHARS.set('-');
+        RFC_3986_SAFE_CHARS.set('_');
+        RFC_3986_SAFE_CHARS.set('.');
+        RFC_3986_SAFE_CHARS.set('~');
+    }
 
     /**
      * Checks a system property to see if debugging output is
@@ -2691,16 +2708,12 @@ public class RecurlyClient {
     }
 
     /**
-     * (Not quite) RFC 3986 URL encoding. The vanilla {@link URLEncoder} does not work since
+     * RFC 3986 URL encoding. The vanilla {@link URLEncoder} does not work since
      * Recurly does not decode '+' back to ' '.
      */
     private static String urlEncode(String s) {
-        try {
-            return URLEncoder.encode(s, Charsets.UTF_8.name())
-                    .replace("+", "%20").replace("*", "%2A");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e); // should not happen
-        }
+        return new String(URLCodec.encodeUrl(RFC_3986_SAFE_CHARS, s.getBytes(Charsets.UTF_8)),
+                Charsets.UTF_8);
     }
 
 }
