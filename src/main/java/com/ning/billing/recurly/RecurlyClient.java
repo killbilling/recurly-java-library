@@ -2562,7 +2562,7 @@ public class RecurlyClient {
             }
 
             final Header locationHeader = response.getFirstHeader(HttpHeaders.LOCATION);
-            String location = locationHeader == null ? null : locationHeader.getValue();
+            final String location = locationHeader == null ? null : locationHeader.getValue();
             if (clazz == Coupons.class && location != null && !location.isEmpty()) {
                 final RecurlyObjects recurlyObjects = new Coupons();
                 recurlyObjects.setRecurlyClient(this);
