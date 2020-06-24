@@ -82,6 +82,7 @@ import com.google.common.net.HttpHeaders;
 
 import com.ning.billing.recurly.util.http.SslUtils;
 import com.ning.http.client.AsyncHttpClient;
+import com.ning.http.client.AsyncHttpClient.BoundRequestBuilder;
 import com.ning.http.client.AsyncHttpClientConfig;
 import com.ning.http.client.FluentCaseInsensitiveStringsMap;
 import com.ning.http.client.Response;
@@ -2381,9 +2382,11 @@ public class RecurlyClient {
 
     private <T> T doPUT(final String resource, final RecurlyObject payload, final Class<T> clazz, final QueryParams params) {
         final String xmlPayload;
+        String length = null;
         try {
             if (payload != null) {
                 xmlPayload = xmlMapper.writeValueAsString(payload);
+                length = String.valueOf(xmlPayload.getBytes().length);
             } else {
                 xmlPayload = null;
             }
@@ -2396,8 +2399,7 @@ public class RecurlyClient {
             log.warn("Unable to serialize {} object as XML: {}", clazz.getName(), payload.toString());
             return null;
         }
-
-        return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz);
+        return callRecurlySafeXmlContent(client.preparePut(baseUrl + resource).setBody(xmlPayload), clazz, length);
     }
 
     private FluentCaseInsensitiveStringsMap doHEAD(final String resource, QueryParams params) {
@@ -2437,7 +2439,7 @@ public class RecurlyClient {
 
     private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz) {
         try {
-            return callRecurlyXmlContent(builder, clazz);
+            return callRecurlyXmlContent(builder, clazz, null);
         } catch (IOException e) {
             log.warn("Error while calling Recurly", e);
             return null;
@@ -2463,13 +2465,42 @@ public class RecurlyClient {
         }
     }
 
-    private <T> T callRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz)
+  private <T> T callRecurlySafeXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz, String length) {
+    try {
+      return callRecurlyXmlContent(builder, clazz, length);
+    } catch (IOException e) {
+      log.warn("Error while calling Recurly", e);
+      return null;
+    } catch (ExecutionException e) {
+      // Extract the errors exception, if any
+      if (e.getCause() instanceof ConnectException) {
+        // See https://github.com/killbilling/recurly-java-library/issues/185
+        throw new ConnectionErrorException(e.getCause());
+      } else if (e.getCause() != null &&
+          e.getCause().getCause() != null &&
+          e.getCause().getCause() instanceof TransactionErrorException) {
+        throw (TransactionErrorException) e.getCause().getCause();
+      } else if (e.getCause() != null &&
+          e.getCause() instanceof TransactionErrorException) {
+        // See https://github.com/killbilling/recurly-java-library/issues/16
+        throw (TransactionErrorException) e.getCause();
+      }
+      log.error("Execution error", e);
+      return null;
+    } catch (InterruptedException e) {
+      log.error("Interrupted while calling Recurly", e);
+      return null;
+    }
+  }
+
+  private <T> T callRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz, String length)
+      throws IOException, ExecutionException, InterruptedException {
+    final Response response = getResponse(builder, length);
+    return doCallRecurlyXmlContent(builder, clazz, response);
+  }
+
+    private <T> T doCallRecurlyXmlContent(final AsyncHttpClient.BoundRequestBuilder builder, @Nullable final Class<T> clazz, Response response)
             throws IOException, ExecutionException, InterruptedException {
-        final Response response = clientRequestBuilderCommon(builder)
-                .addHeader("Accept", "application/xml")
-                .addHeader("Content-Type", "application/xml; charset=utf-8")
-                .execute()
-                .get();
 
         final InputStream in = response.getResponseBodyAsStream();
         try {
@@ -2559,7 +2590,19 @@ public class RecurlyClient {
         }
     }
 
-    private RecurlyAPIError createRecurlyAPIError(String payload, int statusCode) {
+  private Response getResponse(BoundRequestBuilder builder, String length)
+      throws InterruptedException, ExecutionException {
+    AsyncHttpClient.BoundRequestBuilder a = clientRequestBuilderCommon(builder)
+            .addHeader("Accept", "application/xml")
+            .addHeader("Content-Type", "application/xml; charset=utf-8");
+    if (length != null) {
+      a = a.addHeader("Content-Length", length);
+    }
+    return a.execute()
+            .get();
+  }
+
+  private RecurlyAPIError createRecurlyAPIError(String payload, int statusCode) {
         RecurlyAPIError recurlyError = new RecurlyAPIError();
         try {
             recurlyError = xmlMapper.readValue(payload, RecurlyAPIError.class);
