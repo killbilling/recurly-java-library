@@ -2389,6 +2389,7 @@ public class RecurlyClient {
                 length = String.valueOf(xmlPayload.getBytes().length);
             } else {
                 xmlPayload = null;
+                length = "0";
             }
 
             if (debug()) {
