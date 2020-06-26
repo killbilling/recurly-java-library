@@ -56,7 +56,7 @@ public class ResponseMetadata {
     }
 
     public int getStatusCode() {
-        return this.getStatusCode();
+        return this.statusCode;
     }
 
     @Override
