@@ -31,8 +31,11 @@ public class BillingInfo extends RecurlyObject {
     @XmlTransient
     public static final String BILLING_INFO_RESOURCE = "/billing_info";
 
-    @XmlAttribute(name = "type")
+    @XmlElement(name = "type")
     private String type;
+
+    @XmlAttribute(name = "type")
+    private String attributeType;
 
     @XmlElement(name = "account")
     private Account account;
@@ -148,11 +151,14 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "iban")
     private String iban;
 
+    @XmlElement(name = "sort_code")
+    private String sortCode;
+
     public String getType() {
-        return type;
+        return this.type == null ? this.attributeType : this.type;
     }
 
-    protected void setType(final Object type) {
+    public void setType(final Object type) {
         this.type = stringOrNull(type);
     }
 
@@ -475,6 +481,14 @@ public class BillingInfo extends RecurlyObject {
         this.iban = stringOrNull(iban);
     }
 
+    public String getSortCode() {
+        return sortCode;
+    }
+
+    public void setSortCode(final Object sortCode) {
+        this.sortCode = stringOrNull(sortCode);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -521,6 +535,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
         sb.append(", iban='").append(iban).append('\'');
+        sb.append(", sortCode='").append(sortCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -637,7 +652,13 @@ public class BillingInfo extends RecurlyObject {
         if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
             return false;
         }
-        if(iban != null ? !iban.equals(that.iban) : that.iban != null) {
+        if (iban != null ? !iban.equals(that.iban) : that.iban != null) {
+            return false;
+        }
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
+        if (sortCode != null ? !sortCode.equals(that.sortCode) : that.sortCode != null ) {
             return false;
         }
 
@@ -682,7 +703,8 @@ public class BillingInfo extends RecurlyObject {
                 amazonRegion,
                 threeDSecureActionResultTokenId,
                 transactionType,
-                iban
+                iban,
+                sortCode
         );
     }
 }

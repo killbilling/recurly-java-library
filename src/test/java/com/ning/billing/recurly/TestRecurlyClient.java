@@ -597,11 +597,25 @@ public class TestRecurlyClient {
         final BillingInfo billingInfoData = TestUtils.createRandomIbanBillingInfo();
         try {
             final Account account = recurlyClient.createAccount(accountData);
-            billingInfoData.setAccount(account);
-            recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            recurlyClient.createOrUpdateBillingInfo(account.getAccountCode(), billingInfoData);
             Assert.fail("Should have thrown transaction exception");
         } catch(TransactionErrorException e) {
             Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "no_gateway");
+            Assert.assertEquals(e.getErrors().getTransactionError().getMerchantMessage(), "There is no available payment gateway on your account capable of processing this transaction.");
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCreateAccountBacsBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBacsBillingInfo();
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            recurlyClient.createOrUpdateBillingInfo(account.getAccountCode(), billingInfoData);
+            Assert.fail("Should have thrown transaction exception");
+        } catch(TransactionErrorException e) {
+            Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "no_gateway");
+            Assert.assertEquals(e.getErrors().getTransactionError().getMerchantMessage(), "There is no available payment gateway on your account capable of processing this transaction.");
         }
     }
 

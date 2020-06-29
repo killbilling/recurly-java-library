@@ -431,16 +431,51 @@ public class TestUtils {
         return info;
     }
 
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use.
+     *
+     * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
+     */
     public static BillingInfo createRandomIbanBillingInfo() {
         return createRandomIbanBillingInfo(randomSeed());
     }
 
+    /**
+     * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use given a seed
+     *
+     * @param seed The RNG seed
+     * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
+     */
     public static BillingInfo createRandomIbanBillingInfo(final int seed) {
         final BillingInfo info = new BillingInfo();
         info.setIban("FR1420041010050500013M02606");
         info.setNameOnAccount(randomAlphaNumericString(10, seed));
         return info;
     }
+
+        /**
+     * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use.
+     *
+     * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
+     */
+    public static BillingInfo createRandomBacsBillingInfo() {
+      return createRandomBacsBillingInfo(randomSeed());
+  }
+
+  /**
+   * Creates a random {@link com.ning.billing.recurly.model.BillingInfo} object for testing use given a seed
+   *
+   * @param seed The RNG seed
+   * @return The random {@link com.ning.billing.recurly.model.BillingInfo} object
+   */
+  public static BillingInfo createRandomBacsBillingInfo(final int seed) {
+      final BillingInfo info = new BillingInfo();
+      info.setNameOnAccount("BACS");
+      info.setAccountNumber("12345678");
+      info.setType("bacs");
+      info.setSortCode("200000");
+      return info;
+  }
 
     /**
      * Creates a random {@link com.ning.billing.recurly.model.Item} object for testing use.
