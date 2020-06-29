@@ -116,6 +116,9 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "tax_code")
     private String taxCode;
 
+    @XmlElement(name = "allow_any_item_on_subscriptions")
+    private Boolean allowAnyItemOnSubscriptions;
+
     public String getPlanCode() {
         return planCode;
     }
@@ -340,6 +343,14 @@ public class Plan extends RecurlyObject {
         this.taxCode = stringOrNull(taxCode);
     }
 
+    public Boolean getAllowAnyItemOnSubscriptions() {
+        return this.allowAnyItemOnSubscriptions;
+    }
+
+    public void setAllowAnyItemOnSubscriptions(final Object allowAnyItemOnSubscriptions) {
+        this.allowAnyItemOnSubscriptions = booleanOrNull(allowAnyItemOnSubscriptions);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -372,6 +383,7 @@ public class Plan extends RecurlyObject {
         sb.append(", autoRenew=").append(autoRenew);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", taxCode=").append(taxCode);
+        sb.append(", allowAnyItemOnSubscriptions=").append(allowAnyItemOnSubscriptions);
         sb.append('}');
         return sb.toString();
     }
@@ -467,6 +479,9 @@ public class Plan extends RecurlyObject {
         if (taxCode != null ? taxCode.compareTo(plan.taxCode) != 0: plan.taxCode != null) {
             return false;
         }
+        if (allowAnyItemOnSubscriptions != null ? allowAnyItemOnSubscriptions.compareTo(plan.allowAnyItemOnSubscriptions) != 0: plan.allowAnyItemOnSubscriptions != null) {
+            return false;
+        }
 
         return true;
     }
@@ -501,7 +516,8 @@ public class Plan extends RecurlyObject {
                 trialRequiresBillingInfo,
                 autoRenew,
                 taxExempt,
-                taxCode
+                taxCode,
+                allowAnyItemOnSubscriptions
         );
     }
 }
