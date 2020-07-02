@@ -46,19 +46,19 @@ public class TestRecurlyClientUserAgent {
     public void testUnreleasedVersion() throws Exception {
         final Properties gitRepositoryState = new Properties();
         gitRepositoryState.put(RecurlyClient.GIT_COMMIT_ID_DESCRIBE_SHORT, "recurly-java-library-0.2.4-12");
-        Assert.assertEquals(recurlyClient.getVersionFromGitRepositoryState(gitRepositoryState), "0.2.4");
+        Assert.assertEquals(RecurlyClient.getVersionFromGitRepositoryState(gitRepositoryState), "0.2.4");
     }
 
     @Test(groups = "fast")
     public void testReleasedVersion() throws Exception {
         final Properties gitRepositoryState = new Properties();
         gitRepositoryState.put(RecurlyClient.GIT_COMMIT_ID_DESCRIBE_SHORT, "recurly-java-library-0.2.5");
-        Assert.assertEquals(recurlyClient.getVersionFromGitRepositoryState(gitRepositoryState), "0.2.5");
+        Assert.assertEquals(RecurlyClient.getVersionFromGitRepositoryState(gitRepositoryState), "0.2.5");
     }
 
     @Test(groups = "fast")
     public void testEmptyGitRepositoryState() throws Exception {
         final Properties gitRepositoryState = new Properties();
-        Assert.assertNull(recurlyClient.getVersionFromGitRepositoryState(gitRepositoryState));
+        Assert.assertNull(RecurlyClient.getVersionFromGitRepositoryState(gitRepositoryState));
     }
 }
