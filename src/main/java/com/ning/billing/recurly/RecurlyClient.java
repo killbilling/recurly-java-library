@@ -123,6 +123,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.BitSet;
 import java.util.List;
+import java.util.Locale;
 
 public class RecurlyClient {
 
@@ -209,7 +210,7 @@ public class RecurlyClient {
 
     public RecurlyClient(final String apiKey, final String scheme, final String host, final int port, final String version) {
         this.key = BaseEncoding.base64().encode(apiKey.getBytes(Charsets.UTF_8));
-        this.baseUrl = String.format("%s://%s:%d/%s", scheme, host, port, version);
+        this.baseUrl = String.format(Locale.ROOT, "%s://%s:%d/%s", scheme, host, port, version);
         this.userAgent = buildUserAgent();
         this.rateLimitRemaining = -1;
         loggerWarning();
@@ -2660,7 +2661,7 @@ public class RecurlyClient {
         host = host.substring(host.indexOf(".")+1);
 
         if (!validHosts.contains(host)) {
-            String exc = String.format("Attempted to make call to %s instead of Recurly", host);
+            String exc = String.format(Locale.ROOT, "Attempted to make call to %s instead of Recurly", host);
             throw new RuntimeException(exc);
         }
     }
@@ -2691,9 +2692,9 @@ public class RecurlyClient {
 
             final String version = MoreObjects.firstNonNull(getVersionFromGitRepositoryState(gitRepositoryState), defaultVersion);
             final String javaVersion = MoreObjects.firstNonNull(StandardSystemProperty.JAVA_VERSION.value(), defaultJavaVersion);
-            return String.format("KillBill/%s; %s", version, javaVersion);
+            return String.format(Locale.ROOT, "KillBill/%s; %s", version, javaVersion);
         } catch (final Exception e) {
-            return String.format("KillBill/%s; %s", defaultVersion, defaultJavaVersion);
+            return String.format(Locale.ROOT, "KillBill/%s; %s", defaultVersion, defaultJavaVersion);
         }
     }
 

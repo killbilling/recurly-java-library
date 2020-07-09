@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import com.ning.billing.recurly.model.Account;
@@ -98,11 +99,11 @@ public class TestRecurlyClient {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
                         " -Dkillbill.payment.recurly.apiKey=...");
         }
-        
+
         if (subDomainTemp == null) {
           subDomainTemp = "api";
         }
-        
+
         final String subDomain = subDomainTemp;
 
         recurlyClient = new RecurlyClient(apiKey, subDomain);
@@ -267,13 +268,13 @@ public class TestRecurlyClient {
             // Fetch the corresponding invoice
             final Invoice subInvoice = subscriptionWithAddons.getInvoice();
             Assert.assertNotNull(subInvoice);
-            
+
             // Refetch the invoice using the getInvoice method
             final String invoiceID = subInvoice.getId();
             final Invoice gotInvoice = recurlyClient.getInvoice(invoiceID);
 
             Assert.assertEquals(subInvoice.hashCode(), gotInvoice.hashCode());
-            
+
             // Remove all addons
             final SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate();
             subscriptionUpdate.setAddOns(new SubscriptionAddOns());
@@ -653,7 +654,7 @@ public class TestRecurlyClient {
     @Test(groups = "integration")
     public void testCreateItem() throws Exception {
         final Item itemData = TestUtils.createRandomItem();
-        
+
         try {
             // Create an item
             final Item item = recurlyClient.createItem(itemData);
@@ -947,7 +948,7 @@ public class TestRecurlyClient {
 
             // Create a plan
             final Plan plan = recurlyClient.createPlan(planData);
-            
+
             // Set up a subscription to invoice
             final Subscription invoiceSubscription = new Subscription();
             invoiceSubscription.setPlanCode(plan.getPlanCode());
@@ -1414,7 +1415,7 @@ public class TestRecurlyClient {
     public void testBulkCoupons() throws Exception {
         final Coupon couponData = TestUtils.createRandomCoupon();
         couponData.setType(Coupon.Type.bulk);
-        couponData.setUniqueCodeTemplate(String.format("'%s'99999", couponData.getCouponCode()));
+        couponData.setUniqueCodeTemplate(String.format(Locale.ROOT, "'%s'99999", couponData.getCouponCode()));
 
         Coupon coupon = recurlyClient.createCoupon(couponData);
 
@@ -1987,7 +1988,7 @@ public class TestRecurlyClient {
 
         billingInfoData.setAccount(null); // null out random account fixture
         accountData.setBillingInfo(billingInfoData); // add the billing info to account data
- 
+
         try {
             final Plan plan = recurlyClient.createPlan(planData);
             final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
