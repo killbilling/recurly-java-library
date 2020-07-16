@@ -496,7 +496,9 @@ public class BillingInfo extends RecurlyObject {
 
         // Prevent infinite loop when printing account.
         // See https://github.com/killbilling/recurly-java-library/issues/326
-	// See https://github.com/killbilling/recurly-java-library/issues/405
+	    
+	// Prevent Null Pointer Exception when printing updated billing info
+       // See https://github.com/killbilling/recurly-java-library/issues/405
         Account account = getAccount();
 		if (account != null && account.getBillingInfo() != null && this.getHref() != null
 				&& this.getHref().equals(account.getBillingInfo().getHref())) {
