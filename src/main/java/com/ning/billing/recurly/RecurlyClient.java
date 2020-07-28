@@ -105,6 +105,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
+import javax.net.ssl.SSLException;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -2491,7 +2492,7 @@ public class RecurlyClient {
             return callRecurlyXmlContent(builder, clazz);
         } catch (IOException e) {
             if (e instanceof ConnectException || e instanceof NoHttpResponseException
-                    || e instanceof ConnectTimeoutException) {
+                    || e instanceof ConnectTimeoutException || e instanceof SSLException) {
                 // See https://github.com/killbilling/recurly-java-library/issues/185
                 throw new ConnectionErrorException(e);
             }
