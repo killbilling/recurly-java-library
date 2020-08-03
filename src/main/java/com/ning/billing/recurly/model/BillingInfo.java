@@ -154,6 +154,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "sort_code")
     private String sortCode;
 
+    @XmlElement(name = "bsb_code")
+    private String bsbCode;
+
     public String getType() {
         return this.type == null ? this.attributeType : this.type;
     }
@@ -489,6 +492,14 @@ public class BillingInfo extends RecurlyObject {
         this.sortCode = stringOrNull(sortCode);
     }
 
+    public String getBsbCode() {
+        return bsbCode;
+    }
+
+    public void setBsbCode(final Object bsbCode) {
+        this.bsbCode = stringOrNull(bsbCode);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -539,6 +550,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
         sb.append(", iban='").append(iban).append('\'');
         sb.append(", sortCode='").append(sortCode).append('\'');
+        sb.append(", bsbCode='").append(bsbCode).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -664,6 +676,9 @@ public class BillingInfo extends RecurlyObject {
         if (sortCode != null ? !sortCode.equals(that.sortCode) : that.sortCode != null ) {
             return false;
         }
+        if (bsbCode != null ? !bsbCode.equals(that.bsbCode) : that.bsbCode != null) {
+            return false;
+        }
 
         return true;
     }
@@ -707,7 +722,8 @@ public class BillingInfo extends RecurlyObject {
                 threeDSecureActionResultTokenId,
                 transactionType,
                 iban,
-                sortCode
+                sortCode,
+                bsbCode
         );
     }
 }
