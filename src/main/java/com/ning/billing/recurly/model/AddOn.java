@@ -70,10 +70,6 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "tier_type")
     private String tierType;
 
-    @XmlElementWrapper(name = "tiers")
-    @XmlElement(name = "tier")
-    protected Tiers tiers;
-
     public String getName() {
         return name;
     }
@@ -181,14 +177,6 @@ public class AddOn extends AbstractAddOn {
         this.tierType = stringOrNull(tierType);
     }
 
-    public Tiers getTiers() {
-        return tiers;
-    }
-
-    public void setTiers(final Tiers tiers) {
-        this.tiers = tiers;
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
@@ -205,7 +193,6 @@ public class AddOn extends AbstractAddOn {
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", optional=").append(optional);
         sb.append(", tierType=").append(tierType);
-        sb.append(", tiers=").append(tiers);
         sb.append('}');
         return sb.toString();
     }
@@ -258,10 +245,6 @@ public class AddOn extends AbstractAddOn {
             return false;
         }
 
-        if (tiers != null ? !tiers.equals(addOn.tiers) : addOn.tiers != null) {
-            return false;
-        }
-
         return true;
     }
 
@@ -280,8 +263,7 @@ public class AddOn extends AbstractAddOn {
                 taxCode,
                 accountingCode,
                 optional,
-                tierType,
-                tiers
+                tierType
         );
     }
 }

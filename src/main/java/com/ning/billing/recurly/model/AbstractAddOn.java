@@ -20,6 +20,7 @@ package com.ning.billing.recurly.model;
 import java.math.BigDecimal;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import com.google.common.base.Objects;
 
 public class AbstractAddOn extends RecurlyObject {
@@ -38,6 +39,10 @@ public class AbstractAddOn extends RecurlyObject {
 
     @XmlElement(name = "revenue_schedule_type")
     private RevenueScheduleType revenueScheduleType;
+
+    @XmlElementWrapper(name = "tiers")
+    @XmlElement(name = "tier")
+    protected Tiers tiers;
 
     public String getAddOnCode() {
         return addOnCode;
@@ -79,6 +84,14 @@ public class AbstractAddOn extends RecurlyObject {
         this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
     }
 
+    public Tiers getTiers() {
+        return tiers;
+    }
+
+    public void setTiers(final Tiers tiers) {
+        this.tiers = tiers;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AbstractAddOn{");
@@ -87,6 +100,7 @@ public class AbstractAddOn extends RecurlyObject {
         sb.append("usageType='").append(usageType).append('\'');
         sb.append("usagePercentage=").append(usagePercentage);
         sb.append(", revenueScheduleType='").append(revenueScheduleType).append('\'');
+        sb.append(", tiers=").append(tiers);
         sb.append('}');
         return sb.toString();
     }
@@ -118,6 +132,10 @@ public class AbstractAddOn extends RecurlyObject {
             return false;
         }
 
+        if (tiers != null ? !tiers.equals(that.tiers) : that.tiers != null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -128,7 +146,8 @@ public class AbstractAddOn extends RecurlyObject {
             measuredUnitId,
             usageType,
             usagePercentage,
-            revenueScheduleType
+            revenueScheduleType,
+            tiers
         );
                 
     }
