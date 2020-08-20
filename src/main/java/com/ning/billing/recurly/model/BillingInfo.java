@@ -157,6 +157,12 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "bsb_code")
     private String bsbCode;
 
+    @XmlElement(name = "tax_identifier")
+    private String taxIdentifier;
+
+    @XmlElement(name = "tax_identifier_type")
+    private String taxIdentifierType;
+
     public String getType() {
         return this.type == null ? this.attributeType : this.type;
     }
@@ -500,6 +506,21 @@ public class BillingInfo extends RecurlyObject {
         this.bsbCode = stringOrNull(bsbCode);
     }
 
+    public String getTaxIdentifier() {
+        return taxIdentifier; 
+    }
+
+    public void setTaxIdentifier(final Object taxIdentifier) {
+        this.taxIdentifier = stringOrNull(taxIdentifier);
+    }
+
+    public String getTaxIdentifierType() {
+      return taxIdentifierType; 
+    }
+
+    public void setTaxIdentifierType(final Object taxIdentifierType) {
+        this.taxIdentifierType = stringOrNull(taxIdentifierType);
+    }
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -551,6 +572,8 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", iban='").append(iban).append('\'');
         sb.append(", sortCode='").append(sortCode).append('\'');
         sb.append(", bsbCode='").append(bsbCode).append('\'');
+        sb.append(", taxIdentifier='").append(taxIdentifier).append('\'');
+        sb.append(", taxIdentifierType='").append(taxIdentifierType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -679,6 +702,12 @@ public class BillingInfo extends RecurlyObject {
         if (bsbCode != null ? !bsbCode.equals(that.bsbCode) : that.bsbCode != null) {
             return false;
         }
+        if (taxIdentifier != null ? !taxIdentifier.equals(that.taxIdentifier) : that.taxIdentifier != null) {
+            return false;
+        }
+        if (taxIdentifierType != null ? !taxIdentifierType.equals(that.taxIdentifierType) : that.taxIdentifierType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -723,7 +752,9 @@ public class BillingInfo extends RecurlyObject {
                 transactionType,
                 iban,
                 sortCode,
-                bsbCode
+                bsbCode,
+                taxIdentifier,
+                taxIdentifierType
         );
     }
 }
