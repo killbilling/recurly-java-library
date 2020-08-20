@@ -20,6 +20,7 @@ package com.ning.billing.recurly.model;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * Subscription object for update calls.
@@ -70,6 +71,10 @@ public class SubscriptionUpdate extends AbstractSubscription {
 
     @XmlElement(name = "auto_renew")
     private Boolean autoRenew;
+
+    @XmlElementWrapper(name = "subscription_add_ons")
+    @XmlElement(name = "subscription_add_on")
+    private SubscriptionAddOns addOns;
 
     public Timeframe getTimeframe() {
         return timeframe;
@@ -163,6 +168,14 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.autoRenew = booleanOrNull(autoRenew);
     }
 
+    public SubscriptionAddOns getAddOns() {
+        return addOns;
+    }
+
+    public void setAddOns(final SubscriptionAddOns addOns) {
+        this.addOns = addOns;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -209,6 +222,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (autoRenew != null ? !autoRenew.equals(that.autoRenew) : that.autoRenew != null) {
             return false;
         }
+        if (addOns != null ? !addOns.equals(that.addOns) : that.addOns != null) {
+          return false;
+        }
 
         return true;
     }
@@ -228,7 +244,8 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 remainingBillingCycles,
                 importedTrial,
                 renewalBillingCycles,
-                autoRenew
+                autoRenew,
+                addOns
         );
     }
 }
