@@ -25,7 +25,7 @@
     <groupId>com.sanvello</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.34.1-SNAPSHOT</version>
+    <version>0.35.0</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>http://github.com/pacifica-app/recurly-java-library</url>
