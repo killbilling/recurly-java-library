@@ -37,6 +37,7 @@ import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.BillingInfoVerification;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupon.RedemptionResource;
 import com.ning.billing.recurly.model.Coupons;
@@ -228,6 +229,43 @@ public class TestRecurlyClient {
         } finally {
             // Close the account
             recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testVerifyBillingInfoWithGatewayCode() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        billingInfoData.setAccount(null); // need to null out test account
+        accountData.setBillingInfo(billingInfoData);
+        final BillingInfoVerification gateway = new BillingInfoVerification();
+        gateway.setGatewayCode("bad-code");
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Transaction verifiedBillingInfo = recurlyClient.verifyBillingInfo(account.getAccountCode(), gateway);
+            Assert.fail("Should have thrown Recurly API exception");
+        } catch (RecurlyAPIException e) {
+            Assert.assertEquals(e.getRecurlyError().getSymbol(), "not_found");
+        } finally {
+          recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testVerifyBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        billingInfoData.setAccount(null); // need to null out test account
+        accountData.setBillingInfo(billingInfoData);
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Transaction verifiedBillingInfo = recurlyClient.verifyBillingInfo(account.getAccountCode());
+            Assert.assertEquals(verifiedBillingInfo.getOrigin(), "api_verify_card");
+            Assert.assertEquals(verifiedBillingInfo.getAction(), "verify");
+        } finally {
+          recurlyClient.closeAccount(accountData.getAccountCode());
         }
     }
 

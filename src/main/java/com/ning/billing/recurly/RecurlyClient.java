@@ -27,6 +27,7 @@ import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.BillingInfoVerification;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CreditPayments;
@@ -970,6 +971,34 @@ public class RecurlyClient {
      */
     public void clearBillingInfo(final String accountCode) {
         doDELETE(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfo.BILLING_INFO_RESOURCE);
+    }
+
+    /**
+     * Verify an account's billing info
+     * <p>
+     * Verifies an account's billing info without providing a specific gateway. 
+     * @param accountCode recurly account id
+     * @return the transaction generated from the verification
+     */
+
+    public Transaction verifyBillingInfo(final String accountCode) {
+      final String url = Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfo.BILLING_INFO_RESOURCE + "/verify";
+      final BillingInfoVerification gateway = new BillingInfoVerification();
+      return doPOST(url, gateway, Transaction.class);
+    }
+
+    /**
+     * Verify an account's billing info
+     * <p>
+     * Verifies an account's billing info using a gateway code param. 
+     * @param accountCode recurly account id
+     * @param gatewayVerification BillingInfoVerification object used to verify billing info
+     * @return the transaction generated from the verification
+     */
+
+    public Transaction verifyBillingInfo(final String accountCode, final BillingInfoVerification gatewayVerification) {
+      final String url = Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfo.BILLING_INFO_RESOURCE + "/verify";
+      return doPOST(url, gatewayVerification, Transaction.class);
     }
 
     ///////////////////////////////////////////////////////////////////////////
