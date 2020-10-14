@@ -637,7 +637,7 @@ public class RecurlyClient {
      */
     public void terminateSubscription(final Subscription subscription, final RefundOption refund) {
         doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscription.getUuid()) + "/terminate?refund=" + refund,
-              subscription, Subscription.class);
+              null, Subscription.class);
     }
 
     /**
