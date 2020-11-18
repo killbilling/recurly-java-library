@@ -151,6 +151,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "iban")
     private String iban;
 
+    @XmlElement(name = "last_two")
+    private String lastTwo;
+
     @XmlElement(name = "sort_code")
     private String sortCode;
 
@@ -490,6 +493,14 @@ public class BillingInfo extends RecurlyObject {
         this.iban = stringOrNull(iban);
     }
 
+    public String getLastTwo() {
+        return lastTwo;
+    }
+
+    public void setLastTwo(final Object lastTwo) {
+        this.lastTwo = stringOrNull(lastTwo);
+    }
+
     public String getSortCode() {
         return sortCode;
     }
@@ -570,6 +581,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
         sb.append(", iban='").append(iban).append('\'');
+        sb.append(", lastTwo='").append(lastTwo).append('\'');
         sb.append(", sortCode='").append(sortCode).append('\'');
         sb.append(", bsbCode='").append(bsbCode).append('\'');
         sb.append(", taxIdentifier='").append(taxIdentifier).append('\'');
@@ -693,6 +705,9 @@ public class BillingInfo extends RecurlyObject {
         if (iban != null ? !iban.equals(that.iban) : that.iban != null) {
             return false;
         }
+        if (lastTwo != null ? !lastTwo.equals(that.lastTwo) : that.lastTwo != null) {
+            return false;
+        }
         if (type != null ? !type.equals(that.type) : that.type != null) {
             return false;
         }
@@ -751,6 +766,7 @@ public class BillingInfo extends RecurlyObject {
                 threeDSecureActionResultTokenId,
                 transactionType,
                 iban,
+                lastTwo,
                 sortCode,
                 bsbCode,
                 taxIdentifier,

@@ -37,6 +37,12 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "item_code")
     private String itemCode;
 
+    @XmlElement(name = "item_state")
+    private String itemState;
+
+    @XmlElement(name = "external_sku")
+    private String externalSku;
+
     @XmlElement(name = "display_quantity_on_hosted_page")
     private Boolean displayQuantityOnHostedPage;
 
@@ -84,6 +90,22 @@ public class AddOn extends AbstractAddOn {
 
     public void setItemCode(final Object itemCode) {
         this.itemCode = stringOrNull(itemCode);
+    }
+
+    public String getItemState() {
+        return itemState;
+    }
+
+    public void setItemState(final Object itemState) {
+        this.itemState = stringOrNull(itemState);
+    }
+
+    public String getExternalSku() {
+        return externalSku;
+    }
+
+    public void setExternalSku(final Object externalSku) {
+        this.externalSku = stringOrNull(externalSku);
     }
 
     public Boolean getDisplayQuantityOnHostedPage() {
@@ -182,6 +204,8 @@ public class AddOn extends AbstractAddOn {
         final StringBuilder sb = new StringBuilder("AddOn{");
         sb.append("name='").append(name).append('\'');
         sb.append(", itemCode='").append(itemCode).append('\'');
+        sb.append(", itemState='").append(itemState).append('\'');
+        sb.append(", externalSku='").append(externalSku).append('\'');
         sb.append(", measuredUnit='").append(measuredUnit).append('\'');
         sb.append(", addOnType='").append(addOnType).append('\'');
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
@@ -240,7 +264,12 @@ public class AddOn extends AbstractAddOn {
         if (itemCode != null ? !itemCode.equals(addOn.itemCode) : addOn.itemCode != null) {
             return false;
         }
-
+        if (itemState != null ? !itemState.equals(addOn.itemState) : addOn.itemState != null) {
+            return false;
+        }  
+        if (externalSku != null ? !externalSku.equals(addOn.externalSku) : addOn.externalSku != null) {
+            return false;
+        }
         if (tierType != null ? !tierType.equals(addOn.tierType) : addOn.tierType != null) {
             return false;
         }
@@ -253,6 +282,8 @@ public class AddOn extends AbstractAddOn {
         return Objects.hashCode(
                 name,
                 itemCode,
+                itemState,
+                externalSku,
                 measuredUnit,
                 addOnType,
                 displayQuantityOnHostedPage,
