@@ -28,7 +28,7 @@
     <version>0.35.0</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
-    <url>http://github.com/pacifica-app/recurly-java-library</url>
+    <url>http://github.com/sanvello/recurly-java-library</url>
     <inceptionYear>2012</inceptionYear>
     <licenses>
         <license>
@@ -58,9 +58,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/pacifica-app/recurly-java-library.git</connection>
-        <developerConnection>scm:git:git@github.com:pacifica-app/recurly-java-library.git</developerConnection>
-        <url>http://github.com/pacifica-app/recurly-java-library/tree/master</url>
+        <connection>scm:git:git://github.com/sanvello/recurly-java-library.git</connection>
+        <developerConnection>scm:git:git@github.com:sanvello/recurly-java-library.git</developerConnection>
+        <url>http://github.com/sanvello/recurly-java-library/tree/master</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
