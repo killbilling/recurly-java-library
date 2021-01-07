@@ -1,4 +1,0 @@
-language: java
-script: ./scripts/test travis
-jdk:
-  - openjdk8
