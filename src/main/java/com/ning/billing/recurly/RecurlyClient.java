@@ -75,8 +75,6 @@ import com.google.common.base.MoreObjects;
 import com.google.common.base.StandardSystemProperty;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.io.BaseEncoding;
-import com.google.common.io.CharSource;
-import com.google.common.io.Resources;
 import com.google.common.net.HttpHeaders;
 import com.ning.billing.recurly.util.http.SslUtils;
 
@@ -110,6 +108,7 @@ import javax.annotation.Nullable;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.ConnectException;
@@ -212,7 +211,7 @@ public class RecurlyClient {
     public RecurlyClient(final String apiKey, final String scheme, final String host, final int port, final String version) {
         this.key = BaseEncoding.base64().encode(apiKey.getBytes(Charsets.UTF_8));
         this.baseUrl = String.format(Locale.ROOT, "%s://%s:%d/%s", scheme, host, port, version);
-        this.userAgent = buildUserAgent();
+        this.userAgent = UserAgentHolder.userAgent;
         this.rateLimitRemaining = -1;
         loggerWarning();
     }
@@ -2700,18 +2699,19 @@ public class RecurlyClient {
         return userAgent;
     }
 
-    private String buildUserAgent() {
+    private static String buildUserAgent() {
         final String defaultVersion = "0.0.0";
         final String defaultJavaVersion = "0.0.0";
 
         try {
             final Properties gitRepositoryState = new Properties();
-            final URL resourceURL = Resources.getResource(GIT_PROPERTIES_FILE);
-            final CharSource charSource = Resources.asCharSource(resourceURL, Charsets.UTF_8);
+            final URL resourceURL = MoreObjects.firstNonNull(
+                    Thread.currentThread().getContextClassLoader(),
+                    RecurlyClient.class.getClassLoader()).getResource(GIT_PROPERTIES_FILE);
 
             Reader reader = null;
             try {
-                reader = charSource.openStream();
+                reader = new InputStreamReader(resourceURL.openStream(), Charsets.UTF_8);
                 gitRepositoryState.load(reader);
             } finally {
                 if (reader != null) {
@@ -2728,7 +2728,7 @@ public class RecurlyClient {
     }
 
     @VisibleForTesting
-    String getVersionFromGitRepositoryState(final Properties gitRepositoryState) {
+    static String getVersionFromGitRepositoryState(final Properties gitRepositoryState) {
         final String gitDescribe = gitRepositoryState.getProperty(GIT_COMMIT_ID_DESCRIBE_SHORT);
         if (gitDescribe == null) {
             return null;
@@ -2744,6 +2744,17 @@ public class RecurlyClient {
     private static String urlEncode(String s) {
         return new String(URLCodec.encodeUrl(RFC_3986_SAFE_CHARS, s.getBytes(Charsets.UTF_8)),
                 Charsets.UTF_8);
+    }
+
+    /**
+     * Class that holds the cached user agent. This class exists so
+     * {@link RecurlyClient#buildUserAgent()} will only run when the first instance
+     * of {@link RecurlyClient} is created.
+     */
+    private static class UserAgentHolder {
+
+        private static final String userAgent = buildUserAgent();
+
     }
 
 }
