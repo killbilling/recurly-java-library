@@ -2174,7 +2174,7 @@ public class RecurlyClient {
     /**
      * Purchases endpoint
      * <p>
-     * https://dev.recurly.com/docs/create-purchase
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/createPurchase
      *
      * @param purchase The purchase data
      * @return The created invoice collection
@@ -2186,7 +2186,7 @@ public class RecurlyClient {
     /**
      * Purchases preview endpoint
      * <p>
-     * https://dev.recurly.com/docs/preview-purchase
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/previewPurchase
      *
      * @param purchase The purchase data
      * @return The preview invoice collection
@@ -2205,7 +2205,7 @@ public class RecurlyClient {
      + Payment Pages).
      *
      * <p>
-     * https://dev.recurly.com/docs/authorize-purchase
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/authorizePurchase
      *
      * @param purchase The purchase data
      * @return The authorized invoice collection
@@ -2221,7 +2221,7 @@ public class RecurlyClient {
      + but does not run any transactions.
      *
      * <p>
-     * https://dev.recurly.com/docs/pending-purchase
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/pendingPurchase
      *
      * @param purchase The purchase data
      * @return The authorized invoice collection
@@ -2231,9 +2231,37 @@ public class RecurlyClient {
     }
 
     /**
+     * Purchases capture endpoint.
+     * 
+     * Capture an open Authorization request
+     * 
+     * <p>
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/capturePurchase
+     * 
+     * @param transactionUuid UUID of the transaction to cancel
+     */
+    public InvoiceCollection capturePurchase(final String transactionUuid) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT + "/transaction-uuid-" + transactionUuid + "/capture", null, InvoiceCollection.class);
+    }
+
+    /**
+     * Purchases cancel endpoint.
+     * 
+     * Cancel an open Authorization request
+     * 
+     * <p>
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/cancelPurchase
+     * 
+     * @param transactionUuid UUID of the transaction to capture
+     */
+    public InvoiceCollection cancelPurchase(final String transactionUuid) {
+        return doPOST(Purchase.PURCHASES_ENDPOINT + "/transaction-uuid-" + transactionUuid + "/cancel", null, InvoiceCollection.class);
+    }
+
+    /**
      * Sets the acquisition details for an account
      * <p>
-     * https://dev.recurly.com/docs/create-account-acquisition
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/createAccountAcquisition
      *
      * @param accountCode The account's account code
      * @param acquisition The AccountAcquisition data
@@ -2247,7 +2275,7 @@ public class RecurlyClient {
     /**
      * Gets the acquisition details for an account
      * <p>
-     * https://dev.recurly.com/docs/create-account-acquisition
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/lookupAccountAcquisition
      *
      * @param accountCode The account's account code
      * @return The created AccountAcquisition object
@@ -2260,7 +2288,7 @@ public class RecurlyClient {
     /**
      * Updates the acquisition details for an account
      * <p>
-     * https://dev.recurly.com/docs/update-account-acquisition
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/updateAccountAcquisition
      *
      * @param accountCode The account's account code
      * @param acquisition The AccountAcquisition data
@@ -2274,7 +2302,7 @@ public class RecurlyClient {
     /**
      * Clear the acquisition details for an account
      * <p>
-     * https://dev.recurly.com/docs/clear-account-acquisition
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/clearAccountAcquisition
      *
      * @param accountCode The account's account code
      */
@@ -2323,7 +2351,7 @@ public class RecurlyClient {
     /**
      * Get Shipping Methods for the site
      * <p>
-     * https://dev.recurly.com/docs/list-shipping-methods
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/listShippingMethods
      *
      * @return ShippingMethods on success, null otherwise
      */
@@ -2334,7 +2362,7 @@ public class RecurlyClient {
     /**
      * Get Shipping Methods for the site
      * <p>
-     * https://dev.recurly.com/docs/list-shipping-methods
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/listShippingMethods
      *
      * @param params {@link QueryParams}
      * @return ShippingMethods on success, null otherwise
@@ -2346,7 +2374,7 @@ public class RecurlyClient {
     /**
      * Look up a shipping method
      * <p>
-     * https://dev.recurly.com/docs/lookup-shipping-method
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/lookupShippingMethod
      *
      * @param shippingMethodCode The code for the {@link ShippingMethod}
      * @return The {@link ShippingMethod} object as identified by the passed in code
@@ -2428,7 +2456,11 @@ public class RecurlyClient {
     private <T> T doPOST(final String resource, final RecurlyObject payload, final Class<T> clazz) {
         final String xmlPayload;
         try {
-            xmlPayload = RecurlyObject.sharedXmlMapper().writeValueAsString(payload);
+            if (payload != null) {
+                xmlPayload = RecurlyObject.sharedXmlMapper().writeValueAsString(payload);
+            } else {
+                xmlPayload = null;
+            }
             if (debug()) {
                 log.info("Msg to Recurly API [POST]:: URL : {}", baseUrl + resource);
                 log.info("Payload for [POST]:: {}", xmlPayload);
@@ -2549,7 +2581,7 @@ public class RecurlyClient {
                 RecurlyAPIError recurlyError = RecurlyAPIError.buildFromResponse(response);
 
                 if (response.getStatusLine().getStatusCode() == 422) {
-                    // 422 is returned for transaction errors (see https://dev.recurly.com/page/transaction-errors)
+                    // 422 is returned for transaction errors (see https://developers.recurly.com/pages/api-v2/transaction-errors.html)
                     // as well as bad input payloads
                     final Errors errors;
                     try {

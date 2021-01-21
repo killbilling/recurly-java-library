@@ -2135,7 +2135,75 @@ public class TestRecurlyClient {
         }
     }
 
-        @Test(groups = "integration")
+    @Test(groups = "integration")
+    public void testCapturePurchase() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(subscriptionData);
+
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setCurrency("USD");
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setCustomerNotes("Customer Notes");
+            purchaseData.setTermsAndConditions("Terms and Conditions");
+
+            final InvoiceCollection authorized = recurlyClient.authorizePurchase(purchaseData);
+            final Invoice chargeInvoice = authorized.getChargeInvoice();
+            final Transaction transaction = chargeInvoice.getTransactions().get(0);
+            final InvoiceCollection captured = recurlyClient.capturePurchase(transaction.getUuid());
+            Assert.assertEquals(captured.getChargeInvoice().getState(), "paid");
+        } finally {
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCancelPurchase() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(subscriptionData);
+
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setCurrency("USD");
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setCustomerNotes("Customer Notes");
+            purchaseData.setTermsAndConditions("Terms and Conditions");
+
+            final InvoiceCollection authorized = recurlyClient.authorizePurchase(purchaseData);
+            final Invoice chargeInvoice = authorized.getChargeInvoice();
+            final Transaction transaction = chargeInvoice.getTransactions().get(0);
+            final InvoiceCollection cancelled = recurlyClient.cancelPurchase(transaction.getUuid());
+            Assert.assertEquals(cancelled.getChargeInvoice().getState(), "failed");
+        } finally {
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
     public void testAccountAcquisition() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
 
