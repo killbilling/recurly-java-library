@@ -71,6 +71,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "auto_renew")
     private Boolean autoRenew;
 
+    @XmlElement(name = "billing_info")
+    private BillingInfo billingInfo;
+
     public Timeframe getTimeframe() {
         return timeframe;
     }
@@ -163,6 +166,14 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.autoRenew = booleanOrNull(autoRenew);
     }
 
+    public BillingInfo getBillingInfo() {
+        return billingInfo;
+    }
+
+    public void setBillingInfo(BillingInfo billingInfo) {
+        this.billingInfo = billingInfo;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -209,6 +220,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (autoRenew != null ? !autoRenew.equals(that.autoRenew) : that.autoRenew != null) {
             return false;
         }
+        if (billingInfo != null ? !billingInfo.equals(that.billingInfo) : that.billingInfo != null) {
+            return false;
+        }
 
         return true;
     }
@@ -228,7 +242,8 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 remainingBillingCycles,
                 importedTrial,
                 renewalBillingCycles,
-                autoRenew
+                autoRenew,
+                billingInfo
         );
     }
 }
