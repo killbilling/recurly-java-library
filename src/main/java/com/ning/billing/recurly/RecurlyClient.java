@@ -1527,6 +1527,18 @@ public class RecurlyClient {
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + urlEncode(invoiceId) + "/collect", request, Invoice.class);
     }
 
+        /**
+     * Force collect an invoice
+     *
+     * @param billingInfoUuid String The billing info uuid.
+     * @param invoiceId String Recurly Invoice ID
+     */
+    public Invoice forceCollectInvoiceWithBillingInfo(final String invoiceId, final String billingInfoUuid) {
+      Invoice request = new Invoice();
+      request.setBillingInfoUuid(billingInfoUuid);
+      return doPUT(Invoices.INVOICES_RESOURCE + "/" + urlEncode(invoiceId) + "/collect", request, Invoice.class);
+  }
+
     /**
      * Void Invoice
      *
