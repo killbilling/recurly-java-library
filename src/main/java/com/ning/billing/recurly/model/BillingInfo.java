@@ -40,6 +40,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "account")
     private Account account;
 
+    @XmlElement(name = "uuid")
+    private String uuid;
+
     @XmlElement(name = "name_on_account")
     private String nameOnAccount;
 
@@ -166,6 +169,12 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "tax_identifier_type")
     private String taxIdentifierType;
 
+    @XmlElement(name = "primary_payment_method")
+    private String primaryPaymentMethod;
+
+    @XmlElement(name = "backup_payment_method")
+    private String backupPaymentMethod;
+
     public String getType() {
         return this.type == null ? this.attributeType : this.type;
     }
@@ -203,6 +212,14 @@ public class BillingInfo extends RecurlyObject {
 
     public void setNameOnAccount(final Object nameOnAccount) {
         this.nameOnAccount = stringOrNull(nameOnAccount);
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(final Object uuid) {
+        this.uuid = stringOrNull(uuid);
     }
 
     public String getFirstName() {
@@ -532,6 +549,22 @@ public class BillingInfo extends RecurlyObject {
     public void setTaxIdentifierType(final Object taxIdentifierType) {
         this.taxIdentifierType = stringOrNull(taxIdentifierType);
     }
+
+    public String getPrimaryPaymentMethod() {
+      return primaryPaymentMethod; 
+    }
+
+    public void setPrimaryPaymentMethod(final Object primaryPaymentMethod) {
+        this.primaryPaymentMethod = stringOrNull(primaryPaymentMethod);
+    }
+
+    public String getBackupPaymentMethod() {
+      return backupPaymentMethod; 
+    }
+
+    public void setBackupPaymentMethod(final Object backupPaymentMethod) {
+        this.backupPaymentMethod = stringOrNull(backupPaymentMethod);
+    }
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -551,6 +584,7 @@ public class BillingInfo extends RecurlyObject {
 
         sb.append(", type='").append(type).append('\'');
         sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
+        sb.append(", uuid='").append(uuid);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", mandateReference='").append(mandateReference).append('\'');
@@ -586,6 +620,8 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", bsbCode='").append(bsbCode).append('\'');
         sb.append(", taxIdentifier='").append(taxIdentifier).append('\'');
         sb.append(", taxIdentifierType='").append(taxIdentifierType).append('\'');
+        sb.append(", primaryPaymentMethod='").append(primaryPaymentMethod).append('\'');
+        sb.append(", backupPaymentMethod='").append(backupPaymentMethod).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -601,6 +637,9 @@ public class BillingInfo extends RecurlyObject {
             return false;
         }
         if (nameOnAccount != null ? !nameOnAccount.equals(that.nameOnAccount) : that.nameOnAccount != null) {
+            return false;
+        }
+        if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
         if (address1 != null ? !address1.equals(that.address1) : that.address1 != null) {
@@ -723,6 +762,12 @@ public class BillingInfo extends RecurlyObject {
         if (taxIdentifierType != null ? !taxIdentifierType.equals(that.taxIdentifierType) : that.taxIdentifierType != null) {
             return false;
         }
+        if (primaryPaymentMethod != null ? !primaryPaymentMethod.equals(that.primaryPaymentMethod) : that.primaryPaymentMethod != null) {
+            return false;
+        }
+        if (backupPaymentMethod != null ? !backupPaymentMethod.equals(that.backupPaymentMethod) : that.backupPaymentMethod != null) {
+            return false;
+        }
 
         return true;
     }
@@ -732,6 +777,7 @@ public class BillingInfo extends RecurlyObject {
         return Objects.hashCode(
                 account,
                 nameOnAccount,
+                uuid,
                 firstName,
                 lastName,
                 mandateReference,
@@ -770,7 +816,9 @@ public class BillingInfo extends RecurlyObject {
                 sortCode,
                 bsbCode,
                 taxIdentifier,
-                taxIdentifierType
+                taxIdentifierType,
+                primaryPaymentMethod,
+                backupPaymentMethod
         );
     }
 }

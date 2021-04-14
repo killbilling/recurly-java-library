@@ -27,6 +27,7 @@ import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.BillingInfos;
 import com.ning.billing.recurly.model.BillingInfoVerification;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
@@ -918,6 +919,26 @@ public class RecurlyClient {
     public BillingInfo createOrUpdateBillingInfo(final String accountCode, final BillingInfo billingInfo) {
         return doPUT(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfo.BILLING_INFO_RESOURCE,
                      billingInfo, BillingInfo.class);
+    }
+
+    public BillingInfo createBillingInfo(final String accountCode, final BillingInfo billingInfo) {
+        return doPOST(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE,
+                   billingInfo, BillingInfo.class);
+    }
+
+    public BillingInfo updateBillingInfo(final String accountCode, final String uuid, final BillingInfo billingInfo) {
+        return doPUT(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + urlEncode(uuid),
+                   billingInfo, BillingInfo.class);
+    }
+
+    public BillingInfo getBillingInfoByUuid(final String accountCode, final String uuid) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + urlEncode(uuid),
+                  BillingInfo.class);
+    }
+
+    public BillingInfos getBillingInfos(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE,
+                  BillingInfos.class);
     }
 
     /**

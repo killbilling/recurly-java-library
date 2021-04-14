@@ -106,6 +106,10 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
+    @XmlElementWrapper(name = "billing_infos")
+    @XmlElement(name = "billing_info")
+    private BillingInfos billingInfos;
+
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
 
@@ -464,6 +468,7 @@ public class Account extends RecurlyObject {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", closedAt=").append(closedAt);
         sb.append(", billingInfo=").append(billingInfo);
+        sb.append(", billingInfos=").append(billingInfos);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", exemptionCertificate='").append(exemptionCertificate).append('\'');
         sb.append(", shippingAddresses=").append(shippingAddresses);
@@ -508,6 +513,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (billingInfo != null ? !billingInfo.equals(account.billingInfo) : account.billingInfo != null) {
+            return false;
+        }
+        if (billingInfos != null ? !billingInfos.equals(account.billingInfos) : account.billingInfos != null) {
             return false;
         }
         if (closedAt != null ? closedAt.compareTo(account.closedAt) != 0 : account.closedAt != null) {
@@ -623,6 +631,7 @@ public class Account extends RecurlyObject {
                 hostedLoginToken,
                 createdAt,
                 billingInfo,
+                billingInfos,
                 updatedAt,
                 taxExempt,
                 exemptionCertificate,
