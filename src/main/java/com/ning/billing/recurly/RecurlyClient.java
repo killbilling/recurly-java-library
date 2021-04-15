@@ -923,22 +923,26 @@ public class RecurlyClient {
 
     public BillingInfo createBillingInfo(final String accountCode, final BillingInfo billingInfo) {
         return doPOST(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE,
-                   billingInfo, BillingInfo.class);
+                     billingInfo, BillingInfo.class);
     }
 
     public BillingInfo updateBillingInfo(final String accountCode, final String uuid, final BillingInfo billingInfo) {
         return doPUT(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + urlEncode(uuid),
-                   billingInfo, BillingInfo.class);
+                     billingInfo, BillingInfo.class);
     }
 
     public BillingInfo getBillingInfoByUuid(final String accountCode, final String uuid) {
         return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + urlEncode(uuid),
-                  BillingInfo.class);
+                     BillingInfo.class);
     }
 
     public BillingInfos getBillingInfos(final String accountCode) {
         return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE,
                   BillingInfos.class);
+    }
+
+    public void deleteBillingInfo(final String accountCode, final String uuid) {
+        doDELETE(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + uuid);
     }
 
     /**
