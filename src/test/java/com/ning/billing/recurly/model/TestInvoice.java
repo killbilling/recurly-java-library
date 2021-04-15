@@ -150,6 +150,9 @@ public class TestInvoice extends TestModelBase {
 
         Assert.assertEquals(invoice.getAddress().getAddress1(), "123 Main St.");
         Assert.assertEquals(invoice.getShippingAddress().getAddress1(), "123 Canal St.");
+
+        // test setting billing info uuid
+        invoice.setBillingInfoUuid("iiznlrvdt8py");
     }
 
     @Test(groups = "fast")

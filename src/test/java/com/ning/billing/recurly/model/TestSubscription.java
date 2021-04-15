@@ -260,6 +260,14 @@ public class TestSubscription extends TestModelBase {
     }
 
     @Test(groups = "fast")
+    public void testSerializationWithBillingInfoUuid() throws Exception {
+        Subscription subscription = TestUtils.createRandomSubscription(0);
+        subscription.setBillingInfoUuid("aSpecialUuid");
+        String xmlString = xmlMapper.writeValueAsString(subscription);
+        assertTrue(xmlString.contains("<billing_info_uuid>aSpecialUuid</billing_info_uuid>"));
+    }
+
+    @Test(groups = "fast")
     public void testHashCodeAndEquality() throws Exception {
         // create subscriptions of the same value but difference references
         Subscription subscription = TestUtils.createRandomSubscription(0);
