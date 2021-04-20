@@ -152,6 +152,61 @@ public class TestPurchase extends TestModelBase {
     }
 
     @Test(groups = "fast")
+    public void testSerializationWithBillingInfoUuid() throws Exception {
+        final String purchaseData = "<purchase xmlns=\"\">" +
+                "<currency>USD</currency>" +
+                "  <collection_method>automatic</collection_method>" +
+                "  <net_terms type=\"integer\">30</net_terms>" +
+                "  <currency>USD</currency>" +
+                "  <customer_notes>Customer Notes</customer_notes>" +
+                "  <terms_and_conditions>Terms and Conditions</terms_and_conditions>" +
+                "  <vat_reverse_charge_notes>VAT Reverse Charge Notes</vat_reverse_charge_notes>" +
+                "  <shipping_address>\n" +
+                "      <first_name>Rumple</first_name>\n" +
+                "      <last_name>Violet</last_name>\n" +
+                "      <address1>43 Baobab Lane</address1>\n" +
+                "      <address2 nil=\"nil\"></address2>\n" +
+                "      <city>San Francisco</city>\n" +
+                "      <state>CA</state>\n" +
+                "      <zip>94105-1804</zip>\n" +
+                "      <country>US</country>\n" +
+                "      <phone nil=\"nil\"></phone>\n" +
+                "  </shipping_address>\n" +
+                "  <account>" +
+                "    <account_code>test</account_code>" +
+                "  </account>" +
+                "  <billing_info_uuid>iiznlrvdt8py</billing_info_uuid>" +
+                "  <subscriptions>" +
+                "    <subscription>" +
+                "       <plan_code>plan1</plan_code>" +
+                "    </subscription>" +
+                "    <subscription>" +
+                "       <plan_code>plan2</plan_code>" +
+                "    </subscription>" +
+                "  </subscriptions>" +
+                "  <coupon_codes>" +
+                "    <coupon_code>coupon1</coupon_code>" +
+                "    <coupon_code>coupon2</coupon_code>" +
+                "  </coupon_codes>" +
+                "  <gift_card>" +
+                "    <redemption_code>ABC1234</redemption_code>" +
+                "  </gift_card>" +
+                "</purchase>";
+
+        // test serialization
+        final Purchase purchase = xmlMapper.readValue(purchaseData, Purchase.class);
+        verifyPurchaseWithBillingInfoUuid(purchase);
+
+        // test deseralization
+        final Purchase purchaseExpected = xmlMapper.readValue(purchaseData, Purchase.class);
+        assertEquals(purchase, purchaseExpected);
+    }
+
+    public void verifyPurchaseWithBillingInfoUuid(final Purchase purchase) {
+        assertEquals(purchase.getBillingInfoUuid(), "iiznlrvdt8py");
+  }
+
+    @Test(groups = "fast")
     public void testHashCodeAndEquality() throws Exception {
         // create purchase of the same value but difference references
         final Purchase purchase = TestUtils.createRandomPurchase(0);

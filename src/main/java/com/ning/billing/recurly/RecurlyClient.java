@@ -27,6 +27,7 @@ import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.BillingInfos;
 import com.ning.billing.recurly.model.BillingInfoVerification;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
@@ -920,6 +921,30 @@ public class RecurlyClient {
                      billingInfo, BillingInfo.class);
     }
 
+    public BillingInfo createBillingInfo(final String accountCode, final BillingInfo billingInfo) {
+        return doPOST(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE,
+                     billingInfo, BillingInfo.class);
+    }
+
+    public BillingInfo updateBillingInfo(final String accountCode, final String uuid, final BillingInfo billingInfo) {
+        return doPUT(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + urlEncode(uuid),
+                     billingInfo, BillingInfo.class);
+    }
+
+    public BillingInfo getBillingInfoByUuid(final String accountCode, final String uuid) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + urlEncode(uuid),
+                     BillingInfo.class);
+    }
+
+    public BillingInfos getBillingInfos(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE,
+                  BillingInfos.class);
+    }
+
+    public void deleteBillingInfo(final String accountCode, final String uuid) {
+        doDELETE(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + BillingInfos.BILLING_INFOS_RESOURCE + "/" + uuid);
+    }
+
     /**
      * Update an account's billing info
      * <p>
@@ -1505,6 +1530,18 @@ public class RecurlyClient {
         request.setTransactionType(transactionType);
         return doPUT(Invoices.INVOICES_RESOURCE + "/" + urlEncode(invoiceId) + "/collect", request, Invoice.class);
     }
+
+        /**
+     * Force collect an invoice
+     *
+     * @param billingInfoUuid String The billing info uuid.
+     * @param invoiceId String Recurly Invoice ID
+     */
+    public Invoice forceCollectInvoiceWithBillingInfo(final String invoiceId, final String billingInfoUuid) {
+      Invoice request = new Invoice();
+      request.setBillingInfoUuid(billingInfoUuid);
+      return doPUT(Invoices.INVOICES_RESOURCE + "/" + urlEncode(invoiceId) + "/collect", request, Invoice.class);
+  }
 
     /**
      * Void Invoice

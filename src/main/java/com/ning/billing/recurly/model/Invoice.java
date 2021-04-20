@@ -55,6 +55,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "vat_number")
     private String vatNumber;
 
+    @XmlElement(name = "billing_info_uuid")
+    private String billingInfoUuid;
+
     @XmlElement(name = "subtotal_in_cents")
     private Integer subtotalInCents;
 
@@ -249,6 +252,14 @@ public class Invoice extends RecurlyObject {
 
     public void setVatNumber(final Object varNumber) {
         this.vatNumber = stringOrNull(varNumber);
+    }
+
+    public String getBillingInfoUuid() {
+      return billingInfoUuid;
+    }
+
+    public void setBillingInfoUuid(final Object billingInfoUuid) {
+        this.billingInfoUuid = stringOrNull(billingInfoUuid);
     }
 
     public Integer getSubtotalInCents() {
@@ -520,6 +531,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", invoiceNumberPrefix=").append(invoiceNumberPrefix);
         sb.append(", poNumber=").append(poNumber);
         sb.append(", vatNumber='").append(vatNumber).append('\'');
+        sb.append(", billingInfoUuid='").append(billingInfoUuid).append('\'');
         sb.append(", subtotalInCents=").append(subtotalInCents);
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", totalInCents=").append(totalInCents);
@@ -673,6 +685,9 @@ public class Invoice extends RecurlyObject {
         if (vatNumber != null ? !vatNumber.equals(invoice.vatNumber) : invoice.vatNumber != null) {
             return false;
         }
+        if (billingInfoUuid != null ? !billingInfoUuid.equals(invoice.billingInfoUuid) : invoice.billingInfoUuid != null) {
+            return false;
+        }
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(invoice.vatReverseChargeNotes) : invoice.vatReverseChargeNotes != null) {
             return false;
         }
@@ -698,6 +713,7 @@ public class Invoice extends RecurlyObject {
                 invoiceNumberPrefix,
                 poNumber,
                 vatNumber,
+                billingInfoUuid,
                 subtotalInCents,
                 totalInCents,
                 taxInCents,
