@@ -368,7 +368,7 @@
                 <artifactId>maven-source-plugin</artifactId>
                 <version>2.1.2</version>
                 <configuration>
-                    <attach>true</attach>
+                    <attach>false</attach>
                 </configuration>
                 <executions>
                     <execution>
