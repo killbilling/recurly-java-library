@@ -28,7 +28,7 @@
     <version>0.34.0.6</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
-    <url>http://github.com/mobitroll/recurly-java-library</url>
+    <url>https://github.com/mobitroll/recurly-java-library</url>
     <inceptionYear>2012</inceptionYear>
     <licenses>
         <license>
@@ -60,7 +60,7 @@
     <scm>
         <connection>scm:git:git://github.com/mobitroll/recurly-java-library.git</connection>
         <developerConnection>scm:git:git@github.com:mobitroll/recurly-java-library.git</developerConnection>
-        <url>http://github.com/mobitroll/recurly-java-library/tree/master</url>
+        <url>https://github.com/mobitroll/recurly-java-library/tree/master</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -70,15 +70,10 @@
     </properties>
     <distributionManagement>
         <repository>
-            <id>nexus</id>
-            <name>Releases</name>
-            <url>https://nexus.jx.jenkinsx.kahoost.com/repository/maven-releases</url>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/mobitroll/recurly-java-library</url>
         </repository>
-        <snapshotRepository>
-            <id>nexus</id>
-            <name>Snapshot</name>
-            <url>https://nexus.jx.jenkinsx.kahoost.com/repository/maven-snapshots</url>
-        </snapshotRepository>
     </distributionManagement>
     <dependencies>
         <dependency>
