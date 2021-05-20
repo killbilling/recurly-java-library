@@ -58,9 +58,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:git://github.com/mobitroll/recurly-java-library.git</connection>
-        <developerConnection>scm:git:git@github.com:mobitroll/recurly-java-library.git</developerConnection>
-        <url>https://github.com/mobitroll/recurly-java-library/tree/master</url>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <url>https://github.com/mobitroll/recurly-java-library.git</url>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
