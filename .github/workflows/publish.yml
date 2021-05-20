@@ -10,7 +10,7 @@ env:
 jobs:
   publish:
     name: Publish to GitHub Packages
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
