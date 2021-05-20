@@ -34,7 +34,7 @@ jobs:
 
       - name: Publish artifact
         run:  |
-          mvn --batch-mode deploy
+          mvn --batch-mode release:prepare
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
