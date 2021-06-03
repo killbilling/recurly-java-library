@@ -659,9 +659,9 @@ public class RecurlyClient {
      * @param subscription Subscription object
      * @return Subscription
      */
-    public Subscription postponeSubscription(final Subscription subscription, final DateTime renewaldate) {
+    public Subscription postponeSubscription(final Subscription subscription, final DateTime nextBillDate) {
         final QueryParams params = new QueryParams();
-        params.put("next_renewal_date", renewaldate.toString());
+        params.put("next_bill_date", nextBillDate.toString());
         return doPUT(Subscription.SUBSCRIPTION_RESOURCE + "/" + urlEncode(subscription.getUuid()) + "/postpone",
                      subscription, Subscription.class, params);
     }
