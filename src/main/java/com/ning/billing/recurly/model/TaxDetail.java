@@ -38,6 +38,12 @@ public class TaxDetail extends RecurlyObject{
     @XmlElement(name = "tax_in_cents")
     private Integer taxInCents;
 
+    @XmlElement(name = "tax_type")
+    private String taxType;
+
+    @XmlElement(name = "tax_region")
+    private String taxRegion;
+
     public String getName() {
         return name;
     }
@@ -70,6 +76,22 @@ public class TaxDetail extends RecurlyObject{
         this.taxInCents = integerOrNull(taxInCents);
     }
 
+    public String getTaxType() {
+        return taxType;
+    }
+
+    public void setTaxType(final Object taxType) {
+        this.taxType = stringOrNull(taxType);
+    }
+
+    public String getTaxRegion() {
+        return taxRegion;
+    }
+
+    public void setTaxRegion(final Object taxRegion) {
+        this.taxRegion = stringOrNull(taxRegion);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -78,6 +100,8 @@ public class TaxDetail extends RecurlyObject{
         sb.append(", type='").append(type).append('\'');
         sb.append(", taxRate=").append(taxRate);
         sb.append(", taxInCents=").append(taxInCents);
+        sb.append(", taxType=").append(taxType);
+        sb.append(", taxRegion=").append(taxRegion);
         sb.append('}');
         return sb.toString();
     }
@@ -101,6 +125,12 @@ public class TaxDetail extends RecurlyObject{
         if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
             return false;
         }
+        if (taxType != null ? !taxType.equals(that.taxType) : that.taxType != null) {
+            return false;
+        }
+        if (taxRegion != null ? !taxRegion.equals(that.taxRegion) : that.taxRegion != null) {
+            return false;
+        }
         return true;
     }
 
@@ -110,7 +140,9 @@ public class TaxDetail extends RecurlyObject{
             name,
             type,
             taxRate,
-            taxInCents
+            taxInCents,
+            taxType,
+            taxRegion
         );
     }
 
