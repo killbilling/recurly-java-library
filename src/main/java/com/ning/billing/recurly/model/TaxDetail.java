@@ -32,6 +32,12 @@ public class TaxDetail extends RecurlyObject{
     @XmlElement(name = "type")
     private String type;
 
+    @XmlElement(name = "level")
+    private String level;
+
+    @XmlElement(name = "billable")
+    private Boolean billable;
+
     @XmlElement(name = "tax_rate")
     private BigDecimal taxRate;
 
@@ -58,6 +64,22 @@ public class TaxDetail extends RecurlyObject{
 
     public void setType(final Object type) {
         this.type = stringOrNull(type);
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(final Object level) {
+        this.level = stringOrNull(level);
+    }
+
+    public Boolean getBillable() {
+        return billable;
+    }
+
+    public void setBillable(final Object billable) {
+        this.billable = booleanOrNull(billable);
     }
 
     public BigDecimal getTaxRate() {
@@ -98,10 +120,12 @@ public class TaxDetail extends RecurlyObject{
         sb.append("TaxDetail{");
         sb.append("name='").append(name).append('\'');
         sb.append(", type='").append(type).append('\'');
+        sb.append(", level='").append(level).append('\'');
+        sb.append(", billable=").append(billable);
         sb.append(", taxRate=").append(taxRate);
         sb.append(", taxInCents=").append(taxInCents);
-        sb.append(", taxType=").append(taxType);
-        sb.append(", taxRegion=").append(taxRegion);
+        sb.append(", taxType='").append(taxType).append('\'');
+        sb.append(", taxRegion='").append(taxRegion).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -117,6 +141,12 @@ public class TaxDetail extends RecurlyObject{
             return false;
         }
         if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
+        if (level != null ? !level.equals(that.level) : that.level != null) {
+            return false;
+        }
+        if (billable != null ? !billable.equals(that.billable) : that.billable != null) {
             return false;
         }
         if (taxRate != null ? !taxRate.equals(that.taxRate) : that.taxRate != null) {
@@ -139,6 +169,8 @@ public class TaxDetail extends RecurlyObject{
         return Objects.hashCode(
             name,
             type,
+            level,
+            billable,
             taxRate,
             taxInCents,
             taxType,

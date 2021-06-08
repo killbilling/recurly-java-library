@@ -54,6 +54,14 @@ public class TestInvoice extends TestModelBase {
                                    + "  <tax_type>usst</tax_type>\n"
                                    + "  <tax_region>CA</tax_region>\n"
                                    + "  <tax_rate type=\"float\">0.0875</tax_rate>\n"
+                                   + "  <tax_details type=\"array\">\n"
+                                   + "    <tax_detail>\n"
+                                   + "      <tax_type>GST</tax_type>\n"
+                                   + "      <tax_region>CA</tax_region>\n"
+                                   + "      <tax_rate type=\"float\">0.05</tax_rate>\n"
+                                   + "      <tax_in_cents type=\"integer\">20</tax_in_cents>\n"
+                                   + "    </tax_detail>\n"
+                                   + "  </tax_details>\n"
                                    + "  <surcharge_in_cents type=\"integer\">100</surcharge_in_cents>\n"
                                    + "  <created_at type=\"dateTime\">2011-08-25T12:00:00Z</created_at>\n"
                                    + "  <updated_at type=\"dateTime\">2011-08-25T12:00:00Z</updated_at>\n"
@@ -139,6 +147,13 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getInvoiceNumberPrefix(), "FR");
         Assert.assertEquals(invoice.getId(), "FR1402");
         Assert.assertEquals(invoice.getSurchargeInCents(), new Integer(100));
+
+        Assert.assertEquals(invoice.getTaxDetails().size(), 1);
+        TaxDetail taxDetail = invoice.getTaxDetails().get(0);
+        Assert.assertEquals(taxDetail.getTaxRate(), 0.05);
+        Assert.assertEquals((int) taxDetail.getTaxInCents(), 20);
+        Assert.assertEquals(taxDetail.getTaxRegion(), "CA");
+        Assert.assertEquals(taxDetail.getTaxType(), "GST");
 
         final Adjustment adjustment = invoice.getLineItems().get(0);
         Assert.assertEquals(adjustment.getDescription(), "Charge for extra bandwidth");
