@@ -22,8 +22,10 @@ import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
+import java.util.List;
 
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
@@ -78,6 +80,10 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "tax_rate")
     private BigDecimal taxRate;
+
+    @XmlList
+    @XmlElementWrapper(name = "tax_details")
+    private List<TaxDetail> taxDetails;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -318,6 +324,14 @@ public class Invoice extends RecurlyObject {
       return taxType;
     }
 
+    public List<TaxDetail> getTaxDetails() {
+        return taxDetails;
+    }
+
+    public void setTaxDetails(final List<TaxDetail> taxDetails) {
+        this.taxDetails = taxDetails;
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -539,6 +553,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", taxRegion=").append(taxRegion);
         sb.append(", taxType=").append(taxType);
         sb.append(", taxRate=").append(taxRate);
+        sb.append(", taxDetails=").append(taxDetails);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", closedAt=").append(closedAt);
@@ -664,6 +679,9 @@ public class Invoice extends RecurlyObject {
         if (taxRate != null ? !taxRate.equals(invoice.taxRate) : invoice.taxRate != null) {
             return false;
         }
+        if (taxDetails != null ? !taxDetails.equals(invoice.taxDetails) : invoice.taxDetails != null) {
+            return false;
+        }
         if (termsAndConditions != null ? !termsAndConditions.equals(invoice.termsAndConditions) : invoice.termsAndConditions != null) {
             return false;
         }
@@ -720,6 +738,7 @@ public class Invoice extends RecurlyObject {
                 taxRegion,
                 taxType,
                 taxRate,
+                taxDetails,
                 currency,
                 createdAt,
                 updatedAt,
