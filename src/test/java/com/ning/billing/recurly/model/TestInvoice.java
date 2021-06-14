@@ -150,7 +150,7 @@ public class TestInvoice extends TestModelBase {
 
         Assert.assertEquals(invoice.getTaxDetails().size(), 1);
         TaxDetail taxDetail = invoice.getTaxDetails().get(0);
-        Assert.assertEquals(taxDetail.getTaxRate(), 0.05);
+        Assert.assertEquals(taxDetail.getTaxRate(), new BigDecimal("0.05"));
         Assert.assertEquals((int) taxDetail.getTaxInCents(), 20);
         Assert.assertEquals(taxDetail.getTaxRegion(), "CA");
         Assert.assertEquals(taxDetail.getTaxType(), "GST");
