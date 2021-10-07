@@ -119,6 +119,9 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "allow_any_item_on_subscriptions")
     private Boolean allowAnyItemOnSubscriptions;
 
+    @XmlElement(name = "dunning_campaign_id")
+    private String dunningCampaignId;
+
     public String getPlanCode() {
         return planCode;
     }
@@ -349,6 +352,14 @@ public class Plan extends RecurlyObject {
 
     public void setAllowAnyItemOnSubscriptions(final Object allowAnyItemOnSubscriptions) {
         this.allowAnyItemOnSubscriptions = booleanOrNull(allowAnyItemOnSubscriptions);
+    }
+
+    public String getDunningCampaignId() {
+        return dunningCampaignId;
+    }
+
+    public void setDunningCampaignId(final Object dunningCampaignId) {
+        this.dunningCampaignId = stringOrNull(dunningCampaignId);
     }
 
     @Override

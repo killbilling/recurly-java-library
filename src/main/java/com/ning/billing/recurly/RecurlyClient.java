@@ -32,6 +32,9 @@ import com.ning.billing.recurly.model.BillingInfoVerification;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CreditPayments;
+import com.ning.billing.recurly.model.DunningCampaign;
+import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
+import com.ning.billing.recurly.model.DunningCampaigns;
 import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
@@ -901,6 +904,47 @@ public class RecurlyClient {
     ////////////////////////////////////////////////////////////////////////////////////////
 
     /**
+     * Get DunningCampaigns
+     * <p>
+     * Returns all active campaigns on a site.
+     *
+     * @return DunningCampaigns on success, null otherwise
+     */
+    public DunningCampaigns getDunningCampaigns() {
+        return doGET(DunningCampaigns.DUNNING_CAMPAIGNS_RESOURCE, DunningCampaigns.class, new QueryParams());
+    }
+
+    /**
+     * Get DunningCampaign
+     * <p>
+     * Returns information about a single dunning campaign.
+     *
+     * @param id dunning campaign uuid
+     * @return dunning campaign object on success, null otherwise
+     */
+    public DunningCampaign getDunningCampaign(final String id) {
+        if (id == null || id.isEmpty())
+            throw new RuntimeException("id cannot be empty!");
+
+        return doGET(DunningCampaign.DUNNING_CAMPAIGNS_RESOURCE + "/" + urlEncode(id), DunningCampaign.class);
+    }
+
+    /**
+     * Update to a particular {@link Plan}'s dunning_campaign by its id
+     * <p>
+     * Returns no content.
+     *
+     * @param id dunning campaign uuid
+     * @param dunningCampaignBulkUpdate DunningCampaignBulkUpdate object containing planCodes to update
+     */
+     public void bulkUpdate(final String id, final DunningCampaignBulkUpdate dunningCampaignBulkUpdate) {
+        doPUT(DunningCampaign.DUNNING_CAMPAIGNS_RESOURCE + "/" + urlEncode(id) + "/bulk_update",
+                    dunningCampaignBulkUpdate, DunningCampaignBulkUpdate.class);
+      }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
      * Update an account's billing info
      * <p>
      * When new or updated credit card information is updated, the billing information is only saved if the credit card
@@ -1001,7 +1045,7 @@ public class RecurlyClient {
     /**
      * Verify an account's billing info
      * <p>
-     * Verifies an account's billing info without providing a specific gateway. 
+     * Verifies an account's billing info without providing a specific gateway.
      * @param accountCode recurly account id
      * @return the transaction generated from the verification
      */
@@ -1015,7 +1059,7 @@ public class RecurlyClient {
     /**
      * Verify an account's billing info
      * <p>
-     * Verifies an account's billing info using a gateway code param. 
+     * Verifies an account's billing info using a gateway code param.
      * @param accountCode recurly account id
      * @param gatewayVerification BillingInfoVerification object used to verify billing info
      * @return the transaction generated from the verification
@@ -2270,12 +2314,12 @@ public class RecurlyClient {
 
     /**
      * Purchases capture endpoint.
-     * 
+     *
      * Capture an open Authorization request
-     * 
+     *
      * <p>
      * https://developers.recurly.com/api-v2/v2.29/index.html#operation/capturePurchase
-     * 
+     *
      * @param transactionUuid UUID of the transaction to cancel
      */
     public InvoiceCollection capturePurchase(final String transactionUuid) {
@@ -2284,12 +2328,12 @@ public class RecurlyClient {
 
     /**
      * Purchases cancel endpoint.
-     * 
+     *
      * Cancel an open Authorization request
-     * 
+     *
      * <p>
      * https://developers.recurly.com/api-v2/v2.29/index.html#operation/cancelPurchase
-     * 
+     *
      * @param transactionUuid UUID of the transaction to capture
      */
     public InvoiceCollection cancelPurchase(final String transactionUuid) {
