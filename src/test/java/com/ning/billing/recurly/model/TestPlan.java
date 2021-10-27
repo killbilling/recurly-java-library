@@ -64,6 +64,7 @@ public class TestPlan extends TestModelBase {
                                 "    <USD type=\"integer\">6000</USD>\n" +
                                 "    <EUR type=\"integer\">4500</EUR>\n" +
                                 "  </setup_fee_in_cents>\n" +
+                                "  <dunning_campaign_id>1234abcd</dunning_campaign_id>\n" +
                                 "</plan>";
 
         final Plan plan = xmlMapper.readValue(planData, Plan.class);
@@ -89,6 +90,7 @@ public class TestPlan extends TestModelBase {
         Assert.assertEquals(24, (int) plan.getTotalBillingCycles());
         Assert.assertNull(plan.getAccountingCode());
         Assert.assertNull(plan.getSetupFeeAccountingCode());
+        Assert.assertEquals(plan.getDunningCampaignId(), "1234abcd");
     }
 
     @Test(groups = "fast")

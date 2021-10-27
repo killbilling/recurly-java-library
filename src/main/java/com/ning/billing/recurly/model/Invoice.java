@@ -163,6 +163,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "transaction_type")
     private String transactionType;
 
+    @XmlElement(name = "dunning_campaign_id")
+    private String dunningCampaignId;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -531,6 +534,14 @@ public class Invoice extends RecurlyObject {
 
     public void setTransactionType(final Object transactionType) {
         this.transactionType = stringOrNull(transactionType);
+    }
+
+    public String getDunningCampaignId() {
+        return dunningCampaignId;
+    }
+
+    public void setDunningCampaignId(final Object dunningCampaignId) {
+        this.dunningCampaignId = stringOrNull(dunningCampaignId);
     }
 
     @Override

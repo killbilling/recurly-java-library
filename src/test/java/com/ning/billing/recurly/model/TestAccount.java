@@ -73,6 +73,7 @@ public class TestAccount extends TestModelBase {
                                    "      <value>some account value</value>\n" +
                                    "    </custom_field>\n" +
                                    "  </custom_fields>\n" +
+                                   "  <dunning_campaign_id>1234abcd</dunning_campaign_id>\n" +
                                    "</account>";
 
         final Account account = xmlMapper.readValue(accountData, Account.class);
@@ -125,6 +126,7 @@ public class TestAccount extends TestModelBase {
         Assert.assertFalse(account.getHasPastDueInvoice());
         Assert.assertEquals(account.getVatNumber(), "U12345678");
         Assert.assertEquals(account.getParentAccountCode(), "2");
+        Assert.assertEquals(account.getDunningCampaignId(), "1234abcd");
     }
 
     private CustomFields getTestFields() {

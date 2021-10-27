@@ -154,6 +154,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "transaction_type")
     private String transactionType;
 
+    @XmlElement(name = "dunning_campaign_id")
+    private String dunningCampaignId;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -442,6 +445,14 @@ public class Account extends RecurlyObject {
 
     public void setTransactionType(final Object transactionType) {
         this.transactionType = stringOrNull(transactionType);
+    }
+
+    public String getDunningCampaignId() {
+        return dunningCampaignId;
+    }
+
+    public void setDunningCampaignId(final Object dunningCampaignId) {
+        this.dunningCampaignId = stringOrNull(dunningCampaignId);
     }
 
     @Override

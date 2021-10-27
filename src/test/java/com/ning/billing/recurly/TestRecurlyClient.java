@@ -43,6 +43,8 @@ import com.ning.billing.recurly.model.Coupon.RedemptionResource;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CustomField;
 import com.ning.billing.recurly.model.CustomFields;
+import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
+import com.ning.billing.recurly.model.DunningCampaigns;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.InvoiceCollection;
@@ -369,6 +371,12 @@ public class TestRecurlyClient {
     public void testGetCoupons() throws Exception {
         final Coupons retrievedCoupons = recurlyClient.getCoupons();
         Assert.assertTrue(retrievedCoupons.size() >= 0);
+    }
+
+    @Test(groups = "integration")
+    public void testGetDunningCampaigns() throws Exception {
+        final DunningCampaigns retrievedDunningCampaigns = recurlyClient.getDunningCampaigns();
+        Assert.assertTrue(retrievedDunningCampaigns.size() >= 0);
     }
 
     @Test(groups="integration")
@@ -837,6 +845,54 @@ public class TestRecurlyClient {
             } catch (final RecurlyAPIException e) {
                 // good
             }
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testBulkUpdate() throws Exception {
+        //generate 3 random plans
+        final Plan planData1 = TestUtils.createRandomPlan();
+        final Plan planData2 = TestUtils.createRandomPlan();
+        final Plan planData3 = TestUtils.createRandomPlan();
+
+        try {
+            //create the random plans in recurly
+            final Plan plan1 = recurlyClient.createPlan(planData1);
+            final Plan plan2 = recurlyClient.createPlan(planData2);
+            final Plan plan3 = recurlyClient.createPlan(planData3);
+            Assert.assertNotNull(plan1);
+            Assert.assertNotNull(plan2);
+            Assert.assertNotNull(plan3);
+
+            //this test will only operate if there is at least one dunning campaign on the subdomain
+            DunningCampaigns dunningCampaigns = recurlyClient.getDunningCampaigns();
+            if (!dunningCampaigns.isEmpty()) {
+                //add the plancodes to a new dunning bulk update object
+                DunningCampaignBulkUpdate dunningCampaignBulkUpdate = new DunningCampaignBulkUpdate();
+                PlanCode planCode1 = new PlanCode(plan1.getPlanCode());
+                PlanCode planCode2 = new PlanCode(plan2.getPlanCode());
+                PlanCode planCode3 = new PlanCode(plan3.getPlanCode());
+                PlanCodes planCodes = new PlanCodes();
+                planCodes.setRecurlyObject(planCode1);
+                planCodes.setRecurlyObject(planCode2);
+                planCodes.setRecurlyObject(planCode3);
+                dunningCampaignBulkUpdate.setPlanCodes(planCodes);
+
+                //update the dunning campaign with the new plan codes, and verify that the plans were updated
+                String dunningCampaignId = dunningCampaigns.get(0).getId();
+                recurlyClient.bulkUpdate(dunningCampaignId, dunningCampaignBulkUpdate);
+                Plan updatedPlan1 = recurlyClient.getPlan(plan1.getPlanCode());
+                Plan updatedPlan2 = recurlyClient.getPlan(plan2.getPlanCode());
+                Plan updatedPlan3 = recurlyClient.getPlan(plan3.getPlanCode());
+                Assert.assertEquals(updatedPlan1.getDunningCampaignId(), dunningCampaignId);
+                Assert.assertEquals(updatedPlan2.getDunningCampaignId(), dunningCampaignId);
+                Assert.assertEquals(updatedPlan3.getDunningCampaignId(), dunningCampaignId);
+            }
+        } finally {
+            // Delete the plans
+            recurlyClient.deletePlan(planData1.getPlanCode());
+            recurlyClient.deletePlan(planData2.getPlanCode());
+            recurlyClient.deletePlan(planData3.getPlanCode());
         }
     }
 

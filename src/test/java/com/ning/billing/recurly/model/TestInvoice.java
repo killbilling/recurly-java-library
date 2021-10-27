@@ -116,6 +116,7 @@ public class TestInvoice extends TestModelBase {
                                    + "      <action>write_off</action>\n"
                                    + "    </credit_payment>\n"
                                    + "  </credit_payments>\n"
+                                   + "  <dunning_campaign_id>1234abcd</dunning_campaign_id>\n"
                                    + "</invoice>";
 
         final Invoice invoice = xmlMapper.readValue(invoiceData, Invoice.class);
@@ -165,6 +166,7 @@ public class TestInvoice extends TestModelBase {
 
         Assert.assertEquals(invoice.getAddress().getAddress1(), "123 Main St.");
         Assert.assertEquals(invoice.getShippingAddress().getAddress1(), "123 Canal St.");
+        Assert.assertEquals(invoice.getDunningCampaignId(), "1234abcd");
 
         // test setting billing info uuid
         invoice.setBillingInfoUuid("iiznlrvdt8py");
