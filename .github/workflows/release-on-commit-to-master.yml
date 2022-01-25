@@ -33,6 +33,16 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Generate maven settings
+        uses: s4u/maven-settings-action@v2.4.1
+        with:
+          servers: |
+            [{
+                "id": "nexus",
+                "username": "${{ secrets.NEXUS_USERNAME }}",
+                "password": "${{ secrets.NEXUS_PASSWORD }}"
+            }]
+
       - name: Configure Git user
         run: |
           git config user.email "actions@github.com"
