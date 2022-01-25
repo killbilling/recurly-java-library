@@ -9,7 +9,7 @@ env:
 
 jobs:
   release:
-    name: Release and publish to GitHub Packages
+    name: Release and publish to Nexus
     runs-on: ubuntu-latest
     if: "!contains(github.event.head_commit.message, '[ci skip]')"
     permissions:
@@ -50,7 +50,7 @@ jobs:
 
       - name: Prepare release
         run:  |
-          mvn --batch-mode release:prepare
+          mvn --batch-mode release:prepare deploy
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
