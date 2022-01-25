@@ -25,7 +25,7 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.34.0.14-SNAPSHOT</version>
+    <version>0.34.0.14</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>https://github.com/mobitroll/recurly-java-library</url>
@@ -71,9 +71,9 @@
     </properties>
     <distributionManagement>
         <repository>
-            <id>github</id>
-            <name>GitHub Packages</name>
-            <url>https://maven.pkg.github.com/mobitroll/recurly-java-library</url>
+            <id>nexus</id>
+            <name>Releases</name>
+            <url>https://nexus.jx.jenkinsx.kahoost.com/repository/maven-releases</url>
         </repository>
     </distributionManagement>
     <dependencies>
@@ -436,6 +436,9 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <createSourcesJar>true</createSourcesJar>
+                            <shadeSourcesContent>true</shadeSourcesContent>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                             <artifactSet>
                                 <includes>
                                     <include>com.fasterxml.jackson.*:*</include>

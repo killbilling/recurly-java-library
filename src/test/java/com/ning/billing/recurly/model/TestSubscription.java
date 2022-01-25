@@ -99,6 +99,7 @@ public class TestSubscription extends TestModelBase {
         codes.add("123");
         codes.add("abc");
         assertEquals(subscription.getCouponCodes(), codes);
+        assertEquals((int) subscription.getTaxInCents(), (int) 394);
     }
 
     @Test(groups = "fast")
