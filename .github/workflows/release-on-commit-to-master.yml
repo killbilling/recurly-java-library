@@ -50,7 +50,7 @@ jobs:
 
       - name: Prepare release
         run:  |
-          mvn --batch-mode release:perform
+          mvn --batch-mode release:prepare release:perform
         env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
