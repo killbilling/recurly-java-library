@@ -38,7 +38,7 @@ jobs:
         with:
           version: "290.0.1"
 
-      - name: Build and Test
+      - name: Release and Publish
         uses: qcastel/github-actions-maven-release@master
         with:
           git-release-bot-name: GitHub Actions
