@@ -43,4 +43,4 @@ jobs:
         with:
           git-release-bot-name: GitHub Actions
           git-release-bot-email: actions@github.com
-          access-token: "${{ secrets.GITHUB_TOKEN }}"
+          access-token: "username:${{ secrets.GITHUB_TOKEN }}"
