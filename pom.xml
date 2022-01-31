@@ -25,7 +25,7 @@
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
     <packaging>jar</packaging>
-    <version>0.34.5-SNAPSHOT</version>
+    <version>0.34.5</version>
     <name>Recurly Java library</name>
     <description>Java library for Recurly</description>
     <url>https://github.com/mobitroll/recurly-java-library</url>
@@ -61,7 +61,7 @@
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
         <url>https://github.com/mobitroll/recurly-java-library.git</url>
-        <tag>HEAD</tag>
+        <tag>recurly-java-library-0.34.5</tag>
     </scm>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
