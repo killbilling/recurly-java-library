@@ -72,14 +72,14 @@
     <distributionManagement>
         <repository>
             <id>artifact-registry</id>
-            <url>artifactregistry://europe-maven.pkg.dev/composed-strata-317815/kahoot-maven</url>
+            <url>artifactregistry://europe-maven.pkg.dev/kahoot-repository-test/kahoot-maven</url>
         </repository>
     </distributionManagement>
 
     <repositories>
         <repository>
             <id>artifact-registry</id>
-            <url>artifactregistry://europe-maven.pkg.dev/composed-strata-317815/kahoot-maven</url>
+            <url>artifactregistry://europe-maven.pkg.dev/kahoot-repository-test/kahoot-maven</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
