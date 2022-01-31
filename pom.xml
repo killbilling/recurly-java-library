@@ -76,16 +76,6 @@
         </repository>
     </distributionManagement>
 
-    <repositories>
-        <repository>
-            <id>artifact-registry</id>
-            <url>artifactregistry://europe-maven.pkg.dev/composed-strata-317815/kahoot-maven</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
