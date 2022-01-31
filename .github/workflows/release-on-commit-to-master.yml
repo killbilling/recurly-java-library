@@ -33,25 +33,19 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
-      - name: Generate maven settings
-        uses: s4u/maven-settings-action@v2.4.1
+      - name: Setup gcloud CLI
+        uses: 'google-github-actions/auth@v0'
         with:
-          servers: |
-            [{
-                "id": "nexus",
-                "username": "${{ secrets.NEXUS_USERNAME }}",
-                "password": "${{ secrets.NEXUS_PASSWORD }}"
-            }]
+          credentials_json: ${{ secrets.GKE_SA_KEY }}
 
-      - name: Configure Git user
-        run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
+      - name: Setup gcloud
+      - uses: google-github-actions/setup-gcloud@v0
+        with:
+          version: "290.0.1"
 
-      - name: Prepare release
-        run:  |
-          mvn --batch-mode release:prepare release:perform
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-
+      - name: Build and Test
+        uses: qcastel/github-actions-maven-release@master
+        with:
+          git-release-bot-name: GitHub Actions
+          git-release-bot-email: actions@github.com
+          access-token: "username:${{ secrets.GITHUB_TOKEN }}"
