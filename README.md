@@ -22,4 +22,4 @@ The library is distributed via [Nexus](https://nexus.jx.jenkinsx.kahoost.com/#ad
 
 To build the project, use maven:
 
-    mvn clean install -Pdocker
+    mvn clean install
