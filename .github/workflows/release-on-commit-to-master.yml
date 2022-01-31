@@ -39,7 +39,7 @@ jobs:
           credentials_json: ${{ secrets.GKE_SA_KEY }}
 
       - name: Setup gcloud
-      - uses: google-github-actions/setup-gcloud@v0
+        uses: google-github-actions/setup-gcloud@v0
         with:
           version: "290.0.1"
 
