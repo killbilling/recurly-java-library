@@ -133,6 +133,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "external_hpp_type")
     private String externalHppType;
 
+    @XmlElement(name = "online_banking_payment_type")
+    private String onlineBankingPaymentType;
+
     @XmlElement(name = "gateway_token")
     private String gatewayToken;
 
@@ -454,6 +457,14 @@ public class BillingInfo extends RecurlyObject {
         this.externalHppType = stringOrNull(externalHppType);
     }
 
+    public String getOnlineBankingPaymentType() {
+        return onlineBankingPaymentType;
+    }
+
+    public void setOnlineBankingPaymentType(final Object onlineBankingPaymentType) {
+        this.onlineBankingPaymentType = stringOrNull(onlineBankingPaymentType);
+    }
+
     public String getGatewayToken() {
         return gatewayToken;
     }
@@ -609,6 +620,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append(", externalHppType='").append(externalHppType).append('\'');
+        sb.append(", onlineBankingPaymentType='").append(onlineBankingPaymentType).append('\'');
         sb.append(", gatewayToken='").append(gatewayToken).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
@@ -729,6 +741,9 @@ public class BillingInfo extends RecurlyObject {
         if (externalHppType != null ? !externalHppType.equals(that.externalHppType) : that.externalHppType != null) {
             return false;
         }
+        if (onlineBankingPaymentType != null ? !onlineBankingPaymentType.equals(that.onlineBankingPaymentType) : that.onlineBankingPaymentType != null) {
+            return false;
+        }
         if (amazonBillingAgreementId != null ? !amazonBillingAgreementId.equals(that.amazonBillingAgreementId) : that.amazonBillingAgreementId != null) {
             return false;
         }
@@ -805,6 +820,7 @@ public class BillingInfo extends RecurlyObject {
                 geoCode,
                 type,
                 externalHppType,
+                onlineBankingPaymentType,
                 gatewayToken,
                 gatewayCode,
                 amazonBillingAgreementId,
