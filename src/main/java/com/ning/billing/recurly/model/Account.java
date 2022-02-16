@@ -58,6 +58,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @XmlElement(name = "invoice_template")
+    private InvoiceTemplate invoiceTemplate;
+
     @XmlElement(name = "account_code")
     private String accountCode;
 
@@ -156,6 +159,9 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "dunning_campaign_id")
     private String dunningCampaignId;
+
+    @XmlElement(name = "invoice_template_uuid")
+    private String invoiceTemplateUuid;
 
     @Override
     public void setHref(final Object href) {
@@ -453,6 +459,21 @@ public class Account extends RecurlyObject {
 
     public void setDunningCampaignId(final Object dunningCampaignId) {
         this.dunningCampaignId = stringOrNull(dunningCampaignId);
+    }
+
+    public String getInvoiceTemplateUuid() {
+        return invoiceTemplateUuid;
+    }
+
+    public void setInvoiceTemplateUuid(final Object invoiceTemplateUuid) {
+        this.invoiceTemplateUuid = stringOrNull(invoiceTemplateUuid);
+    }
+
+    public InvoiceTemplate getInvoiceTemplate() {
+        if (invoiceTemplate != null && invoiceTemplate.getHref() != null && !invoiceTemplate.getHref().isEmpty()) {
+            invoiceTemplate = fetch(invoiceTemplate, InvoiceTemplate.class);
+        }
+        return invoiceTemplate;
     }
 
     @Override

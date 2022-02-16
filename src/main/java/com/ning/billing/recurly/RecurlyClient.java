@@ -42,6 +42,8 @@ import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.InvoiceCollection;
 import com.ning.billing.recurly.model.InvoiceRefund;
 import com.ning.billing.recurly.model.InvoiceState;
+import com.ning.billing.recurly.model.InvoiceTemplate;
+import com.ning.billing.recurly.model.InvoiceTemplates;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.Items;
@@ -941,6 +943,51 @@ public class RecurlyClient {
         doPUT(DunningCampaign.DUNNING_CAMPAIGNS_RESOURCE + "/" + urlEncode(id) + "/bulk_update",
                     dunningCampaignBulkUpdate, DunningCampaignBulkUpdate.class);
       }
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+
+    /**
+     * Get InvoiceTemplates
+     * <p>
+     * Returns all invoice templates on a site.
+     *
+     * @return InvoiceTemplates on success, null otherwise
+     */
+    public InvoiceTemplates getInvoiceTemplates() {
+        return doGET(InvoiceTemplates.INVOICE_TEMPLATES_RESOURCE, InvoiceTemplates.class, new QueryParams());
+    }
+
+    /**
+     * Get InvoiceTemplate
+     * <p>
+     * Returns information about a single invoice template.
+     *
+     * @param uuid dunning campaign uuid
+     * @return dunning campaign object on success, null otherwise
+     */
+    public InvoiceTemplate getInvoiceTemplate(final String uuid) {
+        if (uuid == null || uuid.isEmpty())
+            throw new RuntimeException("uuid cannot be empty!");
+
+        return doGET(InvoiceTemplate.INVOICE_TEMPLATES_RESOURCE + "/" + urlEncode(uuid), InvoiceTemplate.class);
+    }
+
+    /**
+     * Get the acccounts for a {@link InvoiceTemplate}.
+     * <p>
+     * Returns accounts associated with a invoice template
+     *
+     * @param accountCode recurly invoice template uuid
+     * @param params {@link QueryParams}
+     * @return Accounts on the invoice template
+     */
+    public Accounts getInvoiceTemplateAccounts(final String invoiceTemplateUuid, final QueryParams params) {
+        return doGET(InvoiceTemplate.INVOICE_TEMPLATES_RESOURCE
+                     + "/" + urlEncode(invoiceTemplateUuid)
+                     + Accounts.ACCOUNTS_RESOURCE,
+                     Accounts.class,
+                     params);
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
 
