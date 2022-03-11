@@ -35,6 +35,7 @@ public class TestAdjustment extends TestModelBase {
         final String adjustmentData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
                                       "<adjustment type=\"credit\" href=\"https://api.recurly.com/v2/adjustments/626db120a84102b1809909071c701c60\">\n" +
                                       "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n" +
+                                      "  <bill_for_account href=\"https://api.recurly.com/v2/accounts/2\"/>\n" +
                                       "  <uuid>626db120a84102b1809909071c701c60</uuid>\n" +
                                       "  <type>charge</type>\n" +
                                       "  <state>invoiced</state>\n" +
@@ -74,6 +75,7 @@ public class TestAdjustment extends TestModelBase {
         final Adjustment adjustment = xmlMapper.readValue(adjustmentData, Adjustment.class);
 
         Assert.assertEquals(adjustment.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
+        Assert.assertEquals(adjustment.getBillForAccount().getHref(), "https://api.recurly.com/v2/accounts/2");
         Assert.assertEquals(adjustment.getUuid(), "626db120a84102b1809909071c701c60");
         Assert.assertEquals(adjustment.getDescription(), "Charge for extra bandwidth");
         Assert.assertEquals(adjustment.getRefundableTotalInCents(), new Integer(1000));

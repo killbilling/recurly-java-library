@@ -284,6 +284,56 @@ public class TestCoupon extends TestModelBase {
     }
 
     @Test(groups = "fast")
+    public void testItemCodes() throws Exception {
+        // See https://dev.recurly.com/docs/list-active-coupons
+        final String couponData =
+                "<coupon href=\"https://api.recurly.com/v2/coupons/f8028\">" +
+                        "<redemptions href=\"https://api.recurly.com/v2/coupons/f8028/redemptions\"/>" +
+                        "<coupon_code>f8028</coupon_code>" +
+                        "<name>t</name>" +
+                        "<state>redeemable</state>" +
+                        "<description>test description.</description>" +
+                        "<discount_type>percent</discount_type>" +
+                        "<discount_percent type=\"integer\">100</discount_percent>" +
+                        "<invoice_description>invoice description</invoice_description>" +
+                        "<redeem_by_date type=\"dateTime\">2017-12-31T00:00:00Z</redeem_by_date>" +
+                        "<single_use type=\"boolean\">true</single_use>" +
+                        "<applies_for_months nil=\"nil\"/>" +
+                        "<max_redemptions type=\"integer\">200</max_redemptions>" +
+                        "<applies_to_all_plans type=\"boolean\">false</applies_to_all_plans>" +
+                        "<applies_to_all_items type=\"boolean\">false</applies_to_all_items>" +
+                        "<created_at type=\"dateTime\">2016-07-11T18:50:17Z</created_at>" +
+                        "<updated_at type=\"dateTime\">2016-07-11T18:50:17Z</updated_at>" +
+                        "<deleted_at nil=\"nil\"/>" +
+                        "<duration>single_use</duration>" +
+                        "<temporal_unit nil=\"nil\"/>" +
+                        "<temporal_amount nil=\"nil\"/>" +
+                        "<applies_to_non_plan_charges type=\"boolean\">false</applies_to_non_plan_charges>" +
+                        "<redemption_resource>account</redemption_resource>" +
+                        "<max_redemptions_per_account type=\"integer\">1</max_redemptions_per_account>" +
+                        "<coupon_type>single_code</coupon_type>" +
+                        "<plan_codes type=\"array\">" +
+                            "<plan_code>gold</plan_code>" +
+                            "<plan_code>platinum</plan_code>" +
+                        "</plan_codes>" +
+                        "<item_codes type=\"array\">" +
+                            "<item_code>best_item</item_code>" +
+                            "<item_code>second_best_item</item_code>" +
+                            "<item_code>just_okay_item</item_code>" +
+                        "</item_codes>" +
+                        "<a name=\"redeem\" href=\"https://api.recurly.com/v2/coupons/special/redeem\" method=\"post\"/>" +
+                    "</coupon>";
+
+        final Coupon coupon = xmlMapper.readValue(couponData, Coupon.class);
+
+        assertEquals(coupon.getAppliesToAllItems(), Boolean.FALSE);
+        assertEquals(coupon.getItemCodes().size(), 3);
+        assertTrue(coupon.getItemCodes().contains(new ItemCode("best_item")));
+        assertTrue(coupon.getItemCodes().contains(new ItemCode("second_best_item")));
+        assertTrue(coupon.getItemCodes().contains(new ItemCode("just_okay_item")));
+    }
+
+    @Test(groups = "fast")
     public void testHashCodeAndEquality() throws Exception {
         // create coupons of the same value but difference references
         Coupon coupon = TestUtils.createRandomCoupon(0);

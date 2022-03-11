@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Set;
 
 import com.ning.billing.recurly.model.Account;
@@ -36,11 +37,14 @@ import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
+import com.ning.billing.recurly.model.BillingInfoVerification;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupon.RedemptionResource;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CustomField;
 import com.ning.billing.recurly.model.CustomFields;
+import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
+import com.ning.billing.recurly.model.DunningCampaigns;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.InvoiceCollection;
@@ -98,11 +102,11 @@ public class TestRecurlyClient {
             Assert.fail("You need to set your Recurly api key to run integration tests:" +
                         " -Dkillbill.payment.recurly.apiKey=...");
         }
-        
+
         if (subDomainTemp == null) {
           subDomainTemp = "api";
         }
-        
+
         final String subDomain = subDomainTemp;
 
         recurlyClient = new RecurlyClient(apiKey, subDomain);
@@ -230,6 +234,43 @@ public class TestRecurlyClient {
         }
     }
 
+    @Test(groups = "integration")
+    public void testVerifyBillingInfoWithGatewayCode() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        billingInfoData.setAccount(null); // need to null out test account
+        accountData.setBillingInfo(billingInfoData);
+        final BillingInfoVerification gateway = new BillingInfoVerification();
+        gateway.setGatewayCode("bad-code");
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Transaction verifiedBillingInfo = recurlyClient.verifyBillingInfo(account.getAccountCode(), gateway);
+            Assert.fail("Should have thrown Recurly API exception");
+        } catch (RecurlyAPIException e) {
+            Assert.assertEquals(e.getRecurlyError().getSymbol(), "not_found");
+        } finally {
+          recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testVerifyBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+        billingInfoData.setAccount(null); // need to null out test account
+        accountData.setBillingInfo(billingInfoData);
+
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            final Transaction verifiedBillingInfo = recurlyClient.verifyBillingInfo(account.getAccountCode());
+            Assert.assertEquals(verifiedBillingInfo.getOrigin(), "api_verify_card");
+            Assert.assertEquals(verifiedBillingInfo.getAction(), "verify");
+        } finally {
+          recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
     @Test(groups = "integration", description = "See https://github.com/killbilling/recurly-java-library/issues/23")
     public void testRemoveSubscriptionAddons() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
@@ -267,13 +308,13 @@ public class TestRecurlyClient {
             // Fetch the corresponding invoice
             final Invoice subInvoice = subscriptionWithAddons.getInvoice();
             Assert.assertNotNull(subInvoice);
-            
+
             // Refetch the invoice using the getInvoice method
             final String invoiceID = subInvoice.getId();
             final Invoice gotInvoice = recurlyClient.getInvoice(invoiceID);
 
             Assert.assertEquals(subInvoice.hashCode(), gotInvoice.hashCode());
-            
+
             // Remove all addons
             final SubscriptionUpdate subscriptionUpdate = new SubscriptionUpdate();
             subscriptionUpdate.setAddOns(new SubscriptionAddOns());
@@ -330,6 +371,12 @@ public class TestRecurlyClient {
     public void testGetCoupons() throws Exception {
         final Coupons retrievedCoupons = recurlyClient.getCoupons();
         Assert.assertTrue(retrievedCoupons.size() >= 0);
+    }
+
+    @Test(groups = "integration")
+    public void testGetDunningCampaigns() throws Exception {
+        final DunningCampaigns retrievedDunningCampaigns = recurlyClient.getDunningCampaigns();
+        Assert.assertTrue(retrievedDunningCampaigns.size() >= 0);
     }
 
     @Test(groups="integration")
@@ -597,11 +644,39 @@ public class TestRecurlyClient {
         final BillingInfo billingInfoData = TestUtils.createRandomIbanBillingInfo();
         try {
             final Account account = recurlyClient.createAccount(accountData);
-            billingInfoData.setAccount(account);
-            recurlyClient.createOrUpdateBillingInfo(billingInfoData);
+            recurlyClient.createOrUpdateBillingInfo(account.getAccountCode(), billingInfoData);
             Assert.fail("Should have thrown transaction exception");
         } catch(TransactionErrorException e) {
             Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "no_gateway");
+            Assert.assertEquals(e.getErrors().getTransactionError().getMerchantMessage(), "There is no available payment gateway on your account capable of processing this transaction.");
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCreateAccountBacsBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBacsBillingInfo();
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            recurlyClient.createOrUpdateBillingInfo(account.getAccountCode(), billingInfoData);
+            Assert.fail("Should have thrown transaction exception");
+        } catch(TransactionErrorException e) {
+            Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "no_gateway");
+            Assert.assertEquals(e.getErrors().getTransactionError().getMerchantMessage(), "There is no available payment gateway on your account capable of processing this transaction.");
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCreateAccountBecsBillingInfo() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final BillingInfo billingInfoData = TestUtils.createRandomBecsBillingInfo();
+        try {
+            final Account account = recurlyClient.createAccount(accountData);
+            recurlyClient.createOrUpdateBillingInfo(account.getAccountCode(), billingInfoData);
+            Assert.fail("Should have thrown transaction exception");
+        } catch(TransactionErrorException e) {
+            Assert.assertEquals(e.getErrors().getTransactionError().getErrorCode(), "no_gateway");
+            Assert.assertEquals(e.getErrors().getTransactionError().getMerchantMessage(), "There is no available payment gateway on your account capable of processing this transaction.");
         }
     }
 
@@ -639,7 +714,7 @@ public class TestRecurlyClient {
     @Test(groups = "integration")
     public void testCreateItem() throws Exception {
         final Item itemData = TestUtils.createRandomItem();
-        
+
         try {
             // Create an item
             final Item item = recurlyClient.createItem(itemData);
@@ -770,6 +845,54 @@ public class TestRecurlyClient {
             } catch (final RecurlyAPIException e) {
                 // good
             }
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testBulkUpdate() throws Exception {
+        //generate 3 random plans
+        final Plan planData1 = TestUtils.createRandomPlan();
+        final Plan planData2 = TestUtils.createRandomPlan();
+        final Plan planData3 = TestUtils.createRandomPlan();
+
+        try {
+            //create the random plans in recurly
+            final Plan plan1 = recurlyClient.createPlan(planData1);
+            final Plan plan2 = recurlyClient.createPlan(planData2);
+            final Plan plan3 = recurlyClient.createPlan(planData3);
+            Assert.assertNotNull(plan1);
+            Assert.assertNotNull(plan2);
+            Assert.assertNotNull(plan3);
+
+            //this test will only operate if there is at least one dunning campaign on the subdomain
+            DunningCampaigns dunningCampaigns = recurlyClient.getDunningCampaigns();
+            if (!dunningCampaigns.isEmpty()) {
+                //add the plancodes to a new dunning bulk update object
+                DunningCampaignBulkUpdate dunningCampaignBulkUpdate = new DunningCampaignBulkUpdate();
+                PlanCode planCode1 = new PlanCode(plan1.getPlanCode());
+                PlanCode planCode2 = new PlanCode(plan2.getPlanCode());
+                PlanCode planCode3 = new PlanCode(plan3.getPlanCode());
+                PlanCodes planCodes = new PlanCodes();
+                planCodes.setRecurlyObject(planCode1);
+                planCodes.setRecurlyObject(planCode2);
+                planCodes.setRecurlyObject(planCode3);
+                dunningCampaignBulkUpdate.setPlanCodes(planCodes);
+
+                //update the dunning campaign with the new plan codes, and verify that the plans were updated
+                String dunningCampaignId = dunningCampaigns.get(0).getId();
+                recurlyClient.bulkUpdate(dunningCampaignId, dunningCampaignBulkUpdate);
+                Plan updatedPlan1 = recurlyClient.getPlan(plan1.getPlanCode());
+                Plan updatedPlan2 = recurlyClient.getPlan(plan2.getPlanCode());
+                Plan updatedPlan3 = recurlyClient.getPlan(plan3.getPlanCode());
+                Assert.assertEquals(updatedPlan1.getDunningCampaignId(), dunningCampaignId);
+                Assert.assertEquals(updatedPlan2.getDunningCampaignId(), dunningCampaignId);
+                Assert.assertEquals(updatedPlan3.getDunningCampaignId(), dunningCampaignId);
+            }
+        } finally {
+            // Delete the plans
+            recurlyClient.deletePlan(planData1.getPlanCode());
+            recurlyClient.deletePlan(planData2.getPlanCode());
+            recurlyClient.deletePlan(planData3.getPlanCode());
         }
     }
 
@@ -933,7 +1056,7 @@ public class TestRecurlyClient {
 
             // Create a plan
             final Plan plan = recurlyClient.createPlan(planData);
-            
+
             // Set up a subscription to invoice
             final Subscription invoiceSubscription = new Subscription();
             invoiceSubscription.setPlanCode(plan.getPlanCode());
@@ -1400,7 +1523,7 @@ public class TestRecurlyClient {
     public void testBulkCoupons() throws Exception {
         final Coupon couponData = TestUtils.createRandomCoupon();
         couponData.setType(Coupon.Type.bulk);
-        couponData.setUniqueCodeTemplate(String.format("'%s'99999", couponData.getCouponCode()));
+        couponData.setUniqueCodeTemplate(String.format(Locale.ROOT, "'%s'99999", couponData.getCouponCode()));
 
         Coupon coupon = recurlyClient.createCoupon(couponData);
 
@@ -1973,7 +2096,7 @@ public class TestRecurlyClient {
 
         billingInfoData.setAccount(null); // null out random account fixture
         accountData.setBillingInfo(billingInfoData); // add the billing info to account data
- 
+
         try {
             final Plan plan = recurlyClient.createPlan(planData);
             final GiftCard purchasedGiftCard = recurlyClient.purchaseGiftCard(giftCardData);
@@ -2068,7 +2191,75 @@ public class TestRecurlyClient {
         }
     }
 
-        @Test(groups = "integration")
+    @Test(groups = "integration")
+    public void testCapturePurchase() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(subscriptionData);
+
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setCurrency("USD");
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setCustomerNotes("Customer Notes");
+            purchaseData.setTermsAndConditions("Terms and Conditions");
+
+            final InvoiceCollection authorized = recurlyClient.authorizePurchase(purchaseData);
+            final Invoice chargeInvoice = authorized.getChargeInvoice();
+            final Transaction transaction = chargeInvoice.getTransactions().get(0);
+            final InvoiceCollection captured = recurlyClient.capturePurchase(transaction.getUuid());
+            Assert.assertEquals(captured.getChargeInvoice().getState(), "paid");
+        } finally {
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
+    public void testCancelPurchase() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+        final Plan planData = TestUtils.createRandomPlan(CURRENCY);
+        final BillingInfo billingInfoData = TestUtils.createRandomBillingInfo();
+
+        billingInfoData.setAccount(null); // null out random account fixture
+        accountData.setBillingInfo(billingInfoData); // add the billing info to account data
+
+        try {
+            final Plan plan = recurlyClient.createPlan(planData);
+            final Subscription subscriptionData = new Subscription();
+            subscriptionData.setPlanCode(plan.getPlanCode());
+            final Subscriptions subscriptions = new Subscriptions();
+            subscriptions.add(subscriptionData);
+
+            final Purchase purchaseData = new Purchase();
+            purchaseData.setAccount(accountData);
+            purchaseData.setCollectionMethod("automatic");
+            purchaseData.setCurrency("USD");
+            purchaseData.setSubscriptions(subscriptions);
+            purchaseData.setCustomerNotes("Customer Notes");
+            purchaseData.setTermsAndConditions("Terms and Conditions");
+
+            final InvoiceCollection authorized = recurlyClient.authorizePurchase(purchaseData);
+            final Invoice chargeInvoice = authorized.getChargeInvoice();
+            final Transaction transaction = chargeInvoice.getTransactions().get(0);
+            final InvoiceCollection cancelled = recurlyClient.cancelPurchase(transaction.getUuid());
+            Assert.assertEquals(cancelled.getChargeInvoice().getState(), "failed");
+        } finally {
+            recurlyClient.deletePlan(planData.getPlanCode());
+        }
+    }
+
+    @Test(groups = "integration")
     public void testAccountAcquisition() throws Exception {
         final Account accountData = TestUtils.createRandomAccount();
 

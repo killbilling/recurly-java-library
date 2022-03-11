@@ -27,6 +27,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 public class RecurlyJs {
@@ -83,8 +84,8 @@ public class RecurlyJs {
     public static String getRecurlySignature(String privateJsKey, Long unixTime, String nonce, List<String> extraParams) {
         // Mandatory parameters shared by all signatures (as per spec)
         extraParams = (extraParams == null) ? new ArrayList<String>() : extraParams;
-        extraParams.add(String.format(PARAMETER_FORMAT, TIMESTAMP_PARAMETER, unixTime));
-        extraParams.add(String.format(PARAMETER_FORMAT, NONCE_PARAMETER, nonce));
+        extraParams.add(String.format(Locale.ROOT, PARAMETER_FORMAT, TIMESTAMP_PARAMETER, unixTime));
+        extraParams.add(String.format(Locale.ROOT, PARAMETER_FORMAT, NONCE_PARAMETER, nonce));
         String protectedParams = Joiner.on(PARAMETER_SEPARATOR).join(extraParams);
 
         return generateRecurlyHMAC(privateJsKey, protectedParams) + "|" + protectedParams;

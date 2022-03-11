@@ -59,6 +59,11 @@ public class TestBillingInfo extends TestModelBase {
         billingInfo.setGatewayCode(randomString());
         billingInfo.setAmazonBillingAgreementId(randomString());
         billingInfo.setAmazonRegion(randomString());
+        billingInfo.setSortCode("200000");
+        billingInfo.setBsbCode("082-082");
+        billingInfo.setPrimaryPaymentMethod(true);
+        billingInfo.setBackupPaymentMethod(false);
+        billingInfo.setExternalHppType("ideal");
 
         final String xml = xmlMapper.writeValueAsString(billingInfo);
         Assert.assertEquals(xmlMapper.readValue(xml, BillingInfo.class), billingInfo);

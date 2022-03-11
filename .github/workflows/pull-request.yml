@@ -6,6 +6,7 @@ on:
 
 env:
   APPLICATION: recurly-java-library
+  MAVEN_FLAGS: "-B --no-transfer-progress"
 
 jobs:
   build-test:

@@ -16,7 +16,7 @@ The library is distributed via [Nexus](https://nexus.jx.jenkinsx.kahoost.com/#ad
 <dependency>
     <groupId>com.ning.billing</groupId>
     <artifactId>recurly-java-library</artifactId>
-    <version>0.34.0</version>
+    <version>0.109.0</version>
 </dependency>
 ```
 

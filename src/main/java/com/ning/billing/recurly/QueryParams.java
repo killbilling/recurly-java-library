@@ -16,11 +16,16 @@
  */
 package com.ning.billing.recurly;
 
-import com.ning.billing.recurly.model.Subscription;
-import com.ning.billing.recurly.model.Transaction;
+import com.google.common.base.Charsets;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.client.utils.URLEncodedUtils;
+import org.apache.http.message.BasicNameValuePair;
 import org.joda.time.DateTime;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -152,18 +157,11 @@ public class QueryParams {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-
-        for (Map.Entry<String,String> entry : params.entrySet()) {
-            if (sb.length() > 0) {
-                sb.append("&");
-            } else {
-                sb.append("?");
-            }
-
-            sb.append(String.format("%s=%s", entry.getKey(), entry.getValue()));
+        if (params.isEmpty()) return "";
+        final List<NameValuePair> pairList = new ArrayList<NameValuePair>(params.size());
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            pairList.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
         }
-
-        return sb.toString();
+        return '?' + URLEncodedUtils.format(pairList, Charsets.UTF_8);
     }
 }

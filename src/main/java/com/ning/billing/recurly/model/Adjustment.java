@@ -33,6 +33,9 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "account")
     private Account account;
 
+    @XmlElement(name = "bill_for_account")
+    private Account billForAccount;
+
     @XmlElement(name = "subscription")
     private Subscription subscription;
 
@@ -148,6 +151,17 @@ public class Adjustment extends RecurlyObject {
 
     public void setAccount(final Account account) {
         this.account = account;
+    }
+
+    public Account getBillForAccount() {
+        if (billForAccount != null && billForAccount.getCreatedAt() == null) {
+            billForAccount = fetch(billForAccount, Account.class);
+        }
+        return billForAccount;
+    }
+
+    public void setBillForAccount(final Account billForAccount) {
+        this.billForAccount = billForAccount;
     }
 
     public String getSubscriptionId() {
@@ -435,6 +449,7 @@ public class Adjustment extends RecurlyObject {
         final StringBuilder sb = new StringBuilder();
         sb.append("Adjustment");
         sb.append("{account=").append(account);
+        sb.append(", billForAccount=").append(billForAccount);
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", type=").append(type);
         sb.append(", description='").append(description).append('\'');
@@ -481,6 +496,9 @@ public class Adjustment extends RecurlyObject {
         final Adjustment that = (Adjustment) o;
 
         if (account != null ? !account.equals(that.account) : that.account != null) {
+            return false;
+        }
+        if (billForAccount != null ? !billForAccount.equals(that.billForAccount) : that.billForAccount != null) {
             return false;
         }
         if (accountingCode != null ? !accountingCode.equals(that.accountingCode) : that.accountingCode != null) {
@@ -592,6 +610,7 @@ public class Adjustment extends RecurlyObject {
     public int hashCode() {
         return Objects.hashCode(
                 account,
+                billForAccount,
                 uuid,
                 type,
                 description,

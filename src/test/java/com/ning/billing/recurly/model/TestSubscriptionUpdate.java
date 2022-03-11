@@ -50,6 +50,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
         subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
         subscription.setUnitAmountInCents(800);
         subscription.setQuantity(1);
+        subscription.setBillingInfoUuid("uniqueUuid");
 
         final String xml = xmlMapper.writeValueAsString(subscription);
         Assert.assertEquals(xml, "<subscription>" +
@@ -57,6 +58,7 @@ public class TestSubscriptionUpdate extends TestModelBase {
                                  "<unit_amount_in_cents>800</unit_amount_in_cents>" +
                                  "<quantity>1</quantity>" +
                                  "<plan_code>gold</plan_code>" +
+                                 "<billing_info_uuid>uniqueUuid</billing_info_uuid>" +
                                  "</subscription>");
     }
 

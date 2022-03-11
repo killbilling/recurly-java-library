@@ -31,11 +31,17 @@ public class BillingInfo extends RecurlyObject {
     @XmlTransient
     public static final String BILLING_INFO_RESOURCE = "/billing_info";
 
-    @XmlAttribute(name = "type")
+    @XmlElement(name = "type")
     private String type;
+
+    @XmlAttribute(name = "type")
+    private String attributeType;
 
     @XmlElement(name = "account")
     private Account account;
+
+    @XmlElement(name = "uuid")
+    private String uuid;
 
     @XmlElement(name = "name_on_account")
     private String nameOnAccount;
@@ -127,6 +133,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "external_hpp_type")
     private String externalHppType;
 
+    @XmlElement(name = "online_banking_payment_type")
+    private String onlineBankingPaymentType;
+
     @XmlElement(name = "gateway_token")
     private String gatewayToken;
 
@@ -148,11 +157,32 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "iban")
     private String iban;
 
+    @XmlElement(name = "last_two")
+    private String lastTwo;
+
+    @XmlElement(name = "sort_code")
+    private String sortCode;
+
+    @XmlElement(name = "bsb_code")
+    private String bsbCode;
+
+    @XmlElement(name = "tax_identifier")
+    private String taxIdentifier;
+
+    @XmlElement(name = "tax_identifier_type")
+    private String taxIdentifierType;
+
+    @XmlElement(name = "primary_payment_method")
+    private String primaryPaymentMethod;
+
+    @XmlElement(name = "backup_payment_method")
+    private String backupPaymentMethod;
+
     public String getType() {
-        return type;
+        return this.type == null ? this.attributeType : this.type;
     }
 
-    protected void setType(final Object type) {
+    public void setType(final Object type) {
         this.type = stringOrNull(type);
     }
 
@@ -185,6 +215,14 @@ public class BillingInfo extends RecurlyObject {
 
     public void setNameOnAccount(final Object nameOnAccount) {
         this.nameOnAccount = stringOrNull(nameOnAccount);
+    }
+
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(final Object uuid) {
+        this.uuid = stringOrNull(uuid);
     }
 
     public String getFirstName() {
@@ -419,6 +457,14 @@ public class BillingInfo extends RecurlyObject {
         this.externalHppType = stringOrNull(externalHppType);
     }
 
+    public String getOnlineBankingPaymentType() {
+        return onlineBankingPaymentType;
+    }
+
+    public void setOnlineBankingPaymentType(final Object onlineBankingPaymentType) {
+        this.onlineBankingPaymentType = stringOrNull(onlineBankingPaymentType);
+    }
+
     public String getGatewayToken() {
         return gatewayToken;
     }
@@ -475,6 +521,61 @@ public class BillingInfo extends RecurlyObject {
         this.iban = stringOrNull(iban);
     }
 
+    public String getLastTwo() {
+        return lastTwo;
+    }
+
+    public void setLastTwo(final Object lastTwo) {
+        this.lastTwo = stringOrNull(lastTwo);
+    }
+
+    public String getSortCode() {
+        return sortCode;
+    }
+
+    public void setSortCode(final Object sortCode) {
+        this.sortCode = stringOrNull(sortCode);
+    }
+
+    public String getBsbCode() {
+        return bsbCode;
+    }
+
+    public void setBsbCode(final Object bsbCode) {
+        this.bsbCode = stringOrNull(bsbCode);
+    }
+
+    public String getTaxIdentifier() {
+        return taxIdentifier; 
+    }
+
+    public void setTaxIdentifier(final Object taxIdentifier) {
+        this.taxIdentifier = stringOrNull(taxIdentifier);
+    }
+
+    public String getTaxIdentifierType() {
+      return taxIdentifierType; 
+    }
+
+    public void setTaxIdentifierType(final Object taxIdentifierType) {
+        this.taxIdentifierType = stringOrNull(taxIdentifierType);
+    }
+
+    public String getPrimaryPaymentMethod() {
+      return primaryPaymentMethod; 
+    }
+
+    public void setPrimaryPaymentMethod(final Object primaryPaymentMethod) {
+        this.primaryPaymentMethod = stringOrNull(primaryPaymentMethod);
+    }
+
+    public String getBackupPaymentMethod() {
+      return backupPaymentMethod; 
+    }
+
+    public void setBackupPaymentMethod(final Object backupPaymentMethod) {
+        this.backupPaymentMethod = stringOrNull(backupPaymentMethod);
+    }
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -482,15 +583,19 @@ public class BillingInfo extends RecurlyObject {
 
         // Prevent infinite loop when printing account.
         // See https://github.com/killbilling/recurly-java-library/issues/326
-        if (account != null && account.getBillingInfo().equals(this)) {
+        // Prevent Null Pointer Exception when printing updated billing info
+        // See https://github.com/killbilling/recurly-java-library/issues/405
+        Account account = getAccount();
+        if (account != null && account.getBillingInfo() != null && this.getHref() != null
+        && this.getHref().equals(account.getBillingInfo().getHref())) {
             sb.append("{account='").append(account.getAccountCode()).append('\'');
-        }
-        else {
+        } else {
             sb.append("{account='").append(account).append('\'');
         }
 
         sb.append(", type='").append(type).append('\'');
         sb.append(", nameOnAccount='").append(nameOnAccount).append('\'');
+        sb.append(", uuid='").append(uuid);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", mandateReference='").append(mandateReference).append('\'');
@@ -515,12 +620,20 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append(", externalHppType='").append(externalHppType).append('\'');
+        sb.append(", onlineBankingPaymentType='").append(onlineBankingPaymentType).append('\'');
         sb.append(", gatewayToken='").append(gatewayToken).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
         sb.append(", iban='").append(iban).append('\'');
+        sb.append(", lastTwo='").append(lastTwo).append('\'');
+        sb.append(", sortCode='").append(sortCode).append('\'');
+        sb.append(", bsbCode='").append(bsbCode).append('\'');
+        sb.append(", taxIdentifier='").append(taxIdentifier).append('\'');
+        sb.append(", taxIdentifierType='").append(taxIdentifierType).append('\'');
+        sb.append(", primaryPaymentMethod='").append(primaryPaymentMethod).append('\'');
+        sb.append(", backupPaymentMethod='").append(backupPaymentMethod).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -536,6 +649,9 @@ public class BillingInfo extends RecurlyObject {
             return false;
         }
         if (nameOnAccount != null ? !nameOnAccount.equals(that.nameOnAccount) : that.nameOnAccount != null) {
+            return false;
+        }
+        if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
         if (address1 != null ? !address1.equals(that.address1) : that.address1 != null) {
@@ -625,6 +741,9 @@ public class BillingInfo extends RecurlyObject {
         if (externalHppType != null ? !externalHppType.equals(that.externalHppType) : that.externalHppType != null) {
             return false;
         }
+        if (onlineBankingPaymentType != null ? !onlineBankingPaymentType.equals(that.onlineBankingPaymentType) : that.onlineBankingPaymentType != null) {
+            return false;
+        }
         if (amazonBillingAgreementId != null ? !amazonBillingAgreementId.equals(that.amazonBillingAgreementId) : that.amazonBillingAgreementId != null) {
             return false;
         }
@@ -637,7 +756,31 @@ public class BillingInfo extends RecurlyObject {
         if (transactionType != null ? !transactionType.equals(that.transactionType) : that.transactionType != null) {
             return false;
         }
-        if(iban != null ? !iban.equals(that.iban) : that.iban != null) {
+        if (iban != null ? !iban.equals(that.iban) : that.iban != null) {
+            return false;
+        }
+        if (lastTwo != null ? !lastTwo.equals(that.lastTwo) : that.lastTwo != null) {
+            return false;
+        }
+        if (type != null ? !type.equals(that.type) : that.type != null) {
+            return false;
+        }
+        if (sortCode != null ? !sortCode.equals(that.sortCode) : that.sortCode != null ) {
+            return false;
+        }
+        if (bsbCode != null ? !bsbCode.equals(that.bsbCode) : that.bsbCode != null) {
+            return false;
+        }
+        if (taxIdentifier != null ? !taxIdentifier.equals(that.taxIdentifier) : that.taxIdentifier != null) {
+            return false;
+        }
+        if (taxIdentifierType != null ? !taxIdentifierType.equals(that.taxIdentifierType) : that.taxIdentifierType != null) {
+            return false;
+        }
+        if (primaryPaymentMethod != null ? !primaryPaymentMethod.equals(that.primaryPaymentMethod) : that.primaryPaymentMethod != null) {
+            return false;
+        }
+        if (backupPaymentMethod != null ? !backupPaymentMethod.equals(that.backupPaymentMethod) : that.backupPaymentMethod != null) {
             return false;
         }
 
@@ -649,6 +792,7 @@ public class BillingInfo extends RecurlyObject {
         return Objects.hashCode(
                 account,
                 nameOnAccount,
+                uuid,
                 firstName,
                 lastName,
                 mandateReference,
@@ -676,13 +820,21 @@ public class BillingInfo extends RecurlyObject {
                 geoCode,
                 type,
                 externalHppType,
+                onlineBankingPaymentType,
                 gatewayToken,
                 gatewayCode,
                 amazonBillingAgreementId,
                 amazonRegion,
                 threeDSecureActionResultTokenId,
                 transactionType,
-                iban
+                iban,
+                lastTwo,
+                sortCode,
+                bsbCode,
+                taxIdentifier,
+                taxIdentifierType,
+                primaryPaymentMethod,
+                backupPaymentMethod
         );
     }
 }

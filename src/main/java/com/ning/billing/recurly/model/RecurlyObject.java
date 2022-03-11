@@ -107,6 +107,10 @@ public abstract class RecurlyObject {
         return xmlMapper;
     }
 
+    public static XmlMapper sharedXmlMapper() {
+        return XmlMapperHolder.xmlMapper;
+    }
+
     public static Boolean booleanOrNull(@Nullable final Object object) {
         if (isNull(object)) {
             return null;
@@ -258,4 +262,15 @@ public abstract class RecurlyObject {
 
         return this.hashCode() == o.hashCode();
     }
+
+    /**
+     * Holder for the shared {@link XmlMapper}. Not putting it directly under {@link RecurlyObject}
+     * to maker it (sort of) lazy.
+     */
+    private static class XmlMapperHolder {
+
+        private static final XmlMapper xmlMapper = newXmlMapper();
+
+    }
+
 }

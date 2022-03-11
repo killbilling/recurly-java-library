@@ -155,6 +155,12 @@ public class TestSubscription extends TestModelBase {
                                         "      <quantity>3</quantity>\n" +
                                         "      <unit_amount_in_cents>200</unit_amount_in_cents>\n" +
                                         "    </subscription_add_on>\n" +
+                                        "    <subscription_add_on>\n" +
+                                        "      <add_on_code>mockitem</add_on_code>\n" +
+                                        "      <quantity>1</quantity>\n" +
+                                        "      <unit_amount_in_cents>199</unit_amount_in_cents>\n" +
+                                        "      <add_on_source>item</add_on_source>\n" +
+                                        "    </subscription_add_on>\n" +
                                         "   </subscription_add_ons>" +
                                         "</subscription>";
 
@@ -255,6 +261,14 @@ public class TestSubscription extends TestModelBase {
     }
 
     @Test(groups = "fast")
+    public void testSerializationWithBillingInfoUuid() throws Exception {
+        Subscription subscription = TestUtils.createRandomSubscription(0);
+        subscription.setBillingInfoUuid("aSpecialUuid");
+        String xmlString = xmlMapper.writeValueAsString(subscription);
+        assertTrue(xmlString.contains("<billing_info_uuid>aSpecialUuid</billing_info_uuid>"));
+    }
+
+    @Test(groups = "fast")
     public void testHashCodeAndEquality() throws Exception {
         // create subscriptions of the same value but difference references
         Subscription subscription = TestUtils.createRandomSubscription(0);
@@ -266,7 +280,7 @@ public class TestSubscription extends TestModelBase {
     }
 
     private void verifySubscriptionAddons(final Subscription subscription) {
-        Assert.assertEquals(subscription.getAddOns().size(), 2);
+        Assert.assertEquals(subscription.getAddOns().size(), 3);
         Assert.assertEquals(subscription.getAddOns().get(0).getAddOnCode(), "extra_users");
         Assert.assertEquals(subscription.getAddOns().get(0).getQuantity(), (Integer) 2);
         Assert.assertEquals(subscription.getAddOns().get(0).getUnitAmountInCents(), (Integer) 1000);
@@ -275,6 +289,9 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getAddOns().get(1).getAddOnCode(), "extra_ip");
         Assert.assertEquals(subscription.getAddOns().get(1).getQuantity(), (Integer) 3);
         Assert.assertEquals(subscription.getAddOns().get(1).getUnitAmountInCents(), (Integer) 200);
+        Assert.assertEquals(subscription.getAddOns().get(2).getAddOnCode(), "mockitem");
+        Assert.assertEquals(subscription.getAddOns().get(2).getAddOnSource(), "item");
+        Assert.assertEquals(subscription.getAddOns().get(2).getUnitAmountInCents(), (Integer) 199);
     }
 
     private void verifySubscriptionCustomFields(final Subscription subscription) {
