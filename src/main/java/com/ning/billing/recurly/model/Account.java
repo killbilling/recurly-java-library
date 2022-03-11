@@ -58,6 +58,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "transaction")
     private Transactions transactions;
 
+    @XmlElement(name = "invoice_template")
+    private InvoiceTemplate invoiceTemplate;
+
     @XmlElement(name = "account_code")
     private String accountCode;
 
@@ -106,6 +109,10 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "billing_info")
     private BillingInfo billingInfo;
 
+    @XmlElementWrapper(name = "billing_infos")
+    @XmlElement(name = "billing_info")
+    private BillingInfos billingInfos;
+
     @XmlElement(name = "tax_exempt")
     private Boolean taxExempt;
 
@@ -149,6 +156,12 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "transaction_type")
     private String transactionType;
+
+    @XmlElement(name = "dunning_campaign_id")
+    private String dunningCampaignId;
+
+    @XmlElement(name = "invoice_template_uuid")
+    private String invoiceTemplateUuid;
 
     @Override
     public void setHref(final Object href) {
@@ -440,6 +453,29 @@ public class Account extends RecurlyObject {
         this.transactionType = stringOrNull(transactionType);
     }
 
+    public String getDunningCampaignId() {
+        return dunningCampaignId;
+    }
+
+    public void setDunningCampaignId(final Object dunningCampaignId) {
+        this.dunningCampaignId = stringOrNull(dunningCampaignId);
+    }
+
+    public String getInvoiceTemplateUuid() {
+        return invoiceTemplateUuid;
+    }
+
+    public void setInvoiceTemplateUuid(final Object invoiceTemplateUuid) {
+        this.invoiceTemplateUuid = stringOrNull(invoiceTemplateUuid);
+    }
+
+    public InvoiceTemplate getInvoiceTemplate() {
+        if (invoiceTemplate != null && invoiceTemplate.getHref() != null && !invoiceTemplate.getHref().isEmpty()) {
+            invoiceTemplate = fetch(invoiceTemplate, InvoiceTemplate.class);
+        }
+        return invoiceTemplate;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
@@ -464,6 +500,7 @@ public class Account extends RecurlyObject {
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", closedAt=").append(closedAt);
         sb.append(", billingInfo=").append(billingInfo);
+        sb.append(", billingInfos=").append(billingInfos);
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", exemptionCertificate='").append(exemptionCertificate).append('\'');
         sb.append(", shippingAddresses=").append(shippingAddresses);
@@ -508,6 +545,9 @@ public class Account extends RecurlyObject {
             return false;
         }
         if (billingInfo != null ? !billingInfo.equals(account.billingInfo) : account.billingInfo != null) {
+            return false;
+        }
+        if (billingInfos != null ? !billingInfos.equals(account.billingInfos) : account.billingInfos != null) {
             return false;
         }
         if (closedAt != null ? closedAt.compareTo(account.closedAt) != 0 : account.closedAt != null) {
@@ -623,6 +663,7 @@ public class Account extends RecurlyObject {
                 hostedLoginToken,
                 createdAt,
                 billingInfo,
+                billingInfos,
                 updatedAt,
                 taxExempt,
                 exemptionCertificate,

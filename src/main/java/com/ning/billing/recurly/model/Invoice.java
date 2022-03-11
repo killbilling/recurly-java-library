@@ -22,8 +22,10 @@ import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
+import java.util.List;
 
 @XmlRootElement(name = "invoice")
 public class Invoice extends RecurlyObject {
@@ -55,6 +57,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "vat_number")
     private String vatNumber;
 
+    @XmlElement(name = "billing_info_uuid")
+    private String billingInfoUuid;
+
     @XmlElement(name = "subtotal_in_cents")
     private Integer subtotalInCents;
 
@@ -75,6 +80,10 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "tax_rate")
     private BigDecimal taxRate;
+
+    @XmlList
+    @XmlElementWrapper(name = "tax_details")
+    private List<TaxDetail> taxDetails;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -153,6 +162,9 @@ public class Invoice extends RecurlyObject {
 
     @XmlElement(name = "transaction_type")
     private String transactionType;
+
+    @XmlElement(name = "dunning_campaign_id")
+    private String dunningCampaignId;
 
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
@@ -251,6 +263,14 @@ public class Invoice extends RecurlyObject {
         this.vatNumber = stringOrNull(varNumber);
     }
 
+    public String getBillingInfoUuid() {
+      return billingInfoUuid;
+    }
+
+    public void setBillingInfoUuid(final Object billingInfoUuid) {
+        this.billingInfoUuid = stringOrNull(billingInfoUuid);
+    }
+
     public Integer getSubtotalInCents() {
         return subtotalInCents;
     }
@@ -305,6 +325,14 @@ public class Invoice extends RecurlyObject {
 
     public String getTaxType() {
       return taxType;
+    }
+
+    public List<TaxDetail> getTaxDetails() {
+        return taxDetails;
+    }
+
+    public void setTaxDetails(final List<TaxDetail> taxDetails) {
+        this.taxDetails = taxDetails;
     }
 
     public DateTime getCreatedAt() {
@@ -508,6 +536,14 @@ public class Invoice extends RecurlyObject {
         this.transactionType = stringOrNull(transactionType);
     }
 
+    public String getDunningCampaignId() {
+        return dunningCampaignId;
+    }
+
+    public void setDunningCampaignId(final Object dunningCampaignId) {
+        this.dunningCampaignId = stringOrNull(dunningCampaignId);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
@@ -520,6 +556,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", invoiceNumberPrefix=").append(invoiceNumberPrefix);
         sb.append(", poNumber=").append(poNumber);
         sb.append(", vatNumber='").append(vatNumber).append('\'');
+        sb.append(", billingInfoUuid='").append(billingInfoUuid).append('\'');
         sb.append(", subtotalInCents=").append(subtotalInCents);
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", totalInCents=").append(totalInCents);
@@ -527,6 +564,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", taxRegion=").append(taxRegion);
         sb.append(", taxType=").append(taxType);
         sb.append(", taxRate=").append(taxRate);
+        sb.append(", taxDetails=").append(taxDetails);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", closedAt=").append(closedAt);
@@ -652,6 +690,9 @@ public class Invoice extends RecurlyObject {
         if (taxRate != null ? !taxRate.equals(invoice.taxRate) : invoice.taxRate != null) {
             return false;
         }
+        if (taxDetails != null ? !taxDetails.equals(invoice.taxDetails) : invoice.taxDetails != null) {
+            return false;
+        }
         if (termsAndConditions != null ? !termsAndConditions.equals(invoice.termsAndConditions) : invoice.termsAndConditions != null) {
             return false;
         }
@@ -671,6 +712,9 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (vatNumber != null ? !vatNumber.equals(invoice.vatNumber) : invoice.vatNumber != null) {
+            return false;
+        }
+        if (billingInfoUuid != null ? !billingInfoUuid.equals(invoice.billingInfoUuid) : invoice.billingInfoUuid != null) {
             return false;
         }
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(invoice.vatReverseChargeNotes) : invoice.vatReverseChargeNotes != null) {
@@ -698,12 +742,14 @@ public class Invoice extends RecurlyObject {
                 invoiceNumberPrefix,
                 poNumber,
                 vatNumber,
+                billingInfoUuid,
                 subtotalInCents,
                 totalInCents,
                 taxInCents,
                 taxRegion,
                 taxType,
                 taxRate,
+                taxDetails,
                 currency,
                 createdAt,
                 updatedAt,

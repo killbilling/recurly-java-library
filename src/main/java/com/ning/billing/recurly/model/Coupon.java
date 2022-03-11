@@ -113,6 +113,12 @@ public class Coupon extends RecurlyObject {
     private Boolean appliesToAllPlans;
 
     /**
+     * The coupon is valid for all items if true, defaults to false
+     */
+    @XmlElement(name = "applies_to_all_items")
+    private Boolean appliesToAllItems;
+
+    /**
      * If true, the coupon applies to the first invoice only
      * @deprecated Please use duration
      */
@@ -157,6 +163,18 @@ public class Coupon extends RecurlyObject {
     @XmlElement(name = "plan_code")
     @XmlElementWrapper(name = "plan_codes")
     private PlanCodes planCodes;
+
+    public ItemCodes getItemCodes() {
+        return itemCodes;
+    }
+
+    public void setItemCodes(final ItemCodes itemCodes) {
+        this.itemCodes = itemCodes;
+    }
+
+    @XmlElement(name = "item_code")
+    @XmlElementWrapper(name = "item_codes")
+    private ItemCodes itemCodes;
 
     /**
      * forever, single_use, or temporal. If single_use, the coupon applies to
@@ -360,6 +378,14 @@ public class Coupon extends RecurlyObject {
         this.appliesToAllPlans = booleanOrNull(appliesToAllPlans);
     }
 
+    public Boolean getAppliesToAllItems() {
+        return appliesToAllItems;
+    }
+
+    public void setAppliesToAllItems(final Object appliesToAllItems) {
+        this.appliesToAllItems = booleanOrNull(appliesToAllItems);
+    }
+
     public FreeTrialUnit getFreeTrialUnit() {
         return freeTrialUnit;
     }
@@ -511,10 +537,16 @@ public class Coupon extends RecurlyObject {
         if (appliesToAllPlans != null ? !appliesToAllPlans.equals(coupon.appliesToAllPlans) : coupon.appliesToAllPlans != null) {
             return false;
         }
+        if (appliesToAllItems != null ? !appliesToAllItems.equals(coupon.appliesToAllItems) : coupon.appliesToAllItems != null) {
+            return false;
+        }
         if (couponCode != null ? !couponCode.equals(coupon.couponCode) : coupon.couponCode != null) {
             return false;
         }
         if (planCodes != null ? !planCodes.equals(coupon.planCodes) : coupon.planCodes != null) {
+            return false;
+        }
+        if (itemCodes != null ? !itemCodes.equals(coupon.itemCodes) : coupon.itemCodes != null) {
             return false;
         }
         if (createdAt != null ? createdAt.compareTo(coupon.createdAt) != 0 : coupon.createdAt != null) {
@@ -586,10 +618,12 @@ public class Coupon extends RecurlyObject {
         return Objects.hashCode(
                 appliesForMonths,
                 appliesToAllPlans,
+                appliesToAllItems,
                 appliesToNonPlanCharges,
                 name,
                 couponCode,
                 planCodes,
+                itemCodes,
                 description,
                 discountType,
                 discountPercent,

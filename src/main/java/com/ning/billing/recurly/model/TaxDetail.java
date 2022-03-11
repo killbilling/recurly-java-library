@@ -32,11 +32,23 @@ public class TaxDetail extends RecurlyObject{
     @XmlElement(name = "type")
     private String type;
 
+    @XmlElement(name = "level")
+    private String level;
+
+    @XmlElement(name = "billable")
+    private Boolean billable;
+
     @XmlElement(name = "tax_rate")
     private BigDecimal taxRate;
 
     @XmlElement(name = "tax_in_cents")
     private Integer taxInCents;
+
+    @XmlElement(name = "tax_type")
+    private String taxType;
+
+    @XmlElement(name = "tax_region")
+    private String taxRegion;
 
     public String getName() {
         return name;
@@ -52,6 +64,22 @@ public class TaxDetail extends RecurlyObject{
 
     public void setType(final Object type) {
         this.type = stringOrNull(type);
+    }
+
+    public String getLevel() {
+        return level;
+    }
+
+    public void setLevel(final Object level) {
+        this.level = stringOrNull(level);
+    }
+
+    public Boolean getBillable() {
+        return billable;
+    }
+
+    public void setBillable(final Object billable) {
+        this.billable = booleanOrNull(billable);
     }
 
     public BigDecimal getTaxRate() {
@@ -70,14 +98,34 @@ public class TaxDetail extends RecurlyObject{
         this.taxInCents = integerOrNull(taxInCents);
     }
 
+    public String getTaxType() {
+        return taxType;
+    }
+
+    public void setTaxType(final Object taxType) {
+        this.taxType = stringOrNull(taxType);
+    }
+
+    public String getTaxRegion() {
+        return taxRegion;
+    }
+
+    public void setTaxRegion(final Object taxRegion) {
+        this.taxRegion = stringOrNull(taxRegion);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
         sb.append("TaxDetail{");
         sb.append("name='").append(name).append('\'');
         sb.append(", type='").append(type).append('\'');
+        sb.append(", level='").append(level).append('\'');
+        sb.append(", billable=").append(billable);
         sb.append(", taxRate=").append(taxRate);
         sb.append(", taxInCents=").append(taxInCents);
+        sb.append(", taxType='").append(taxType).append('\'');
+        sb.append(", taxRegion='").append(taxRegion).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -95,10 +143,22 @@ public class TaxDetail extends RecurlyObject{
         if (type != null ? !type.equals(that.type) : that.type != null) {
             return false;
         }
+        if (level != null ? !level.equals(that.level) : that.level != null) {
+            return false;
+        }
+        if (billable != null ? !billable.equals(that.billable) : that.billable != null) {
+            return false;
+        }
         if (taxRate != null ? !taxRate.equals(that.taxRate) : that.taxRate != null) {
             return false;
         }
         if (taxInCents != null ? !taxInCents.equals(that.taxInCents) : that.taxInCents != null) {
+            return false;
+        }
+        if (taxType != null ? !taxType.equals(that.taxType) : that.taxType != null) {
+            return false;
+        }
+        if (taxRegion != null ? !taxRegion.equals(that.taxRegion) : that.taxRegion != null) {
             return false;
         }
         return true;
@@ -109,8 +169,12 @@ public class TaxDetail extends RecurlyObject{
         return Objects.hashCode(
             name,
             type,
+            level,
+            billable,
             taxRate,
-            taxInCents
+            taxInCents,
+            taxType,
+            taxRegion
         );
     }
 

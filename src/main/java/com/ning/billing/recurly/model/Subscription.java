@@ -147,6 +147,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "shipping_amount_in_cents")
     private Integer shippingAmountInCents;
 
+    @XmlElement(name = "billing_info_uuid")
+    private String billingInfoUuid;
+
     @XmlElement(name = "no_billing_info_reason")
     private String noBillingInfoReason;
 
@@ -462,6 +465,14 @@ public class Subscription extends AbstractSubscription {
         this.shippingAmountInCents = integerOrNull(shippingAmountInCents);
     }
 
+    public String getBillingInfoUuid() {
+      return billingInfoUuid;
+    }
+
+    public void setBillingInfoUuid(final Object billingInfoUuid) {
+        this.billingInfoUuid = stringOrNull(billingInfoUuid);
+    }
+
     public DateTime getUpdatedAt() {
         return updatedAt;
     }
@@ -628,6 +639,7 @@ public class Subscription extends AbstractSubscription {
         sb.append(", shippingAddressId=").append(shippingAddressId);
         sb.append(", shippingMethodCode=").append(shippingMethodCode);
         sb.append(", shippingAmountInCents=").append(shippingAmountInCents);
+        sb.append(", billingInfoUuid='").append(billingInfoUuid).append('\'');
         sb.append(", startedWithGift=").append(startedWithGift);
         sb.append(", convertedAt=").append(convertedAt);
         sb.append(", noBillingInfoReason=").append(noBillingInfoReason);
@@ -772,6 +784,9 @@ public class Subscription extends AbstractSubscription {
         if (shippingAmountInCents != null ? !shippingAmountInCents.equals(that.shippingAmountInCents) : that.shippingAmountInCents != null) {
             return false;
         }
+        if (billingInfoUuid != null ? !billingInfoUuid.equals(that.billingInfoUuid) : that.billingInfoUuid != null) {
+            return false;
+        }
         if (noBillingInfoReason != null ? !noBillingInfoReason.equals(that.noBillingInfoReason) : that.noBillingInfoReason != null) {
             return false;
         }
@@ -844,6 +859,7 @@ public class Subscription extends AbstractSubscription {
                 shippingAddressId,
                 shippingMethodCode,
                 shippingAmountInCents,
+                billingInfoUuid,
                 couponCode,
                 couponCodes,
                 convertedAt,

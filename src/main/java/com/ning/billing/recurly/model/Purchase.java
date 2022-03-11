@@ -73,6 +73,9 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "terms_and_conditions")
     private String termsAndConditions;
 
+    @XmlElement(name = "billing_info_uuid")
+    private String billingInfoUuid;
+
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
@@ -199,6 +202,14 @@ public class Purchase extends RecurlyObject {
         this.vatReverseChargeNotes = stringOrNull(vatReverseChargeNotes);
     }
 
+    public String getBillingInfoUuid() {
+      return billingInfoUuid;
+    }
+
+    public void setBillingInfoUuid(final Object billingInfoUuid) {
+        this.billingInfoUuid = stringOrNull(billingInfoUuid);
+    }
+
     public Long getShippingAddressId() {
         return shippingAddressId;
     }
@@ -241,6 +252,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", customerNotes='").append(customerNotes).append('\'');
         sb.append(", termsAndConditions='").append(termsAndConditions).append('\'');
         sb.append(", vatReverseChargeNotes='").append(vatReverseChargeNotes).append('\'');
+        sb.append(", billingInfoUuid='").append(billingInfoUuid).append('\'');
         sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append(", transactionType='").append(transactionType).append('\'');
@@ -291,6 +303,9 @@ public class Purchase extends RecurlyObject {
         if (shippingAddressId != null ? !shippingAddressId.equals(purchase.shippingAddressId) : purchase.shippingAddressId != null) {
             return false;
         }
+        if (billingInfoUuid != null ? !billingInfoUuid.equals(purchase.billingInfoUuid) : purchase.billingInfoUuid != null) {
+            return false;
+        }
         if (shippingFees != null ? !shippingFees.equals(purchase.shippingFees) : purchase.shippingFees != null) {
             return false;
         }
@@ -327,6 +342,7 @@ public class Purchase extends RecurlyObject {
                 customerNotes,
                 termsAndConditions,
                 vatReverseChargeNotes,
+                billingInfoUuid,
                 shippingAddressId,
                 gatewayCode,
                 transactionType

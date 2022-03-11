@@ -37,6 +37,12 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "item_code")
     private String itemCode;
 
+    @XmlElement(name = "item_state")
+    private String itemState;
+
+    @XmlElement(name = "external_sku")
+    private String externalSku;
+
     @XmlElement(name = "display_quantity_on_hosted_page")
     private Boolean displayQuantityOnHostedPage;
 
@@ -70,10 +76,6 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "tier_type")
     private String tierType;
 
-    @XmlElementWrapper(name = "tiers")
-    @XmlElement(name = "tier")
-    protected Tiers tiers;
-
     public String getName() {
         return name;
     }
@@ -88,6 +90,22 @@ public class AddOn extends AbstractAddOn {
 
     public void setItemCode(final Object itemCode) {
         this.itemCode = stringOrNull(itemCode);
+    }
+
+    public String getItemState() {
+        return itemState;
+    }
+
+    public void setItemState(final Object itemState) {
+        this.itemState = stringOrNull(itemState);
+    }
+
+    public String getExternalSku() {
+        return externalSku;
+    }
+
+    public void setExternalSku(final Object externalSku) {
+        this.externalSku = stringOrNull(externalSku);
     }
 
     public Boolean getDisplayQuantityOnHostedPage() {
@@ -181,19 +199,13 @@ public class AddOn extends AbstractAddOn {
         this.tierType = stringOrNull(tierType);
     }
 
-    public Tiers getTiers() {
-        return tiers;
-    }
-
-    public void setTiers(final Tiers tiers) {
-        this.tiers = tiers;
-    }
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
         sb.append("name='").append(name).append('\'');
         sb.append(", itemCode='").append(itemCode).append('\'');
+        sb.append(", itemState='").append(itemState).append('\'');
+        sb.append(", externalSku='").append(externalSku).append('\'');
         sb.append(", measuredUnit='").append(measuredUnit).append('\'');
         sb.append(", addOnType='").append(addOnType).append('\'');
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
@@ -205,7 +217,6 @@ public class AddOn extends AbstractAddOn {
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", optional=").append(optional);
         sb.append(", tierType=").append(tierType);
-        sb.append(", tiers=").append(tiers);
         sb.append('}');
         return sb.toString();
     }
@@ -253,12 +264,13 @@ public class AddOn extends AbstractAddOn {
         if (itemCode != null ? !itemCode.equals(addOn.itemCode) : addOn.itemCode != null) {
             return false;
         }
-
-        if (tierType != null ? !tierType.equals(addOn.tierType) : addOn.tierType != null) {
+        if (itemState != null ? !itemState.equals(addOn.itemState) : addOn.itemState != null) {
+            return false;
+        }  
+        if (externalSku != null ? !externalSku.equals(addOn.externalSku) : addOn.externalSku != null) {
             return false;
         }
-
-        if (tiers != null ? !tiers.equals(addOn.tiers) : addOn.tiers != null) {
+        if (tierType != null ? !tierType.equals(addOn.tierType) : addOn.tierType != null) {
             return false;
         }
 
@@ -270,6 +282,8 @@ public class AddOn extends AbstractAddOn {
         return Objects.hashCode(
                 name,
                 itemCode,
+                itemState,
+                externalSku,
                 measuredUnit,
                 addOnType,
                 displayQuantityOnHostedPage,
@@ -280,8 +294,7 @@ public class AddOn extends AbstractAddOn {
                 taxCode,
                 accountingCode,
                 optional,
-                tierType,
-                tiers
+                tierType
         );
     }
 }

@@ -20,6 +20,7 @@ package com.ning.billing.recurly.model;
 import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 /**
  * Subscription object for update calls.
@@ -50,6 +51,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
+    @XmlElement(name = "billing_info_uuid")
+    private String billingInfoUuid;
+
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
@@ -71,8 +75,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "auto_renew")
     private Boolean autoRenew;
 
-    @XmlElement(name = "billing_info")
-    private BillingInfo billingInfo;
+    @XmlElementWrapper(name = "subscription_add_ons")
+    @XmlElement(name = "subscription_add_on")
+    private SubscriptionAddOns addOns;
 
     public Timeframe getTimeframe() {
         return timeframe;
@@ -112,6 +117,14 @@ public class SubscriptionUpdate extends AbstractSubscription {
 
     public Integer getNetTerms() {
         return netTerms;
+    }
+
+    public String getBillingInfoUuid() {
+      return billingInfoUuid;
+    }
+
+    public void setBillingInfoUuid(final Object billingInfoUuid) {
+        this.billingInfoUuid = stringOrNull(billingInfoUuid);
     }
 
     public void setNetTerms(final Object netTerms) {
@@ -166,12 +179,12 @@ public class SubscriptionUpdate extends AbstractSubscription {
         this.autoRenew = booleanOrNull(autoRenew);
     }
 
-    public BillingInfo getBillingInfo() {
-        return billingInfo;
+    public SubscriptionAddOns getAddOns() {
+        return addOns;
     }
 
-    public void setBillingInfo(BillingInfo billingInfo) {
-        this.billingInfo = billingInfo;
+    public void setAddOns(final SubscriptionAddOns addOns) {
+        this.addOns = addOns;
     }
 
     @Override
@@ -194,6 +207,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
             return false;
         }
         if (shippingAddressId != null ? !shippingAddressId.equals(that.shippingAddressId) : that.shippingAddressId != null) {
+            return false;
+        }
+        if (billingInfoUuid != null ? !billingInfoUuid.equals(that.billingInfoUuid) : that.billingInfoUuid != null) {
             return false;
         }
         if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
@@ -220,8 +236,8 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (autoRenew != null ? !autoRenew.equals(that.autoRenew) : that.autoRenew != null) {
             return false;
         }
-        if (billingInfo != null ? !billingInfo.equals(that.billingInfo) : that.billingInfo != null) {
-            return false;
+        if (addOns != null ? !addOns.equals(that.addOns) : that.addOns != null) {
+          return false;
         }
 
         return true;
@@ -235,6 +251,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 collectionMethod,
                 shippingAddress,
                 shippingAddressId,
+                billingInfoUuid,
                 customFields,
                 netTerms,
                 poNumber,
@@ -243,7 +260,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 importedTrial,
                 renewalBillingCycles,
                 autoRenew,
-                billingInfo
+                addOns
         );
     }
 }
