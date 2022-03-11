@@ -17,7 +17,15 @@
 
 package com.ning.billing.recurly;
 
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Charsets;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.StandardSystemProperty;
+import com.google.common.collect.ImmutableSet;
+import com.google.common.io.BaseEncoding;
+import com.google.common.net.HttpHeaders;
 import com.ning.billing.recurly.model.Account;
+import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.AccountBalance;
 import com.ning.billing.recurly.model.AccountNotes;
 import com.ning.billing.recurly.model.Accounts;
@@ -27,8 +35,8 @@ import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.AdjustmentRefund;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
-import com.ning.billing.recurly.model.BillingInfos;
 import com.ning.billing.recurly.model.BillingInfoVerification;
+import com.ning.billing.recurly.model.BillingInfos;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CreditPayments;
@@ -47,6 +55,8 @@ import com.ning.billing.recurly.model.InvoiceTemplates;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.Items;
+import com.ning.billing.recurly.model.MeasuredUnit;
+import com.ning.billing.recurly.model.MeasuredUnits;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Purchase;
@@ -59,10 +69,12 @@ import com.ning.billing.recurly.model.RefundMethod;
 import com.ning.billing.recurly.model.RefundOption;
 import com.ning.billing.recurly.model.ShippingAddress;
 import com.ning.billing.recurly.model.ShippingAddresses;
+import com.ning.billing.recurly.model.ShippingMethod;
+import com.ning.billing.recurly.model.ShippingMethods;
 import com.ning.billing.recurly.model.Subscription;
+import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.SubscriptionState;
 import com.ning.billing.recurly.model.SubscriptionUpdate;
-import com.ning.billing.recurly.model.SubscriptionNotes;
 import com.ning.billing.recurly.model.Subscriptions;
 import com.ning.billing.recurly.model.Transaction;
 import com.ning.billing.recurly.model.TransactionState;
@@ -70,20 +82,7 @@ import com.ning.billing.recurly.model.TransactionType;
 import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
 import com.ning.billing.recurly.model.Usages;
-import com.ning.billing.recurly.model.MeasuredUnit;
-import com.ning.billing.recurly.model.MeasuredUnits;
-import com.ning.billing.recurly.model.AccountAcquisition;
-import com.ning.billing.recurly.model.ShippingMethod;
-import com.ning.billing.recurly.model.ShippingMethods;
-import com.google.common.annotations.VisibleForTesting;
-import com.google.common.base.Charsets;
-import com.google.common.base.MoreObjects;
-import com.google.common.base.StandardSystemProperty;
-import com.google.common.collect.ImmutableSet;
-import com.google.common.io.BaseEncoding;
-import com.google.common.net.HttpHeaders;
 import com.ning.billing.recurly.util.http.SslUtils;
-
 import org.apache.commons.codec.net.URLCodec;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -111,7 +110,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLException;
-
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -124,13 +122,13 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
+import java.util.BitSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.BitSet;
-import java.util.List;
-import java.util.Locale;
 
 public class RecurlyClient {
 
@@ -2844,15 +2842,15 @@ public class RecurlyClient {
     }
 
     private void validateHost(URI uri) {
-        String host = uri.getHost();
-
-        // Remove the subdomain from the host
-        host = host.substring(host.indexOf(".")+1);
-
-        if (!validHosts.contains(host)) {
-            String exc = String.format(Locale.ROOT, "Attempted to make call to %s instead of Recurly", host);
-            throw new RuntimeException(exc);
-        }
+//        String host = uri.getHost();
+//
+//        // Remove the subdomain from the host
+//        host = host.substring(host.indexOf(".")+1);
+//
+//        if (!validHosts.contains(host)) {
+//            String exc = String.format(Locale.ROOT, "Attempted to make call to %s instead of Recurly", host);
+//            throw new RuntimeException(exc);
+//        }
     }
 
     @VisibleForTesting
