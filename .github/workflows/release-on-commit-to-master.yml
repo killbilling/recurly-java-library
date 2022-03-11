@@ -7,6 +7,7 @@ on:
 env:
   APPLICATION: recurly-java-library
   JAVA_HOME: /usr/lib/jvm/java-1.8-openjdk/
+  MAVEN_FLAGS: "-B --no-transfer-progress"
 
 jobs:
   release:
