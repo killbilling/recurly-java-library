@@ -17,12 +17,11 @@
 
 package com.ning.billing.recurly.model;
 
-import java.util.Map;
+import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.google.common.base.Objects;
+import java.util.Map;
 
 @XmlRootElement(name = "errors")
 public class Errors extends RecurlyObject {
@@ -61,7 +60,7 @@ public class Errors extends RecurlyObject {
             final RecurlyError error = new RecurlyError();
             error.setField((String) ((Map) recurlyErrors).get("field"));
             error.setSymbol((String) ((Map) recurlyErrors).get("symbol"));
-            error.setMessage((String) ((Map) recurlyErrors).get(""));
+            error.setMessage((String) ((Map) recurlyErrors).get("message"));
 
             if (this.recurlyErrors == null) {
                 this.recurlyErrors = new RecurlyErrors();
