@@ -54,6 +54,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "billing_info_uuid")
     private String billingInfoUuid;
 
+    @XmlElement(name = "billing_info")
+    private BillingInfo billingInfo;
+
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
@@ -125,6 +128,14 @@ public class SubscriptionUpdate extends AbstractSubscription {
 
     public void setBillingInfoUuid(final Object billingInfoUuid) {
         this.billingInfoUuid = stringOrNull(billingInfoUuid);
+    }
+
+    public BillingInfo getBillingInfo() {
+        return billingInfo;
+    }
+
+    public void setBillingInfo(BillingInfo billingInfo) {
+        this.billingInfo = billingInfo;
     }
 
     public void setNetTerms(final Object netTerms) {
@@ -212,6 +223,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (billingInfoUuid != null ? !billingInfoUuid.equals(that.billingInfoUuid) : that.billingInfoUuid != null) {
             return false;
         }
+        if (billingInfo != null ? !billingInfo.equals(that.billingInfo) : that.billingInfo != null) {
+            return false;
+        }
         if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
             return false;
         }
@@ -252,6 +266,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 shippingAddress,
                 shippingAddressId,
                 billingInfoUuid,
+                billingInfo,
                 customFields,
                 netTerms,
                 poNumber,
