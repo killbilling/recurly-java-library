@@ -44,6 +44,17 @@ public class AbstractAddOn extends RecurlyObject {
     @XmlElement(name = "tier")
     protected Tiers tiers;
 
+    @XmlElement(name = "usage_timeframe")
+    private String usageTimeframe;
+
+    public String getUsageTimeframe() {
+        return usageTimeframe;
+    }
+
+    public void setUsageTimeframe(final String usageTimeframe) {
+        this.usageTimeframe = usageTimeframe;
+    }
+
     public String getAddOnCode() {
         return addOnCode;
     }

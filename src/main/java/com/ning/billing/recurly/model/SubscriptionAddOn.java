@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 
 import com.google.common.base.Objects;
 
@@ -36,6 +37,18 @@ public class SubscriptionAddOn extends AbstractAddOn {
 
     @XmlElement(name = "add_on_source")
     private String addOnSource;
+
+    @XmlElementWrapper(name = "percentage_tiers")
+    @XmlElement(name = "percentage_tier")
+    protected PercentageTiers percentageTiers;
+
+    public PercentageTiers getPercentageTiers() {
+        return percentageTiers;
+    }
+
+    public void setPercentageTiers(final PercentageTiers percentageTiers) {
+        this.percentageTiers = percentageTiers;
+    }
 
     public Integer getUnitAmountInCents() {
         return unitAmountInCents;
@@ -76,6 +89,7 @@ public class SubscriptionAddOn extends AbstractAddOn {
         sb.append(", quantity=").append(quantity);
         sb.append(", gatewayCode=").append(gatewayCode);
         sb.append(", addOnSource=").append(addOnSource);
+        sb.append(", percentage_tiers=").append(percentageTiers);
         sb.append('}');
         return sb.toString();
     }
@@ -99,6 +113,9 @@ public class SubscriptionAddOn extends AbstractAddOn {
         if (addOnSource != null ? !addOnSource.equals(addOn.addOnSource) : addOn.addOnSource != null) {
             return false;
         }
+        if (percentageTiers != null ? !percentageTiers.equals(addOn.percentageTiers) : addOn.percentageTiers != null) {
+            return false;
+        }
 
         return true;
     }
@@ -106,10 +123,11 @@ public class SubscriptionAddOn extends AbstractAddOn {
     @Override
     public int hashCode() {
         return Objects.hashCode(
-                unitAmountInCents,
-                quantity,
-                gatewayCode,
-                addOnSource
+            unitAmountInCents,
+            quantity,
+            gatewayCode,
+            addOnSource,
+            percentageTiers
         );
     }
 }
