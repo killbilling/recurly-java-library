@@ -21,11 +21,15 @@ import com.ning.billing.recurly.model.Account;
 import com.ning.billing.recurly.model.AccountAcquisition;
 import com.ning.billing.recurly.model.AcquisitionChannel;
 import com.ning.billing.recurly.model.AddOn;
+import com.ning.billing.recurly.model.AddonPercentageTier;
+import com.ning.billing.recurly.model.AddonPercentageTiers;
 import com.ning.billing.recurly.model.Address;
 import com.ning.billing.recurly.model.Adjustment;
 import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.Coupon;
+import com.ning.billing.recurly.model.CurrencyPercentageTier;
+import com.ning.billing.recurly.model.CurrencyPercentageTiers;
 import com.ning.billing.recurly.model.CustomField;
 import com.ning.billing.recurly.model.CustomFields;
 import com.ning.billing.recurly.model.Delivery;
@@ -33,6 +37,8 @@ import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.Invoice;
 import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.MeasuredUnit;
+import com.ning.billing.recurly.model.PercentageTier;
+import com.ning.billing.recurly.model.PercentageTiers;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Purchase;
 import com.ning.billing.recurly.model.RecurlyUnitCurrency;
@@ -48,6 +54,7 @@ import com.ning.billing.recurly.model.Transactions;
 import com.ning.billing.recurly.model.Usage;
 import org.joda.time.DateTime;
 
+import java.math.BigDecimal;
 import java.util.Random;
 
 public class TestUtils {
@@ -872,6 +879,45 @@ public class TestUtils {
 
 
     /**
+     * Creates a random percentage tiered {@link AddOn} for use in Tests given a seed.
+     *
+     * @param seed The RNG seed
+     * @return The random {@link AddOn}
+     */
+    public static AddOn createRandomAddOnPercentageTiered(final int seed) {
+        final AddOn addOn = new AddOn();
+
+        addOn.setAddOnCode(randomAlphaNumericString(10, seed));
+        addOn.setName(randomAlphaNumericString(10, seed));
+        addOn.setTierType("tiered");
+
+        final CurrencyPercentageTiers currencyPercentageTiers = new CurrencyPercentageTiers();
+
+        final AddonPercentageTiers addonPercentageTiers = new AddonPercentageTiers();
+  
+        final CurrencyPercentageTier currencyPercentageTier = new CurrencyPercentageTier();
+        currencyPercentageTier.setCurrency("USD");
+  
+        final AddonPercentageTier addonPercentageTier = new AddonPercentageTier();
+        addonPercentageTier.setEndingAmountInCents(100);
+        addonPercentageTier.setUsagePercentage(new BigDecimal("10.0"));
+        addonPercentageTiers.add(addonPercentageTier);
+  
+        final AddonPercentageTier addonPercentageTier2 = new AddonPercentageTier();
+        addonPercentageTier2.setEndingAmountInCents(null);
+        addonPercentageTier2.setUsagePercentage(new BigDecimal("20.0"));
+        addonPercentageTiers.add(addonPercentageTier2);
+  
+        currencyPercentageTier.setTiers(addonPercentageTiers);
+        currencyPercentageTiers.add(currencyPercentageTier);
+  
+        addOn.setPercentageTiers(currencyPercentageTiers);
+
+        return addOn;
+    }
+
+
+    /**
      * Creates a random item-backed {@link AddOn} for use in Tests given a seed.
      *
      * @param seed The RNG seed
@@ -884,6 +930,35 @@ public class TestUtils {
         addOn.setUnitAmountInCents(createRandomPrice());
 
         return addOn;
+    }
+
+    /**
+     * Creates a {@link com.ning.billing.recurly.model.SubscriptionAddOn} object with percentage tiered add on for use in tests
+     *
+     * @return The {@link com.ning.billing.recurly.model.SubscriptionAddOn} object
+     */
+    public static SubscriptionAddOn createRandomSubscriptionAddOnPercentageTiered() {
+        final SubscriptionAddOn subscriptionAddOn = new SubscriptionAddOn();
+        subscriptionAddOn.setAddOnCode(subscriptionAddOn.getAddOnCode());
+        subscriptionAddOn.setQuantity(1);
+  
+        final PercentageTiers percentageTiers = new PercentageTiers();
+  
+        final PercentageTier percentageTier1 = new PercentageTier();
+        final PercentageTier percentageTier2 = new PercentageTier();
+  
+        percentageTier1.setEndingAmountInCents(200);
+        percentageTier1.setUsagePercentage(new BigDecimal("20.0"));
+  
+        percentageTier2.setEndingAmountInCents(null);
+        percentageTier2.setUsagePercentage(new BigDecimal("40.0"));
+  
+        percentageTiers.add(percentageTier1);
+        percentageTiers.add(percentageTier2);
+  
+        subscriptionAddOn.setPercentageTiers(percentageTiers);
+  
+        return subscriptionAddOn;
     }
 
     /**

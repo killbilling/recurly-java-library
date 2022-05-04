@@ -44,6 +44,9 @@ public class AbstractAddOn extends RecurlyObject {
     @XmlElement(name = "tier")
     protected Tiers tiers;
 
+    @XmlElement(name = "usage_timeframe")
+    protected UsageTimeframeType usageTimeframe;
+
     public String getAddOnCode() {
         return addOnCode;
     }
@@ -92,12 +95,21 @@ public class AbstractAddOn extends RecurlyObject {
         this.tiers = tiers;
     }
 
+    public UsageTimeframeType getUsageTimeframe() {
+        return usageTimeframe;
+    }
+
+    public void setUsageTimeframe(final Object usageTimeframe) {
+        this.usageTimeframe = enumOrNull(UsageTimeframeType.class, usageTimeframe, true);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AbstractAddOn{");
         sb.append("addOnCode='").append(addOnCode).append('\'');
         sb.append("measuredUnitId='").append(measuredUnitId).append('\'');
         sb.append("usageType='").append(usageType).append('\'');
+        sb.append("usageTimeframe='").append(usageTimeframe).append('\'');
         sb.append("usagePercentage=").append(usagePercentage);
         sb.append(", revenueScheduleType='").append(revenueScheduleType).append('\'');
         sb.append(", tiers=").append(tiers);
@@ -124,6 +136,10 @@ public class AbstractAddOn extends RecurlyObject {
             return false;
         }
 
+        if (usageTimeframe != that.usageTimeframe) {
+            return false;
+        }
+
         if (usagePercentage != null ? !usagePercentage.equals(that.usagePercentage) : that.usagePercentage != null) {
             return false;
         }
@@ -145,6 +161,7 @@ public class AbstractAddOn extends RecurlyObject {
             addOnCode,
             measuredUnitId,
             usageType,
+            usageTimeframe,
             usagePercentage,
             revenueScheduleType,
             tiers

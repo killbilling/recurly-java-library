@@ -98,6 +98,9 @@ public abstract class RecurlyObject {
         m.addSerializer(SubscriptionAddOns.class, new RecurlyObjectsSerializer<SubscriptionAddOns, SubscriptionAddOn>(SubscriptionAddOns.class, "subscription_add_on"));
         m.addSerializer(Subscriptions.class, new RecurlyObjectsSerializer<Subscriptions, Subscription>(Subscriptions.class, "subscription"));
         m.addSerializer(Tiers.class, new RecurlyObjectsSerializer<Tiers,Tier>(Tiers.class, "tier"));
+        m.addSerializer(AddonPercentageTiers.class, new RecurlyObjectsSerializer<AddonPercentageTiers,AddonPercentageTier>(AddonPercentageTiers.class, "tier"));
+        m.addSerializer(CurrencyPercentageTiers.class, new RecurlyObjectsSerializer<CurrencyPercentageTiers,CurrencyPercentageTier>(CurrencyPercentageTiers.class, "percentage_tier"));
+        m.addSerializer(PercentageTiers.class, new RecurlyObjectsSerializer<PercentageTiers,PercentageTier>(PercentageTiers.class, "percentage_tier"));
         m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<Transactions, Transaction>(Transactions.class, "transaction"));
         m.addSerializer(Usages.class, new RecurlyObjectsSerializer<Usages, Usage>(Usages.class, "usage"));
         xmlMapper.registerModule(m);
