@@ -76,6 +76,10 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "tier_type")
     private String tierType;
 
+    @XmlElementWrapper(name = "percentage_tiers")
+    @XmlElement(name = "percentage_tier")
+    private CurrencyPercentageTiers percentageTiers;
+
     public String getName() {
         return name;
     }
@@ -199,6 +203,14 @@ public class AddOn extends AbstractAddOn {
         this.tierType = stringOrNull(tierType);
     }
 
+    public CurrencyPercentageTiers getPercentageTiers() {
+        return percentageTiers;
+    }
+
+    public void setPercentageTiers(final CurrencyPercentageTiers percentageTiers) {
+        this.percentageTiers = percentageTiers;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("AddOn{");
@@ -217,6 +229,8 @@ public class AddOn extends AbstractAddOn {
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", optional=").append(optional);
         sb.append(", tierType=").append(tierType);
+        sb.append(", usageTimeframe=").append(usageTimeframe);
+        sb.append(", percentage_tiers=").append(percentageTiers);
         sb.append('}');
         return sb.toString();
     }
@@ -273,6 +287,9 @@ public class AddOn extends AbstractAddOn {
         if (tierType != null ? !tierType.equals(addOn.tierType) : addOn.tierType != null) {
             return false;
         }
+        if (percentageTiers != null ? !percentageTiers.equals(addOn.percentageTiers) : addOn.percentageTiers != null) {
+            return false;
+        }
 
         return true;
     }
@@ -294,7 +311,8 @@ public class AddOn extends AbstractAddOn {
                 taxCode,
                 accountingCode,
                 optional,
-                tierType
+                tierType,
+                percentageTiers
         );
     }
 }
