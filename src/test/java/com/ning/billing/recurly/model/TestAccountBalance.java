@@ -30,6 +30,9 @@ public class TestAccountBalance extends TestModelBase {
                 "<balance_in_cents>\n" +
                     "<USD type=\"integer\">400</USD>\n" +
                 "</balance_in_cents>\n" +
+                "<processing_prepayment_balance_in_cents>\n" +
+                    "<USD type=\"integer\">-300</USD>\n" +
+                "</processing_prepayment_balance_in_cents>\n" +
                 "</account_balance>\n";
 
         final AccountBalance balance = xmlMapper.readValue(accountBalanceData, AccountBalance.class);
@@ -37,5 +40,6 @@ public class TestAccountBalance extends TestModelBase {
         Assert.assertEquals(balance.getHref(), "https://api.recurly.com/v2/accounts/1/balance");
         Assert.assertEquals(balance.getPastDue(), Boolean.TRUE);
         Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), new Integer(400));
+        Assert.assertEquals(balance.getProcessingPrepaymentBalanceInCents().getUnitAmountUSD(), new Integer(-300));
     }
 }

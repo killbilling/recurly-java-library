@@ -703,6 +703,7 @@ public class TestRecurlyClient {
             final AccountBalance balance = recurlyClient.getAccountBalance(account.getAccountCode());
 
             Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), new Integer(150));
+            Assert.assertEquals(balance.getProcessingPrepaymentBalanceInCents().getUnitAmountUSD(), new Integer(0));
             Assert.assertEquals(balance.getPastDue(), Boolean.FALSE);
         } finally {
             // Clean up
