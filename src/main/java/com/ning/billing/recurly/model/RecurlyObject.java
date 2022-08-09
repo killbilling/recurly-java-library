@@ -92,6 +92,7 @@ public abstract class RecurlyObject {
         m.addSerializer(CustomFields.class, new RecurlyObjectsSerializer<CustomFields, CustomField>(CustomFields.class, "custom_field"));
         m.addSerializer(Invoices.class, new RecurlyObjectsSerializer<Invoices, Invoice>(Invoices.class, "invoice"));
         m.addSerializer(Plans.class, new RecurlyObjectsSerializer<Plans, Plan>(Plans.class, "plan"));
+        m.addSerializer(PlanRampIntervals.class, new RecurlyObjectsSerializer<PlanRampIntervals, PlanRampInterval>(PlanRampIntervals.class, "ramp_interval"));
         m.addSerializer(RecurlyErrors.class, new RecurlyObjectsSerializer<RecurlyErrors, RecurlyError>(RecurlyErrors.class, "error"));
         m.addSerializer(ShippingAddresses.class, new RecurlyObjectsSerializer<ShippingAddresses, ShippingAddress>(ShippingAddresses.class, "shipping_address"));
         m.addSerializer(ShippingFees.class, new RecurlyObjectsSerializer<ShippingFees, ShippingFee>(ShippingFees.class, "shipping_fee"));
