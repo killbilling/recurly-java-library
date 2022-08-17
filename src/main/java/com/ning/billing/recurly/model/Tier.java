@@ -72,7 +72,7 @@ public class Tier extends RecurlyObject {
     return true;
   }
 
-  @Override 
+  @Override
   public int hashCode() {
     return Objects.hash(
       unitAmountInCents,
