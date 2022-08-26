@@ -16,8 +16,72 @@
  */
 package com.ning.billing.recurly.model;
 
+import java.util.Objects;
+
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 
 @XmlRootElement(name = "ramp_interval")
-public class PlanRampInterval extends AbstractRampInterval<RecurlyUnitCurrency> {}
+public class PlanRampInterval extends RecurlyObject {
+
+  @XmlElement(name = "starting_billing_cycle")
+  protected Integer startingBillingCycle;
+
+  @XmlElement(name = "unit_amount_in_cents")
+  protected RecurlyUnitCurrency unitAmountInCents;
+
+
+  public Integer getStartingBillingCycle() {
+    return startingBillingCycle;
+  }
+
+  public void setStartingBillingCycle(final Object startingBillingCycle) {
+    this.startingBillingCycle = integerOrNull(startingBillingCycle);
+  }
+
+  public RecurlyUnitCurrency getUnitAmountInCents() {
+    return unitAmountInCents;
+  }
+
+  public void setUnitAmountInCents(final Object unitAmountInCents) {
+    this.unitAmountInCents = RecurlyUnitCurrency.build(unitAmountInCents);
+  }
+
+  @Override
+  public String toString() {
+    final String className = getClass().getSimpleName();
+    final StringBuilder builder = new StringBuilder(className + "{ ");
+
+    builder.append("startingBillingCycle=").append(startingBillingCycle);
+    builder.append(", unitAmountInCents=").append(unitAmountInCents);
+    builder.append(" }");
+
+    return builder.toString();
+  }
+
+  @Override
+  public boolean equals(final Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    final PlanRampInterval rampInterval = (PlanRampInterval) o;
+
+    if (unitAmountInCents != null ? !unitAmountInCents.equals(rampInterval.unitAmountInCents) : rampInterval.unitAmountInCents != null) {
+      return false;
+    }
+    if (startingBillingCycle != null ? !startingBillingCycle.equals(rampInterval.startingBillingCycle) : rampInterval.startingBillingCycle != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+      startingBillingCycle,
+      unitAmountInCents
+    );
+  }
+}

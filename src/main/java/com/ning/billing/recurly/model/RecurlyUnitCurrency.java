@@ -35,7 +35,7 @@ public class RecurlyUnitCurrency {
     // Australian Dollars
     @XmlElement(name = "AUD")
     private Integer unitAmountAUD;
-    
+
     @XmlElement(name = "JPY")
     private Integer unitAmountJPY;
 
@@ -96,6 +96,7 @@ public class RecurlyUnitCurrency {
     private Integer unitAmountZAR;
 
     public static RecurlyUnitCurrency build(@Nullable final Object unitAmountInCents) {
+        Map amounts;
         if (RecurlyObject.isNull(unitAmountInCents)) {
             return null;
         }
@@ -107,7 +108,7 @@ public class RecurlyUnitCurrency {
         final RecurlyUnitCurrency recurlyUnitCurrency = new RecurlyUnitCurrency();
 
         if (unitAmountInCents instanceof Map) {
-            final Map amounts = (Map) unitAmountInCents;
+            amounts = (Map) unitAmountInCents;
 
             recurlyUnitCurrency.setUnitAmountUSD(amounts.get("USD"));
             recurlyUnitCurrency.setUnitAmountAUD(amounts.get("AUD"));
@@ -210,7 +211,7 @@ public class RecurlyUnitCurrency {
     public void setUnitAmountNOK(final Object unitAmountNOK) {
         this.unitAmountNOK = RecurlyObject.integerOrNull(unitAmountNOK);
     }
-    
+
     public Integer getUnitAmountJPY() {
         return unitAmountJPY;
     }
@@ -218,7 +219,7 @@ public class RecurlyUnitCurrency {
     public void setUnitAmountJPY(final Object unitAmountJPY) {
         this.unitAmountJPY = RecurlyObject.integerOrNull(unitAmountJPY);
     }
-    
+
     public Integer getUnitAmountNZD() {
         return unitAmountNZD;
     }
