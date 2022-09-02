@@ -79,6 +79,18 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "subscription_add_on")
     private SubscriptionAddOns addOns;
 
+    @XmlElementWrapper(name = "ramp_intervals")
+    @XmlElement(name = "ramp_interval")
+    private SubscriptionRampIntervals rampIntervals;
+
+    public SubscriptionRampIntervals getRampIntervals() {
+        return rampIntervals;
+    }
+
+    public void setRampIntervals(final SubscriptionRampIntervals rampIntervals) {
+        this.rampIntervals = rampIntervals;
+    }
+
     public Timeframe getTimeframe() {
         return timeframe;
     }

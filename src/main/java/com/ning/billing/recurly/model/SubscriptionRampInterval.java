@@ -21,14 +21,19 @@ import java.util.Objects;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
 @XmlRootElement(name = "ramp_interval")
-public class AbstractRampInterval<T> extends RecurlyObject {
+public class SubscriptionRampInterval extends RecurlyObject {
 
   @XmlElement(name = "starting_billing_cycle")
   protected Integer startingBillingCycle;
 
+  @XmlElement(name = "remaining_billing_cycles")
+  private Integer remainingBillingCycles;
+
   @XmlElement(name = "unit_amount_in_cents")
-  protected T unitAmountInCents;
+  protected Integer unitAmountInCents;
+
 
   public Integer getStartingBillingCycle() {
     return startingBillingCycle;
@@ -38,21 +43,31 @@ public class AbstractRampInterval<T> extends RecurlyObject {
     this.startingBillingCycle = integerOrNull(startingBillingCycle);
   }
 
-  public T getUnitAmountInCents() {
+  public Integer getRemainingBillingCycles() {
+    return remainingBillingCycles;
+  }
+
+  public void setRemainingBillingCycles(final Object remainingBillingCycles) {
+    this.remainingBillingCycles = integerOrNull(remainingBillingCycles);
+  }
+
+  public Integer getUnitAmountInCents() {
     return unitAmountInCents;
   }
 
-  public void setUnitAmountInCents(final T unitAmountInCents) {
-    this.unitAmountInCents = unitAmountInCents;
+  public void setUnitAmountInCents(final Object unitAmountInCents) {
+    this.unitAmountInCents = integerOrNull(unitAmountInCents);
   }
 
-  @Override
   public String toString() {
     final String className = getClass().getSimpleName();
-    final StringBuilder builder = new StringBuilder(className + "{ ");
+    final StringBuilder builder = new StringBuilder(className + " { ");
+
     builder.append("startingBillingCycle=").append(startingBillingCycle);
     builder.append(", unitAmountInCents=").append(unitAmountInCents);
-    builder.append(" }");
+    builder.append(", remainingBillingCycles=").append(remainingBillingCycles);
+    builder.append(" }\n ");
+
     return builder.toString();
   }
 
@@ -61,12 +76,15 @@ public class AbstractRampInterval<T> extends RecurlyObject {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    final AbstractRampInterval rampInterval = (AbstractRampInterval) o;
+    final SubscriptionRampInterval rampInterval = (SubscriptionRampInterval) o;
 
     if (unitAmountInCents != null ? !unitAmountInCents.equals(rampInterval.unitAmountInCents) : rampInterval.unitAmountInCents != null) {
       return false;
     }
     if (startingBillingCycle != null ? !startingBillingCycle.equals(rampInterval.startingBillingCycle) : rampInterval.startingBillingCycle != null) {
+      return false;
+    }
+    if (remainingBillingCycles != null ? !remainingBillingCycles.equals(rampInterval.remainingBillingCycles) : rampInterval.remainingBillingCycles != null) {
       return false;
     }
 
@@ -77,7 +95,9 @@ public class AbstractRampInterval<T> extends RecurlyObject {
   public int hashCode() {
     return Objects.hash(
       startingBillingCycle,
-      unitAmountInCents
+      unitAmountInCents,
+      remainingBillingCycles
     );
   }
+
 }

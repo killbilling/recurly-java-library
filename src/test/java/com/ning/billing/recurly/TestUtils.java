@@ -894,23 +894,23 @@ public class TestUtils {
         final CurrencyPercentageTiers currencyPercentageTiers = new CurrencyPercentageTiers();
 
         final AddonPercentageTiers addonPercentageTiers = new AddonPercentageTiers();
-  
+
         final CurrencyPercentageTier currencyPercentageTier = new CurrencyPercentageTier();
         currencyPercentageTier.setCurrency("USD");
-  
+
         final AddonPercentageTier addonPercentageTier = new AddonPercentageTier();
         addonPercentageTier.setEndingAmountInCents(100);
         addonPercentageTier.setUsagePercentage(new BigDecimal("10.0"));
         addonPercentageTiers.add(addonPercentageTier);
-  
+
         final AddonPercentageTier addonPercentageTier2 = new AddonPercentageTier();
         addonPercentageTier2.setEndingAmountInCents(null);
         addonPercentageTier2.setUsagePercentage(new BigDecimal("20.0"));
         addonPercentageTiers.add(addonPercentageTier2);
-  
+
         currencyPercentageTier.setTiers(addonPercentageTiers);
         currencyPercentageTiers.add(currencyPercentageTier);
-  
+
         addOn.setPercentageTiers(currencyPercentageTiers);
 
         return addOn;
@@ -941,23 +941,23 @@ public class TestUtils {
         final SubscriptionAddOn subscriptionAddOn = new SubscriptionAddOn();
         subscriptionAddOn.setAddOnCode(subscriptionAddOn.getAddOnCode());
         subscriptionAddOn.setQuantity(1);
-  
+
         final PercentageTiers percentageTiers = new PercentageTiers();
-  
+
         final PercentageTier percentageTier1 = new PercentageTier();
         final PercentageTier percentageTier2 = new PercentageTier();
-  
+
         percentageTier1.setEndingAmountInCents(200);
         percentageTier1.setUsagePercentage(new BigDecimal("20.0"));
-  
+
         percentageTier2.setEndingAmountInCents(null);
         percentageTier2.setUsagePercentage(new BigDecimal("40.0"));
-  
+
         percentageTiers.add(percentageTier1);
         percentageTiers.add(percentageTier2);
-  
+
         subscriptionAddOn.setPercentageTiers(percentageTiers);
-  
+
         return subscriptionAddOn;
     }
 
