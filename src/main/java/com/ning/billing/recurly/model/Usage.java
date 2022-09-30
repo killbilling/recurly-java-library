@@ -34,6 +34,9 @@ public class Usage extends RecurlyObject{
     @XmlElement(name = "amount")
     protected Integer amount;
 
+    @XmlElement(name = "amount_decimal")
+    protected BigDecimal amountDecimal;
+
     @XmlElement(name = "merchant_tag")
     private String merchantTag;
 
@@ -61,64 +64,20 @@ public class Usage extends RecurlyObject{
     @XmlElement(name = "usage_percentage")
     private BigDecimal usagePercentage;
 
-    @Override
-    public String toString() {
-        return "Usage{" +
-                "amount=" + amount +
-                ", merchantTag='" + merchantTag + '\'' +
-                ", recordingAt=" + recordingAt +
-                ", usageAt=" + usageAt +
-                ", createdAt=" + createdAt +
-                ", updatedAt=" + updatedAt +
-                ", billedAt=" + billedAt +
-                ", usageType='" + usageType + '\'' +
-                ", unitAmountInCents=" + unitAmountInCents +
-                ", usagePercentage=" + usagePercentage +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Usage usage = (Usage) o;
-
-        if (!amount.equals(usage.amount)) return false;
-        if (merchantTag != null ? !merchantTag.equals(usage.merchantTag) : usage.merchantTag != null) return false;
-        if (recordingAt != null ? recordingAt.compareTo(usage.recordingAt) != 0 : usage.recordingAt != null) return false;
-        if (!usageAt.equals(usage.usageAt)) return false;
-        if (createdAt != null ? createdAt.compareTo(usage.createdAt) != 0 : usage.createdAt != null) return false;
-        if (updatedAt != null ? updatedAt.compareTo(usage.updatedAt) != 0 : usage.updatedAt != null) return false;
-        if (billedAt != null ? billedAt.compareTo(usage.billedAt) != 0 : usage.billedAt != null) return false;
-        if (usageType != null ? !usageType.equals(usage.usageType) : usage.usageType != null) return false;
-        if (unitAmountInCents != null ? !unitAmountInCents.equals(usage.unitAmountInCents) : usage.unitAmountInCents != null)
-            return false;
-        return usagePercentage != null ? usagePercentage.equals(usage.usagePercentage) : usage.usagePercentage == null;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(
-                amount,
-                merchantTag,
-                recordingAt,
-                usageAt,
-                createdAt,
-                updatedAt,
-                billedAt,
-                usageType,
-                unitAmountInCents,
-                usagePercentage
-        );
-    }
-
     public Integer getAmount() {
         return amount;
     }
 
     public void setAmount(final Object amount) {
         this.amount = integerOrNull(amount);
+    }
+
+    public BigDecimal getAmountDecimal() {
+        return amountDecimal;
+    }
+
+    public void setAmountDecimal(final Object amountDecimal) {
+        this.amountDecimal = bigDecimalOrNull(amountDecimal);
     }
 
     public String getMerchantTag() {
@@ -191,5 +150,60 @@ public class Usage extends RecurlyObject{
 
     public void setUsagePercentage(final Object usagePercentage) {
         this.usagePercentage = bigDecimalOrNull(usagePercentage);
+    }
+
+    @Override
+    public String toString() {
+        return "Usage{" +
+                "amount=" + amount +
+                ", amount_decimal=" + amountDecimal +
+                ", merchantTag='" + merchantTag + '\'' +
+                ", recordingAt=" + recordingAt +
+                ", usageAt=" + usageAt +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", billedAt=" + billedAt +
+                ", usageType='" + usageType + '\'' +
+                ", unitAmountInCents=" + unitAmountInCents +
+                ", usagePercentage=" + usagePercentage +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Usage usage = (Usage) o;
+
+        if (!amount.equals(usage.amount)) return false;
+        if (amountDecimal != null ? !amountDecimal.equals(usage.amountDecimal) : usage.amountDecimal != null) return false;
+        if (merchantTag != null ? !merchantTag.equals(usage.merchantTag) : usage.merchantTag != null) return false;
+        if (recordingAt != null ? recordingAt.compareTo(usage.recordingAt) != 0 : usage.recordingAt != null) return false;
+        if (!usageAt.equals(usage.usageAt)) return false;
+        if (createdAt != null ? createdAt.compareTo(usage.createdAt) != 0 : usage.createdAt != null) return false;
+        if (updatedAt != null ? updatedAt.compareTo(usage.updatedAt) != 0 : usage.updatedAt != null) return false;
+        if (billedAt != null ? billedAt.compareTo(usage.billedAt) != 0 : usage.billedAt != null) return false;
+        if (usageType != null ? !usageType.equals(usage.usageType) : usage.usageType != null) return false;
+        if (unitAmountInCents != null ? !unitAmountInCents.equals(usage.unitAmountInCents) : usage.unitAmountInCents != null)
+            return false;
+        return usagePercentage != null ? usagePercentage.equals(usage.usagePercentage) : usage.usagePercentage == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(
+                amount,
+                amountDecimal,
+                merchantTag,
+                recordingAt,
+                usageAt,
+                createdAt,
+                updatedAt,
+                billedAt,
+                usageType,
+                unitAmountInCents,
+                usagePercentage
+        );
     }
 }

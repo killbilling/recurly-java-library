@@ -34,6 +34,7 @@ public class TestUsage extends TestModelBase {
                 "  <measured_unit href=\"https://your-subdomain.recurly.com/v2/measured_units/556493119596529478\"/>\n" +
                 "  <id type=\"integer\">570702996069942457</id>\n" +
                 "  <amount type=\"integer\">10</amount>\n" +
+                "  <amount_decimal type=\"float\">10.1234</amount_decimal>\n" +
                 "  <merchant_tag>test_merchant</merchant_tag>\n" +
                 "  <recording_timestamp type=\"dateTime\">2016-12-27T14:04:01Z</recording_timestamp>\n" +
                 "  <usage_timestamp type=\"dateTime\">2016-12-27T14:04:01Z</usage_timestamp>\n" +
@@ -48,6 +49,7 @@ public class TestUsage extends TestModelBase {
         final Usage usage = xmlMapper.readValue(transactionData, Usage.class);
         Assert.assertEquals(usage.getHref(), "https://your-subdomain.recurly.com/v2/subscriptions/3aaf63884971dbc5414bc845678a3593/add_ons/CD_USAGE_DATA_USAGE/usage/570702996069942457");
         Assert.assertEquals(usage.getAmount(), Integer.valueOf(10));
+        Assert.assertEquals(usage.getAmountDecimal(), new BigDecimal("10.1234"));
         Assert.assertEquals(usage.getMerchantTag(), "test_merchant");
         Assert.assertEquals(usage.getRecordingAt(), new DateTime("2016-12-27T14:04:01Z"));
         Assert.assertEquals(usage.getUsageAt(), new DateTime("2016-12-27T14:04:01Z"));
