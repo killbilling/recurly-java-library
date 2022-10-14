@@ -30,6 +30,7 @@ public class TestAccountEntitlements extends TestModelBase {
           "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
           "<entitlements type=\"array\">\n" +
           "  <entitlement>" +
+          "    <account href=\"https://your-subdomain.recurly.com/v2/accounts/andres@recurly.com\"/>" +
           "    <customer_permission>" +
           "      <id>rjpzkhp9dham</id>" +
           "      <code>perm-plans</code>" +
@@ -37,12 +38,13 @@ public class TestAccountEntitlements extends TestModelBase {
           "      <description></description>" +
           "    </customer_permission>" +
           "    <granted_by type=\"array\">\n" +
-          "      <subscription href=\"https://your-subdomain.recurly.com/v2/subscriptions/qmehc1ucmsjs\"/>" +
+          "      <subscription href=\"https://your-subdomain.recurly.com/v2/subscriptions/614033b1f10fe7c5f5be8743988b3514\"/>" +
           "    </granted_by>" +
           "    <created_at type=\"datetime\">2022-09-12T18:40:51Z</created_at>" +
           "    <updated_at type=\"datetime\">2022-09-12T18:40:51Z</updated_at>" +
           "  </entitlement>" +
           "  <entitlement>" +
+          "    <account href=\"https://your-subdomain.recurly.com/v2/accounts/andres@recurly.com\"/>" +
           "    <customer_permission>" +
           "      <id>rjpxq1aacqrb</id>" +
           "      <code>per-123</code>" +
@@ -50,8 +52,8 @@ public class TestAccountEntitlements extends TestModelBase {
           "      <description>description of perm</description>" +
           "    </customer_permission>" +
           "    <granted_by type=\"array\">\n" +
-          "      <subscription href=\"https://your-subdomain.recurly.com/v2/subscriptions/qmehc1ucmsjs\"/>" +
-          "      <external_subscription href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/qolyu1a4fyi1\"/>" +                                    
+          "      <subscription href=\"https://your-subdomain.recurly.com/v2/subscriptions/614033b1f10fe7c5f5be8743988b3514\"/>" +
+          "      <external_subscription href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/5be8743988b3514614033b1f10fe7c5f\"/>" +                                    
           "    </granted_by>" +
           "    <created_at type=\"datetime\">2022-10-12T18:40:51Z</created_at>" +
           "    <updated_at type=\"datetime\">2022-10-12T18:40:51Z</updated_at>" +
@@ -62,24 +64,26 @@ public class TestAccountEntitlements extends TestModelBase {
         Assert.assertEquals(accountEntitlements.size(), 2);
 
         final Entitlement entitlement1 = accountEntitlements.get(0);
+        Assert.assertEquals(entitlement1.getAccount().getHref(), "https://your-subdomain.recurly.com/v2/accounts/andres@recurly.com");
         Assert.assertEquals(entitlement1.getCustomerPermission().getId(), "rjpzkhp9dham");
         Assert.assertEquals(entitlement1.getCustomerPermission().getCode(), "perm-plans");
         Assert.assertEquals(entitlement1.getCustomerPermission().getName(), "perm with all plans");
         Assert.assertEquals(entitlement1.getCustomerPermission().getDescription(), null);
         Assert.assertEquals(entitlement1.getCreatedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(entitlement1.getUpdatedAt(), new DateTime("2022-09-12T18:40:51Z"));
-        String entitlement1Hrefs[] = new String[] { "https://your-subdomain.recurly.com/v2/subscriptions/qmehc1ucmsjs" };
+        String entitlement1Hrefs[] = new String[] { "https://your-subdomain.recurly.com/v2/subscriptions/614033b1f10fe7c5f5be8743988b3514" };
         Assert.assertEquals(entitlement1.getGrantedBy(), Arrays.asList(entitlement1Hrefs));
 
         final Entitlement entitlement2 = accountEntitlements.get(1);
+        Assert.assertEquals(entitlement2.getAccount().getHref(), "https://your-subdomain.recurly.com/v2/accounts/andres@recurly.com");
         Assert.assertEquals(entitlement2.getCustomerPermission().getId(), "rjpxq1aacqrb");
         Assert.assertEquals(entitlement2.getCustomerPermission().getCode(), "per-123");
         Assert.assertEquals(entitlement2.getCustomerPermission().getName(), "client permission");
         Assert.assertEquals(entitlement2.getCustomerPermission().getDescription(), "description of perm");
         Assert.assertEquals(entitlement2.getCreatedAt(), new DateTime("2022-10-12T18:40:51Z"));
         Assert.assertEquals(entitlement2.getUpdatedAt(), new DateTime("2022-10-12T18:40:51Z"));
-        String entitlement2Hrefs[] = new String[] { "https://your-subdomain.recurly.com/v2/subscriptions/qmehc1ucmsjs",
-                                                    "https://your-subdomain.recurly.com/v2/external_subscriptions/qolyu1a4fyi1" };
+        String entitlement2Hrefs[] = new String[] { "https://your-subdomain.recurly.com/v2/subscriptions/614033b1f10fe7c5f5be8743988b3514",
+                                                    "https://your-subdomain.recurly.com/v2/external_subscriptions/5be8743988b3514614033b1f10fe7c5f" };
         Assert.assertEquals(entitlement2.getGrantedBy(), Arrays.asList(entitlement2Hrefs));
     }
 }

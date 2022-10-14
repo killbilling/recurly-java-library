@@ -41,6 +41,9 @@ public class Entitlement extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
+    @XmlElement(name = "account")
+    private Account account;
+
     public CustomerPermission getCustomerPermission() {
       return this.customerPermission;
     }
@@ -62,18 +65,26 @@ public class Entitlement extends RecurlyObject {
     }
 
     public DateTime getCreatedAt() {
-        return createdAt;
+      return createdAt;
     }
 
     public void setCreatedAt(final Object createdAt) {
-        this.createdAt = dateTimeOrNull(createdAt);
+      this.createdAt = dateTimeOrNull(createdAt);
     }
 
     public DateTime getUpdatedAt() {
-        return updatedAt;
+      return updatedAt;
     }
 
     public void setUpdatedAt(final Object updatedAt) {
-        this.updatedAt = dateTimeOrNull(updatedAt);
+      this.updatedAt = dateTimeOrNull(updatedAt);
+    }
+
+    public Account getAccount() {
+      return account;
+    }
+
+    public void setAccount(final Account account) {
+      this.account = account;
     }
 }
