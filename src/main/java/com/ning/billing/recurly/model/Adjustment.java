@@ -60,6 +60,15 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "quantity")
     private Integer quantity;
 
+    @XmlElement(name = "quantity_decimal")
+    private BigDecimal quantityDecimal;
+
+    @XmlElement(name = "quantity_remaining")
+    private Integer quantityRemaining;
+
+    @XmlElement(name = "quantity_decimal_remaining")
+    private BigDecimal quantityDecimalRemaining;
+
     @XmlElement(name = "discount_in_cents")
     private Integer discountInCents;
 
@@ -232,6 +241,30 @@ public class Adjustment extends RecurlyObject {
         this.quantity = integerOrNull(quantity);
     }
 
+    public BigDecimal getQuantityDecimal() {
+        return quantityDecimal;
+    }
+
+    public void setQuantityDecimal(final Object quantityDecimal) {
+        this.quantityDecimal = bigDecimalOrNull(quantityDecimal);
+    }
+
+    public Integer getQuantityRemaining() {
+        return quantityRemaining;
+    }
+
+    public void setQuantityRemaining(final Object quantityRemaining) {
+        this.quantityRemaining = integerOrNull(quantityRemaining);
+    }
+
+    public BigDecimal getQuantityDecimalRemaining() {
+        return quantityDecimalRemaining;
+    }
+
+    public void setQuantityDecimalRemaining(final Object quantityDecimalRemaining) {
+        this.quantityDecimalRemaining = bigDecimalOrNull(quantityDecimalRemaining);
+    }
+
     public Integer getDiscountInCents() {
         return discountInCents;
     }
@@ -368,6 +401,7 @@ public class Adjustment extends RecurlyObject {
         final AdjustmentRefund adjustmentRefund = new AdjustmentRefund();
         adjustmentRefund.setUuid(uuid);
         adjustmentRefund.setQuantity(quantity);
+        adjustmentRefund.setQuantityDecimal(quantityDecimal);
         adjustmentRefund.setProrate(false);
         return adjustmentRefund;
     }
@@ -457,6 +491,9 @@ public class Adjustment extends RecurlyObject {
         sb.append(", origin='").append(origin).append('\'');
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
         sb.append(", quantity=").append(quantity);
+        sb.append(", quantity_decimal=").append(quantityDecimal);
+        sb.append(", quantity_remaining=").append(quantityRemaining);
+        sb.append(", quantity_decimal_remaining=").append(quantityDecimalRemaining);
         sb.append(", discountInCents=").append(discountInCents);
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", taxType=").append(taxType);
@@ -540,6 +577,15 @@ public class Adjustment extends RecurlyObject {
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
             return false;
         }
+        if (quantityDecimal != null ? !quantityDecimal.equals(that.quantityDecimal) : that.quantityDecimal != null) {
+            return false;
+        }
+        if (quantityRemaining != null ? !quantityRemaining.equals(that.quantityRemaining) : that.quantityRemaining != null) {
+            return false;
+        }
+        if (quantityDecimalRemaining != null ? !quantityDecimalRemaining.equals(that.quantityDecimalRemaining) : that.quantityDecimalRemaining != null) {
+            return false;
+        }
         if (shippingAddress != null ? !shippingAddress.equals(that.shippingAddress) : that.shippingAddress != null) {
             return false;
         }
@@ -618,6 +664,9 @@ public class Adjustment extends RecurlyObject {
                 origin,
                 unitAmountInCents,
                 quantity,
+                quantityDecimal,
+                quantityRemaining,
+                quantityDecimalRemaining,
                 productCode,
                 itemCode,
                 externalSku,

@@ -21,6 +21,7 @@ import com.google.common.base.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.math.BigDecimal;
 
 @XmlRootElement(name = "adjustment")
 public class AdjustmentRefund extends RecurlyObject {
@@ -30,6 +31,9 @@ public class AdjustmentRefund extends RecurlyObject {
 
     @XmlElement(name = "quantity")
     private Integer quantity;
+
+    @XmlElement(name = "quantity_decimal")
+    private BigDecimal quantityDecimal;
 
     @XmlElement(name = "prorate")
     private Boolean prorate;
@@ -50,6 +54,14 @@ public class AdjustmentRefund extends RecurlyObject {
         this.quantity = integerOrNull(quantity);
     }
 
+    public BigDecimal getQuantityDecimal() {
+        return quantityDecimal;
+    }
+
+    public void setQuantityDecimal(final Object quantityDecimal) {
+        this.quantityDecimal = bigDecimalOrNull(quantityDecimal);
+    }
+
     public Boolean getProrate() {
         return prorate;
     }
@@ -64,6 +76,7 @@ public class AdjustmentRefund extends RecurlyObject {
         sb.append("AdjustmentRefund");
         sb.append("{uuid='").append(uuid).append('\'');
         sb.append(", quantity=").append(quantity);
+        sb.append(", quantity_decimal=").append(quantityDecimal);
         sb.append(", prorate=").append(prorate);
         sb.append('}');
         return sb.toString();
@@ -82,6 +95,9 @@ public class AdjustmentRefund extends RecurlyObject {
         if (quantity != null ? !quantity.equals(that.quantity) : that.quantity != null) {
             return false;
         }
+        if (quantityDecimal != null ? !quantityDecimal.equals(that.quantityDecimal) : that.quantityDecimal != null) {
+            return false;
+        }
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
@@ -94,8 +110,8 @@ public class AdjustmentRefund extends RecurlyObject {
         return Objects.hashCode(
                 prorate,
                 quantity,
+                quantityDecimal,
                 uuid
-
         );
     }
 }
