@@ -19,6 +19,7 @@ package com.ning.billing.recurly.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -30,6 +31,9 @@ public class Entitlements extends RecurlyObjects<Entitlement> {
 
     @XmlTransient
     private static final String PROPERTY_NAME = "entitlement";
+
+    @XmlAttribute(name = "href")
+    private String href;
 
     @JsonSetter(value = PROPERTY_NAME)
     @Override
@@ -47,5 +51,13 @@ public class Entitlements extends RecurlyObjects<Entitlement> {
     @Override
     public Entitlements getNext() {
         return getNext(Entitlements.class);
+    }
+
+    public String getHref() {
+        return this.href;
+    }
+
+    public void setHref(final String href) {
+        this.href = href;
     }
 }
