@@ -35,6 +35,7 @@ import com.ning.billing.recurly.model.CreditPayments;
 import com.ning.billing.recurly.model.DunningCampaign;
 import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
 import com.ning.billing.recurly.model.DunningCampaigns;
+import com.ning.billing.recurly.model.Entitlements;
 import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
@@ -1131,6 +1132,22 @@ public class RecurlyClient {
     public AccountNotes getAccountNotes(final String accountCode) {
         return doGET(Accounts.ACCOUNTS_RESOURCE + "/" + urlEncode(accountCode) + AccountNotes.ACCOUNT_NOTES_RESOURCE,
                      AccountNotes.class, new QueryParams());
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Account's Entitlements
+
+    /**
+     * Get Entitlements of an account
+     * <p>
+     * Returns all entitlements for a given account.
+     *
+     * @param accountCode recurly account id
+     * @return List of entitlements for the given account on success, null otherwise
+     */
+    public Entitlements getEntitlements(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + Entitlements.ENTITLEMENTS_RESOURCE,
+                  Entitlements.class);
     }
 
     ///////////////////////////////////////////////////////////////////////////

@@ -163,6 +163,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "invoice_template_uuid")
     private String invoiceTemplateUuid;
 
+    @XmlElementWrapper(name = "entitlements")
+    private Entitlements entitlements;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -199,6 +202,14 @@ public class Account extends RecurlyObject {
 
     public void setInvoices(final Invoices invoices) {
         this.invoices = invoices;
+    }
+
+    public Entitlements getEntitlements() {
+        return entitlements;
+    }
+
+    public void setEntitlements(final Entitlements entitlements) {
+        this.entitlements = entitlements;
     }
 
     public Subscriptions getSubscriptions() {
