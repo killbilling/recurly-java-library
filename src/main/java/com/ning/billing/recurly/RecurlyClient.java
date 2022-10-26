@@ -120,6 +120,7 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -2697,7 +2698,8 @@ public class RecurlyClient {
             return callRecurlyXmlContent(builder, clazz);
         } catch (IOException e) {
             if (e instanceof ConnectException || e instanceof NoHttpResponseException
-                    || e instanceof ConnectTimeoutException || e instanceof SSLException) {
+                    || e instanceof ConnectTimeoutException || e instanceof SSLException
+                    || e instanceof SocketTimeoutException) {
                 // See https://github.com/killbilling/recurly-java-library/issues/185
                 throw new ConnectionErrorException(e);
             }
