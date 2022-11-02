@@ -166,6 +166,9 @@ public class Account extends RecurlyObject {
     @XmlElementWrapper(name = "entitlements")
     private Entitlements entitlements;
 
+    @XmlElementWrapper(name = "external_subscriptions")
+    private ExternalSubscriptions externalSubscriptions;
+
     @Override
     public void setHref(final Object href) {
         super.setHref(href);
@@ -210,6 +213,14 @@ public class Account extends RecurlyObject {
 
     public void setEntitlements(final Entitlements entitlements) {
         this.entitlements = entitlements;
+    }
+
+    public ExternalSubscriptions getExternalSubscriptions() {
+        return externalSubscriptions;
+    }
+
+    public void setExternalSubscriptions(final ExternalSubscriptions externalSubscriptions) {
+        this.externalSubscriptions = externalSubscriptions;
     }
 
     public Subscriptions getSubscriptions() {
