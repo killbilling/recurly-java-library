@@ -34,6 +34,9 @@ public class AbstractAddOn extends RecurlyObject {
     @XmlElement(name = "usage_type")
     protected String usageType;
 
+    @XmlElement(name = "usage_calculation_type")
+    protected UsageCalculationType usageCalculationType;
+
     @XmlElement(name = "usage_percentage")
     protected BigDecimal usagePercentage;
 
@@ -69,6 +72,14 @@ public class AbstractAddOn extends RecurlyObject {
 
     public void setUsageType(final Object usageType) {
         this.usageType = stringOrNull(usageType);
+    }
+
+    public UsageCalculationType getUsageCalculationType() {
+        return usageCalculationType;
+    }
+
+    public void setUsageCalculationType(final Object usageCalculationType) {
+        this.usageCalculationType = enumOrNull(UsageCalculationType.class, usageCalculationType, true);
     }
 
     public BigDecimal getUsagePercentage() {
@@ -109,6 +120,7 @@ public class AbstractAddOn extends RecurlyObject {
         sb.append("addOnCode='").append(addOnCode).append('\'');
         sb.append("measuredUnitId='").append(measuredUnitId).append('\'');
         sb.append("usageType='").append(usageType).append('\'');
+        sb.append("usageCalculationType='").append(usageCalculationType).append('\'');
         sb.append("usageTimeframe='").append(usageTimeframe).append('\'');
         sb.append("usagePercentage=").append(usagePercentage);
         sb.append(", revenueScheduleType='").append(revenueScheduleType).append('\'');
@@ -133,6 +145,10 @@ public class AbstractAddOn extends RecurlyObject {
         }
 
         if (usageType != null ? !usageType.equals(that.usageType) : that.usageType != null) {
+            return false;
+        }
+
+        if (usageCalculationType != null ? !usageCalculationType.equals(that.usageCalculationType) : that.usageCalculationType != null) {
             return false;
         }
 
@@ -161,11 +177,12 @@ public class AbstractAddOn extends RecurlyObject {
             addOnCode,
             measuredUnitId,
             usageType,
+            usageCalculationType,
             usageTimeframe,
             usagePercentage,
             revenueScheduleType,
             tiers
         );
-                
+
     }
 }

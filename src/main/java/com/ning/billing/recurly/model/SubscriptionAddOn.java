@@ -89,6 +89,7 @@ public class SubscriptionAddOn extends AbstractAddOn {
         sb.append(", quantity=").append(quantity);
         sb.append(", gatewayCode=").append(gatewayCode);
         sb.append(", addOnSource=").append(addOnSource);
+        sb.append(", usageCalculationType=").append(usageCalculationType);
         sb.append(", usageTimeframe=").append(usageTimeframe);
         sb.append(", percentage_tiers=").append(percentageTiers);
         sb.append('}');

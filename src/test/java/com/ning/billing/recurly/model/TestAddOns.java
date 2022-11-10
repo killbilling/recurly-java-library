@@ -44,6 +44,7 @@ public class TestAddOns extends TestModelBase {
                                   "    </unit_amount_in_cents>\n" +
                                   "    <add_on_type>usage</add_on_type>\n" +
                                   "    <usage_type>price</usage_type>\n" +
+                                  "    <usage_calculation_type>last_in_period</usage_calculation_type>\n" +
                                   "    <usage_timeframe>billing_period</usage_timeframe>\n" +
                                   "    <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                   "    <created_at type=\"dateTime\">2011-06-28T12:34:56Z</created_at>\n" +
@@ -85,6 +86,7 @@ public class TestAddOns extends TestModelBase {
         Assert.assertEquals(addOn.getAddOnType(), "usage");
         Assert.assertEquals(addOn.getUsageTimeframe(), UsageTimeframeType.BILLING_PERIOD);
         Assert.assertEquals(addOn.getUsageType(), "price");
+        Assert.assertEquals(addOn.getUsageCalculationType(), UsageCalculationType.LAST_IN_PERIOD);
         Assert.assertEquals((boolean) addOn.getDisplayQuantityOnHostedPage(), false);
         Assert.assertEquals((int) addOn.getDefaultQuantity(), 1);
         Assert.assertEquals((int) addOn.getUnitAmountInCents().getUnitAmountUSD(), 200);

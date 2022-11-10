@@ -229,6 +229,7 @@ public class AddOn extends AbstractAddOn {
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", optional=").append(optional);
         sb.append(", tierType=").append(tierType);
+        sb.append(", usageCalculationType=").append(usageCalculationType);
         sb.append(", usageTimeframe=").append(usageTimeframe);
         sb.append(", percentage_tiers=").append(percentageTiers);
         sb.append('}');
@@ -280,7 +281,7 @@ public class AddOn extends AbstractAddOn {
         }
         if (itemState != null ? !itemState.equals(addOn.itemState) : addOn.itemState != null) {
             return false;
-        }  
+        }
         if (externalSku != null ? !externalSku.equals(addOn.externalSku) : addOn.externalSku != null) {
             return false;
         }
