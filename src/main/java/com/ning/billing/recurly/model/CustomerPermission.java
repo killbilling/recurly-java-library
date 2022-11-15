@@ -38,31 +38,31 @@ public class CustomerPermission extends RecurlyObject {
       return this.id;
     }
 
-    public void setId(final String id) {
-      this.id = id;
+    public void setId(final Object id) {
+      this.id = stringOrNull(id);
     }
 
     public String getCode() {
       return this.code;
     }
 
-    public void setCode(final String code) {
-      this.code = code;
+    public void setCode(final Object code) {
+      this.code = stringOrNull(code);
     }
 
     public String getName() {
       return this.name;
     }
 
-    public void setName(final String name) {
-      this.name = name;
+    public void setName(final Object name) {
+      this.name = stringOrNull(name);
     }
 
     public String getDescription() {
       return this.description;
     }
 
-    public void setDescription(final String description) {
-      this.description = description;
+    public void setDescription(final Object description) {
+      this.description = stringOrNull(description);
     }
 }

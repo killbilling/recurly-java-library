@@ -36,6 +36,10 @@ import com.ning.billing.recurly.model.DunningCampaign;
 import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
 import com.ning.billing.recurly.model.DunningCampaigns;
 import com.ning.billing.recurly.model.Entitlements;
+import com.ning.billing.recurly.model.ExternalProduct;
+import com.ning.billing.recurly.model.ExternalProducts;
+import com.ning.billing.recurly.model.ExternalSubscription;
+import com.ning.billing.recurly.model.ExternalSubscriptions;
 import com.ning.billing.recurly.model.Errors;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
@@ -1149,6 +1153,68 @@ public class RecurlyClient {
     public Entitlements getEntitlements(final String accountCode) {
         return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + Entitlements.ENTITLEMENTS_RESOURCE,
                   Entitlements.class);
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // External Subscriptions
+
+    /**
+     * Get External Subscriptions of an account
+     * <p>
+     * Returns all external subscriptions for a given account.
+     *
+     * @param accountCode recurly account code
+     * @return List of external subscriptions for the given account on success, null otherwise
+     */
+    public ExternalSubscriptions getExternalSubscriptions(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE,
+                  ExternalSubscriptions.class);
+    }
+
+    /**
+     * Get External Subscriptions
+     * <p>
+     * Returns all external subscriptions on the site
+     *
+     * @return List of external subscriptions on the site
+     */
+    public ExternalSubscriptions getExternalSubscriptions() {
+        return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE, ExternalSubscriptions.class);
+    }
+
+    /**
+     * Get a specific External Subscription
+     * <p>
+     * Returns the requested external subscriptions
+     * 
+     * @param externalSubscriptionUuid external subscription uuid
+     * @return The requested external subscription
+     */
+    public ExternalSubscription getExternalSubscription(final String externalSubscriptionUuid) {
+        return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode(externalSubscriptionUuid), ExternalSubscription.class);
+    }
+
+    /**
+     * Get External Products
+     * <p>
+     * Returns all external products on the site
+     *
+     * @return List of external products on the site
+     */
+    public ExternalProducts getExternalProducts() {
+        return doGET(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE, ExternalProducts.class);
+    }
+
+    /**
+     * Get a specific External Product
+     * <p>
+     * Returns the requested external product
+     * 
+     * @param externalProductUuid external product uuid
+     * @return The requested external product
+     */
+    public ExternalProduct getExternalProduct(final String externalProductUuid) {
+        return doGET(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUuid), ExternalProduct.class);
     }
 
     ///////////////////////////////////////////////////////////////////////////
