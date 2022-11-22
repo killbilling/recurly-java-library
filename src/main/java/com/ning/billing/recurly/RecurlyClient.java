@@ -1717,7 +1717,16 @@ public class RecurlyClient {
       Invoice request = new Invoice();
       request.setBillingInfoUuid(billingInfoUuid);
       return doPUT(Invoices.INVOICES_RESOURCE + "/" + urlEncode(invoiceId) + "/collect", request, Invoice.class);
-  }
+    }
+
+    /**
+     * Apply Account Credit Balance to Collectible Charge Invoice
+     *
+     * @param invoiceId String Recurly Invoice ID
+     */
+    public Invoice applyCreditBalance(final String invoiceId) {
+        return doPUT(Invoices.INVOICES_RESOURCE + "/" + urlEncode(invoiceId) + "/apply_credit_balance", null, Invoice.class);
+    }
 
     /**
      * Void Invoice
