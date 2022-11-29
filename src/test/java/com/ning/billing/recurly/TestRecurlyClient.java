@@ -704,6 +704,7 @@ public class TestRecurlyClient {
 
             Assert.assertEquals(balance.getBalanceInCents().getUnitAmountUSD(), new Integer(150));
             Assert.assertEquals(balance.getProcessingPrepaymentBalanceInCents().getUnitAmountUSD(), new Integer(0));
+            Assert.assertEquals(balance.getAvailableCreditBalanceInCents().getUnitAmountUSD(), new Integer(0));
             Assert.assertEquals(balance.getPastDue(), Boolean.FALSE);
         } finally {
             // Clean up
@@ -1340,6 +1341,50 @@ public class TestRecurlyClient {
             final Transaction externalPayment = recurlyClient.enterOfflinePayment(invoiceExternal.getId(), externalPaymentData);
             Assert.assertNotNull(externalPayment);
             Assert.assertEquals(externalPayment.getInvoice().getState(), "paid", "Invoice not closed successfully");
+
+        } finally {
+            // Close the account
+            recurlyClient.closeAccount(accountData.getAccountCode());
+        }
+    }
+
+    @Test(groups = "enterprise")
+    public void testApplyCreditBalance() throws Exception {
+        final Account accountData = TestUtils.createRandomAccount();
+
+        try {
+            // Create a user
+            final Account account = recurlyClient.createAccount(accountData);
+
+            // Create an Adjustment
+            final Adjustment a = new Adjustment();
+            a.setUnitAmountInCents(150);
+            a.setCurrency(CURRENCY);
+
+            final Adjustment createdA = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), a);
+
+            // Post an invoice/invoice the adjustment
+            final Invoice invoiceData = new Invoice();
+            invoiceData.setCollectionMethod("manual");
+            invoiceData.setLineItems(null);
+            final Invoice invoice = recurlyClient.postAccountInvoice(accountData.getAccountCode(), invoiceData).getChargeInvoice();
+            Assert.assertNotNull(invoice);
+
+            // Create a credit
+            final Adjustment b = new Adjustment();
+            b.setUnitAmountInCents(-250);
+            b.setCurrency(CURRENCY);
+
+            final Adjustment createdB = recurlyClient.createAccountAdjustment(accountData.getAccountCode(), b);
+
+            // Post an invoice/invoice the credit to create a credit balance on the account
+            final Invoice creditInvoiceData = new Invoice();
+            creditInvoiceData.setLineItems(null);
+            recurlyClient.postAccountInvoice(accountData.getAccountCode(), creditInvoiceData);
+
+            // Apply account credit balance to the invoice
+            final Invoice updatedInvoice = recurlyClient.applyCreditBalance(invoice.getId());
+            Assert.assertEquals(updatedInvoice.getState(), "paid", "Credit not applied successfully to invoice balance");
 
         } finally {
             // Close the account
