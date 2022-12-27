@@ -154,6 +154,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "preferred_locale")
     private String preferredLocale;
 
+    @XmlElement(name = "preferred_time_zone")
+    private String preferredTimeZone;
+
     @XmlElement(name = "transaction_type")
     private String transactionType;
 
@@ -467,6 +470,14 @@ public class Account extends RecurlyObject {
         this.preferredLocale = stringOrNull(preferredLocale);
     }
 
+    public String getPreferredTimeZone() {
+        return preferredTimeZone;
+    }
+
+    public void setPreferredTimeZone(final Object preferredTimeZone) {
+        this.preferredTimeZone = stringOrNull(preferredTimeZone);
+    }
+
     public String getTransactionType() {
         return transactionType;
     }
@@ -536,6 +547,7 @@ public class Account extends RecurlyObject {
         sb.append(", vatNumber=").append(vatNumber);
         sb.append(", accountAcquisition=").append(accountAcquisition);
         sb.append(", preferredLocale=").append(preferredLocale);
+        sb.append(", preferredTimeZone=").append(preferredTimeZone);
         sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();
@@ -620,6 +632,9 @@ public class Account extends RecurlyObject {
         if (preferredLocale != null ? !preferredLocale.equals(account.preferredLocale) : account.preferredLocale != null) {
             return false;
         }
+        if (preferredTimeZone != null ? !preferredTimeZone.equals(account.preferredTimeZone) : account.preferredTimeZone != null) {
+            return false;
+        }
         if (state != null ? !state.equals(account.state) : account.state != null) {
             return false;
         }
@@ -694,6 +709,7 @@ public class Account extends RecurlyObject {
                 vatNumber,
                 accountAcquisition,
                 preferredLocale,
+                preferredTimeZone,
                 closedAt,
                 transactionType
         );
