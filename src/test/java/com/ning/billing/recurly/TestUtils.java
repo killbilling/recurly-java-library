@@ -270,6 +270,7 @@ public class TestUtils {
 
         account.setAcceptLanguage("en-US");
         account.setPreferredLocale("en-US");
+        account.setPreferredTimeZone("America/Los_Angeles");
         account.setAccountCode(randomAlphaNumericString(10, seed));
         account.setCompanyName(randomAlphaNumericString(10, seed));
         account.setEmail(randomAlphaNumericString(4, seed) + "@test.com");
