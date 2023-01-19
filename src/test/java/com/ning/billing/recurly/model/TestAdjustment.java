@@ -71,6 +71,13 @@ public class TestAdjustment extends TestModelBase {
                                       "  <revenue_schedule_type>at_invoice</revenue_schedule_type>\n" +
                                       "  <end_date nil=\"nil\"></end_date>\n" +
                                       "  <created_at type=\"dateTime\">2011-08-31T03:30:00Z</created_at>\n" +
+                                      "  <custom_fields type=\"array\">\n" +
+                                      "    <custom_field>\n" +
+                                      "      <name>size</name>\n" +
+                                      "      <value>large</value>\n" +
+                                      "    </custom_field>\n" +
+                                      "  </custom_fields>\n" +
+
                                       "</adjustment>";
 
         final Adjustment adjustment = xmlMapper.readValue(adjustmentData, Adjustment.class);
@@ -102,6 +109,7 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals(adjustment.getCreatedAt(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertEquals(adjustment.getRevenueScheduleType(), RevenueScheduleType.AT_INVOICE);
         Assert.assertEquals(adjustment.getSurchargeInCents(), new Integer(100));
+        Assert.assertEquals(adjustment.getCustomFields(), this.getCustomFields());
 
         // Test Serialization
         final String xml = xmlMapper.writeValueAsString(adjustment);
@@ -135,5 +143,16 @@ public class TestAdjustment extends TestModelBase {
         taxDetails.add(taxDetail);
 
         return taxDetails;
+    }
+
+    private List<CustomField> getCustomFields() {
+        final List<CustomField> customFields = new ArrayList<CustomField>();
+        final CustomField customField = new CustomField();
+
+        customField.setName("size");
+        customField.setValue("large");
+        customFields.add(customField);
+
+        return customFields;
     }
 }

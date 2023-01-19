@@ -151,6 +151,10 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "surcharge_in_cents")
     private Integer surchargeInCents;
 
+    @XmlElementWrapper(name = "custom_fields")
+    @XmlElement(name = "custom_field")
+    private CustomFields customFields;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -478,6 +482,14 @@ public class Adjustment extends RecurlyObject {
         this.surchargeInCents = integerOrNull(surchargeInCents);
     }
 
+    public CustomFields getCustomFields() {
+        return customFields;
+    }
+
+    public void setCustomFields(final CustomFields customFields) {
+        this.customFields = customFields
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -521,6 +533,7 @@ public class Adjustment extends RecurlyObject {
         sb.append(", state=").append(state);
         sb.append(", prorationRate=").append(prorationRate);
         sb.append(", surchargeInCents=").append(surchargeInCents);
+        sb.append(", customFields=").append(customFields);
         sb.append('}');
         return sb.toString();
     }
@@ -649,6 +662,9 @@ public class Adjustment extends RecurlyObject {
         if (prorationRate != null ? !prorationRate.equals(that.prorationRate) : that.prorationRate != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
+            return false;
+        }
         return true;
     }
 
@@ -693,7 +709,8 @@ public class Adjustment extends RecurlyObject {
                 refundableTotalInCents,
                 state,
                 prorationRate,
-                surchargeInCents
+                surchargeInCents,
+                customFields
         );
     }
 
