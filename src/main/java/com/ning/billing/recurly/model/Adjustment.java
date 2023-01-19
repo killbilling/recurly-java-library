@@ -487,7 +487,7 @@ public class Adjustment extends RecurlyObject {
     }
 
     public void setCustomFields(final CustomFields customFields) {
-        this.customFields = customFields
+        this.customFields = customFields;
     }
 
     @Override
