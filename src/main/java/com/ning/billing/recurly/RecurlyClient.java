@@ -32,6 +32,8 @@ import com.ning.billing.recurly.model.BillingInfoVerification;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CreditPayments;
+import com.ning.billing.recurly.model.CustomFieldDefinition;
+import com.ning.billing.recurly.model.CustomFieldDefinitions;
 import com.ning.billing.recurly.model.DunningCampaign;
 import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
 import com.ning.billing.recurly.model.DunningCampaigns;
@@ -2611,6 +2613,50 @@ public class RecurlyClient {
     private <T> T fetch(final String recurlyToken, final Class<T> clazz) {
         return doGET(FETCH_RESOURCE + "/" + urlEncode(recurlyToken), clazz);
     }
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Custom Field Definitions
+
+    /**
+     * Get Custom Field Definitions for the site
+     * <p>
+     * https://developers.recurly.com/api-v2/v2.29/index.html#operation/list_custom_field_definitions
+     *
+     * @return CustomFieldDefinitions on success, null otherwise
+     */
+    public CustomFieldDefinitions getCustomFieldDefinitions() {
+        return getCustomFieldDefinitions(null);
+    }
+
+    /**
+     * Get Custom Field Definitions for the site by RelatedType
+     * <p>
+     *
+     * @param relatedType {@link com.ning.billing.recurly.model.CustomFieldDefinitions.CustomFieldDefinitionRelatedType}
+     * @return the custom_field_definitions of specific RelatedType for the site
+     */
+    public CustomFieldDefinitions getCustomFieldDefinitions(final CustomFieldDefinitions.CustomFieldDefinitionRelatedType relatedType) {
+        final QueryParams params = new QueryParams();
+        if (relatedType != null) params.put("related_type", relatedType.getRelatedType());
+
+        return doGET(CustomFieldDefinitions.CUSTOM_FIELD_DEFINITIONS_RESOURCE, CustomFieldDefinitions.class, params);
+    }
+
+    /**
+     * Look up a Custom Field Definition
+     * <p>
+     * https://recurly.com/developers/api-v2/v2.29/index.html#operation/get_custom_field_definition
+     *
+     * @param customFieldId The ID for the CustomFieldDefinition
+     * @return The {@link CustomFieldDefinition} object as identified by the passed in ID
+     */
+    public CustomFieldDefinition getCustomFieldDefinition(final String customFieldId) {
+        if (customFieldId == null || customFieldId.isEmpty())
+            throw new RuntimeException("customFieldId cannot be empty!");
+
+        return doGET(CustomFieldDefinitions.CUSTOM_FIELD_DEFINITIONS_RESOURCE + "/" + urlEncode(customFieldId), CustomFieldDefinition.class);
+    }
+
 
     ///////////////////////////////////////////////////////////////////////////
 
