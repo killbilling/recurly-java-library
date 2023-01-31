@@ -43,6 +43,8 @@ import com.ning.billing.recurly.model.Coupon.RedemptionResource;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CustomField;
 import com.ning.billing.recurly.model.CustomFields;
+import com.ning.billing.recurly.model.CustomFieldDefinition;
+import com.ning.billing.recurly.model.CustomFieldDefinitions;
 import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
 import com.ning.billing.recurly.model.DunningCampaigns;
 import com.ning.billing.recurly.model.GiftCard;
@@ -269,6 +271,14 @@ public class TestRecurlyClient {
         } finally {
           recurlyClient.closeAccount(accountData.getAccountCode());
         }
+    }
+
+    @Test(groups = "integration")
+    public void testGetCustomFieldDefinitions() throws Exception {
+
+        final CustomFieldDefinitions definitions = recurlyClient.getCustomFieldDefinitions(CustomFieldDefinitions.CustomFieldDefinitionRelatedType.CHARGE);
+        final CustomFieldDefinition definition = definitions.get(0);
+        Assert.assertEquals(definition.getRelatedType(), "charge");
     }
 
     @Test(groups = "integration", description = "See https://github.com/killbilling/recurly-java-library/issues/23")
