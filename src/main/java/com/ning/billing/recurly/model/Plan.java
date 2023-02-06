@@ -130,6 +130,10 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "dunning_campaign_id")
     private String dunningCampaignId;
 
+    @XmlElementWrapper(name = "custom_fields")
+    @XmlElement(name= "custom_field")
+    private CustomFields customFields;
+
     public PricingModel getPricingModel() {
         return pricingModel;
     }
@@ -386,6 +390,14 @@ public class Plan extends RecurlyObject {
         this.dunningCampaignId = stringOrNull(dunningCampaignId);
     }
 
+    public CustomFields getCustomFields() {
+        return customFields = customFields;
+    }
+
+    public void setCustomFields(final CustomFields customFields) {
+        this.customFields = customFields;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -421,6 +433,7 @@ public class Plan extends RecurlyObject {
         sb.append(", taxExempt=").append(taxExempt);
         sb.append(", taxCode=").append(taxCode);
         sb.append(", allowAnyItemOnSubscriptions=").append(allowAnyItemOnSubscriptions);
+        sb.append(", customFields=").append(customFields);
         sb.append('}');
         return sb.toString();
     }
@@ -525,6 +538,9 @@ public class Plan extends RecurlyObject {
         if (allowAnyItemOnSubscriptions != null ? allowAnyItemOnSubscriptions.compareTo(plan.allowAnyItemOnSubscriptions) != 0: plan.allowAnyItemOnSubscriptions != null) {
             return false;
         }
+        if (customFields != null ? !customFields.equals(plan.customFields) : plan.customFields != null) {
+            return false;
+        }
 
         return true;
     }
@@ -562,7 +578,8 @@ public class Plan extends RecurlyObject {
                 autoRenew,
                 taxExempt,
                 taxCode,
-                allowAnyItemOnSubscriptions
+                allowAnyItemOnSubscriptions,
+                customFields
         );
     }
 }
