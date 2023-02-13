@@ -30,9 +30,6 @@ public class TestAccountExternalSubscriptions extends TestModelBase {
           "<external_subscriptions>" +
           "  <external_subscription href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/rpap82ntgqqh\">" +
           "    <account href=\"https://your-subdomain.recurly.com/v2/accounts/1\"/>" +
-          "    <external_resource>" +
-          "      <external_object_reference>link</external_object_reference>" +
-          "    </external_resource>" +
           "    <external_product_reference>" +
           "      <id>rgybkg3d1l41</id>" +
           "      <reference_code>apple-code</reference_code>" +
@@ -44,8 +41,10 @@ public class TestAccountExternalSubscriptions extends TestModelBase {
           "    <auto_renew type=\"boolean\">false</auto_renew>" +
           "    <app_identifier>com.foo.id</app_identifier>" +
           "    <quantity type=\"integer\">1</quantity>" +
+          "    <external_id>1_ext_id</external_id>" +
           "    <activated_at type=\"datetime\">2022-09-12T18:40:51Z</activated_at>" +
           "    <expires_at type=\"datetime\">2022-09-12T18:40:51Z</expires_at>" +
+          "    <state>active</state>" +
           "    <created_at type=\"datetime\">2022-09-12T18:40:51Z</created_at>" +
           "    <updated_at type=\"datetime\">2022-09-12T18:40:51Z</updated_at>" +
           "  </external_subscription>" +
@@ -57,7 +56,6 @@ public class TestAccountExternalSubscriptions extends TestModelBase {
         final ExternalSubscription externalSubscription = accountExternalSubscriptions.get(0);
         Assert.assertEquals(externalSubscription.getHref(), "https://your-subdomain.recurly.com/v2/external_subscriptions/rpap82ntgqqh");
         Assert.assertEquals(externalSubscription.getAccount().getHref(), "https://your-subdomain.recurly.com/v2/accounts/1");
-        Assert.assertEquals(externalSubscription.getExternalResource().getExternalObjectReference(), "link");
         Assert.assertEquals(externalSubscription.getExternalProductReference().getId(), "rgybkg3d1l41");
         Assert.assertEquals(externalSubscription.getExternalProductReference().getReferenceCode(), "apple-code");
         Assert.assertEquals(externalSubscription.getExternalProductReference().getExternalConnectionType(), "apple_app_store");
@@ -67,8 +65,10 @@ public class TestAccountExternalSubscriptions extends TestModelBase {
         Assert.assertEquals(externalSubscription.getAutoRenew(), Boolean.FALSE);
         Assert.assertEquals(externalSubscription.getAppIdentifier(), "com.foo.id");
         Assert.assertEquals(externalSubscription.getQuantity(), new Integer(1));
+        Assert.assertEquals(externalSubscription.getExternalId(), "1_ext_id");
         Assert.assertEquals(externalSubscription.getActivatedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getExpiresAt(), new DateTime("2022-09-12T18:40:51Z"));
+        Assert.assertEquals(externalSubscription.getState(), "active");
         Assert.assertEquals(externalSubscription.getCreatedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getUpdatedAt(), new DateTime("2022-09-12T18:40:51Z"));
     }

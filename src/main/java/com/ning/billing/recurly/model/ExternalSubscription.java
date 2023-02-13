@@ -26,9 +26,6 @@ public class ExternalSubscription extends RecurlyObject {
     @XmlElement(name = "account")
     private Account account;
 
-    @XmlElement(name = "external_resource")
-    private ExternalResource externalResource;
-
     @XmlElement(name = "external_product_reference")
     private ExternalProductReference externalProductReference;
 
@@ -44,11 +41,17 @@ public class ExternalSubscription extends RecurlyObject {
     @XmlElement(name = "quantity")
     private Integer quantity;
 
+    @XmlElement(name = "external_id")
+    private String externalId;
+
     @XmlElement(name = "activated_at")
     private DateTime activatedAt;
 
     @XmlElement(name = "expires_at")
     private DateTime expiresAt;
+
+    @XmlElement(name = "state")
+    private String state;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -62,14 +65,6 @@ public class ExternalSubscription extends RecurlyObject {
 
     public void setAccount(final Account account) {
       this.account = account;
-    }
-
-    public ExternalResource getExternalResource() {
-      return this.externalResource;
-    }
-
-    public void setExternalResource(final ExternalResource externalResource) {
-      this.externalResource = externalResource;
     }
 
     public ExternalProductReference getExternalProductReference() {
@@ -112,6 +107,14 @@ public class ExternalSubscription extends RecurlyObject {
       this.quantity = integerOrNull(quantity);
     }
 
+    public String getExternalId() {
+      return this.externalId;
+    }
+
+    public void setExternalId(final Object externalId) {
+      this.externalId = stringOrNull(externalId);
+    }
+
     public DateTime getActivatedAt() {
       return activatedAt;
     }
@@ -126,6 +129,14 @@ public class ExternalSubscription extends RecurlyObject {
 
     public void setExpiresAt(final Object expiresAt) {
       this.expiresAt = dateTimeOrNull(expiresAt);
+    }
+
+    public String getState() {
+      return this.state;
+    }
+
+    public void setState(final Object state) {
+      this.state = stringOrNull(state);
     }
 
     public DateTime getCreatedAt() {
