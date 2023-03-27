@@ -43,6 +43,8 @@ import com.ning.billing.recurly.model.ExternalProducts;
 import com.ning.billing.recurly.model.ExternalSubscription;
 import com.ning.billing.recurly.model.ExternalSubscriptions;
 import com.ning.billing.recurly.model.Errors;
+import com.ning.billing.recurly.model.ExternalInvoice;
+import com.ning.billing.recurly.model.ExternalInvoices;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
@@ -145,7 +147,7 @@ public class RecurlyClient {
     private static final Logger log = LoggerFactory.getLogger(RecurlyClient.class);
 
     public static final String RECURLY_DEBUG_KEY = "recurly.debug";
-    public static final String RECURLY_API_VERSION = "2.29";
+    public static final String RECURLY_API_VERSION = "2.99";
 
     private static final String X_RATELIMIT_REMAINING_HEADER_NAME = "X-RateLimit-Remaining";
     private static final String X_RECORDS_HEADER_NAME = "X-Records";
@@ -1194,6 +1196,55 @@ public class RecurlyClient {
      */
     public ExternalSubscription getExternalSubscription(final String externalSubscriptionUuid) {
         return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode(externalSubscriptionUuid), ExternalSubscription.class);
+    }
+
+    /**
+     * Get External Invoices
+     * <p>
+     * Returns all external invoices on the site
+     *
+     * @return List of external invoices on the site
+     */
+    public ExternalInvoices getExternalInvoices() {
+        return doGET(ExternalInvoices.EXTERNAL_INVOICES_RESOURCE, ExternalInvoices.class);
+    }
+
+    /**
+     * Get External Invoices of an account
+     * <p>
+     * Returns all external invoices for a given account.
+     *
+     * @param accountCode recurly account code
+     * @return List of external invoices for the given account on success, null otherwise
+     */
+    public ExternalInvoices getExternalInvoices(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + ExternalInvoices.EXTERNAL_INVOICES_RESOURCE,
+        ExternalInvoices.class);
+    }
+
+    /**
+     * Get External Invoices of an external subscription
+     * <p>
+     * Returns all external invoices for a given external subscription.
+     *
+     * @param externalSubscriptionUUID recurly external subscription uuid
+     * @return List of external invoices for the given external subscription on success, null otherwise
+     */
+    public ExternalInvoices getExternalInvoicesByExternalSubscription(final String externalSubscriptionUUID) {
+        return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode(externalSubscriptionUUID) + ExternalInvoices.EXTERNAL_INVOICES_RESOURCE,
+        ExternalInvoices.class);
+    }
+
+    /**
+     * Get a specific External Invoice
+     * <p>
+     * Returns the requested external invoice
+     * 
+     * @param externalInvoiceUuid external invoice uuid
+     * @return The requested external invoice
+     */
+    public ExternalInvoice getExternalInvoice(final String externalInvoiceUuid) {
+        return doGET(ExternalInvoices.EXTERNAL_INVOICES_RESOURCE + "/" + urlEncode(externalInvoiceUuid), ExternalInvoice.class);
     }
 
     /**
