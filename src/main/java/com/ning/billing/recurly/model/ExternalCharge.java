@@ -16,6 +16,8 @@
  */
 package com.ning.billing.recurly.model;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -37,7 +39,7 @@ public class ExternalCharge extends RecurlyObject {
   private String currency;
 
   @XmlElement(name = "unit_amount")
-  private Integer unitAmount;
+  private BigDecimal unitAmount;
 
   @XmlElement(name = "quantity")
   private Integer quantity;
@@ -80,12 +82,12 @@ public class ExternalCharge extends RecurlyObject {
     this.currency = stringOrNull(currency);
   }
 
-  public Integer getUnitAmount() {
+  public BigDecimal getUnitAmount() {
     return this.unitAmount;
   }
 
   public void setUnitAmount(final Object unitAmount) {
-    this.unitAmount = integerOrNull(unitAmount);
+    this.unitAmount = bigDecimalOrNull(unitAmount);
   }
 
   public Integer getQuantity() {
