@@ -16,6 +16,8 @@
  */
 package com.ning.billing.recurly.model;
 
+import java.math.BigDecimal;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -41,7 +43,7 @@ public class ExternalInvoice extends RecurlyObject {
   private String currency;
 
   @XmlElement(name = "total")
-  private Integer totalInCents;
+  private BigDecimal total;
 
   @XmlElement(name = "purchased_at")
   private DateTime purchasedAt;
@@ -96,12 +98,12 @@ public class ExternalInvoice extends RecurlyObject {
     this.currency = stringOrNull(currency);
   }
 
-  public Integer getTotalInCents() {
-    return this.totalInCents;
+  public BigDecimal getTotal() {
+    return this.total;
   }
 
-  public void setTotalInCents(final Object totalInCents) {
-    this.totalInCents = integerOrNull(totalInCents);
+  public void setTotal(final Object total) {
+    this.total = bigDecimalOrNull(total);
   }
 
   public DateTime getPurchasedAt() {

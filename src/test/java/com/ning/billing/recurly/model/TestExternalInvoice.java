@@ -17,7 +17,9 @@
 
  package com.ning.billing.recurly.model;
 
- import org.joda.time.DateTime;
+ import java.math.BigDecimal;
+
+import org.joda.time.DateTime;
  import org.testng.Assert;
  import org.testng.annotations.Test;
  
@@ -33,13 +35,13 @@
            "  <external_id>external_id</external_id>" +
            "  <state>paid</state>" +
            "  <currency>USD</currency>" +
-           "  <total type=\"integer\">123</total>" +
+           "  <total>123.0</total>" +
            "  <line_items type=\"array\">" +
            "    <external_charge>" +
            "      <account href=\"https://your-subdomain.recurly.com/v2/accounts/scaig66ovoga\"/>" +
            "      <external_invoice href=\"https://your-subdomain.recurly.com/v2/external_invoices/scaig66ovogw\"/>" +
            "       <description>description</description>" +
-           "      <unit_amount type=\"integer\">123</unit_amount>" +
+           "      <unit_amount>123.0</unit_amount>" +
            "      <currency>USD</currency>" +
            "      <quantity>123</quantity>" +
            "      <created_at type=\"datetime\">2022-09-12T18:40:51Z</created_at>" +
@@ -59,7 +61,7 @@
          Assert.assertEquals(externalInvoice.getExternalId(), "external_id");
          Assert.assertEquals(externalInvoice.getState(), "paid");
          Assert.assertEquals(externalInvoice.getCurrency(), "USD");
-         Assert.assertEquals(externalInvoice.getTotalInCents(), new Integer(123));
+         Assert.assertEquals(externalInvoice.getTotal(), new BigDecimal("123.0"));
          Assert.assertEquals(externalInvoice.getPurchasedAt(), new DateTime("2022-09-12T18:40:51Z"));
          Assert.assertEquals(externalInvoice.getCreatedAt(), new DateTime("2022-09-12T18:40:51Z"));
          Assert.assertEquals(externalInvoice.getUpdatedAt(), new DateTime("2022-09-12T18:40:51Z"));
@@ -71,7 +73,7 @@
          Assert.assertEquals(externalCharge.getAccount().getHref(), "https://your-subdomain.recurly.com/v2/accounts/scaig66ovoga");
          Assert.assertEquals(externalCharge.getExternalInvoice().getHref(), "https://your-subdomain.recurly.com/v2/external_invoices/scaig66ovogw");
          Assert.assertEquals(externalCharge.getDescription(), "description");
-         Assert.assertEquals(externalCharge.getUnitAmount(), new Integer(123));
+         Assert.assertEquals(externalCharge.getUnitAmount(), new BigDecimal("123.0"));
          Assert.assertEquals(externalCharge.getCurrency(), "USD");
          Assert.assertEquals(externalCharge.getQuantity(), new Integer(123));
          Assert.assertEquals(externalCharge.getCreatedAt(), new DateTime("2022-09-12T18:40:51Z"));
