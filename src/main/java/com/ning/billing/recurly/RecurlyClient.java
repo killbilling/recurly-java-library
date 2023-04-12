@@ -43,6 +43,8 @@ import com.ning.billing.recurly.model.ExternalProducts;
 import com.ning.billing.recurly.model.ExternalSubscription;
 import com.ning.billing.recurly.model.ExternalSubscriptions;
 import com.ning.billing.recurly.model.Errors;
+import com.ning.billing.recurly.model.ExternalAccount;
+import com.ning.billing.recurly.model.ExternalAccounts;
 import com.ning.billing.recurly.model.ExternalInvoice;
 import com.ning.billing.recurly.model.ExternalInvoices;
 import com.ning.billing.recurly.model.GiftCard;
@@ -1196,6 +1198,76 @@ public class RecurlyClient {
      */
     public ExternalSubscription getExternalSubscription(final String externalSubscriptionUuid) {
         return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode(externalSubscriptionUuid), ExternalSubscription.class);
+    }
+
+    /**
+     * Get External Accounts of an account
+     * <p>
+     * Returns all external accounts for a given account.
+     *
+     * @param accountCode recurly account code
+     * @return List of external accounts for the given account on success, null otherwise
+     */
+    public ExternalAccounts getExternalAccounts(final String accountCode) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + ExternalAccounts.EXTERNAL_ACCOUNTS_RESOURCE,
+        ExternalAccounts.class);
+    }
+
+    /**
+     * Get External Account of an account
+     * <p>
+     * Returns an external account for a given account.
+     *
+     * @param accountCode recurly account code
+     * @param externalAccountUUID recurly external account UUID
+     * @return An external account for the given account and external account UUID on success, null otherwise
+     */
+    public ExternalAccount getExternalAccount(final String accountCode, final String externalAccountUUID) {
+        return doGET(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + ExternalAccounts.EXTERNAL_ACCOUNTS_RESOURCE + "/" + urlEncode(externalAccountUUID),
+        ExternalAccount.class);
+    }
+
+    /**
+     * Create an External Account for an account
+     * <p>
+     * Returns created external account for a given account.
+     *
+     * @param accountCode recurly account code
+     * @param externalAccount external account
+     * @return Created external account for the given account on success, null otherwise
+     */
+    public ExternalAccount createExternalAccount(final String accountCode, final ExternalAccount externalAccount) {
+        return doPOST(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + ExternalAccounts.EXTERNAL_ACCOUNTS_RESOURCE,
+        externalAccount,
+        ExternalAccount.class);
+    }
+
+    /**
+     * Update an External Account for an account
+     * <p>
+     * Returns updated external account for a given account.
+     *
+     * @param accountCode recurly account code
+     * @param externalAccountUUID recurly external account UUID
+     * @param externalAccount external account
+     * @return Updated external account for the given account on success, null otherwise
+     */
+    public ExternalAccount updateExternalAccount(final String accountCode, final String externalAccountUUID, final ExternalAccount externalAccount) {
+        return doPUT(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + ExternalAccounts.EXTERNAL_ACCOUNTS_RESOURCE + "/" + urlEncode(externalAccountUUID),
+        externalAccount,
+        ExternalAccount.class);
+    }
+
+    /**
+     * Delete an External Account of an account
+     * <p>
+     * Returns deleted external account for a given account.
+     *
+     * @param accountCode recurly account code
+     * @param externalAccountUUID recurly external account UUID
+     */
+    public void deleteExternalAccount(final String accountCode, final String externalAccountUUID) {
+        doDELETE(Account.ACCOUNT_RESOURCE + "/" + urlEncode(accountCode) + ExternalAccounts.EXTERNAL_ACCOUNTS_RESOURCE + "/" + urlEncode(externalAccountUUID));
     }
 
     /**
