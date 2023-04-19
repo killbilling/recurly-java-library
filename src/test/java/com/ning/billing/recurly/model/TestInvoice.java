@@ -140,6 +140,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getTaxType(), "usst");
         Assert.assertEquals(invoice.getTaxRegion(), "CA");
         Assert.assertEquals(invoice.getTaxRate(), new BigDecimal("0.0875"));
+        Assert.assertEquals((boolean) invoice.getUsedTaxService(), true);
         Assert.assertEquals(invoice.getCreatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertEquals(invoice.getUpdatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertEquals(invoice.getClosedAt(), new DateTime("2011-08-25T12:00:00Z"));
