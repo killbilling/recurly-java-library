@@ -705,7 +705,7 @@ public class Invoice extends RecurlyObject {
         if (taxDetails != null ? !taxDetails.equals(invoice.taxDetails) : invoice.taxDetails != null) {
             return false;
         }
-        if (usedTaxService != null ? !usedTaxService.equals(that.usedTaxService) : that.usedTaxService != null) {
+        if (usedTaxService != null ? !usedTaxService.equals(invoice.usedTaxService) : invoice.usedTaxService != null) {
             return false;
         }
         if (termsAndConditions != null ? !termsAndConditions.equals(invoice.termsAndConditions) : invoice.termsAndConditions != null) {
