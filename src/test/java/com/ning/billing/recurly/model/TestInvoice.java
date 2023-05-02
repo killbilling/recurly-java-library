@@ -62,6 +62,7 @@ public class TestInvoice extends TestModelBase {
                                    + "      <tax_in_cents type=\"integer\">20</tax_in_cents>\n"
                                    + "    </tax_detail>\n"
                                    + "  </tax_details>\n"
+                                   + "  <used_tax_service>true</used_tax_service>\n"
                                    + "  <surcharge_in_cents type=\"integer\">100</surcharge_in_cents>\n"
                                    + "  <created_at type=\"dateTime\">2011-08-25T12:00:00Z</created_at>\n"
                                    + "  <updated_at type=\"dateTime\">2011-08-25T12:00:00Z</updated_at>\n"
@@ -140,7 +141,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getTaxType(), "usst");
         Assert.assertEquals(invoice.getTaxRegion(), "CA");
         Assert.assertEquals(invoice.getTaxRate(), new BigDecimal("0.0875"));
-        Assert.assertEquals((boolean) invoice.getUsedTaxService(), true);
+        Assert.assertTrue(invoice.getUsedTaxService());
         Assert.assertEquals(invoice.getCreatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertEquals(invoice.getUpdatedAt(), new DateTime("2011-08-25T12:00:00Z"));
         Assert.assertEquals(invoice.getClosedAt(), new DateTime("2011-08-25T12:00:00Z"));
