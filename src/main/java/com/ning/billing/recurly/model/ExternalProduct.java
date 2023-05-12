@@ -27,6 +27,9 @@ public class ExternalProduct extends RecurlyObject {
     @XmlElement(name = "plan")
     private Plan plan;
 
+    @XmlElement(name = "plan_code")
+    private String planCode;
+
     @XmlElement(name = "name")
     private String name;
 
@@ -46,6 +49,14 @@ public class ExternalProduct extends RecurlyObject {
 
     public void setPlan(final Plan plan) {
       this.plan = plan;
+    }
+
+    public String getPlanCode() {
+      return this.planCode;
+    }
+
+    public void setPlanCode(final Object planCode) {
+      this.planCode = stringOrNull(planCode);
     }
 
     public String getName() {

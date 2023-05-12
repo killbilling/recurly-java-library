@@ -25,6 +25,9 @@ import javax.xml.bind.annotation.XmlTransient;
 public class ExternalProductReferences extends RecurlyObjects<ExternalProductReference> {
 
     @XmlTransient
+    public static final String EXTERNAL_PRODUCT_REFERENCES_RESOURCE = "/external_product_references";
+
+    @XmlTransient
     private static final String PROPERTY_NAME = "external_product_reference";
 
     @JsonSetter(value = PROPERTY_NAME)
