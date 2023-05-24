@@ -39,6 +39,8 @@ import com.ning.billing.recurly.model.DunningCampaignBulkUpdate;
 import com.ning.billing.recurly.model.DunningCampaigns;
 import com.ning.billing.recurly.model.Entitlements;
 import com.ning.billing.recurly.model.ExternalProduct;
+import com.ning.billing.recurly.model.ExternalProductReference;
+import com.ning.billing.recurly.model.ExternalProductReferences;
 import com.ning.billing.recurly.model.ExternalProducts;
 import com.ning.billing.recurly.model.ExternalSubscription;
 import com.ning.billing.recurly.model.ExternalSubscriptions;
@@ -1340,6 +1342,97 @@ public class RecurlyClient {
      */
     public ExternalProduct getExternalProduct(final String externalProductUuid) {
         return doGET(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUuid), ExternalProduct.class);
+    }
+
+    /**
+     * Create an External Product
+     * <p>
+     * Returns created external product.
+     *
+     * @param externalProduct external product
+     * @return Created external product on success, null otherwise
+     */
+    public ExternalProduct createExternalProduct(final ExternalProduct externalProduct) {
+        return doPOST(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE,
+        externalProduct,
+        ExternalProduct.class);
+    }
+
+    /**
+     * Update an External Product
+     * <p>
+     * Returns updated external product.
+     *
+     * @param externalProductUUID recurly external product UUID
+     * @param externalAccount external product
+     * @return Updated external account for the given account on success, null otherwise
+     */
+    public ExternalProduct updateExternalProduct(final String externalProductUUID, final ExternalProduct externalProduct) {
+        return doPUT(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUUID),
+        externalProduct,
+        ExternalProduct.class);
+    }
+
+    /**
+     * Delete an External Product
+     * <p>
+     *
+     * @param externalProductUUID recurly external product UUID
+     */
+    public void deleteExternalProduct(final String externalProductUUID) {
+        doDELETE(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUUID));
+    }
+
+    /**
+     * Get External Product References
+     * <p>
+     * Returns all external product references on the site
+     *
+     * @param externalProductUUID external product uuid
+     * @return List of external product references on the site
+     */
+    public ExternalProductReferences getExternalProductReferences(final String externalProductUUID) {
+        return doGET(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUUID) + ExternalProductReferences.EXTERNAL_PRODUCT_REFERENCES_RESOURCE, ExternalProductReferences.class);
+    }
+
+    /**
+     * Get a specific External Product Reference
+     * <p>
+     * Returns the requested external product reference
+     * 
+     * @param externalProductUUID external product uuid
+     * @param externalProductReferenceUUID external product uuid
+     * @return The requested external product
+     */
+    public ExternalProductReference getExternalProductReference(final String externalProductUUID, final String externalProductReferenceUUID) {
+        return doGET(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUUID) + ExternalProductReferences.EXTERNAL_PRODUCT_REFERENCES_RESOURCE + "/" + urlEncode(externalProductReferenceUUID), ExternalProductReference.class);
+    }
+
+    /**
+     * Create an External Product Reference
+     * <p>
+     * Returns created external product reference.
+     *
+     * @param externalProductUUID recurly external product UUID
+     * @param externalProductReference external product reference
+     * @return Created external product reference on success, null otherwise
+     */
+    public ExternalProductReference createExternalProductReference(final String externalProductUUID, final ExternalProductReference externalProductReference) {
+        return doPOST(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUUID) + ExternalProductReferences.EXTERNAL_PRODUCT_REFERENCES_RESOURCE,
+        externalProductReference,
+        ExternalProductReference.class);
+    }
+
+    /**
+     * Delete an External Product Reference
+     * <p>
+     * Returns deleted external product reference.
+     *
+     * @param externalProductUUID recurly external product UUID
+     * @param externalProductReferenceUUID recurly external product reference UUID
+     */
+    public void deleteExternalProductReference(final String externalProductUUID, final String externalProductReferenceUUID) {
+        doDELETE(ExternalProducts.EXTERNAL_PRODUCTS_RESOURCE + "/" + urlEncode(externalProductUUID) + ExternalProductReferences.EXTERNAL_PRODUCT_REFERENCES_RESOURCE + "/" + urlEncode(externalProductReferenceUUID));
     }
 
     ///////////////////////////////////////////////////////////////////////////
