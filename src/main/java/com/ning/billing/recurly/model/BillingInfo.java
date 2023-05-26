@@ -142,6 +142,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "gateway_code")
     private String gatewayCode;
 
+    @XmlElement(name = "gateway_attributes")
+    private GatewayAttributes gatewayAttributes;
+
     @XmlElement(name = "amazon_billing_agreement_id")
     private String amazonBillingAgreementId;
 
@@ -481,6 +484,12 @@ public class BillingInfo extends RecurlyObject {
         this.gatewayCode = stringOrNull(gatewayCode);
     }
 
+    public GatewayAttributes getGatewayAttributes() { return gatewayAttributes; }
+
+    public void setGatewayAttributes(final GatewayAttributes gatewayAttributes) {
+        this.gatewayAttributes = gatewayAttributes;
+    }
+
     public String getAmazonBillingAgreementId() {
         return amazonBillingAgreementId;
     }
@@ -623,6 +632,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", onlineBankingPaymentType='").append(onlineBankingPaymentType).append('\'');
         sb.append(", gatewayToken='").append(gatewayToken).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
+        sb.append(", gatewayAttributes='").append(gatewayAttributes).append('\'');
         sb.append(", amazonBillingAgreementId='").append(amazonBillingAgreementId).append('\'');
         sb.append(", amazonRegion='").append(amazonRegion).append('\'');
         sb.append(", threeDSecureActionResultTokenId='").append(threeDSecureActionResultTokenId).append('\'');
@@ -735,6 +745,9 @@ public class BillingInfo extends RecurlyObject {
         if (gatewayCode != null ? !gatewayCode.equals(that.gatewayCode) : that.gatewayCode != null) {
             return false;
         }
+        if (gatewayAttributes != null ? !gatewayAttributes.equals(that.gatewayAttributes) : that.gatewayAttributes != null) {
+            return false;
+        }
         if (updatedAt != null ? updatedAt.compareTo(that.updatedAt) != 0 : that.updatedAt != null) {
             return false;
         }
@@ -823,6 +836,7 @@ public class BillingInfo extends RecurlyObject {
                 onlineBankingPaymentType,
                 gatewayToken,
                 gatewayCode,
+                gatewayAttributes,
                 amazonBillingAgreementId,
                 amazonRegion,
                 threeDSecureActionResultTokenId,

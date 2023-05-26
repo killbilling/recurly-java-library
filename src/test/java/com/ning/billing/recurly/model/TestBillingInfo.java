@@ -65,6 +65,10 @@ public class TestBillingInfo extends TestModelBase {
         billingInfo.setBackupPaymentMethod(false);
         billingInfo.setExternalHppType("ideal");
 
+        final GatewayAttributes gatewayAttributes = new GatewayAttributes();
+        gatewayAttributes.setAccountReference(randomString());
+        billingInfo.setGatewayAttributes(gatewayAttributes);
+
         final String xml = xmlMapper.writeValueAsString(billingInfo);
         Assert.assertEquals(xmlMapper.readValue(xml, BillingInfo.class), billingInfo);
     }
