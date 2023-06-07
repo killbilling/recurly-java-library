@@ -39,6 +39,7 @@ public class TestAccount extends TestModelBase {
                                    "  <redemption href=\"https://api.recurly.com/v2/accounts/1/redemption\"/>\n" +
                                    "  <subscriptions href=\"https://api.recurly.com/v2/accounts/1/subscriptions\"/>\n" +
                                    "  <transactions href=\"https://api.recurly.com/v2/accounts/1/transactions\"/>\n" +
+                                   "  <override_business_entity href=\"https://api.recurly.com/v2/business_entities/1\"/>\n" +
                                    "  <account_code>1</account_code>\n" +
                                    "  <parent_account_code>2</parent_account_code>\n" +
                                    "  <state>active</state>\n" +
@@ -78,6 +79,7 @@ public class TestAccount extends TestModelBase {
 
         final Account account = xmlMapper.readValue(accountData, Account.class);
         Assert.assertEquals(account.getHref(), "https://api.recurly.com/v2/accounts/1");
+        Assert.assertEquals(account.getOverrideBusinessEntity().getHref(), "https://api.recurly.com/v2/business_entities/1");
         verifyAccount(account);
 
         // Verify serialization

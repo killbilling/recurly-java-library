@@ -29,6 +29,8 @@ import com.ning.billing.recurly.model.Adjustments;
 import com.ning.billing.recurly.model.BillingInfo;
 import com.ning.billing.recurly.model.BillingInfos;
 import com.ning.billing.recurly.model.BillingInfoVerification;
+import com.ning.billing.recurly.model.BusinessEntity;
+import com.ning.billing.recurly.model.BusinessEntities;
 import com.ning.billing.recurly.model.Coupon;
 import com.ning.billing.recurly.model.Coupons;
 import com.ning.billing.recurly.model.CreditPayments;
@@ -2873,6 +2875,51 @@ public class RecurlyClient {
         return doGET(CustomFieldDefinitions.CUSTOM_FIELD_DEFINITIONS_RESOURCE + "/" + urlEncode(customFieldId), CustomFieldDefinition.class);
     }
 
+
+    ///////////////////////////////////////////////////////////////////////////
+    
+
+    ///////////////////////////////////////////////////////////////////////////
+    // Multiple Business Entities
+
+    /**
+     * Get Business Entities
+     * <p>
+     * Returns all business entities on the site
+     *
+     * @return List of business entities on the site
+     */
+    public BusinessEntities getBusinessEntities() {
+        return doGET(BusinessEntities.BUSINESS_ENTITIES_RESOURCE, BusinessEntities.class);
+    }
+
+    /**
+     * Get a specific Busines Entity
+     * <p>
+     * Returns the requested business entity
+     * 
+     * @param businessEntityUUID business entity uuid
+     * @return The requested business entity
+     */
+    public BusinessEntity getBusinessEntity(final String businessEntityUUID) {
+        return doGET(BusinessEntities.BUSINESS_ENTITIES_RESOURCE + "/" + urlEncode(businessEntityUUID), BusinessEntity.class);
+    }
+
+    /**
+     * Get business entity's invoices
+     * <p>
+     * Returns the business entity's invoices
+     *
+     * @param businessEntityUUID business entity uuid
+     * @param state {@link InvoiceState} state of the invoices
+     * @param params {@link QueryParams}
+     * @return the invoices associated with this business entity on success, null otherwise
+     */
+    public Invoices getBusinessEntityInvoices(final String businessEntityUUID, final InvoiceState state, final QueryParams params) {
+        if (state != null) params.put("state", state.getType());
+        return doGET(BusinessEntities.BUSINESS_ENTITIES_RESOURCE + "/" + urlEncode(businessEntityUUID) + Invoices.INVOICES_RESOURCE,
+                Invoices.class, params);
+    }
 
     ///////////////////////////////////////////////////////////////////////////
 

@@ -106,6 +106,7 @@ public abstract class RecurlyObject {
         m.addSerializer(Transactions.class, new RecurlyObjectsSerializer<Transactions, Transaction>(Transactions.class, "transaction"));
         m.addSerializer(Usages.class, new RecurlyObjectsSerializer<Usages, Usage>(Usages.class, "usage"));
         m.addSerializer(ExternalProductReferences.class, new RecurlyObjectsSerializer<ExternalProductReferences, ExternalProductReference>(ExternalProductReferences.class, "external_product_reference"));
+        m.addSerializer(BusinessEntities.class, new RecurlyObjectsSerializer<BusinessEntities, BusinessEntity>(BusinessEntities.class, "business_entity"));
         xmlMapper.registerModule(m);
 
         return xmlMapper;

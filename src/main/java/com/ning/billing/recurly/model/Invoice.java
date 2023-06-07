@@ -169,6 +169,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "dunning_campaign_id")
     private String dunningCampaignId;
 
+    @XmlElement(name = "business_entity")
+    private BusinessEntity businessEntity;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -555,12 +558,20 @@ public class Invoice extends RecurlyObject {
         this.dunningCampaignId = stringOrNull(dunningCampaignId);
     }
 
+    public BusinessEntity getBusinessEntity() {
+        if (businessEntity != null && businessEntity.getHref() != null && !businessEntity.getHref().isEmpty()) {
+            businessEntity = fetch(businessEntity, BusinessEntity.class);
+        }
+        return businessEntity;
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Invoice{");
         sb.append("account=").append(account);
         sb.append(", originalInvoice='").append(originalInvoice).append('\'');
         sb.append(", originalInvoices='").append(originalInvoices).append('\'');
+        sb.append(", businessEntity='").append(businessEntity).append('\'');
         sb.append(", uuid='").append(uuid).append('\'');
         sb.append(", state='").append(state).append('\'');
         sb.append(", invoiceNumber=").append(invoiceNumber);
