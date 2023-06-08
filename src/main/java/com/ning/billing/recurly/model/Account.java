@@ -61,6 +61,9 @@ public class Account extends RecurlyObject {
     @XmlElement(name = "invoice_template")
     private InvoiceTemplate invoiceTemplate;
 
+    @XmlElement(name = "override_business_entity")
+    private BusinessEntity overrideBusinessEntity;
+
     @XmlElement(name = "account_code")
     private String accountCode;
 
@@ -165,6 +168,9 @@ public class Account extends RecurlyObject {
 
     @XmlElement(name = "invoice_template_uuid")
     private String invoiceTemplateUuid;
+
+    @XmlElement(name = "override_business_entity_id")
+    private String overrideBusinessEntityId;
 
     @XmlElementWrapper(name = "entitlements")
     private Entitlements entitlements;
@@ -497,6 +503,14 @@ public class Account extends RecurlyObject {
         this.transactionType = stringOrNull(transactionType);
     }
 
+    public String getOverrideBusinessEntityId() {
+        return overrideBusinessEntityId;
+    }
+
+    public void setOverrideBusinessEntityId(final Object overrideBusinessEntityId) {
+        this.overrideBusinessEntityId = stringOrNull(overrideBusinessEntityId);
+    }
+
     public String getDunningCampaignId() {
         return dunningCampaignId;
     }
@@ -518,6 +532,13 @@ public class Account extends RecurlyObject {
             invoiceTemplate = fetch(invoiceTemplate, InvoiceTemplate.class);
         }
         return invoiceTemplate;
+    }
+
+    public BusinessEntity getOverrideBusinessEntity() {
+        if (overrideBusinessEntity != null && overrideBusinessEntity.getHref() != null && !overrideBusinessEntity.getHref().isEmpty()) {
+            overrideBusinessEntity = fetch(overrideBusinessEntity, BusinessEntity.class);
+        }
+        return overrideBusinessEntity;
     }
 
     @Override
@@ -559,6 +580,7 @@ public class Account extends RecurlyObject {
         sb.append(", accountAcquisition=").append(accountAcquisition);
         sb.append(", preferredLocale=").append(preferredLocale);
         sb.append(", preferredTimeZone=").append(preferredTimeZone);
+        sb.append(", overrideBusinessEntityId=").append(overrideBusinessEntityId);
         sb.append(", transactionType='").append(transactionType).append('\'');
         sb.append('}');
         return sb.toString();

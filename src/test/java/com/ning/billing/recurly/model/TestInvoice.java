@@ -36,6 +36,7 @@ public class TestInvoice extends TestModelBase {
                                    + "<invoice href=\"https://api.recurly.com/v2/invoices/e3f0a9e084a2468480d00ee61b090d4d\">\n"
                                    + "  <account href=\"https://api.recurly.com/v2/accounts/1\"/>\n"
                                    + "  <original_invoices href=\"https://api.recurly.com/v2/invoices/1192/original_invoices\"/>\n"
+                                   + "  <business_entity href=\"https://api.recurly.com/v2/business_entities/1\"/>\n"
                                    + "  <uuid>421f7b7d414e4c6792938e7c49d552e9</uuid>\n"
                                    + "  <state>open</state>\n"
                                    + "  <invoice_number type=\"integer\">1402</invoice_number>\n"
@@ -123,6 +124,7 @@ public class TestInvoice extends TestModelBase {
         final Invoice invoice = xmlMapper.readValue(invoiceData, Invoice.class);
 
         Assert.assertEquals(invoice.getAccount().getHref(), "https://api.recurly.com/v2/accounts/1");
+        Assert.assertEquals(invoice.getBusinessEntity().getHref(), "https://api.recurly.com/v2/business_entities/1");
         Assert.assertTrue(invoice.hasOriginalInvoices());
         Assert.assertEquals(invoice.getUuid(), "421f7b7d414e4c6792938e7c49d552e9");
         Assert.assertEquals(invoice.getState(), "open");
