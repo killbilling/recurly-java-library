@@ -39,11 +39,15 @@ public class TestExternalSubscriptions extends TestModelBase {
           "    </external_product_reference>" +
           "    <last_purchased type=\"datetime\">2022-09-12T18:40:51Z</last_purchased>" +
           "    <auto_renew type=\"boolean\">false</auto_renew>" +
+          "    <in_grace_period type=\"boolean\">false</in_grace_period>" +
           "    <app_identifier>com.foo.id</app_identifier>" +
           "    <quantity type=\"integer\">1</quantity>" +
           "    <external_id>1_ext_id</external_id>" +
           "    <activated_at type=\"datetime\">2022-09-12T18:40:51Z</activated_at>" +
+          "    <canceled_at type=\"datetime\">2022-09-12T18:40:51Z</canceled_at>" +
           "    <expires_at type=\"datetime\">2022-09-12T18:40:51Z</expires_at>" +
+          "    <trial_started_at type=\"datetime\">2022-09-12T18:40:51Z</trial_started_at>" +
+          "    <trial_ends_at type=\"datetime\">2022-09-12T18:40:51Z</trial_ends_at>" +
           "    <state>active</state>" +
           "    <created_at type=\"datetime\">2022-09-12T18:40:51Z</created_at>" +
           "    <updated_at type=\"datetime\">2022-09-12T18:40:51Z</updated_at>" +
@@ -63,11 +67,15 @@ public class TestExternalSubscriptions extends TestModelBase {
         Assert.assertEquals(externalSubscription.getExternalProductReference().getUpdatedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getLastPurchased(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getAutoRenew(), Boolean.FALSE);
+        Assert.assertEquals(externalSubscription.getInGracePeriod(), Boolean.FALSE);
         Assert.assertEquals(externalSubscription.getAppIdentifier(), "com.foo.id");
         Assert.assertEquals(externalSubscription.getQuantity(), new Integer(1));
         Assert.assertEquals(externalSubscription.getExternalId(), "1_ext_id");
         Assert.assertEquals(externalSubscription.getActivatedAt(), new DateTime("2022-09-12T18:40:51Z"));
+        Assert.assertEquals(externalSubscription.getCanceledAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getExpiresAt(), new DateTime("2022-09-12T18:40:51Z"));
+        Assert.assertEquals(externalSubscription.getTrialEndsAt(), new DateTime("2022-09-12T18:40:51Z"));
+        Assert.assertEquals(externalSubscription.getTrialStartedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getState(), "active");
         Assert.assertEquals(externalSubscription.getCreatedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getUpdatedAt(), new DateTime("2022-09-12T18:40:51Z"));

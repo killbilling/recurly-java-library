@@ -35,6 +35,9 @@ public class ExternalSubscription extends RecurlyObject {
     @XmlElement(name = "auto_renew")
     private Boolean autoRenew;
 
+    @XmlElement(name = "in_grace_period")
+    private Boolean inGracePeriod;
+
     @XmlElement(name = "app_identifier")
     private String appIdentifier;
 
@@ -52,6 +55,15 @@ public class ExternalSubscription extends RecurlyObject {
 
     @XmlElement(name = "state")
     private String state;
+
+    @XmlElement(name = "canceled_at")
+    private DateTime canceledAt;
+
+    @XmlElement(name = "trial_started_at")
+    private DateTime trialStartedAt;
+
+    @XmlElement(name = "trial_ends_at")
+    private DateTime trialEndsAt;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -89,6 +101,14 @@ public class ExternalSubscription extends RecurlyObject {
 
     public void setAutoRenew(final Object autoRenew) {
       this.autoRenew = booleanOrNull(autoRenew);
+    }
+
+    public Boolean getInGracePeriod() {
+      return inGracePeriod;
+    }
+
+    public void setInGracePeriod(final Object inGracePeriod) {
+      this.inGracePeriod = booleanOrNull(inGracePeriod);
     }
 
     public String getAppIdentifier() {
@@ -145,6 +165,30 @@ public class ExternalSubscription extends RecurlyObject {
 
     public void setCreatedAt(final Object createdAt) {
       this.createdAt = dateTimeOrNull(createdAt);
+    }
+
+    public DateTime getCanceledAt() {
+      return canceledAt;
+    }
+
+    public void setCanceledAt(final Object canceledAt) {
+      this.canceledAt = dateTimeOrNull(canceledAt);
+    }
+
+    public DateTime getTrialStartedAt() {
+      return trialStartedAt;
+    }
+
+    public void setTrialStartedAt(final Object trialStartedAt) {
+      this.trialStartedAt = dateTimeOrNull(trialStartedAt);
+    }
+
+    public DateTime getTrialEndsAt() {
+      return trialEndsAt;
+    }
+
+    public void setTrialEndsAt(final Object trialEndsAt) {
+      this.trialEndsAt = dateTimeOrNull(trialEndsAt);
     }
 
     public DateTime getUpdatedAt() {
