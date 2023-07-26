@@ -20,7 +20,7 @@ import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
+import org.joda.time.DateTime;
 
 @XmlRootElement(name = "ramp_interval")
 public class SubscriptionRampInterval extends RecurlyObject {
@@ -34,6 +34,11 @@ public class SubscriptionRampInterval extends RecurlyObject {
   @XmlElement(name = "unit_amount_in_cents")
   protected Integer unitAmountInCents;
 
+  @XmlElement(name = "starting_on")
+  private DateTime startingOn;
+
+  @XmlElement(name = "ending_on")
+  private DateTime endingOn;
 
   public Integer getStartingBillingCycle() {
     return startingBillingCycle;
@@ -59,6 +64,22 @@ public class SubscriptionRampInterval extends RecurlyObject {
     this.unitAmountInCents = integerOrNull(unitAmountInCents);
   }
 
+  public DateTime getStartingOn() {
+    return startingOn;
+  }
+
+  public void setStartingOn(final Object startingOn) {
+    this.startingOn = dateTimeOrNull(startingOn);
+  }
+
+  public DateTime getEndingOn() {
+    return endingOn;
+  }
+
+  public void setEndingOn(final Object endingOn) {
+    this.endingOn = dateTimeOrNull(endingOn);
+  }
+
   public String toString() {
     final String className = getClass().getSimpleName();
     final StringBuilder builder = new StringBuilder(className + " { ");
@@ -66,6 +87,8 @@ public class SubscriptionRampInterval extends RecurlyObject {
     builder.append("startingBillingCycle=").append(startingBillingCycle);
     builder.append(", unitAmountInCents=").append(unitAmountInCents);
     builder.append(", remainingBillingCycles=").append(remainingBillingCycles);
+    builder.append(", startingOn=").append(startingOn);
+    builder.append(", endingOn=").append(endingOn);
     builder.append(" }\n ");
 
     return builder.toString();
@@ -87,6 +110,12 @@ public class SubscriptionRampInterval extends RecurlyObject {
     if (remainingBillingCycles != null ? !remainingBillingCycles.equals(rampInterval.remainingBillingCycles) : rampInterval.remainingBillingCycles != null) {
       return false;
     }
+    if (startingOn != null ? startingOn.compareTo(rampInterval.startingOn) != 0 : rampInterval.startingOn != null) {
+        return false;
+    }
+    if (endingOn != null ? endingOn.compareTo(rampInterval.endingOn) != 0 : rampInterval.endingOn != null) {
+        return false;
+    }
 
     return true;
   }
@@ -96,7 +125,9 @@ public class SubscriptionRampInterval extends RecurlyObject {
     return Objects.hash(
       startingBillingCycle,
       unitAmountInCents,
-      remainingBillingCycles
+      remainingBillingCycles,
+      startingOn,
+      endingOn
     );
   }
 

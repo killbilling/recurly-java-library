@@ -251,16 +251,22 @@ public class TestSubscription extends TestModelBase {
                                         "      <starting_billing_cycle type=\"integer\">1</starting_billing_cycle>\n" +
                                         "      <unit_amount_in_cents type=\"integer\">2000</unit_amount_in_cents>\n" +
                                         "      <remaining_billing_cycles type=\"integer\">0</remaining_billing_cycles>\n" +
+                                        "      <starting_on type=\"dateTime\">2011-06-27T07:00:00Z</starting_on>\n" +
+                                        "      <ending_on type=\"dateTime\">2011-07-27T07:00:00Z</ending_on>\n" +
                                         "    </ramp_interval>\n" +
                                         "    <ramp_interval>\n" +
                                         "      <starting_billing_cycle type=\"integer\">2</starting_billing_cycle>\n" +
                                         "      <unit_amount_in_cents type=\"integer\">4000</unit_amount_in_cents>\n" +
                                         "      <remaining_billing_cycles type=\"integer\">5</remaining_billing_cycles>\n" +
+                                        "      <starting_on type=\"dateTime\">2011-07-27T07:00:00Z</starting_on>\n" +
+                                        "      <ending_on type=\"dateTime\">2011-08-27T07:00:00Z</ending_on>\n" +
                                         "    </ramp_interval>\n" +
                                         "    <ramp_interval>\n" +
                                         "      <starting_billing_cycle type=\"integer\">7</starting_billing_cycle>\n" +
                                         "      <unit_amount_in_cents type=\"integer\">7000</unit_amount_in_cents>\n" +
                                         "      <remaining_billing_cycles nil=\"nil\"/>\n" +
+                                        "      <starting_on type=\"dateTime\">2011-08-27T07:00:00Z</starting_on>\n" +
+                                        "      <ending_on nil=\"nil\"></ending_on>\n" +
                                         "    </ramp_interval>\n" +
                                         "  </ramp_intervals>\n" +
                                         "  <unit_amount_in_cents type=\"integer\">2000</unit_amount_in_cents>\n" +
@@ -303,6 +309,14 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals((int) subRamps.get(0).getUnitAmountInCents(), 2000);
         Assert.assertEquals((int) subRamps.get(1).getUnitAmountInCents(), 4000);
         Assert.assertEquals((int) subRamps.get(2).getUnitAmountInCents(), 7000);
+
+        Assert.assertEquals(subRamps.get(0).getStartingOn(), new DateTime("2011-06-27T07:00:00Z"));
+        Assert.assertEquals(subRamps.get(1).getStartingOn(), new DateTime("2011-07-27T07:00:00Z"));
+        Assert.assertEquals(subRamps.get(2).getStartingOn(), new DateTime("2011-08-27T07:00:00Z"));
+
+        Assert.assertEquals(subRamps.get(0).getEndingOn(), new DateTime("2011-07-27T07:00:00Z"));
+        Assert.assertEquals(subRamps.get(1).getEndingOn(), new DateTime("2011-08-27T07:00:00Z"));
+        Assert.assertNull(subRamps.get(2).getEndingOn());
     }
 
     @Test(groups = "fast")
