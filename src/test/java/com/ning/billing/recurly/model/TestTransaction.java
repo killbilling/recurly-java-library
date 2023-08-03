@@ -199,6 +199,67 @@ public class TestTransaction extends TestModelBase {
     }
 
     @Test(groups = "fast")
+    public void testDeserializationWithActionResult() throws Exception {
+        // See http://docs.recurly.com/api/invoices
+        final String transactionData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                                       "<transaction href=\"https://your-subdomain.recurly.com/v2/transactions/a13acd8fe4294916b79aec87b7ea441f\">\n" +
+                                       "  <account href=\"https://your-subdomain.recurly.com/v2/accounts/1\"/>\n" +
+                                       "  <invoice href=\"https://your-subdomain.recurly.com/v2/invoices/1108\"/>\n" +
+                                       "  <uuid>a13acd8fe4294916b79aec87b7ea441f</uuid>\n" +
+                                       "  <action>purchase</action>\n" +
+                                       "  <amount_in_cents type=\"integer\">1000</amount_in_cents>\n" +
+                                       "  <tax_in_cents type=\"integer\">0</tax_in_cents>\n" +
+                                       "  <currency>USD</currency>\n" +
+                                       "  <status>success</status>\n" +
+                                       "  <payment_method>check</payment_method>\n" +
+                                       "  <reference nil=\"nil\"/>\n" +
+                                       "  <source>transaction</source>\n" +
+                                       "  <recurring type=\"boolean\">false</recurring>\n" +
+                                       "  <test type=\"boolean\">true</test>\n" +
+                                       "  <voidable type=\"boolean\">true</voidable>\n" +
+                                       "  <refundable type=\"boolean\">true</refundable>\n" +
+                                       "  <ip_address>1.2.3.4</ip_address>\n" +
+                                       "  <cvv_result code=\"\" nil=\"nil\"></cvv_result>" +
+                                       "  <avs_result code=\"\" nil=\"nil\"></avs_result>" +
+                                       "  <avs_result_street nil=\"nil\"></avs_result_street>" +
+                                       "  <avs_result_postal nil=\"nil\"></avs_result_postal>" +
+                                       "  <gateway_type>test</gateway_type>\n" +
+                                       "  <origin>api</origin>\n" +
+                                       "  <message>Successful test transaction</message>\n" +
+                                       "  <approval_code>P1234577Q</approval_code>\n" +
+                                       "  <failure_type>Declined by the gateway</failure_type>\n" +
+                                       "  <created_at type=\"dateTime\">2015-06-19T03:01:33Z</created_at>\n" +
+                                       "  <updated_at type=\"dateTime\">2015-06-19T03:01:33Z</updated_at>\n" +
+                                       "  <details>\n" +
+                                       "    <account>\n" +
+                                       "      <account_code>1</account_code>\n" +
+                                       "      <first_name nil=\"nil\"/>\n" +
+                                       "      <last_name nil=\"nil\"/>\n" +
+                                       "      <company>Cool Company</company>\n" +
+                                       "      <email nil=\"nil\"/>\n" +
+                                       "      <billing_info>\n" +
+                                       "        <first_name>Verena</first_name>\n" +
+                                       "        <last_name>Example</last_name>\n" +
+                                       "        <address1>123 Main St.</address1>\n" +
+                                       "        <address2 nil=\"nil\"/>\n" +
+                                       "        <city>San Francisco</city>\n" +
+                                       "        <state>CA</state>\n" +
+                                       "        <zip>94105</zip>\n" +
+                                       "        <country>US</country>\n" +
+                                       "        <phone nil=\"nil\"/>\n" +
+                                       "        <vat_number nil=\"nil\"/>\n" +
+                                       "      </billing_info>\n" +
+                                       "    </account>\n" +
+                                       "  </details>\n" +
+                                       "  <a name=\"refund\" href=\"https://your-subdomain.recurly.com/v2/transactions/a13acd8fe4294916b79aec87b7ea441f\" method=\"delete\"/>\n" +
+                                       "  <action_result>example</action_result>\n" +
+                                       "</transaction>";
+
+        final Transaction transaction = xmlMapper.readValue(transactionData, Transaction.class);
+        Assert.assertEquals(transaction.getActionResult(), "example");
+    }
+
+    @Test(groups = "fast")
     public void testHashCodeAndEquality() throws Exception {
         // create transactions of the same value but difference references
         Transaction transaction = TestUtils.createRandomTransaction(0);

@@ -72,6 +72,9 @@ public class Transaction extends AbstractTransaction {
     @XmlElement(name = "approval_code")
     private String approvalCode;
 
+    @XmlElement(name = "action_result")
+    private String actionResult;
+
     public Account getAccount() {
         if (account != null && account.getCreatedAt() == null) {
             account = fetch(account, Account.class);
@@ -192,6 +195,14 @@ public class Transaction extends AbstractTransaction {
         this.approvalCode = stringOrNull(approvalCode);
     }
 
+    public String getActionResult() {
+        return actionResult;
+    }
+
+    public void setActionResult(final Object actionResult) {
+        this.actionResult = stringOrNull(actionResult);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Transaction{");
@@ -210,6 +221,7 @@ public class Transaction extends AbstractTransaction {
         sb.append(", origin=").append(origin);
         sb.append(", gatewayType=").append(gatewayType);
         sb.append(", approvalCode=").append(approvalCode);
+        sb.append(", actionResult=").append(actionResult);
         sb.append('}');
         return sb.toString();
     }
@@ -286,7 +298,8 @@ public class Transaction extends AbstractTransaction {
                 details,
                 gatewayType,
                 origin,
-                approvalCode
+                approvalCode,
+                actionResult
         );
     }
 }
