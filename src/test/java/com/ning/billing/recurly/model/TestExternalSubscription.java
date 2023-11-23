@@ -29,6 +29,7 @@ public class TestExternalSubscription extends TestModelBase {
           "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
           "<external_subscription href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/rpap82ntgqqh\">" +
           "  <account href=\"https://your-subdomain.recurly.com/v2/accounts/1\"/>" +
+          "  <external_invoices href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/tsfnx2vn5wh6/external_invoices\"/>" +
           "  <external_product_reference>" +
           "    <id>rgybkg3d1l41</id>" +
           "    <reference_code>apple-code</reference_code>" +

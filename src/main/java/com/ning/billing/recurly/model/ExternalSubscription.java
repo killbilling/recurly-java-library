@@ -17,6 +17,7 @@
 package com.ning.billing.recurly.model;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import org.joda.time.DateTime;
 
@@ -28,6 +29,16 @@ public class ExternalSubscription extends RecurlyObject {
 
     @XmlElement(name = "external_product_reference")
     private ExternalProductReference externalProductReference;
+
+    @XmlElementWrapper(name = "external_invoices")
+    @XmlElement(name = "external_invoice")
+    private ExternalInvoices externalInvoices;
+
+
+    @XmlElementWrapper(name = "external_payment_phases")
+    @XmlElement(name = "external_payment_phase")
+    private ExternalPaymentPhases externalPaymentPhases;
+
 
     @XmlElement(name = "last_purchased")
     private DateTime lastPurchased;
@@ -85,6 +96,22 @@ public class ExternalSubscription extends RecurlyObject {
 
     public void setExternalProductReference(final ExternalProductReference externalProductReference) {
       this.externalProductReference = externalProductReference;
+    }
+
+    public ExternalInvoices getExternalInvoices() {
+      return this.externalInvoices;
+    }
+
+    public void setExternalInvoices(final ExternalInvoices externalInvoices) {
+      this.externalInvoices = externalInvoices;
+    }
+
+    public ExternalPaymentPhases getExternalPaymentPhases() {
+      return this.externalPaymentPhases;
+    }
+
+    public void setExternalPaymentPhases(final ExternalPaymentPhases externalPaymentPhases) {
+      this.externalPaymentPhases = externalPaymentPhases;
     }
 
     public DateTime getLastPurchased() {
