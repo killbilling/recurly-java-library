@@ -51,6 +51,8 @@ import com.ning.billing.recurly.model.ExternalAccount;
 import com.ning.billing.recurly.model.ExternalAccounts;
 import com.ning.billing.recurly.model.ExternalInvoice;
 import com.ning.billing.recurly.model.ExternalInvoices;
+import com.ning.billing.recurly.model.ExternalPaymentPhase;
+import com.ning.billing.recurly.model.ExternalPaymentPhases;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
@@ -1321,6 +1323,45 @@ public class RecurlyClient {
      */
     public ExternalInvoice getExternalInvoice(final String externalInvoiceUuid) {
         return doGET(ExternalInvoices.EXTERNAL_INVOICES_RESOURCE + "/" + urlEncode(externalInvoiceUuid), ExternalInvoice.class);
+    }
+
+    /**
+     * Get a specific External Payment Phase
+     * <p>
+     * Returns the requested external payment phase
+     * 
+     * @param externalPaymentPhaseUuid external payment phase uuid
+     * @return The requested external payment phase
+     */
+    public ExternalPaymentPhase getExternalPaymentPhase(final String externalPaymentPhaseUuid) {
+        return doGET(ExternalPaymentPhases.EXTERNAL_PAYMENT_PHASES_RESOURCE + "/" + urlEncode(externalPaymentPhaseUuid), ExternalPaymentPhase.class);
+    }
+
+    /**
+     * Get External Payment Phases of an external subscription
+     * <p>
+     * Returns all External Payment Phases for a given external subscription.
+     *
+     * @param externalSubscriptionUUID recurly external subscription uuid
+     * @return List of External Payment Phases for the given external subscription on success, null otherwise
+     */
+    public ExternalPaymentPhases getExternalPaymentPhasesByExternalSubscription(final String externalSubscriptionUUID) {
+        return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode(externalSubscriptionUUID) + ExternalPaymentPhases.EXTERNAL_PAYMENT_PHASES_RESOURCE,
+        ExternalPaymentPhases.class);
+    }
+
+    /**
+     * Get External Payment Phase of an external subscription
+     * <p>
+     * Returns an External Payment Phase for a given external subscription.
+     *
+     * @param externalSubscriptionUUID recurly external subscription uuid
+     * @param externalPaymentPhaseUUID recurly external payment phase uuid
+     * @return An External Payment Phase for the given external subscription on success, null otherwise
+     */
+    public ExternalPaymentPhase getExternalPaymentPhaseByExternalSubscription(final String externalSubscriptionUUID, final String externalPaymentPhaseUUID) {
+        return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode(externalSubscriptionUUID) + ExternalPaymentPhases.EXTERNAL_PAYMENT_PHASES_RESOURCE + "/" + urlEncode(externalPaymentPhaseUUID),
+        ExternalPaymentPhase.class);
     }
 
     /**

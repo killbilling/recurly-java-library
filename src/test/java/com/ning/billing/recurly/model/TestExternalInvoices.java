@@ -33,6 +33,7 @@ import org.joda.time.DateTime;
            "  <external_invoice href=\"https://your-subdomain.recurly.com/v2/external_invoices/scaig66ovogw\">" +
            "    <account href=\"https://your-subdomain.recurly.com/v2/accounts/scaig66ovoga\"/>" +
            "    <external_subscription href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/scaig66ovoge\"/>" +
+           "    <external_payment_phase href=\"https://your-subdomain.recurly.com/v2/external_payment_phases/twqswp6wgq68\"/>" +
            "    <external_id>external_id</external_id>" +
            "    <state>paid</state>" +
            "    <currency>USD</currency>" +
@@ -62,6 +63,7 @@ import org.joda.time.DateTime;
          Assert.assertEquals(externalInvoice.getHref(), "https://your-subdomain.recurly.com/v2/external_invoices/scaig66ovogw");
          Assert.assertEquals(externalInvoice.getAccount().getHref(), "https://your-subdomain.recurly.com/v2/accounts/scaig66ovoga");
          Assert.assertEquals(externalInvoice.getExternalSubscription().getHref(), "https://your-subdomain.recurly.com/v2/external_subscriptions/scaig66ovoge");
+         Assert.assertEquals(externalInvoice.getExternalPaymentPhase().getHref(), "https://your-subdomain.recurly.com/v2/external_payment_phases/twqswp6wgq68");
          Assert.assertEquals(externalInvoice.getExternalId(), "external_id");
          Assert.assertEquals(externalInvoice.getState(), "paid");
          Assert.assertEquals(externalInvoice.getCurrency(), "USD");

@@ -33,6 +33,9 @@ public class ExternalInvoice extends RecurlyObject {
   @XmlElement(name = "external_subscription")
   private ExternalSubscription externalSubscription;
 
+  @XmlElement(name = "external_payment_phase")
+  private ExternalPaymentPhase externalPaymentPhase;
+
   @XmlElement(name = "external_id")
   private String externalId;
 
@@ -72,6 +75,14 @@ public class ExternalInvoice extends RecurlyObject {
 
   public void setExternalSubscription(final ExternalSubscription externalSubscription) {
     this.externalSubscription = externalSubscription;
+  }
+
+  public ExternalPaymentPhase getExternalPaymentPhase() {
+    return this.externalPaymentPhase;
+  }
+
+  public void setExternalPaymentPhase(final ExternalPaymentPhase externalPaymentPhase) {
+    this.externalPaymentPhase = externalPaymentPhase;
   }
 
   public String getExternalId() {
