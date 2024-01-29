@@ -93,16 +93,16 @@ public class GeneralLedgerAccount extends RecurlyObject {
       this.updatedAt = dateTimeOrNull(updatedAt);
     }
 
-  @Override
-  public String toString() {
-    return "{" +
-      " id='" + getId() + "'" +
-      ", code='" + getCode() + "'" +
-      ", accountType='" + getAccountType() + "'" +
-      ", description='" + getDescription() + "'" +
-      ", createdAt='" + getCreatedAt() + "'" +
-      ", updatedAt='" + getUpdatedAt() + "'" +
-      "}";
-  }
-
+    @Override
+    public String toString() {
+      final StringBuilder sb = new StringBuilder("GeneralLedgerAccount{");
+      sb.append("id='").append(id).append('\'');
+      sb.append(", code='").append(code).append('\'');
+      sb.append(", accountType='").append(accountType).append('\'');
+      sb.append(", description='").append(description).append('\'');
+      sb.append(", createdAt='").append(createdAt).append('\'');
+      sb.append(", updatedAt='").append(updatedAt).append('\'');
+      sb.append('}');
+      return sb.toString();
+    }
 }
