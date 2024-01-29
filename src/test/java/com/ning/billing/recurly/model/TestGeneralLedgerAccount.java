@@ -21,6 +21,7 @@
 
  import org.joda.time.DateTime;
  import org.testng.Assert;
+ import static org.testng.Assert.assertTrue;
  import org.testng.annotations.Test;
 
  public class TestGeneralLedgerAccount extends TestModelBase {
@@ -48,4 +49,28 @@
         Assert.assertEquals(generalLedgerAccount.getCreatedAt(), new DateTime("2023-05-04T17:45:43Z"));
         Assert.assertEquals(generalLedgerAccount.getUpdatedAt(), new DateTime("2023-05-04T17:45:43Z"));
      }
+
+    @Test(groups = "fast")
+    public void testSerializationWithAccountType() throws Exception {
+        final GeneralLedgerAccount gla = new GeneralLedgerAccount();
+        gla.setAccountType("revenue");
+        final String xmlString = xmlMapper.writeValueAsString(gla);
+        assertTrue(xmlString.contains("<account_type>revenue</account_type>"));
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationWithCode() throws Exception {
+        final GeneralLedgerAccount gla = new GeneralLedgerAccount();
+        gla.setCode("1234Code");
+        final String xmlString = xmlMapper.writeValueAsString(gla);
+        assertTrue(xmlString.contains("<code>1234Code</code>"));
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationWithDescription() throws Exception {
+        final GeneralLedgerAccount gla = new GeneralLedgerAccount();
+        gla.setDescription("This is a cool GLA");
+        final String xmlString = xmlMapper.writeValueAsString(gla);
+        assertTrue(xmlString.contains("<description>This is a cool GLA</description>"));
+    }
  }
