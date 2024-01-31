@@ -66,6 +66,8 @@ import com.ning.billing.recurly.model.InvoiceTemplates;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.Items;
+import com.ning.billing.recurly.model.PerformanceObligation;
+import com.ning.billing.recurly.model.PerformanceObligations;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Purchase;
@@ -2613,6 +2615,29 @@ public class RecurlyClient {
      */
     public GeneralLedgerAccount getGeneralLedgerAccount(final String generalLedgerAccountUUID) {
         return doGET(GeneralLedgerAccounts.GENERAL_LEDGER_ACCOUNTS_RESOURCE + "/" + urlEncode(generalLedgerAccountUUID), GeneralLedgerAccount.class);
+    }
+
+    /**
+     * Get a specific PerformanceObligation
+     * <p>
+     * Returns the requested performance obligation
+     *
+     * @param performanceObligationUUID performance obligation uuid
+     * @return The requested performance obligation
+     */
+    public PerformanceObligation getPerformanceObligation(final String performanceObligationUUID) {
+        return doGET(PerformanceObligations.PERFORMANCE_OBLIGATIONS_RESOURCE + "/" + urlEncode(performanceObligationUUID), PerformanceObligation.class);
+    }
+
+    /**
+     * Fetch PerformanceObligations
+     * <p>
+     * Returns information about all performance obligations.
+     *
+     * @return performance obligation object on success, null otherwise
+     */
+    public PerformanceObligations getPerformanceObligations() {
+        return doGET(PerformanceObligations.PERFORMANCE_OBLIGATIONS_RESOURCE, PerformanceObligations.class);
     }
 
     /**
