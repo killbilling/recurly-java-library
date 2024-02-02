@@ -119,6 +119,12 @@ public class TestPlan extends TestModelBase {
                                 "  <setup_fee_accounting_code nil=\"nil\"></setup_fee_accounting_code>\n" +
                                 "  <revenue_schedule_type>evenly</revenue_schedule_type>\n" +
                                 "  <setup_fee_revenue_schedule_type>evenly</setup_fee_revenue_schedule_type>>\n" +
+                                "  <liability_gl_account_id>1234abcd</liability_gl_account_id>\n" +
+                                "  <revenue_gl_account_id>5678efgh</revenue_gl_account_id>\n" +
+                                "  <performance_obligation_id>9012ijkl</performance_obligation_id>\n" +
+                                "  <setup_fee_liability_gl_account_id>3456mnop</setup_fee_liability_gl_account_id>\n" +
+                                "  <setup_fee_revenue_gl_account_id>7890qrst</setup_fee_revenue_gl_account_id>\n" +
+                                "  <setup_fee_performance_obligation_id>1234uvwx</setup_fee_performance_obligation_id>\n" +
                                 "  <created_at type=\"dateTime\">2011-04-19T07:00:00Z</created_at>\n" +
                                 "  <updated_at type=\"dateTime\">2011-04-19T07:00:00Z</updated_at>\n" +
                                 "  <tax_exempt>false</tax_exempt>\n" +
@@ -152,6 +158,12 @@ public class TestPlan extends TestModelBase {
         Assert.assertEquals(plan.getSetupFeeRevenueScheduleType(), RevenueScheduleType.EVENLY);
         Assert.assertEquals(plan.getTaxExempt(), new Boolean(false));
         Assert.assertEquals(plan.getTaxCode(), "digital");
+        Assert.assertEquals(plan.getLiabilityGlAccountId(), "1234abcd");
+        Assert.assertEquals(plan.getRevenueGlAccountId(), "5678efgh");
+        Assert.assertEquals(plan.getPerformanceObligationId(), "9012ijkl");
+        Assert.assertEquals(plan.getSetupFeeLiabilityGlAccountId(), "3456mnop");
+        Assert.assertEquals(plan.getSetupFeeRevenueGlAccountId(), "7890qrst");
+        Assert.assertEquals(plan.getSetupFeePerformanceObligationId(), "1234uvwx");
     }
 
     @Test(groups = "fast")
