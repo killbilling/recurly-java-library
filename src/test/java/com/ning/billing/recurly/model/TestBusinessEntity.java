@@ -22,12 +22,12 @@
  import org.joda.time.DateTime;
  import org.testng.Assert;
  import org.testng.annotations.Test;
- 
+
  public class TestBusinessEntity extends TestModelBase {
- 
+
      @Test(groups = "fast")
      public void testDeserialization() throws Exception {
-        final String businessEntityData = 
+        final String businessEntityData =
            "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
            "<business_entity href=\"https://your-subdomain.recurly.com/v2/business_entities/scaig66ovogw\">" +
            "  <invoices href=\"https://your-subdomain.recurly.com/v2/business_entities/scaig66ovogw/invoices\"/>" +
@@ -58,10 +58,12 @@
            "  </subscriber_location_countries>" +
            "  <default_vat_number>1234</default_vat_number>" +
            "  <default_registration_number>5678</default_registration_number>" +
+         "    <default_liability_gl_account_id>sriq9hcg4jww</default_liability_gl_account_id>" +
+         "    <default_revenue_gl_account_id>sriq9hdomqm2</default_revenue_gl_account_id>" +
            "  <created_at type=\"datetime\">2023-05-04T17:45:43Z</created_at>" +
            "  <updated_at type=\"datetime\">2023-05-04T17:45:43Z</updated_at>" +
            "</business_entity>";
- 
+
         final BusinessEntity businessEntity = xmlMapper.readValue(businessEntityData, BusinessEntity.class);
         final List<String> subscriberLocationCountries = businessEntity.getSubscriberLocationCountries();
 
@@ -88,8 +90,9 @@
         Assert.assertEquals(subscriberLocationCountries.get(1), "CO");
         Assert.assertEquals(businessEntity.getDefaultVatNumber(), "1234");
         Assert.assertEquals(businessEntity.getDefaultRegistrationNumber(), "5678");
+        Assert.assertEquals(businessEntity.getDefaultLiabilityGlAccountId(), "sriq9hcg4jww");
+        Assert.assertEquals(businessEntity.getDefaultRevenueGlAccountId(), "sriq9hdomqm2");
         Assert.assertEquals(businessEntity.getCreatedAt(), new DateTime("2023-05-04T17:45:43Z"));
         Assert.assertEquals(businessEntity.getUpdatedAt(), new DateTime("2023-05-04T17:45:43Z"));
      }
  }
- 
