@@ -43,6 +43,15 @@ public class ShippingMethod extends RecurlyObject {
     @XmlElement(name = "tax_code")
     private String taxCode;
 
+    @XmlElement(name = "liability_gl_account_id")
+    private String liabilityGlAccountId;
+
+    @XmlElement(name = "revenue_gl_account_id")
+    private String revenueGlAccountId;
+
+    @XmlElement(name = "performance_obligation_id")
+    private String performanceObligationId;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -81,6 +90,30 @@ public class ShippingMethod extends RecurlyObject {
         this.taxCode = stringOrNull(taxCode);
     }
 
+    public String getLiabilityGlAccountId() {
+        return liabilityGlAccountId;
+    }
+
+    public void setLiabilityGlAccountId(final Object liabilityGlAccountId) {
+        this.liabilityGlAccountId = stringOrNull(liabilityGlAccountId);
+    }
+
+    public String getRevenueGlAccountId() {
+        return revenueGlAccountId;
+    }
+
+    public void setRevenueGlAccountId(final Object revenueGlAccountId) {
+        this.revenueGlAccountId = stringOrNull(revenueGlAccountId);
+    }
+
+    public String getPerformanceObligationId() {
+        return performanceObligationId;
+    }
+
+    public void setPerformanceObligationId(final Object performanceObligationId) {
+        this.performanceObligationId = stringOrNull(performanceObligationId);
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -105,6 +138,9 @@ public class ShippingMethod extends RecurlyObject {
         sb.append(", name=").append(name);
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", taxCode=").append(taxCode);
+        sb.append(", liabilityGlAccountId=").append(liabilityGlAccountId);
+        sb.append(", revenueGlAccountId=").append(revenueGlAccountId);
+        sb.append(", performanceObligationId=").append(performanceObligationId);
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
@@ -130,6 +166,15 @@ public class ShippingMethod extends RecurlyObject {
         if (taxCode != null ? !taxCode.equals(that.taxCode) : that.taxCode != null) {
             return false;
         }
+        if (liabilityGlAccountId != null ? !liabilityGlAccountId.equals(that.liabilityGlAccountId) : that.liabilityGlAccountId != null) {
+            return false;
+        }
+        if (revenueGlAccountId != null ? !revenueGlAccountId.equals(that.revenueGlAccountId) : that.revenueGlAccountId != null) {
+            return false;
+        }
+        if (performanceObligationId != null ? !performanceObligationId.equals(that.performanceObligationId) : that.performanceObligationId != null) {
+            return false;
+        }
         if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
@@ -147,6 +192,9 @@ public class ShippingMethod extends RecurlyObject {
             name,
             accountingCode,
             taxCode,
+            liabilityGlAccountId,
+            revenueGlAccountId,
+            performanceObligationId,
             createdAt,
             updatedAt
         );
