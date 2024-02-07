@@ -62,6 +62,9 @@ public class TestGiftCard extends TestModelBase {
                 "            <phone>555-555-5555</phone>\n" +
                 "         </address>\n" +
                 "    </delivery>\n" +
+                "    <liability_gl_account_id>123</liability_gl_account_id>\n" +
+                "    <revenue_gl_account_id>456</revenue_gl_account_id>\n" +
+                "    <performance_obligation_id>789</performance_obligation_id>\n" +
                 "</gift_card>";
 
 
@@ -77,6 +80,9 @@ public class TestGiftCard extends TestModelBase {
         Assert.assertEquals(giftCard.getUpdatedAt(), new DateTime("2016-12-27T07:00:00Z"));
         Assert.assertEquals(giftCard.getRedeemedAt(), new DateTime("2016-12-27T07:00:00Z"));
         Assert.assertEquals(giftCard.getDeliveredAt(), new DateTime("2016-12-25T07:00:05Z"));
+        Assert.assertEquals(giftCard.getLiabilityGlAccountId(), "123");
+        Assert.assertEquals(giftCard.getRevenueGlAccountId(), "456");
+        Assert.assertEquals(giftCard.getPerformanceObligationId(), "789");
         Assert.assertNull(giftCard.getCanceledAt());
 
         final Delivery delivery = giftCard.getDelivery();

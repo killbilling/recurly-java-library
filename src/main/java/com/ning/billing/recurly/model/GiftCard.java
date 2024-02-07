@@ -62,6 +62,15 @@ public class GiftCard extends RecurlyObject {
     @XmlElement(name = "delivery")
     private Delivery delivery;
 
+    @XmlElement(name = "liability_gl_account_id")
+    private String liabilityGlAccountId;
+
+    @XmlElement(name = "revenue_gl_account_id")
+    private String revenueGlAccountId;
+
+    @XmlElement(name = "performance_obligation_id")
+    private String performanceObligationId;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -155,6 +164,30 @@ public class GiftCard extends RecurlyObject {
         this.invoiceNumber = integerOrNull(invoiceNumber);
     }
 
+    public String getLiabilityGlAccountId() {
+        return liabilityGlAccountId;
+    }
+
+    public void setLiabilityGlAccountId(final Object liabilityGlAccountId) {
+        this.liabilityGlAccountId = stringOrNull(liabilityGlAccountId);
+    }
+
+    public String getRevenueGlAccountId() {
+        return revenueGlAccountId;
+    }
+
+    public void setRevenueGlAccountId(final Object revenueGlAccountId) {
+        this.revenueGlAccountId = stringOrNull(revenueGlAccountId);
+    }
+
+    public String getPerformanceObligationId() {
+        return performanceObligationId;
+    }
+
+    public void setPerformanceObligationId(final Object performanceObligationId) {
+        this.performanceObligationId = stringOrNull(performanceObligationId);
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -238,6 +271,9 @@ public class GiftCard extends RecurlyObject {
         sb.append(", invoiceNumber='").append(invoiceNumber).append('\'');
         sb.append(", gifterAccount='").append(gifterAccount).append('\'');
         sb.append(", delivery='").append(delivery).append('\'');
+        sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
+        sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
+        sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
         sb.append(", createdAt='").append(createdAt).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append(", redeemedAt='").append(redeemedAt).append('\'');
@@ -286,6 +322,15 @@ public class GiftCard extends RecurlyObject {
         if (delivery != null ? !delivery.equals(that.delivery) : that.delivery != null) {
             return false;
         }
+        if (liabilityGlAccountId != null ? !liabilityGlAccountId.equals(that.liabilityGlAccountId) : that.liabilityGlAccountId != null) {
+            return false;
+        }
+        if (revenueGlAccountId != null ? !revenueGlAccountId.equals(that.revenueGlAccountId) : that.revenueGlAccountId != null) {
+            return false;
+        }
+        if (performanceObligationId != null ? !performanceObligationId.equals(that.performanceObligationId) : that.performanceObligationId != null) {
+            return false;
+        }
         if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
@@ -316,6 +361,9 @@ public class GiftCard extends RecurlyObject {
             invoiceNumber,
             gifterAccount,
             delivery,
+            liabilityGlAccountId,
+            revenueGlAccountId,
+            performanceObligationId,
             createdAt,
             updatedAt,
             redeemedAt,

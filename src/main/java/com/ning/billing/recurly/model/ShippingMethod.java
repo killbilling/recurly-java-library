@@ -58,15 +58,6 @@ public class ShippingMethod extends RecurlyObject {
     @XmlElement(name = "updated_at")
     private DateTime updatedAt;
 
-    @XmlElement(name = "liability_gl_account_id")
-    private String liabilityGlAccountId;
-
-    @XmlElement(name = "revenue_gl_account_id")
-    private String revenueGlAccountId;
-
-    @XmlElement(name = "performance_obligation_id")
-    private String performanceObligationId;
-
     public String getCode() {
         return code;
     }
