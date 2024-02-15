@@ -500,9 +500,9 @@ public class Plan extends RecurlyObject {
         sb.append(", taxCode=").append(taxCode);
         sb.append(", allowAnyItemOnSubscriptions=").append(allowAnyItemOnSubscriptions);
         sb.append(", customFields=").append(customFields);
-        sb.append(", liabilityGlAccountId=").append(liabilityGlAccountId);
-        sb.append(", revenueGlAccountId=").append(revenueGlAccountId);
-        sb.append(", performanceObligationId=").append(performanceObligationId);
+        sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
+        sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
+        sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
         sb.append(", setupFeeLiabilityGlAccountId=").append(setupFeeLiabilityGlAccountId);
         sb.append(", setupFeeRevenueGlAccountId=").append(setupFeeRevenueGlAccountId);
         sb.append(", setupFeePerformanceObligationId=").append(setupFeePerformanceObligationId);

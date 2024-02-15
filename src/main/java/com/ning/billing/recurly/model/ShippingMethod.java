@@ -138,9 +138,9 @@ public class ShippingMethod extends RecurlyObject {
         sb.append(", name=").append(name);
         sb.append(", accountingCode=").append(accountingCode);
         sb.append(", taxCode=").append(taxCode);
-        sb.append(", liabilityGlAccountId=").append(liabilityGlAccountId);
-        sb.append(", revenueGlAccountId=").append(revenueGlAccountId);
-        sb.append(", performanceObligationId=").append(performanceObligationId);
+        sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
+        sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
+        sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append('}');
