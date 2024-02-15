@@ -52,6 +52,15 @@ public class AddOn extends AbstractAddOn {
     @XmlElement(name = "unit_amount_in_cents")
     private RecurlyUnitCurrency unitAmountInCents;
 
+    @XmlElement(name = "liability_gl_account_id")
+    private String liabilityGlAccountId;
+
+    @XmlElement(name = "revenue_gl_account_id")
+    private String revenueGlAccountId;
+
+    @XmlElement(name = "performance_obligation_id")
+    private String performanceObligationId;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -134,6 +143,30 @@ public class AddOn extends AbstractAddOn {
 
     public void setUnitAmountInCents(final Object unitAmountInCents) {
         this.unitAmountInCents = RecurlyUnitCurrency.build(unitAmountInCents);
+    }
+
+    public String getLiabilityGlAccountId() {
+        return liabilityGlAccountId;
+    }
+
+    public void setLiabilityGlAccountId(final Object liabilityGlAccountId) {
+        this.liabilityGlAccountId = stringOrNull(liabilityGlAccountId);
+    }
+
+    public String getRevenueGlAccountId() {
+        return revenueGlAccountId;
+    }
+
+    public void setRevenueGlAccountId(final Object revenueGlAccountId) {
+        this.revenueGlAccountId = stringOrNull(revenueGlAccountId);
+    }
+
+    public String getPerformanceObligationId() {
+        return performanceObligationId;
+    }
+
+    public void setPerformanceObligationId(final Object performanceObligationId) {
+        this.performanceObligationId = stringOrNull(performanceObligationId);
     }
 
     public DateTime getCreatedAt() {
@@ -223,6 +256,9 @@ public class AddOn extends AbstractAddOn {
         sb.append(", displayQuantityOnHostedPage=").append(displayQuantityOnHostedPage);
         sb.append(", defaultQuantity=").append(defaultQuantity);
         sb.append(", unitAmountInCents=").append(unitAmountInCents);
+        sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
+        sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
+        sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", taxCode=").append(taxCode);
@@ -273,6 +309,15 @@ public class AddOn extends AbstractAddOn {
         if (accountingCode != null ? !accountingCode.equals(addOn.accountingCode) : addOn.accountingCode != null) {
             return false;
         }
+        if (liabilityGlAccountId != null ? !liabilityGlAccountId.equals(addOn.liabilityGlAccountId) : addOn.liabilityGlAccountId != null) {
+            return false;
+        }
+        if (revenueGlAccountId != null ? !revenueGlAccountId.equals(addOn.revenueGlAccountId) : addOn.revenueGlAccountId != null) {
+            return false;
+        }
+        if (performanceObligationId != null ? !performanceObligationId.equals(addOn.performanceObligationId) : addOn.performanceObligationId != null) {
+            return false;
+        }
         if (optional != null ? !optional.equals(addOn.optional) : addOn.optional != null) {
             return false;
         }
@@ -307,6 +352,9 @@ public class AddOn extends AbstractAddOn {
                 displayQuantityOnHostedPage,
                 defaultQuantity,
                 unitAmountInCents,
+                liabilityGlAccountId,
+                revenueGlAccountId,
+                performanceObligationId,
                 createdAt,
                 updatedAt,
                 taxCode,
