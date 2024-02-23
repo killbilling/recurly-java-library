@@ -52,11 +52,11 @@ public class BusinessEntity extends RecurlyObject {
     @XmlElement(name = "default_registration_number")
     private String defaultRegistrationNumber;
 
-    @XmlElement(name = "default_liability_gl_account_code")
-    private String defaultLiabilityGlAccountCode;
+    @XmlElement(name = "default_liability_gl_account_id")
+    private String defaultLiabilityGlAccountId;
 
-    @XmlElement(name = "default_revenue_gl_account_code")
-    private String defaultRevenueGlAccountCode;
+    @XmlElement(name = "default_revenue_gl_account_id")
+    private String defaultRevenueGlAccountId;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -123,20 +123,20 @@ public class BusinessEntity extends RecurlyObject {
       return this.defaultRegistrationNumber;
     }
 
-    public void setDefaultLiabilityGlAccountCode(final Object defaultLiabilityGlAccountCode) {
-      this.defaultLiabilityGlAccountCode = stringOrNull(defaultLiabilityGlAccountCode);
+    public void setDefaultLiabilityGlAccountId(final Object defaultLiabilityGlAccountId) {
+      this.defaultLiabilityGlAccountId = stringOrNull(defaultLiabilityGlAccountId);
     }
 
-    public String getDefaultLiabilityGlAccountCode() {
-      return this.defaultLiabilityGlAccountCode;
+    public String getDefaultLiabilityGlAccountId() {
+      return this.defaultLiabilityGlAccountId;
     }
 
-    public void setDefaultRevenueGlAccountCode(final Object defaultRevenueGlAccountCode) {
-      this.defaultRevenueGlAccountCode = stringOrNull(defaultRevenueGlAccountCode);
+    public void setDefaultRevenueGlAccountId(final Object defaultRevenueGlAccountId) {
+      this.defaultRevenueGlAccountId = stringOrNull(defaultRevenueGlAccountId);
     }
 
-    public String getDefaultRevenueGlAccountCode() {
-      return this.defaultRevenueGlAccountCode;
+    public String getDefaultRevenueGlAccountId() {
+      return this.defaultRevenueGlAccountId;
     }
 
     public DateTime getCreatedAt() {
@@ -190,8 +190,8 @@ public class BusinessEntity extends RecurlyObject {
         ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
         ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
         ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
-        ", defaultLiabilityGlAccountCode='" + getDefaultLiabilityGlAccountCode() + "'" +
-        ", defaultRevenueGlAccountCode='" + getDefaultRevenueGlAccountCode() + "'" +
+        ", defaultLiabilityGlAccountId='" + getDefaultLiabilityGlAccountId() + "'" +
+        ", defaultRevenueGlAccountId='" + getDefaultRevenueGlAccountId() + "'" +
         ", createdAt='" + getCreatedAt() + "'" +
         ", updatedAt='" + getUpdatedAt() + "'" +
         ", invoices='" + getInvoiceHref() + "'" +
