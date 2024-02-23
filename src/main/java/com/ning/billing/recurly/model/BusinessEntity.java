@@ -52,11 +52,11 @@ public class BusinessEntity extends RecurlyObject {
     @XmlElement(name = "default_registration_number")
     private String defaultRegistrationNumber;
 
-    @XmlElement(name = "default_liability_gl_account_id")
-    private String defaultLiabilityGlAccountId;
+    @XmlElement(name = "default_liability_gl_account_code")
+    private String defaultLiabilityGlAccountCode;
 
-    @XmlElement(name = "default_revenue_gl_account_id")
-    private String defaultRevenueGlAccountId;
+    @XmlElement(name = "default_revenue_gl_account_code")
+    private String defaultRevenueGlAccountCode;
 
     @XmlElement(name = "created_at")
     private DateTime createdAt;
@@ -123,20 +123,20 @@ public class BusinessEntity extends RecurlyObject {
       return this.defaultRegistrationNumber;
     }
 
-    public void setDefaultLiabilityGlAccountId(final Object defaultLiabilityGlAccountId) {
-      this.defaultLiabilityGlAccountId = stringOrNull(defaultLiabilityGlAccountId);
+    public void setDefaultLiabilityGlAccountCode(final Object defaultLiabilityGlAccountCode) {
+      this.defaultLiabilityGlAccountCode = stringOrNull(defaultLiabilityGlAccountCode);
     }
 
-    public String getDefaultLiabilityGlAccountId() {
-      return this.defaultLiabilityGlAccountId;
+    public String getDefaultLiabilityGlAccountCode() {
+      return this.defaultLiabilityGlAccountCode;
     }
 
-    public void setDefaultRevenueGlAccountId(final Object defaultRevenueGlAccountId) {
-      this.defaultRevenueGlAccountId = stringOrNull(defaultRevenueGlAccountId);
+    public void setDefaultRevenueGlAccountCode(final Object defaultRevenueGlAccountCode) {
+      this.defaultRevenueGlAccountCode = stringOrNull(defaultRevenueGlAccountCode);
     }
 
-    public String getDefaultRevenueGlAccountId() {
-      return this.defaultRevenueGlAccountId;
+    public String getDefaultRevenueGlAccountCode() {
+      return this.defaultRevenueGlAccountCode;
     }
 
     public DateTime getCreatedAt() {
@@ -171,24 +171,31 @@ public class BusinessEntity extends RecurlyObject {
         return this.subscriberLocationCountries;
     }
 
+    private String getInvoiceHref() {
+      if (getInvoices() == null) {
+        return null;
+      }
+      return getInvoices().getHref();
+    }
 
-  @Override
-  public String toString() {
-    return "{" +
-      " id='" + getId() + "'" +
-      ", code='" + getCode() + "'" +
-      ", name='" + getName() + "'" +
-      ", invoiceDisplayAddress='" + getInvoiceDisplayAddress() + "'" +
-      ", taxAddress='" + getTaxAddress() + "'" +
-      ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
-      ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
-      ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
-      ", defaultLiabilityGlAccountId='" + getDefaultLiabilityGlAccountId() + "'" +
-      ", defaultRevenueGlAccountId='" + getDefaultRevenueGlAccountId() + "'" +
-      ", createdAt='" + getCreatedAt() + "'" +
-      ", updatedAt='" + getUpdatedAt() + "'" +
-      ", invoices='" + getInvoices().getHref() + "'" +
-      "}";
-  }
+
+    @Override
+    public String toString() {
+      return "{" +
+        " id='" + getId() + "'" +
+        ", code='" + getCode() + "'" +
+        ", name='" + getName() + "'" +
+        ", invoiceDisplayAddress='" + getInvoiceDisplayAddress() + "'" +
+        ", taxAddress='" + getTaxAddress() + "'" +
+        ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
+        ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
+        ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
+        ", defaultLiabilityGlAccountCode='" + getDefaultLiabilityGlAccountCode() + "'" +
+        ", defaultRevenueGlAccountCode='" + getDefaultRevenueGlAccountCode() + "'" +
+        ", createdAt='" + getCreatedAt() + "'" +
+        ", updatedAt='" + getUpdatedAt() + "'" +
+        ", invoices='" + getInvoiceHref() + "'" +
+        "}";
+    }
 
 }

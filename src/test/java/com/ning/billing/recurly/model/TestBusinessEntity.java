@@ -58,8 +58,8 @@
            "  </subscriber_location_countries>" +
            "  <default_vat_number>1234</default_vat_number>" +
            "  <default_registration_number>5678</default_registration_number>" +
-         "    <default_liability_gl_account_id>sriq9hcg4jww</default_liability_gl_account_id>" +
-         "    <default_revenue_gl_account_id>sriq9hdomqm2</default_revenue_gl_account_id>" +
+         "    <default_liability_gl_account_code>sriq9hcg4jww</default_liability_gl_account_code>" +
+         "    <default_revenue_gl_account_code>sriq9hdomqm2</default_revenue_gl_account_code>" +
            "  <created_at type=\"datetime\">2023-05-04T17:45:43Z</created_at>" +
            "  <updated_at type=\"datetime\">2023-05-04T17:45:43Z</updated_at>" +
            "</business_entity>";
@@ -90,8 +90,8 @@
         Assert.assertEquals(subscriberLocationCountries.get(1), "CO");
         Assert.assertEquals(businessEntity.getDefaultVatNumber(), "1234");
         Assert.assertEquals(businessEntity.getDefaultRegistrationNumber(), "5678");
-        Assert.assertEquals(businessEntity.getDefaultLiabilityGlAccountId(), "sriq9hcg4jww");
-        Assert.assertEquals(businessEntity.getDefaultRevenueGlAccountId(), "sriq9hdomqm2");
+        Assert.assertEquals(businessEntity.getDefaultLiabilityGlAccountCode(), "sriq9hcg4jww");
+        Assert.assertEquals(businessEntity.getDefaultRevenueGlAccountCode(), "sriq9hdomqm2");
         Assert.assertEquals(businessEntity.getCreatedAt(), new DateTime("2023-05-04T17:45:43Z"));
         Assert.assertEquals(businessEntity.getUpdatedAt(), new DateTime("2023-05-04T17:45:43Z"));
      }
