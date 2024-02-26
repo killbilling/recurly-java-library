@@ -299,7 +299,7 @@ public class Purchase extends RecurlyObject {
         }
         if (shippingAddress != null ? !shippingAddress.equals(purchase.shippingAddress) : purchase.shippingAddress != null) {
             return false;
-        }    
+        }
         if (shippingAddressId != null ? !shippingAddressId.equals(purchase.shippingAddressId) : purchase.shippingAddressId != null) {
             return false;
         }

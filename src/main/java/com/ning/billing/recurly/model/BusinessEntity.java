@@ -171,24 +171,31 @@ public class BusinessEntity extends RecurlyObject {
         return this.subscriberLocationCountries;
     }
 
+    private String getInvoiceHref() {
+      if (getInvoices() == null) {
+        return null;
+      }
+      return getInvoices().getHref();
+    }
 
-  @Override
-  public String toString() {
-    return "{" +
-      " id='" + getId() + "'" +
-      ", code='" + getCode() + "'" +
-      ", name='" + getName() + "'" +
-      ", invoiceDisplayAddress='" + getInvoiceDisplayAddress() + "'" +
-      ", taxAddress='" + getTaxAddress() + "'" +
-      ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
-      ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
-      ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
-      ", defaultLiabilityGlAccountId='" + getDefaultLiabilityGlAccountId() + "'" +
-      ", defaultRevenueGlAccountId='" + getDefaultRevenueGlAccountId() + "'" +
-      ", createdAt='" + getCreatedAt() + "'" +
-      ", updatedAt='" + getUpdatedAt() + "'" +
-      ", invoices='" + getInvoices().getHref() + "'" +
-      "}";
-  }
+
+    @Override
+    public String toString() {
+      return "{" +
+        " id='" + getId() + "'" +
+        ", code='" + getCode() + "'" +
+        ", name='" + getName() + "'" +
+        ", invoiceDisplayAddress='" + getInvoiceDisplayAddress() + "'" +
+        ", taxAddress='" + getTaxAddress() + "'" +
+        ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
+        ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
+        ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
+        ", defaultLiabilityGlAccountId='" + getDefaultLiabilityGlAccountId() + "'" +
+        ", defaultRevenueGlAccountId='" + getDefaultRevenueGlAccountId() + "'" +
+        ", createdAt='" + getCreatedAt() + "'" +
+        ", updatedAt='" + getUpdatedAt() + "'" +
+        ", invoices='" + getInvoiceHref() + "'" +
+        "}";
+    }
 
 }

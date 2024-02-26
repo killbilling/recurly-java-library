@@ -69,6 +69,9 @@ public class TestAdjustment extends TestModelBase {
                                       "  </tax_details>\n" +
                                       "  <start_date type=\"dateTime\">2011-08-31T03:30:00Z</start_date>\n" +
                                       "  <revenue_schedule_type>at_invoice</revenue_schedule_type>\n" +
+                                      "  <liability_gl_account_code>liability-code-1</liability_gl_account_code>\n" +
+                                      "  <revenue_gl_account_code>revenue-code-5</revenue_gl_account_code>\n" +
+                                      "  <performance_obligation_id>5</performance_obligation_id>\n" +
                                       "  <end_date nil=\"nil\"></end_date>\n" +
                                       "  <created_at type=\"dateTime\">2011-08-31T03:30:00Z</created_at>\n" +
                                       "  <custom_fields type=\"array\">\n" +
@@ -77,7 +80,6 @@ public class TestAdjustment extends TestModelBase {
                                       "      <value>large</value>\n" +
                                       "    </custom_field>\n" +
                                       "  </custom_fields>\n" +
-
                                       "</adjustment>";
 
         final Adjustment adjustment = xmlMapper.readValue(adjustmentData, Adjustment.class);
@@ -108,6 +110,11 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertNull(adjustment.getEndDate());
         Assert.assertEquals(adjustment.getCreatedAt(), new DateTime("2011-08-31T03:30:00Z"));
         Assert.assertEquals(adjustment.getRevenueScheduleType(), RevenueScheduleType.AT_INVOICE);
+        Assert.assertEquals(adjustment.getLiabilityGlAccountCode(), "liability-code-1");
+        Assert.assertEquals(adjustment.getRevenueGlAccountCode(), "revenue-code-5");
+        Assert.assertEquals(adjustment.getPerformanceObligationId(), "5");
+        Assert.assertNull(adjustment.getLiabilityGlAccountId());
+        Assert.assertNull(adjustment.getRevenueGlAccountId());
         Assert.assertEquals(adjustment.getSurchargeInCents(), new Integer(100));
         Assert.assertEquals(adjustment.getCustomFields(), this.getCustomFields());
 

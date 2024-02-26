@@ -127,6 +127,21 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "revenue_schedule_type")
     private RevenueScheduleType revenueScheduleType;
 
+    @XmlElement(name = "liability_gl_account_id")
+    private String liabilityGlAccountId;
+
+    @XmlElement(name = "liability_gl_account_code")
+    private String liabilityGlAccountCode;
+
+    @XmlElement(name = "revenue_gl_account_id")
+    private String revenueGlAccountId;
+
+    @XmlElement(name = "revenue_gl_account_code")
+    private String revenueGlAccountCode;
+
+    @XmlElement(name = "performance_obligation_id")
+    private String performanceObligationId;
+
     @XmlElement(name = "credit_reason_code")
     private String creditReasonCode;
 
@@ -418,6 +433,38 @@ public class Adjustment extends RecurlyObject {
         this.revenueScheduleType = enumOrNull(RevenueScheduleType.class, revenueScheduleType, true);
     }
 
+    public String getLiabilityGlAccountId() {
+        return liabilityGlAccountId;
+    }
+
+    public void setLiabilityGlAccountId(final Object liabilityGlAccountId) {
+        this.liabilityGlAccountId = stringOrNull(liabilityGlAccountId);
+    }
+
+    public String getLiabilityGlAccountCode() {
+        return liabilityGlAccountCode;
+    }
+
+    public String getRevenueGlAccountId() {
+        return revenueGlAccountId;
+    }
+
+    public void setRevenueGlAccountId(final Object revenueGlAccountId) {
+        this.revenueGlAccountId = stringOrNull(revenueGlAccountId);
+    }
+
+    public String getRevenueGlAccountCode() {
+        return revenueGlAccountCode;
+    }
+
+    public String getPerformanceObligationId() {
+        return performanceObligationId;
+    }
+
+    public void setPerformanceObligationId(final Object performanceObligationId) {
+        this.performanceObligationId = stringOrNull(performanceObligationId);
+    }
+
     public String getCreditReasonCode() {
         return creditReasonCode;
     }
@@ -525,6 +572,11 @@ public class Adjustment extends RecurlyObject {
         sb.append(", createdAt=").append(createdAt);
         sb.append(", updatedAt=").append(updatedAt);
         sb.append(", revenueScheduleType=").append(revenueScheduleType);
+        sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
+        sb.append(", liabilityGlAccountCode='").append(liabilityGlAccountCode).append('\'');
+        sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
+        sb.append(", revenueGlAccountCode='").append(revenueGlAccountCode).append('\'');
+        sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
         sb.append(", creditReasonCode=").append(creditReasonCode);
         sb.append(", originalAdjustmentUuid=").append(originalAdjustmentUuid);
         sb.append(", shippingAddress=").append(shippingAddress);
@@ -653,6 +705,21 @@ public class Adjustment extends RecurlyObject {
         if (revenueScheduleType != null ? !revenueScheduleType.equals(that.revenueScheduleType) : that.revenueScheduleType != null) {
             return false;
         }
+        if (liabilityGlAccountId != null ? !liabilityGlAccountId.equals(that.liabilityGlAccountId) : that.liabilityGlAccountId != null) {
+            return false;
+        }
+        if (liabilityGlAccountCode != null ? !liabilityGlAccountCode.equals(that.liabilityGlAccountCode) : that.liabilityGlAccountCode != null) {
+            return false;
+        }
+        if (revenueGlAccountId != null ? !revenueGlAccountId.equals(that.revenueGlAccountId) : that.revenueGlAccountId != null) {
+            return false;
+        }
+        if (revenueGlAccountCode != null ? !revenueGlAccountCode.equals(that.revenueGlAccountCode) : that.revenueGlAccountCode != null) {
+            return false;
+        }
+        if (performanceObligationId != null ? !performanceObligationId.equals(that.performanceObligationId) : that.performanceObligationId != null) {
+            return false;
+        }
         if (refundableTotalInCents != null ? !refundableTotalInCents.equals(that.refundableTotalInCents) : that.refundableTotalInCents != null) {
             return false;
         }
@@ -702,6 +769,11 @@ public class Adjustment extends RecurlyObject {
                 createdAt,
                 updatedAt,
                 revenueScheduleType,
+                liabilityGlAccountId,
+                liabilityGlAccountCode,
+                revenueGlAccountId,
+                revenueGlAccountCode,
+                performanceObligationId,
                 creditReasonCode,
                 originalAdjustmentUuid,
                 shippingAddress,
