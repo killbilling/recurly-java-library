@@ -49,6 +49,15 @@ public class Item extends RecurlyObject {
   @XmlElement(name = "revenue_schedule_type")
   private String revenueScheduleType;
 
+  @XmlElement(name = "liability_gl_account_id")
+  private String liabilityGlAccountId;
+
+  @XmlElement(name = "revenue_gl_account_id")
+  private String revenueGlAccountId;
+
+  @XmlElement(name = "performance_obligation_id")
+  private String performanceObligationId;
+
   @XmlElement(name = "state")
   private String state;
 
@@ -102,6 +111,30 @@ public class Item extends RecurlyObject {
     this.revenueScheduleType = stringOrNull(revenueScheduleType);
   }
 
+  public String getLiabilityGlAccountId() {
+    return liabilityGlAccountId;
+  }
+
+  public void setLiabilityGlAccountId(final Object liabilityGlAccountId) {
+    this.liabilityGlAccountId = stringOrNull(liabilityGlAccountId);
+  }
+
+  public String getRevenueGlAccountId() {
+    return revenueGlAccountId;
+  }
+
+  public void setRevenueGlAccountId(final Object revenueGlAccountId) {
+    this.revenueGlAccountId = stringOrNull(revenueGlAccountId);
+  }
+
+  public String getPerformanceObligationId() {
+    return performanceObligationId;
+  }
+
+  public void setPerformanceObligationId(final Object performanceObligationId) {
+    this.performanceObligationId = stringOrNull(performanceObligationId);
+  }
+
   public String getAccountingCode() {
     return accountingCode;
   }
@@ -152,6 +185,9 @@ public class Item extends RecurlyObject {
     sb.append(", externalSku='").append(externalSku).append('\'');
     sb.append(", accountingCode='").append(accountingCode).append('\'');
     sb.append(", revenueScheduleType='").append(revenueScheduleType).append('\'');
+    sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
+    sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
+    sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
     sb.append(", state='").append(state).append('\'');
     sb.append(", customFields=").append(customFields);
     sb.append(", createdAt=").append(createdAt);
@@ -199,6 +235,18 @@ public class Item extends RecurlyObject {
       return false;
     }
 
+    if (liabilityGlAccountId != null ? !liabilityGlAccountId.equals(item.liabilityGlAccountId) : item.liabilityGlAccountId != null) {
+      return false;
+    }
+
+    if (revenueGlAccountId != null ? !revenueGlAccountId.equals(item.revenueGlAccountId) : item.revenueGlAccountId != null) {
+      return false;
+    }
+
+    if (performanceObligationId != null ? !performanceObligationId.equals(item.performanceObligationId) : item.performanceObligationId != null) {
+      return false;
+    }
+
     if (state != null ? !state.equals(item.state) : item.state != null) {
       return false;
     }
@@ -220,6 +268,9 @@ public class Item extends RecurlyObject {
       itemCode,
       name,
       revenueScheduleType,
+      liabilityGlAccountId,
+      revenueGlAccountId,
+      performanceObligationId,
       state,
       updatedAt
     );

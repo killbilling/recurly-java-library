@@ -53,6 +53,8 @@ import com.ning.billing.recurly.model.ExternalInvoice;
 import com.ning.billing.recurly.model.ExternalInvoices;
 import com.ning.billing.recurly.model.ExternalPaymentPhase;
 import com.ning.billing.recurly.model.ExternalPaymentPhases;
+import com.ning.billing.recurly.model.GeneralLedgerAccount;
+import com.ning.billing.recurly.model.GeneralLedgerAccounts;
 import com.ning.billing.recurly.model.GiftCard;
 import com.ning.billing.recurly.model.GiftCards;
 import com.ning.billing.recurly.model.Invoice;
@@ -64,6 +66,8 @@ import com.ning.billing.recurly.model.InvoiceTemplates;
 import com.ning.billing.recurly.model.Invoices;
 import com.ning.billing.recurly.model.Item;
 import com.ning.billing.recurly.model.Items;
+import com.ning.billing.recurly.model.PerformanceObligation;
+import com.ning.billing.recurly.model.PerformanceObligations;
 import com.ning.billing.recurly.model.Plan;
 import com.ning.billing.recurly.model.Plans;
 import com.ning.billing.recurly.model.Purchase;
@@ -1198,7 +1202,7 @@ public class RecurlyClient {
      * Get a specific External Subscription
      * <p>
      * Returns the requested external subscriptions
-     * 
+     *
      * @param externalSubscriptionUuid external subscription uuid
      * @return The requested external subscription
      */
@@ -1317,7 +1321,7 @@ public class RecurlyClient {
      * Get a specific External Invoice
      * <p>
      * Returns the requested external invoice
-     * 
+     *
      * @param externalInvoiceUuid external invoice uuid
      * @return The requested external invoice
      */
@@ -1329,7 +1333,7 @@ public class RecurlyClient {
      * Get a specific External Payment Phase
      * <p>
      * Returns the requested external payment phase
-     * 
+     *
      * @param externalPaymentPhaseUuid external payment phase uuid
      * @return The requested external payment phase
      */
@@ -1379,7 +1383,7 @@ public class RecurlyClient {
      * Get a specific External Product
      * <p>
      * Returns the requested external product
-     * 
+     *
      * @param externalProductUuid external product uuid
      * @return The requested external product
      */
@@ -1442,7 +1446,7 @@ public class RecurlyClient {
      * Get a specific External Product Reference
      * <p>
      * Returns the requested external product reference
-     * 
+     *
      * @param externalProductUUID external product uuid
      * @param externalProductReferenceUUID external product uuid
      * @return The requested external product
@@ -2552,6 +2556,91 @@ public class RecurlyClient {
     }
 
     /**
+     * Create GeneralLedgerAccount
+     * <p>
+     * Creates a new general ledger account. You may optionally include billing information.
+     *
+     * @param GeneralLedgerAccount account_type object
+     * @return the newly created general ledger account object on success, null otherwise
+     */
+    public GeneralLedgerAccount createGeneralLedgerAccount(final GeneralLedgerAccount generalLedgerAccount) {
+        return doPOST(GeneralLedgerAccounts.GENERAL_LEDGER_ACCOUNTS_RESOURCE, generalLedgerAccount, GeneralLedgerAccount.class);
+    }
+
+    /**
+     * Update GeneralLedgerAccount
+     * <p>
+     * Updates an existing general ledger account.
+     *
+     * @param accountCode recurly general ledger account id
+     * @param account     general ledger account object
+     * @return the updated general ledger account object on success, null otherwise
+     */
+    public GeneralLedgerAccount updateGeneralLedgerAccount(final String generalLedgerAccountUUID, final GeneralLedgerAccount generalLedgerAccount) {
+        return doPUT(GeneralLedgerAccounts.GENERAL_LEDGER_ACCOUNTS_RESOURCE + "/" + urlEncode(generalLedgerAccountUUID), generalLedgerAccount, GeneralLedgerAccount.class);
+    }
+
+    /**
+     * Fetch GenrealLedgerAccounts
+     * <p>
+     * Returns information about all general ledger accounts.
+     *
+     * @return general ledger account object on success, null otherwise
+     */
+    public GeneralLedgerAccounts getGeneralLedgerAccounts() {
+        return doGET(GeneralLedgerAccounts.GENERAL_LEDGER_ACCOUNTS_RESOURCE, GeneralLedgerAccounts.class);
+    }
+
+    /**
+     * Fetch GenrealLedgerAccounts given query params
+     * <p>
+     * Returns information about all general ledger accounts.
+     *
+     * @param params {@link QueryParams}
+     * @return general ledger account object on success, null otherwise
+     */
+    public GeneralLedgerAccounts getGeneralLedgerAccounts(final String accountType) {
+        final QueryParams params = new QueryParams();
+        if (accountType != null) params.put("account_type", accountType.toString());
+        return doGET(GeneralLedgerAccounts.GENERAL_LEDGER_ACCOUNTS_RESOURCE, GeneralLedgerAccounts.class, params);
+    }
+
+    /**
+     * Get a specific GeneralLedgerAccount
+     * <p>
+     * Returns the requested general ledger account
+     *
+     * @param generalLedgerAccountUUID general ledger account uuid
+     * @return The requested general ledger account
+     */
+    public GeneralLedgerAccount getGeneralLedgerAccount(final String generalLedgerAccountUUID) {
+        return doGET(GeneralLedgerAccounts.GENERAL_LEDGER_ACCOUNTS_RESOURCE + "/" + urlEncode(generalLedgerAccountUUID), GeneralLedgerAccount.class);
+    }
+
+    /**
+     * Get a specific PerformanceObligation
+     * <p>
+     * Returns the requested performance obligation
+     *
+     * @param performanceObligationUUID performance obligation uuid
+     * @return The requested performance obligation
+     */
+    public PerformanceObligation getPerformanceObligation(final String performanceObligationUUID) {
+        return doGET(PerformanceObligations.PERFORMANCE_OBLIGATIONS_RESOURCE + "/" + urlEncode(performanceObligationUUID), PerformanceObligation.class);
+    }
+
+    /**
+     * Fetch PerformanceObligations
+     * <p>
+     * Returns information about all performance obligations.
+     *
+     * @return performance obligation object on success, null otherwise
+     */
+    public PerformanceObligations getPerformanceObligations() {
+        return doGET(PerformanceObligations.PERFORMANCE_OBLIGATIONS_RESOURCE, PerformanceObligations.class);
+    }
+
+    /**
      * Get Gift Cards given query params
      * <p>
      * Returns information about all gift cards.
@@ -2918,7 +3007,7 @@ public class RecurlyClient {
 
 
     ///////////////////////////////////////////////////////////////////////////
-    
+
 
     ///////////////////////////////////////////////////////////////////////////
     // Multiple Business Entities
@@ -2938,7 +3027,7 @@ public class RecurlyClient {
      * Get a specific Busines Entity
      * <p>
      * Returns the requested business entity
-     * 
+     *
      * @param businessEntityUUID business entity uuid
      * @return The requested business entity
      */

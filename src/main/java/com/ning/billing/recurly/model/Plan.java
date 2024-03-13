@@ -103,6 +103,24 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "setup_fee_revenue_schedule_type")
     private RevenueScheduleType setupFeeRevenueScheduleType;
 
+    @XmlElement(name = "liability_gl_account_id")
+    private String liabilityGlAccountId;
+
+    @XmlElement(name = "revenue_gl_account_id")
+    private String revenueGlAccountId;
+
+    @XmlElement(name = "performance_obligation_id")
+    private String performanceObligationId;
+
+    @XmlElement(name = "setup_fee_liability_gl_account_id")
+    private String setupFeeLiabilityGlAccountId;
+
+    @XmlElement(name = "setup_fee_revenue_gl_account_id")
+    private String setupFeeRevenueGlAccountId;
+
+    @XmlElement(name = "setup_fee_performance_obligation_id")
+    private String setupFeePerformanceObligationId;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -294,6 +312,54 @@ public class Plan extends RecurlyObject {
         this.setupFeeAccountingCode = stringOrNull(setupFeeAccountingCode);
     }
 
+    public String getLiabilityGlAccountId() {
+        return liabilityGlAccountId;
+    }
+
+    public void setLiabilityGlAccountId(final Object liabilityGlAccountId) {
+        this.liabilityGlAccountId = stringOrNull(liabilityGlAccountId);
+    }
+
+    public String getRevenueGlAccountId() {
+        return revenueGlAccountId;
+    }
+
+    public void setRevenueGlAccountId(final Object revenueGlAccountId) {
+        this.revenueGlAccountId = stringOrNull(revenueGlAccountId);
+    }
+
+    public String getPerformanceObligationId() {
+        return performanceObligationId;
+    }
+
+    public void setPerformanceObligationId(final Object performanceObligationId) {
+        this.performanceObligationId = stringOrNull(performanceObligationId);
+    }
+
+    public String getSetupFeeLiabilityGlAccountId() {
+        return setupFeeLiabilityGlAccountId;
+    }
+
+    public void setSetupFeeLiabilityGlAccountId(final Object setupFeeLiabilityGlAccountId) {
+        this.setupFeeLiabilityGlAccountId = stringOrNull(setupFeeLiabilityGlAccountId);
+    }
+
+    public String getSetupFeeRevenueGlAccountId() {
+        return setupFeeRevenueGlAccountId;
+    }
+
+    public void setSetupFeeRevenueGlAccountId(final Object setupFeeRevenueGlAccountId) {
+        this.setupFeeRevenueGlAccountId = stringOrNull(setupFeeRevenueGlAccountId);
+    }
+
+    public String getSetupFeePerformanceObligationId() {
+        return setupFeePerformanceObligationId;
+    }
+
+    public void setSetupFeePerformanceObligationId(final Object setupFeePerformanceObligationId) {
+        this.setupFeePerformanceObligationId = stringOrNull(setupFeePerformanceObligationId);
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -434,6 +500,12 @@ public class Plan extends RecurlyObject {
         sb.append(", taxCode=").append(taxCode);
         sb.append(", allowAnyItemOnSubscriptions=").append(allowAnyItemOnSubscriptions);
         sb.append(", customFields=").append(customFields);
+        sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
+        sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
+        sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
+        sb.append(", setupFeeLiabilityGlAccountId=").append(setupFeeLiabilityGlAccountId);
+        sb.append(", setupFeeRevenueGlAccountId=").append(setupFeeRevenueGlAccountId);
+        sb.append(", setupFeePerformanceObligationId=").append(setupFeePerformanceObligationId);
         sb.append('}');
         return sb.toString();
     }
@@ -542,6 +614,30 @@ public class Plan extends RecurlyObject {
             return false;
         }
 
+        if (liabilityGlAccountId != null ? liabilityGlAccountId.compareTo(plan.liabilityGlAccountId) != 0: plan.liabilityGlAccountId != null) {
+            return false;
+        }
+
+        if (revenueGlAccountId != null ? revenueGlAccountId.compareTo(plan.revenueGlAccountId) != 0: plan.revenueGlAccountId != null) {
+            return false;
+        }
+
+        if (performanceObligationId != null ? performanceObligationId.compareTo(plan.performanceObligationId) != 0: plan.performanceObligationId != null) {
+            return false;
+        }
+
+        if (setupFeeLiabilityGlAccountId != null ? setupFeeLiabilityGlAccountId.compareTo(plan.setupFeeLiabilityGlAccountId) != 0: plan.setupFeeLiabilityGlAccountId != null) {
+            return false;
+        }
+
+        if (setupFeeRevenueGlAccountId != null ? setupFeeRevenueGlAccountId.compareTo(plan.setupFeeRevenueGlAccountId) != 0: plan.setupFeeRevenueGlAccountId != null) {
+            return false;
+        }
+
+        if (setupFeePerformanceObligationId != null ? setupFeePerformanceObligationId.compareTo(plan.setupFeePerformanceObligationId) != 0: plan.setupFeePerformanceObligationId != null) {
+            return false;
+        }
+
         return true;
     }
 
@@ -579,7 +675,13 @@ public class Plan extends RecurlyObject {
                 taxExempt,
                 taxCode,
                 allowAnyItemOnSubscriptions,
-                customFields
+                customFields,
+                liabilityGlAccountId,
+                revenueGlAccountId,
+                performanceObligationId,
+                setupFeeLiabilityGlAccountId,
+                setupFeeRevenueGlAccountId,
+                setupFeePerformanceObligationId
         );
     }
 }

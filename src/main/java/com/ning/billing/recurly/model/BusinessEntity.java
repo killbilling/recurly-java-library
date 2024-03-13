@@ -52,6 +52,12 @@ public class BusinessEntity extends RecurlyObject {
     @XmlElement(name = "default_registration_number")
     private String defaultRegistrationNumber;
 
+    @XmlElement(name = "default_liability_gl_account_id")
+    private String defaultLiabilityGlAccountId;
+
+    @XmlElement(name = "default_revenue_gl_account_id")
+    private String defaultRevenueGlAccountId;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -116,7 +122,23 @@ public class BusinessEntity extends RecurlyObject {
     public String getDefaultRegistrationNumber() {
       return this.defaultRegistrationNumber;
     }
-    
+
+    public void setDefaultLiabilityGlAccountId(final Object defaultLiabilityGlAccountId) {
+      this.defaultLiabilityGlAccountId = stringOrNull(defaultLiabilityGlAccountId);
+    }
+
+    public String getDefaultLiabilityGlAccountId() {
+      return this.defaultLiabilityGlAccountId;
+    }
+
+    public void setDefaultRevenueGlAccountId(final Object defaultRevenueGlAccountId) {
+      this.defaultRevenueGlAccountId = stringOrNull(defaultRevenueGlAccountId);
+    }
+
+    public String getDefaultRevenueGlAccountId() {
+      return this.defaultRevenueGlAccountId;
+    }
+
     public DateTime getCreatedAt() {
       return this.createdAt;
     }
@@ -149,22 +171,31 @@ public class BusinessEntity extends RecurlyObject {
         return this.subscriberLocationCountries;
     }
 
+    private String getInvoiceHref() {
+      if (getInvoices() == null) {
+        return null;
+      }
+      return getInvoices().getHref();
+    }
 
-  @Override
-  public String toString() {
-    return "{" +
-      " id='" + getId() + "'" +
-      ", code='" + getCode() + "'" +
-      ", name='" + getName() + "'" +
-      ", invoiceDisplayAddress='" + getInvoiceDisplayAddress() + "'" +
-      ", taxAddress='" + getTaxAddress() + "'" +
-      ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
-      ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
-      ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
-      ", createdAt='" + getCreatedAt() + "'" +
-      ", updatedAt='" + getUpdatedAt() + "'" +
-      ", invoices='" + getInvoices().getHref() + "'" +
-      "}";
-  }
+
+    @Override
+    public String toString() {
+      return "{" +
+        " id='" + getId() + "'" +
+        ", code='" + getCode() + "'" +
+        ", name='" + getName() + "'" +
+        ", invoiceDisplayAddress='" + getInvoiceDisplayAddress() + "'" +
+        ", taxAddress='" + getTaxAddress() + "'" +
+        ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
+        ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
+        ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
+        ", defaultLiabilityGlAccountId='" + getDefaultLiabilityGlAccountId() + "'" +
+        ", defaultRevenueGlAccountId='" + getDefaultRevenueGlAccountId() + "'" +
+        ", createdAt='" + getCreatedAt() + "'" +
+        ", updatedAt='" + getUpdatedAt() + "'" +
+        ", invoices='" + getInvoiceHref() + "'" +
+        "}";
+    }
 
 }
