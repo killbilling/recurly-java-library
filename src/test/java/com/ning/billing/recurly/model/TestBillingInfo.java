@@ -64,6 +64,7 @@ public class TestBillingInfo extends TestModelBase {
         billingInfo.setPrimaryPaymentMethod(true);
         billingInfo.setBackupPaymentMethod(false);
         billingInfo.setExternalHppType("ideal");
+        billingInfo.setCardNetworkPreference("Cartes Bancaires");
 
         final GatewayAttributes gatewayAttributes = new GatewayAttributes();
         gatewayAttributes.setAccountReference(randomString());

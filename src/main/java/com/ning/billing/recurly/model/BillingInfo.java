@@ -109,6 +109,9 @@ public class BillingInfo extends RecurlyObject {
     @XmlElement(name = "number")
     private String number;
 
+    @XmlElement(name = "card_network_preference")
+    private String cardNetworkPreference;
+
     @XmlElement(name = "routing_number")
     private String routingNumber;
 
@@ -388,6 +391,14 @@ public class BillingInfo extends RecurlyObject {
         this.lastFour = stringOrNull(lastFour);
     }
 
+    public String getCardNetworkPreference() {
+        return cardNetworkPreference;
+    }
+
+    public void setCardNetworkPreference(final Object cardNetworkPreference) {
+        this.cardNetworkPreference = stringOrNull(cardNetworkPreference);
+    }
+
     public String getRoutingNumber() {
         return routingNumber;
     }
@@ -625,6 +636,7 @@ public class BillingInfo extends RecurlyObject {
         sb.append(", month=").append(month);
         sb.append(", firstSix='").append(firstSix).append('\'');
         sb.append(", lastFour='").append(lastFour).append('\'');
+        sb.append(", cardNetworkPreference='").append(cardNetworkPreference).append('\'');
         sb.append(", routingNumber='").append(routingNumber).append('\'');
         sb.append(", geoCode='").append(geoCode).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
@@ -701,6 +713,9 @@ public class BillingInfo extends RecurlyObject {
             return false;
         }
         if (lastFour != null ? !lastFour.equals(that.lastFour) : that.lastFour != null) {
+            return false;
+        }
+        if (cardNetworkPreference != null ? !cardNetworkPreference.equals(that.cardNetworkPreference) : that.cardNetworkPreference != null) {
             return false;
         }
         if (routingNumber != null ? !routingNumber.equals(that.routingNumber) : that.routingNumber != null) {
@@ -827,6 +842,7 @@ public class BillingInfo extends RecurlyObject {
                 firstSix,
                 lastFour,
                 number,
+                cardNetworkPreference,
                 routingNumber,
                 accountNumber,
                 updatedAt,
