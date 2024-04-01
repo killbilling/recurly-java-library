@@ -33,6 +33,7 @@ public class TestPurchaseWithRevRec extends TestModelBase {
                 "<currency>USD</currency>" +
                 "  <collection_method>automatic</collection_method>" +
                 "  <net_terms type=\"integer\">30</net_terms>" +
+                "  <net_terms_type>eom</net_terms_type>" +
                 "  <currency>USD</currency>" +
                 "  <customer_notes>Customer Notes</customer_notes>" +
                 "  <terms_and_conditions>Terms and Conditions</terms_and_conditions>" +
@@ -105,6 +106,7 @@ public class TestPurchaseWithRevRec extends TestModelBase {
         assertEquals(purchase.getCollectionMethod(), "automatic");
         assertEquals(purchase.getCurrency(), "USD");
         assertEquals(purchase.getNetTerms(), new Integer(30));
+        assertEquals(purchase.getNetTermsType(), "eom");
         assertEquals(purchase.getCustomerNotes(), "Customer Notes");
         assertEquals(purchase.getTermsAndConditions(), "Terms and Conditions");
         assertEquals(purchase.getVatReverseChargeNotes(), "VAT Reverse Charge Notes");
@@ -166,6 +168,7 @@ public class TestPurchaseWithRevRec extends TestModelBase {
                 "<currency>USD</currency>" +
                 "  <collection_method>automatic</collection_method>" +
                 "  <net_terms type=\"integer\">30</net_terms>" +
+                "  <net_terms_type>net</net_terms_type>" +
                 "  <currency>USD</currency>" +
                 "  <customer_notes>Customer Notes</customer_notes>" +
                 "  <terms_and_conditions>Terms and Conditions</terms_and_conditions>" +

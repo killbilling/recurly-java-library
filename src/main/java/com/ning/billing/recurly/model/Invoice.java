@@ -103,6 +103,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
+    @XmlElement(name = "net_terms_type")
+    private String netTermsType;
+
     @XmlElement(name = "attempt_next_collection_at")
     private DateTime attemptNextCollectionAt;
 
@@ -389,6 +392,14 @@ public class Invoice extends RecurlyObject {
         this.netTerms = integerOrNull(netTerms);
     }
 
+    public String getNetTermsType() {
+        return netTermsType;
+    }
+
+    public void setNetTermsType(final Object netTermsType) {
+        this.netTermsType = stringOrNull(netTermsType);
+    }
+
     public DateTime getAttemptNextCollectionAt() {
         return this.attemptNextCollectionAt;
     }
@@ -593,6 +604,7 @@ public class Invoice extends RecurlyObject {
         sb.append(", closedAt=").append(closedAt);
         sb.append(", collectionMethod='").append(collectionMethod).append('\'');
         sb.append(", netTerms=").append(netTerms);
+        sb.append(", netTermsType=").append(netTermsType);
         sb.append(", attemptNextCollectionAt=").append(attemptNextCollectionAt);
         sb.append(", recoveryReason=").append(recoveryReason);
         sb.append(", lineItems=").append(lineItems);
@@ -663,6 +675,9 @@ public class Invoice extends RecurlyObject {
             return false;
         }
         if (netTerms != null ? !netTerms.equals(invoice.netTerms) : invoice.netTerms != null) {
+            return false;
+        }
+        if (netTermsType != null ? !netTermsType.equals(invoice.netTermsType) : invoice.netTermsType != null) {
             return false;
         }
         if (originalInvoice != null ? !originalInvoice.equals(invoice.originalInvoice) : invoice.originalInvoice != null) {
@@ -783,6 +798,7 @@ public class Invoice extends RecurlyObject {
                 closedAt,
                 collectionMethod,
                 netTerms,
+                netTermsType,
                 attemptNextCollectionAt,
                 recoveryReason,
                 lineItems,

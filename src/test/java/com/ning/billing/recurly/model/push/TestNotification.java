@@ -120,6 +120,7 @@ public class TestNotification extends TestModelBase {
                                               "  <date type=\"dateTime\">2014-01-01T20:20:29Z</date>\n" +
                                               "  <closed_at type=\"dateTime\">2014-01-01T20:24:02Z</closed_at>\n" +
                                               "  <net_terms type=\"integer\">0</net_terms>\n" +
+                                              "  <net_terms_type>net</net_terms_type>\n" +
                                               "  <collection_method>automatic</collection_method>\n" +
                                               "  <dunning_events_count type=\"integer\">2</dunning_events_count>\n" +
                                               "  <final_dunning_event type=\"boolean\">true</final_dunning_event>\n" +
@@ -388,6 +389,7 @@ public class TestNotification extends TestModelBase {
         Assert.assertEquals(invoice.getDate(), new DateTime("2014-01-01T20:20:29Z"));
         Assert.assertEquals(invoice.getClosedAt(), new DateTime("2014-01-01T20:24:02Z"));
         Assert.assertEquals(invoice.getNetTerms(), new Integer(0));
+        Assert.assertEquals(invoice.getNetTermsType(), "net");
         Assert.assertEquals(invoice.getCollectionMethod(), "automatic");
         Assert.assertEquals(invoice.getDunningEventsCount(), new Integer(2));
         Assert.assertEquals(invoice.isFinalDunningEvent(), Boolean.TRUE);

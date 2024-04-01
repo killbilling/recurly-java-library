@@ -66,6 +66,7 @@ public class TestInvoiceCollection extends TestModelBase {
                 "    <tax_region>CA</tax_region>\n" +
                 "    <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                 "    <net_terms type=\"integer\">0</net_terms>\n" +
+                "    <net_terms_type>net</net_terms_type>\n" +
                 "    <collection_method>automatic</collection_method>\n" +
                 "    <redemptions href=\"https://api.recurly.com/v2/invoices/1007/redemptions\"/>\n" +
                 "    <line_items type=\"array\">\n" +
@@ -156,6 +157,7 @@ public class TestInvoiceCollection extends TestModelBase {
                 "    <tax_region>CA</tax_region>\n" +
                 "    <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                 "    <net_terms type=\"integer\">0</net_terms>\n" +
+                "    <net_terms_type>net</net_terms_type>\n" +
                 "    <collection_method>automatic</collection_method>\n" +
                 "    <redemptions href=\"https://api.recurly.com/v2/invoices/1007/redemptions\"/>\n" +
                 "    <line_items type=\"array\">\n" +

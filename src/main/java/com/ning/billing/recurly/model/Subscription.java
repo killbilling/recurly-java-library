@@ -100,6 +100,9 @@ public class Subscription extends AbstractSubscription {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
+    @XmlElement(name = "net_terms_type")
+    private String netTermsType;
+
     @JsonIgnore
     private String couponCode;
 
@@ -380,6 +383,14 @@ public class Subscription extends AbstractSubscription {
 
     public void setNetTerms(final Object netTerms) {
         this.netTerms = integerOrNull(netTerms);
+    }
+
+    public String getNetTermsType() {
+        return netTermsType;
+    }
+
+    public void setNetTermsType(final Object netTermsType) {
+        this.netTermsType = stringOrNull(netTermsType);
     }
 
     public String getPoNumber() {
@@ -767,6 +778,9 @@ public class Subscription extends AbstractSubscription {
         if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
             return false;
         }
+        if (netTermsType != null ? !netTermsType.equals(that.netTermsType) : that.netTermsType != null) {
+            return false;
+        }
         if (pausedAt != null ? pausedAt.compareTo(that.pausedAt) != 0 : that.pausedAt != null) {
             return false;
         }
@@ -874,6 +888,7 @@ public class Subscription extends AbstractSubscription {
                 startsAt,
                 collectionMethod,
                 netTerms,
+                netTermsType,
                 poNumber,
                 revenueScheduleType,
                 giftCard,

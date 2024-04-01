@@ -43,6 +43,9 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
+    @XmlElement(name = "net_terms_type")
+    private String netTermsType;
+
     @XmlElement(name = "account")
     private Account account;
 
@@ -136,6 +139,14 @@ public class Purchase extends RecurlyObject {
 
     public void setNetTerms(final Object terms) {
         this.netTerms = integerOrNull(terms);
+    }
+
+    public String getNetTermsType() {
+        return netTermsType;
+    }
+
+    public void setNetTermsType(final Object termsType) {
+        this.netTermsType = stringOrNull(termsType);
     }
 
     public String getPoNumber() {
@@ -244,6 +255,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", currency='").append(currency).append('\'');
         sb.append(", poNumber='").append(poNumber).append('\'');
         sb.append(", netTerms='").append(netTerms).append('\'');
+        sb.append(", netTermsType='").append(netTermsType).append('\'');
         sb.append(", giftCard='").append(giftCard).append('\'');
         sb.append(", shippingAddress='").append(shippingAddress).append('\'');
         sb.append(", shippingFees=").append(shippingFees);
@@ -297,6 +309,9 @@ public class Purchase extends RecurlyObject {
         if (netTerms != null ? !netTerms.equals(purchase.netTerms) : purchase.netTerms != null) {
             return false;
         }
+        if (netTermsType != null ? !netTermsType.equals(purchase.netTermsType) : purchase.netTermsType != null) {
+            return false;
+        }
         if (shippingAddress != null ? !shippingAddress.equals(purchase.shippingAddress) : purchase.shippingAddress != null) {
             return false;
         }
@@ -335,6 +350,7 @@ public class Purchase extends RecurlyObject {
                 giftCard,
                 poNumber,
                 netTerms,
+                netTermsType,
                 shippingAddress,
                 shippingFees,
                 subscriptions,
