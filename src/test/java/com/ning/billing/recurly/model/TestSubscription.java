@@ -61,6 +61,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <a name=\"postpone\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/postpone\" method=\"put\"/>\n" +
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
+                                        "  <net_terms_type>net</net_terms_type>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
                                         "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
                                         "  <tax_type>usst</tax_type>\n" +
@@ -130,6 +131,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <a name=\"postpone\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/postpone\" method=\"put\"/>\n" +
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
+                                        "  <net_terms_type>net</net_terms_type>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
                                         "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
                                         "  <tax_type>usst</tax_type>\n" +
@@ -201,6 +203,7 @@ public class TestSubscription extends TestModelBase {
                 "  <a name=\"postpone\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/postpone\" method=\"put\"/>\n" +
                 "  <collection_method>manual</collection_method>\n" +
                 "  <net_terms type=\"integer\">10</net_terms>\n" +
+                "  <net_terms_type>net</net_terms_type>\n" +
                 "  <po_number>PO19384</po_number>\n" +
                 "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
                 "  <tax_type>usst</tax_type>\n" +
@@ -286,6 +289,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <a name=\"postpone\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/postpone\" method=\"put\"/>\n" +
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
+                                        "  <net_terms_type>net</net_terms_type>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
                                         "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
                                         "  <tax_type>usst</tax_type>\n" +
@@ -392,6 +396,7 @@ public class TestSubscription extends TestModelBase {
                                         "  <a name=\"postpone\" href=\"https://api.recurly.com/v2/subscriptions/44f83d7cba354d5b84812419f923ea96/postpone\" method=\"put\"/>\n" +
                                         "  <collection_method>manual</collection_method>\n" +
                                         "  <net_terms type=\"integer\">10</net_terms>\n" +
+                                        "  <net_terms_type>net</net_terms_type>\n" +
                                         "  <po_number>PO19384</po_number>\n" +
                                         "  <tax_in_cents type=\"integer\">394</tax_in_cents>\n" +
                                         "  <tax_type>usst</tax_type>\n" +
@@ -469,6 +474,7 @@ public class TestSubscription extends TestModelBase {
         Assert.assertEquals(subscription.getStartsAt(), new DateTime("2010-07-28T07:00:00Z"));
         Assert.assertEquals(subscription.getCollectionMethod(), "manual");
         Assert.assertEquals(subscription.getNetTerms(), (Integer) 10);
+        Assert.assertEquals(subscription.getNetTermsType(), "net");
         Assert.assertEquals(subscription.getPoNumber(), "PO19384");
         Assert.assertEquals(subscription.getFirstRenewalDate(), new DateTime("2011-07-01T07:00:00Z"));
         Assert.assertEquals(subscription.getRevenueScheduleType(), RevenueScheduleType.EVENLY);

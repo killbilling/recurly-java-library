@@ -49,6 +49,7 @@ public class TestCloseInvoiceNotification extends TestModelBase {
                                 "    <date type=\"dateTime\">2014-01-01T20:20:29Z</date>\n" +
                                 "    <closed_at type=\"dateTime\">2014-01-01T20:24:02Z</closed_at>\n" +
                                 "    <net_terms type=\"integer\">0</net_terms>\n" +
+                                "    <net_terms_type>net</net_terms_type>\n" +
                                 "    <collection_method>automatic</collection_method>\n" +
                                 "  </invoice>\n" +
                                 "</closed_invoice_notification>";

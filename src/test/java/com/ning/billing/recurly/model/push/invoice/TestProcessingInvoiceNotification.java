@@ -49,6 +49,7 @@ public class TestProcessingInvoiceNotification extends TestModelBase {
                                 "    <date type=\"dateTime\">2014-01-01T20:21:44Z</date>\n" +
                                 "    <closed_at type=\"dateTime\" nil=\"true\"></closed_at>\n" +
                                 "    <net_terms type=\"integer\">0</net_terms>\n" +
+                                "    <net_terms_type>net</net_terms_type>\n" +
                                 "    <collection_method>automatic</collection_method>\n" +
                                 "  </invoice>\n" +
                                 "</processing_invoice_notification>";

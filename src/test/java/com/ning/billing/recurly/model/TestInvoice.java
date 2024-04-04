@@ -51,6 +51,7 @@ public class TestInvoice extends TestModelBase {
                                    + "  <terms_and_conditions>t and c</terms_and_conditions>\n"
                                    + "  <gateway_code>Some Gateway Code</gateway_code>\n"
                                    + "  <net_terms type=\"integer\">0</net_terms>\n"
+                                   + "  <net_terms_type>net</net_terms_type>\n"
                                    + "  <currency>USD</currency>\n"
                                    + "  <tax_type>usst</tax_type>\n"
                                    + "  <tax_region>CA</tax_region>\n"
@@ -134,6 +135,7 @@ public class TestInvoice extends TestModelBase {
         Assert.assertEquals(invoice.getCustomerNotes(), "Some notes");
         Assert.assertEquals(invoice.getTermsAndConditions(), "t and c");
         Assert.assertEquals((int) invoice.getNetTerms(), 0);
+        Assert.assertEquals(invoice.getNetTermsType(), "net");
         Assert.assertNull(invoice.getVatNumber());
         Assert.assertEquals(invoice.getGatewayCode(), "Some Gateway Code");
         Assert.assertEquals((int) invoice.getSubtotalInCents(), 9900);

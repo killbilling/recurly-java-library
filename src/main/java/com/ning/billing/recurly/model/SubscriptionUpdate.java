@@ -57,6 +57,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "net_terms")
     private Integer netTerms;
 
+    @XmlElement(name = "net_terms_type")
+    private String netTermsType;
+
     @XmlElement(name = "po_number")
     private String poNumber;
 
@@ -131,16 +134,24 @@ public class SubscriptionUpdate extends AbstractSubscription {
         return netTerms;
     }
 
+    public void setNetTerms(final Object netTerms) {
+        this.netTerms = integerOrNull(netTerms);
+    }
+
+    public String getNetTermsType() {
+        return netTermsType;
+    }
+
+    public void setNetTermsType(final Object netTermsType) {
+        this.netTermsType = stringOrNull(netTermsType);
+    }
+
     public String getBillingInfoUuid() {
       return billingInfoUuid;
     }
 
     public void setBillingInfoUuid(final Object billingInfoUuid) {
         this.billingInfoUuid = stringOrNull(billingInfoUuid);
-    }
-
-    public void setNetTerms(final Object netTerms) {
-        this.netTerms = integerOrNull(netTerms);
     }
 
     public String getPoNumber() {
@@ -230,6 +241,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
         if (netTerms != null ? !netTerms.equals(that.netTerms) : that.netTerms != null) {
             return false;
         }
+        if (netTermsType != null ? !netTermsType.equals(that.netTermsType) : that.netTermsType != null) {
+            return false;
+        }
         if (poNumber != null ? !poNumber.equals(that.poNumber) : that.poNumber != null) {
             return false;
         }
@@ -266,6 +280,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 billingInfoUuid,
                 customFields,
                 netTerms,
+                netTermsType,
                 poNumber,
                 revenueScheduleType,
                 remainingBillingCycles,

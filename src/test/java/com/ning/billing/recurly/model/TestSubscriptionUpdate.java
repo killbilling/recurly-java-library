@@ -31,6 +31,8 @@ public class TestSubscriptionUpdate extends TestModelBase {
                                         "  <plan_code>gold</plan_code>\n" +
                                         "  <unit_amount_in_cents type=\"integer\">800</unit_amount_in_cents>\n" +
                                         "  <quantity type=\"integer\">1</quantity>\n" +
+                                        "  <net_terms type=\"integer\">10</net_terms>\n" +
+                                        "  <net_terms_type>net</net_terms_type>\n" +
                                         "  <subscription_add_ons type=\"array\">\n" +
                                         "  </subscription_add_ons>\n" +
                                         "</subscription>";
@@ -40,7 +42,30 @@ public class TestSubscriptionUpdate extends TestModelBase {
         Assert.assertEquals(subscription.getPlanCode(), "gold");
         Assert.assertEquals(subscription.getUnitAmountInCents(), (Integer) 800);
         Assert.assertEquals(subscription.getQuantity(), (Integer) 1);
+        Assert.assertEquals(subscription.getNetTerms(), (Integer) 10);
+        Assert.assertEquals(subscription.getNetTermsType(), "net");
         Assert.assertEquals(subscription.getAddOns().size(), 0);
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationWithTerms() throws Exception{
+        final SubscriptionUpdate subscription = new SubscriptionUpdate();
+        subscription.setPlanCode("gold");
+        subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
+        subscription.setUnitAmountInCents(800);
+        subscription.setQuantity(1);
+        subscription.setNetTerms(10);
+        subscription.setNetTermsType("eom");
+
+        final String xml = xmlMapper.writeValueAsString(subscription);
+        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+                                 "<timeframe>now</timeframe>" +
+                                 "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                                 "<quantity>1</quantity>" +
+                                 "<plan_code>gold</plan_code>" +
+                                 "<net_terms>10</net_terms>" +
+                                 "<net_terms_type>eom</net_terms_type>" +
+                                 "</subscription>");
     }
 
     @Test(groups = "fast")
