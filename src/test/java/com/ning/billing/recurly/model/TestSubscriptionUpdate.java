@@ -88,6 +88,37 @@ public class TestSubscriptionUpdate extends TestModelBase {
     }
 
     @Test(groups = "fast")
+    public void testSerializationWithProrationFlexibility() throws Exception {
+        final ProrationSettings prorationSettings = new ProrationSettings();
+        prorationSettings.setCredit("full_amount");
+        prorationSettings.setCharge("none");
+
+        final SubscriptionUpdate subscription = new SubscriptionUpdate();
+        subscription.setPlanCode("gold");
+        subscription.setTimeframe(SubscriptionUpdate.Timeframe.now);
+        subscription.setUnitAmountInCents(800);
+        subscription.setQuantity(1);
+        subscription.setBillingInfoUuid("uniqueUuid");
+        subscription.setProrationSettings(prorationSettings);
+
+        final String xml = xmlMapper.writeValueAsString(subscription);
+        Assert.assertEquals(xml, "<subscription xmlns=\"\">" +
+                                 "<timeframe>now</timeframe>" +
+                                 "<unit_amount_in_cents>800</unit_amount_in_cents>" +
+                                 "<quantity>1</quantity>" +
+                                 "<plan_code>gold</plan_code>" +
+                                 "<proration_settings>" +
+                                 "<credit>full_amount</credit>" +
+                                 "<charge>none</charge>" +
+                                 "</proration_settings>" +
+                                 "<billing_info_uuid>uniqueUuid</billing_info_uuid>" +
+                                 "</subscription>");
+
+        Assert.assertEquals(subscription.getProrationSettings().toString(),
+            "ProrationSettings{ charge='none', credit='full_amount' }");
+    }
+
+    @Test(groups = "fast")
     public void testSerializationWithEmptyAddOns() throws Exception {
         final SubscriptionUpdate subscription = new SubscriptionUpdate();
         subscription.setPlanCode("gold");

@@ -48,6 +48,9 @@ public class SubscriptionUpdate extends AbstractSubscription {
     @XmlElement(name = "shipping_address")
     private ShippingAddress shippingAddress;
 
+    @XmlElement(name = "proration_settings")
+    private ProrationSettings prorationSettings;
+
     @XmlElement(name = "shipping_address_id")
     private Long shippingAddressId;
 
@@ -92,6 +95,14 @@ public class SubscriptionUpdate extends AbstractSubscription {
 
     public void setRampIntervals(final SubscriptionRampIntervals rampIntervals) {
         this.rampIntervals = rampIntervals;
+    }
+
+    public ProrationSettings getProrationSettings() {
+        return prorationSettings;
+    }
+
+    public void setProrationSettings(final ProrationSettings prorationSettings) {
+        this.prorationSettings = prorationSettings;
     }
 
     public Timeframe getTimeframe() {
@@ -280,6 +291,7 @@ public class SubscriptionUpdate extends AbstractSubscription {
                 billingInfoUuid,
                 customFields,
                 netTerms,
+                prorationSettings,
                 netTermsType,
                 poNumber,
                 revenueScheduleType,
