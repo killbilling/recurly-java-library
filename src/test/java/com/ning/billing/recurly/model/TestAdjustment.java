@@ -56,6 +56,8 @@ public class TestAdjustment extends TestModelBase {
                                       "  <surcharge_in_cents type=\"integer\">100</surcharge_in_cents>\n" +
                                       "  <tax_type>usst</tax_type>\n" +
                                       "  <tax_region>CA</tax_region>\n" +
+                                      "  <origin_tax_address_source>origin</origin_tax_address_source>" +
+                                      "  <destination_tax_address_source>destination</destination_tax_address_source>" +
                                       "  <tax_rate type=\"float\">0.0875</tax_rate>\n" +
                                       "  <tax_exempt type=\"boolean\">false</tax_exempt>\n" +
                                       "  <tax_code>digital</tax_code>\n" +
@@ -103,6 +105,8 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals(adjustment.getType(), "charge");
         Assert.assertEquals(adjustment.getTaxType(), "usst");
         Assert.assertEquals(adjustment.getTaxRegion(), "CA");
+        Assert.assertEquals(adjustment.getOriginTaxAddressSource(), "origin");
+        Assert.assertEquals(adjustment.getDestinationTaxAddressSource(), "destination");
         Assert.assertEquals(adjustment.getTaxCode(), "digital");
         Assert.assertEquals(adjustment.getTaxDetails(), this.getTaxDetails());
         Assert.assertEquals(adjustment.getProductCode(), "product123");
@@ -137,6 +141,8 @@ public class TestAdjustment extends TestModelBase {
         Assert.assertEquals(readValue.getEndDate(), adjustment.getEndDate());
         Assert.assertEquals(readValue.getCreatedAt(), adjustment.getCreatedAt());
         Assert.assertEquals(readValue.getRevenueScheduleType(), adjustment.getRevenueScheduleType());
+        Assert.assertEquals(readValue.getOriginTaxAddressSource(), adjustment.getOriginTaxAddressSource());
+        Assert.assertEquals(readValue.getDestinationTaxAddressSource(), adjustment.getDestinationTaxAddressSource());
     }
 
     private List<TaxDetail> getTaxDetails() {
