@@ -90,6 +90,12 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "tax_region")
     private String taxRegion;
 
+    @XmlElement(name = "origin_tax_address_source")
+    private String originTaxAddressSource;
+
+    @XmlElement(name = "destination_tax_address_source")
+    private String destinationTaxAddressSource;
+
     @XmlElement(name = "tax_rate")
     private String taxRate;
 
@@ -340,6 +346,22 @@ public class Adjustment extends RecurlyObject {
         this.taxRegion = stringOrNull(taxRegion);
     }
 
+    public void setOriginTaxAddressSource(final Object originTaxAddressSource) {
+        this.originTaxAddressSource = stringOrNull(originTaxAddressSource);
+    }
+  
+    public String getOriginTaxAddressSource() {
+        return this.originTaxAddressSource;
+    }
+  
+    public void setDestinationTaxAddressSource(final Object destinationTaxAddressSource) {
+        this.destinationTaxAddressSource = stringOrNull(destinationTaxAddressSource);
+    }
+  
+    public String getDestinationTaxAddressSource() {
+        return this.destinationTaxAddressSource;
+    }
+  
     public String getTaxRate() {
         return taxRate;
     }
@@ -557,6 +579,8 @@ public class Adjustment extends RecurlyObject {
         sb.append(", taxInCents=").append(taxInCents);
         sb.append(", taxType=").append(taxType);
         sb.append(", taxRegion=").append(taxRegion);
+        sb.append(", originTaxAddressSource=").append(originTaxAddressSource);
+        sb.append(", destinationTaxAddressSource=").append(destinationTaxAddressSource);
         sb.append(", taxRate=").append(taxRate);
         sb.append(", taxCode=").append(taxCode);
         sb.append(", taxExempt=").append(taxExempt);

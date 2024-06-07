@@ -41,6 +41,12 @@ public class BusinessEntity extends RecurlyObject {
     @XmlElement(name = "tax_address")
     private TaxAddress taxAddress;
 
+    @XmlElement(name = "origin_tax_address_source")
+    private String originTaxAddressSource;
+
+    @XmlElement(name = "destination_tax_address_source")
+    private String destinationTaxAddressSource;
+
     @XmlList
     @XmlElementWrapper(name = "subscriber_location_countries")
     @XmlElement(name = "subscriber_location_country")
@@ -105,6 +111,22 @@ public class BusinessEntity extends RecurlyObject {
 
     public TaxAddress getTaxAddress() {
       return this.taxAddress;
+    }
+
+    public void setOriginTaxAddressSource(final Object originTaxAddressSource) {
+      this.originTaxAddressSource = stringOrNull(originTaxAddressSource);
+    }
+
+    public String getOriginTaxAddressSource() {
+      return this.originTaxAddressSource;
+    }
+
+    public void setDestinationTaxAddressSource(final Object destinationTaxAddressSource) {
+      this.destinationTaxAddressSource = stringOrNull(destinationTaxAddressSource);
+    }
+
+    public String getDestinationTaxAddressSource() {
+      return this.destinationTaxAddressSource;
     }
 
     public void setDefaultVatNumber(final Object defaultVatNumber) {
@@ -187,6 +209,8 @@ public class BusinessEntity extends RecurlyObject {
         ", name='" + getName() + "'" +
         ", invoiceDisplayAddress='" + getInvoiceDisplayAddress() + "'" +
         ", taxAddress='" + getTaxAddress() + "'" +
+        ", originTaxAddressSource='" + getOriginTaxAddressSource() + "'" +
+        ", destinationTaxAddressSource='" + getDestinationTaxAddressSource() + "'" +
         ", subscriberLocationCountries='" + getSubscriberLocationCountries() + "'" +
         ", defaultVatNumber='" + getDefaultVatNumber() + "'" +
         ", defaultRegistrationNumber='" + getDefaultRegistrationNumber() + "'" +
