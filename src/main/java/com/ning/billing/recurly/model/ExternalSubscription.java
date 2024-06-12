@@ -43,6 +43,12 @@ public class ExternalSubscription extends RecurlyObject {
     @XmlElement(name = "last_purchased")
     private DateTime lastPurchased;
 
+    @XmlElement(name = "imported")
+    private Boolean imported;
+
+    @XmlElement(name = "test")
+    private Boolean test;
+
     @XmlElement(name = "auto_renew")
     private Boolean autoRenew;
 
@@ -136,6 +142,22 @@ public class ExternalSubscription extends RecurlyObject {
 
     public void setInGracePeriod(final Object inGracePeriod) {
       this.inGracePeriod = booleanOrNull(inGracePeriod);
+    }
+
+    public Boolean getImported() {
+      return imported;
+    }
+
+    public void setImported(final Object imported) {
+      this.imported = booleanOrNull(imported);
+    }
+
+    public Boolean getTest() {
+      return test;
+    }
+
+    public void setTest(final Object test) {
+      this.test = booleanOrNull(test);
     }
 
     public String getAppIdentifier() {
