@@ -38,6 +38,8 @@ public class TestExternalSubscription extends TestModelBase {
           "    <updated_at type=\"datetime\">2022-09-12T18:40:51Z</updated_at>" +
           "  </external_product_reference>" +
           "  <last_purchased type=\"datetime\">2022-09-12T18:40:51Z</last_purchased>" +
+          "  <imported type=\"boolean\">false</imported>" +
+          "  <test type=\"boolean\">false</test>" +
           "  <auto_renew type=\"boolean\">false</auto_renew>" +
           "  <in_grace_period type=\"boolean\">false</in_grace_period>" +
           "  <app_identifier>com.foo.id</app_identifier>" +
@@ -62,6 +64,8 @@ public class TestExternalSubscription extends TestModelBase {
         Assert.assertEquals(externalSubscription.getExternalProductReference().getCreatedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getExternalProductReference().getUpdatedAt(), new DateTime("2022-09-12T18:40:51Z"));
         Assert.assertEquals(externalSubscription.getLastPurchased(), new DateTime("2022-09-12T18:40:51Z"));
+        Assert.assertEquals(externalSubscription.getImported(), Boolean.FALSE);
+        Assert.assertEquals(externalSubscription.getTest(), Boolean.FALSE);
         Assert.assertEquals(externalSubscription.getAutoRenew(), Boolean.FALSE);
         Assert.assertEquals(externalSubscription.getInGracePeriod(), Boolean.FALSE);
         Assert.assertEquals(externalSubscription.getAppIdentifier(), "com.foo.id");

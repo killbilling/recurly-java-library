@@ -1211,6 +1211,17 @@ public class RecurlyClient {
     }
 
     /**
+     * Get a specific External Subscription by external id
+     * <p>
+     * Returns the requested external subscriptions
+     *
+     * @param externalSubscriptionExternalId external subscription external id
+     * @return The requested external subscription
+     */
+    public ExternalSubscription getExternalSubscriptionByExternalId(final String externalSubscriptionExternalId) {
+        return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode("external-id-"+externalSubscriptionExternalId), ExternalSubscription.class);
+    }
+    /**
      * Get External Accounts of an account
      * <p>
      * Returns all external accounts for a given account.
