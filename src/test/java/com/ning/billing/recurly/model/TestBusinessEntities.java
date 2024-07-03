@@ -53,6 +53,8 @@
            "       <country>US</country>" +
            "       <phone>718-555-1234</phone>" +
            "    </tax_address>" +
+           "  <origin_tax_address_source>origin</origin_tax_address_source>" +
+           "  <destination_tax_address_source>destination</destination_tax_address_source>" +
            "    <subscriber_location_countries type=\"array\">" +
            "       <subscriber_location_country>GB</subscriber_location_country>" +
            "       <subscriber_location_country>CO</subscriber_location_country>" +
@@ -91,6 +93,8 @@
         Assert.assertEquals(businessEntity.getTaxAddress().getZip(), "94605");
         Assert.assertEquals(businessEntity.getTaxAddress().getCountry(), "US");
         Assert.assertEquals(businessEntity.getTaxAddress().getPhone(), "718-555-1234");
+        Assert.assertEquals(businessEntity.getOriginTaxAddressSource(), "origin");
+        Assert.assertEquals(businessEntity.getDestinationTaxAddressSource(), "destination");
         Assert.assertEquals(subscriberLocationCountries.get(0), "GB");
         Assert.assertEquals(subscriberLocationCountries.get(1), "CO");
         Assert.assertEquals(businessEntity.getDefaultVatNumber(), "1234");
