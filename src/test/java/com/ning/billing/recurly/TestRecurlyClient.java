@@ -2001,12 +2001,19 @@ public class TestRecurlyClient {
 
             recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData2);
 
+            final Adjustment adjustmentData3 = new Adjustment();
+            adjustmentData3.setCurrency("USD");
+            adjustmentData3.setUnitAmountInCents(50);
+            adjustmentData3.setDescription("A description of an account adjustment3");
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData2);
+
             final Invoice invoiceData = new Invoice();
             invoiceData.setCollectionMethod("automatic");
 
             final Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData).getChargeInvoice();
 
-            Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
+            Assert.assertEquals(invoice.getTotalInCents(), new Integer(250));
 
             // wait for the invoice to be marked paid
             // has to happen asynchronously on the server
@@ -2034,6 +2041,18 @@ public class TestRecurlyClient {
 
             Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
             Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
+
+            final InvoiceRefund refundOptions2 = new InvoiceRefund();
+            refundOptions2.setRefundMethod(RefundMethod.transaction_first);
+            refundOptions2.setPercentage(100);
+            refundOptions2.setCreditCustomerNotes("Credit Customer Notes");
+            refundOptions2.setExternalRefund(true);
+            refundOptions2.setPaymentMethod("credit_card");
+            final Invoice refundInvoice2 = recurlyClient.refundInvoice(invoice.getId(), refundOptions2);
+
+            Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-150));
+            Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-150));
             Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
 
             // The refundInvoice should have an original_invoices of the original invoice
@@ -2073,12 +2092,19 @@ public class TestRecurlyClient {
 
             recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData2);
 
+            final Adjustment adjustmentData3 = new Adjustment();
+            adjustmentData3.setCurrency("USD");
+            adjustmentData3.setUnitAmountInCents(50);
+            adjustmentData3.setDescription("A description of an account adjustment3");
+
+            recurlyClient.createAccountAdjustment(account.getAccountCode(), adjustmentData3);
+
             final Invoice invoiceData = new Invoice();
             invoiceData.setCollectionMethod("automatic");
 
             Invoice invoice = recurlyClient.postAccountInvoice(account.getAccountCode(), invoiceData).getChargeInvoice();
 
-            Assert.assertEquals(invoice.getTotalInCents(), new Integer(200));
+            Assert.assertEquals(invoice.getTotalInCents(), new Integer(250));
 
             // wait for the invoice to be marked paid
             // has to happen asynchronously on the server
@@ -2093,21 +2119,27 @@ public class TestRecurlyClient {
             // we can use "toAdjustmentRefund" on the adjustment to turn it
             // into an AdjustmentRefund
             final AdjustmentRefund adjustmentRefund = invoice.getLineItems().get(0).toAdjustmentRefund();
+            final AdjustmentRefund adjustmentRefund2 = invoice.getLineItems().get(1).toAdjustmentRefund();
+            final AdjustmentRefund adjustmentRefund3 = invoice.getLineItems().get(2).toAdjustmentRefund();
 
             // we could change the quantity here or the prorating settings if we want, defaults to full quantity
             // adjustmentRefund.setQuantity(1);
             lineItems.add(adjustmentRefund);
+            adjustmentRefund2.setAmountInCents(100);
+            lineItems.add(adjustmentRefund2);
+            adjustmentRefund3.setPercentage(100);
+            lineItems.add(adjustmentRefund3);
 
             final InvoiceRefund refundOptions = new InvoiceRefund();
             refundOptions.setRefundMethod(RefundMethod.transaction_first);
             refundOptions.setLineItems(lineItems);
             final Invoice refundInvoice = recurlyClient.refundInvoice(invoice.getId(), refundOptions);
 
-            Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-100));
-            Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-100));
+            Assert.assertEquals(refundInvoice.getTotalInCents(), new Integer(-250));
+            Assert.assertEquals(refundInvoice.getSubtotalInCents(), new Integer(-250));
             Assert.assertEquals(refundInvoice.getTransactions().get(0).getAction(), "refund");
 
-            Assert.assertEquals(refundInvoice.getLineItems().size(), 1);
+            Assert.assertEquals(refundInvoice.getLineItems().size(), 3);
             final Adjustment lineItem = refundInvoice.getLineItems().get(0);
             Assert.assertEquals(lineItem.getQuantity(), new Integer(1));
         } finally {
