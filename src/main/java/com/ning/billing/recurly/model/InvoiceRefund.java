@@ -33,6 +33,9 @@ public class InvoiceRefund extends RecurlyObject {
     @XmlElement(name = "amount_in_cents")
     private Integer amountInCents;
 
+    @XmlElement(name = "percentage")
+    private Integer percentage;
+
     @XmlElementWrapper(name = "line_items")
     @XmlElement(name = "adjustment")
     private List<AdjustmentRefund> lineItems;
@@ -66,6 +69,14 @@ public class InvoiceRefund extends RecurlyObject {
 
     public Integer getAmountInCents() {
         return this.amountInCents;
+    }
+
+    public void setPercentage(final Object percentage) {
+        this.percentage = integerOrNull(percentage);
+    }
+
+    public Integer getPercentage() {
+        return this.percentage;
     }
 
     public void setLineItems(final List<AdjustmentRefund> lineItems) {
@@ -118,7 +129,11 @@ public class InvoiceRefund extends RecurlyObject {
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(refundMethod, amountInCents);
+        return Objects.hashCode(
+            refundMethod,
+            amountInCents,
+            percentage
+        );
     }
 
     @Override
@@ -129,6 +144,9 @@ public class InvoiceRefund extends RecurlyObject {
         final InvoiceRefund refund = (InvoiceRefund) o;
 
         if (amountInCents != null ? !amountInCents.equals(refund.amountInCents) : refund.amountInCents != null) {
+            return false;
+        }
+        if (percentage != null ? !percentage.equals(refund.percentage) : refund.percentage != null) {
             return false;
         }
         if (externalRefund != null ? !externalRefund.equals(refund.externalRefund) : refund.externalRefund != null) {
@@ -155,6 +173,7 @@ public class InvoiceRefund extends RecurlyObject {
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("InvoiceRefund{");
+        sb.append("percentage=").append(percentage);
         sb.append("amountInCents=").append(amountInCents);
         sb.append(", refundMethod='").append(refundMethod).append('\'');
         sb.append(", externalRefund='").append(externalRefund).append('\'');
