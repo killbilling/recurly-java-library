@@ -30,6 +30,8 @@ public class TestExternalSubscription extends TestModelBase {
           "<external_subscription href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/rpap82ntgqqh\">" +
           "  <account href=\"https://your-subdomain.recurly.com/v2/accounts/1\"/>" +
           "  <external_invoices href=\"https://your-subdomain.recurly.com/v2/external_subscriptions/tsfnx2vn5wh6/external_invoices\"/>" +
+          "  <external_id>1_ext_id</external_id>" +
+          "  <uuid>72bb9966bb5dc3767461ce4368a6b366</uuid>" +
           "  <external_product_reference>" +
           "    <id>rgybkg3d1l41</id>" +
           "    <reference_code>apple-code</reference_code>" +
@@ -44,7 +46,6 @@ public class TestExternalSubscription extends TestModelBase {
           "  <in_grace_period type=\"boolean\">false</in_grace_period>" +
           "  <app_identifier>com.foo.id</app_identifier>" +
           "  <quantity type=\"integer\">1</quantity>" +
-          "  <external_id>1_ext_id</external_id>" +
           "  <activated_at type=\"datetime\">2022-09-12T18:40:51Z</activated_at>" +
           "  <canceled_at type=\"datetime\">2022-09-12T18:40:51Z</canceled_at>" +
           "  <expires_at type=\"datetime\">2022-09-12T18:40:51Z</expires_at>" +
@@ -69,6 +70,7 @@ public class TestExternalSubscription extends TestModelBase {
         Assert.assertEquals(externalSubscription.getAutoRenew(), Boolean.FALSE);
         Assert.assertEquals(externalSubscription.getInGracePeriod(), Boolean.FALSE);
         Assert.assertEquals(externalSubscription.getAppIdentifier(), "com.foo.id");
+        Assert.assertEquals(externalSubscription.getUuid(), "72bb9966bb5dc3767461ce4368a6b366");
         Assert.assertEquals(externalSubscription.getQuantity(), new Integer(1));
         Assert.assertEquals(externalSubscription.getExternalId(), "1_ext_id");
         Assert.assertEquals(externalSubscription.getActivatedAt(), new DateTime("2022-09-12T18:40:51Z"));

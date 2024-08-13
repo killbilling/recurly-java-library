@@ -1221,6 +1221,19 @@ public class RecurlyClient {
     public ExternalSubscription getExternalSubscriptionByExternalId(final String externalSubscriptionExternalId) {
         return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode("external-id-"+externalSubscriptionExternalId), ExternalSubscription.class);
     }
+
+      /**
+     * Get a specific External Subscription by uuid
+     * <p>
+     * Returns the requested external subscriptions
+     *
+     * @param externalSubscriptionUuid external subscription uuid
+     * @return The requested external subscription
+     */
+    public ExternalSubscription getExternalSubscriptionByUuid(final String externalSubscriptionUuid) {
+        return doGET(ExternalSubscriptions.EXTERNAL_SUBSCRIPTIONS_RESOURCE + "/" + urlEncode("uuid-"+externalSubscriptionUuid), ExternalSubscription.class);
+    }
+
     /**
      * Get External Accounts of an account
      * <p>

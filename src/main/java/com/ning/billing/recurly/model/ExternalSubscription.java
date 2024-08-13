@@ -58,6 +58,9 @@ public class ExternalSubscription extends RecurlyObject {
     @XmlElement(name = "app_identifier")
     private String appIdentifier;
 
+    @XmlElement(name = "uuid")
+    private String uuid;
+
     @XmlElement(name = "quantity")
     private Integer quantity;
 
@@ -166,6 +169,14 @@ public class ExternalSubscription extends RecurlyObject {
 
     public void setAppIdentifier(final Object appIdentifier) {
       this.appIdentifier = stringOrNull(appIdentifier);
+    }
+
+    public String getUuid() {
+      return this.uuid;
+    }
+
+    public void setUuid(final Object uuid) {
+      this.uuid = stringOrNull(uuid);
     }
 
     public Integer getQuantity() {
