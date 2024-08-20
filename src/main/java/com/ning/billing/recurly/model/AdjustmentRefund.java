@@ -35,6 +35,12 @@ public class AdjustmentRefund extends RecurlyObject {
     @XmlElement(name = "quantity_decimal")
     private BigDecimal quantityDecimal;
 
+    @XmlElement(name = "percentage")
+    private Integer percentage;
+
+    @XmlElement(name = "amount_in_cents")
+    private Integer amountInCents;
+
     @XmlElement(name = "prorate")
     private Boolean prorate;
 
@@ -44,6 +50,22 @@ public class AdjustmentRefund extends RecurlyObject {
 
     public void setUuid(final Object uuid) {
         this.uuid = stringOrNull(uuid);
+    }
+
+    public void setAmountInCents(final Object amountInCents) {
+        this.amountInCents = integerOrNull(amountInCents);
+    }
+
+    public Integer getAmountInCents() {
+        return this.amountInCents;
+    }
+
+    public void setPercentage(final Object percentage) {
+        this.percentage = integerOrNull(percentage);
+    }
+
+    public Integer getPercentage() {
+        return this.percentage;
     }
 
     public Integer getQuantity() {
@@ -77,6 +99,8 @@ public class AdjustmentRefund extends RecurlyObject {
         sb.append("{uuid='").append(uuid).append('\'');
         sb.append(", quantity=").append(quantity);
         sb.append(", quantity_decimal=").append(quantityDecimal);
+        sb.append(", percentage=").append(percentage);
+        sb.append(", amountInCents=").append(amountInCents);
         sb.append(", prorate=").append(prorate);
         sb.append('}');
         return sb.toString();
@@ -98,6 +122,12 @@ public class AdjustmentRefund extends RecurlyObject {
         if (quantityDecimal != null ? !quantityDecimal.equals(that.quantityDecimal) : that.quantityDecimal != null) {
             return false;
         }
+        if (amountInCents != null ? !amountInCents.equals(that.amountInCents) : that.amountInCents != null) {
+            return false;
+        }
+        if (percentage != null ? !percentage.equals(that.percentage) : that.percentage != null) {
+            return false;
+        }
         if (uuid != null ? !uuid.equals(that.uuid) : that.uuid != null) {
             return false;
         }
@@ -111,6 +141,8 @@ public class AdjustmentRefund extends RecurlyObject {
                 prorate,
                 quantity,
                 quantityDecimal,
+                amountInCents,
+                percentage,
                 uuid
         );
     }
