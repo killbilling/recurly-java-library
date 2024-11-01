@@ -52,6 +52,9 @@ public class Plan extends RecurlyObject {
     @XmlElement(name = "description")
     private String description;
 
+    @XmlElement(name = "vertex_transaction_type")
+    private String vertexTransactionType;
+
     @XmlElement(name = "success_url")
     private String successLink;
 
@@ -190,6 +193,14 @@ public class Plan extends RecurlyObject {
 
     public void setDescription(final Object description) {
         this.description = stringOrNull(description);
+    }
+
+    public String getVertexTransactionType() {
+        return vertexTransactionType;
+    }
+
+    public void setVertexTransactionType(final Object vertexTransactionType) {
+        this.vertexTransactionType = stringOrNull(vertexTransactionType);
     }
 
     public String getSuccessLink() {
@@ -473,6 +484,7 @@ public class Plan extends RecurlyObject {
         sb.append(", planCode='").append(planCode).append('\'');
         sb.append(", name='").append(name).append('\'');
         sb.append(", description='").append(description).append('\'');
+        sb.append(", vertexTransactionType='").append(vertexTransactionType).append('\'');
         sb.append(", successLink='").append(successLink).append('\'');
         sb.append(", cancelLink='").append(cancelLink).append('\'');
         sb.append(", displayDonationAmounts=").append(displayDonationAmounts);
@@ -539,6 +551,9 @@ public class Plan extends RecurlyObject {
             return false;
         }
         if (description != null ? !description.equals(plan.description) : plan.description != null) {
+            return false;
+        }
+        if (vertexTransactionType != null ? !vertexTransactionType.equals(plan.vertexTransactionType) : plan.vertexTransactionType != null) {
             return false;
         }
         if (displayDonationAmounts != null ? !displayDonationAmounts.equals(plan.displayDonationAmounts) : plan.displayDonationAmounts != null) {
@@ -650,6 +665,7 @@ public class Plan extends RecurlyObject {
                 pricingModel,
                 rampIntervals,
                 description,
+                vertexTransactionType,
                 successLink,
                 cancelLink,
                 displayDonationAmounts,

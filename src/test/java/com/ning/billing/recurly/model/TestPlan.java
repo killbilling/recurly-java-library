@@ -36,6 +36,7 @@ public class TestPlan extends TestModelBase {
                                 "  <plan_code>gold</plan_code>\n" +
                                 "  <name>Gold plan</name>\n" +
                                 "  <description nil=\"nil\"></description>\n" +
+                                "  <vertex_transaction_type nil=\"nil\"></vertex_transaction_type>\n" +
                                 "  <success_url nil=\"nil\"></success_url>\n" +
                                 "  <cancel_url nil=\"nil\"></cancel_url>\n" +
                                 "  <display_donation_amounts type=\"boolean\">false</display_donation_amounts>\n" +
@@ -85,6 +86,7 @@ public class TestPlan extends TestModelBase {
         Assert.assertEquals(plan.getTaxExempt(), new Boolean(false));
         Assert.assertEquals(plan.getTaxCode(), "digital");
         Assert.assertNull(plan.getDescription());
+        Assert.assertNull(plan.getVertexTransactionType());
         Assert.assertNull(plan.getSuccessLink());
         Assert.assertNull(plan.getCancelLink());
         Assert.assertEquals(24, (int) plan.getTotalBillingCycles());
@@ -238,5 +240,23 @@ public class TestPlan extends TestModelBase {
         Assert.assertEquals(field.getName(), "food");
     }
 
-}
+    @Test(groups = "fast")
+    public void testCreateWithVertexTransactionType() throws Exception {
+        // See https://dev.recurly.com/docs/list-plans
+        final String planData = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" +
+                                "<plan href=\"https://api.recurly.com/v2/plans/gold\">\n" +
+                                "  <add_ons href=\"https://api.recurly.com/v2/plans/gold/add_ons\"/>\n" +
+                                "  <plan_code>gold</plan_code>\n" +
+                                "  <name>Gold plan</name>\n" +
+                                "  <description>rental</description>\n" +
+                                "  <vertex_transaction_type>rental</vertex_transaction_type>\n" +
+                                "  <plan_interval_length type=\"integer\">1</plan_interval_length>\n" +
+                                "  <plan_interval_unit>months</plan_interval_unit>\n" +
+                                "  <pricing_model>ramp</pricing_model>\n" +
+                                "</plan>";
 
+        final Plan plan = xmlMapper.readValue(planData, Plan.class);
+        Assert.assertEquals(plan.getPlanCode(), "gold");
+        Assert.assertEquals(plan.getVertexTransactionType(), "rental");
+    }
+}
