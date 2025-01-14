@@ -68,7 +68,7 @@ public class Errors extends RecurlyObject {
             }
             this.recurlyErrors.add(error);
         } else {
-            this.recurlyErrors = (RecurlyErrors) recurlyErrors;
+            this.recurlyErrors = (RecurlyErrors) recurlyError;
         }
     }
 
