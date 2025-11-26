@@ -88,6 +88,9 @@ public class Purchase extends RecurlyObject {
     @XmlElement(name = "transaction_type")
     private String transactionType;
 
+    @XmlElement(name = "vertex_transaction_type")
+    private String vertexTransactionType;
+
     @XmlList
     @XmlElementWrapper(name = "coupon_codes")
     @XmlElement(name = "coupon_code")
@@ -245,6 +248,14 @@ public class Purchase extends RecurlyObject {
         this.transactionType = stringOrNull(transactionType);
     }
 
+    public String getVertexTransactionType() {
+        return vertexTransactionType;
+    }
+
+    public void setVertexTransactionType(final Object vertexTransactionType) {
+        this.vertexTransactionType = stringOrNull(vertexTransactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -268,6 +279,7 @@ public class Purchase extends RecurlyObject {
         sb.append(", shippingAddressId='").append(shippingAddressId).append('\'');
         sb.append(", gatewayCode='").append(gatewayCode).append('\'');
         sb.append(", transactionType='").append(transactionType).append('\'');
+        sb.append(", vertexTransactionType='").append(vertexTransactionType).append('\'');
         sb.append('}');
         return sb.toString();
     }
@@ -333,6 +345,9 @@ public class Purchase extends RecurlyObject {
         if (transactionType != null ? !transactionType.equals(purchase.transactionType) : purchase.transactionType != null) {
             return false;
         }
+        if (vertexTransactionType != null ? !vertexTransactionType.equals(purchase.vertexTransactionType) : purchase.vertexTransactionType != null) {
+            return false;
+        }
         if (vatReverseChargeNotes != null ? !vatReverseChargeNotes.equals(purchase.vatReverseChargeNotes) : purchase.vatReverseChargeNotes != null) {
             return false;
         }
@@ -361,7 +376,8 @@ public class Purchase extends RecurlyObject {
                 billingInfoUuid,
                 shippingAddressId,
                 gatewayCode,
-                transactionType
+                transactionType,
+                vertexTransactionType
         );
     }
 

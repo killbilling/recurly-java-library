@@ -207,7 +207,94 @@ public class TestPurchase extends TestModelBase {
 
     public void verifyPurchaseWithBillingInfoUuid(final Purchase purchase) {
         assertEquals(purchase.getBillingInfoUuid(), "iiznlrvdt8py");
-  }
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationWithVertexTransactionType() throws Exception {
+        final String purchaseData = "<purchase xmlns=\"\">" +
+                "<currency>USD</currency>" +
+                "  <collection_method>automatic</collection_method>" +
+                "  <vertex_transaction_type>rental</vertex_transaction_type>" +
+                "  <account>" +
+                "    <account_code>test</account_code>" +
+                "    <billing_info>" +
+                "      <first_name>Benjamin</first_name>" +
+                "      <last_name>Du Monde</last_name>" +
+                "      <address1>400 Alabama St</address1>" +
+                "      <city>San Francisco</city>" +
+                "      <state>CA</state>" +
+                "      <zip>94110</zip>" +
+                "      <country>US</country>" +
+                "      <year type=\"integer\">2019</year>" +
+                "      <month type=\"integer\">12</month>" +
+                "      <number>4000-0000-0000-0000</number>" +
+                "    </billing_info>" +
+                "  </account>" +
+                "  <adjustments>" +
+                "    <adjustment>" +
+                "      <unit_amount_in_cents type=\"integer\">1000</unit_amount_in_cents>" +
+                "      <quantity type=\"integer\">1</quantity>" +
+                "      <currency>USD</currency>" +
+                "      <product_code>product-code</product_code>" +
+                "    </adjustment>" +
+                "  </adjustments>" +
+                "</purchase>";
+
+        // test serialization
+        final Purchase purchase = xmlMapper.readValue(purchaseData, Purchase.class);
+        verifyPurchaseWithVertexTransactionType(purchase);
+
+        // test deseralization
+        final Purchase purchaseExpected = xmlMapper.readValue(purchaseData, Purchase.class);
+        assertEquals(purchase, purchaseExpected);
+    }
+
+    public void verifyPurchaseWithVertexTransactionType(final Purchase purchase) {
+        assertEquals(purchase.getVertexTransactionType(), "rental");
+        assertEquals(purchase.getCurrency(), "USD");
+        assertEquals(purchase.getCollectionMethod(), "automatic");
+    }
+
+    @Test(groups = "fast")
+    public void testSerializationToXmlWithVertexTransactionType() throws Exception {
+        // Create purchase object programmatically and verify it serializes correctly to XML
+        final Purchase purchase = new Purchase();
+        purchase.setCurrency("USD");
+        purchase.setCollectionMethod("automatic");
+        purchase.setVertexTransactionType("lease");
+
+        final Account account = new Account();
+        account.setAccountCode("test-account");
+        purchase.setAccount(account);
+
+        // Serialize to XML string
+        final String xml = xmlMapper.writeValueAsString(purchase);
+
+        // Verify the XML contains the vertex_transaction_type element
+        assert xml.contains("<vertex_transaction_type>lease</vertex_transaction_type>") :
+            "Serialized XML should contain vertex_transaction_type element";
+        assert xml.contains("<collection_method>automatic</collection_method>");
+        assert xml.contains("<currency>USD</currency>");
+    }
+
+    @Test(groups = "fast")
+    public void testVertexTransactionTypeAllValidValues() throws Exception {
+        // Test all valid values: sale, rental, lease
+        final String[] validValues = {"sale", "rental", "lease"};
+
+        for (String value : validValues) {
+            final Purchase purchase = new Purchase();
+            purchase.setVertexTransactionType(value);
+            assertEquals(purchase.getVertexTransactionType(), value,
+                "Should correctly set and get value: " + value);
+
+            // Verify serialization/deserialization round-trip
+            final String xml = xmlMapper.writeValueAsString(purchase);
+            final Purchase deserializedPurchase = xmlMapper.readValue(xml, Purchase.class);
+            assertEquals(deserializedPurchase.getVertexTransactionType(), value,
+                "Should correctly deserialize value: " + value);
+        }
+    }
 
     @Test(groups = "fast")
     public void testHashCodeAndEquality() throws Exception {
