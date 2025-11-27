@@ -71,6 +71,9 @@ public class GiftCard extends RecurlyObject {
     @XmlElement(name = "performance_obligation_id")
     private String performanceObligationId;
 
+    @XmlElement(name = "tax_service_opt_out")
+    private Boolean taxServiceOptOut;
+
     @XmlElement(name = "created_at")
     private DateTime createdAt;
 
@@ -188,6 +191,14 @@ public class GiftCard extends RecurlyObject {
         this.performanceObligationId = stringOrNull(performanceObligationId);
     }
 
+    public Boolean getTaxServiceOptOut() {
+        return taxServiceOptOut;
+    }
+
+    public void setTaxServiceOptOut(final Object taxServiceOptOut) {
+        this.taxServiceOptOut = booleanOrNull(taxServiceOptOut);
+    }
+
     public DateTime getCreatedAt() {
         return createdAt;
     }
@@ -274,6 +285,7 @@ public class GiftCard extends RecurlyObject {
         sb.append(", liabilityGlAccountId='").append(liabilityGlAccountId).append('\'');
         sb.append(", revenueGlAccountId='").append(revenueGlAccountId).append('\'');
         sb.append(", performanceObligationId='").append(performanceObligationId).append('\'');
+        sb.append(", taxServiceOptOut='").append(taxServiceOptOut).append('\'');
         sb.append(", createdAt='").append(createdAt).append('\'');
         sb.append(", updatedAt='").append(updatedAt).append('\'');
         sb.append(", redeemedAt='").append(redeemedAt).append('\'');
@@ -331,6 +343,9 @@ public class GiftCard extends RecurlyObject {
         if (performanceObligationId != null ? !performanceObligationId.equals(that.performanceObligationId) : that.performanceObligationId != null) {
             return false;
         }
+        if (taxServiceOptOut != null ? !taxServiceOptOut.equals(that.taxServiceOptOut) : that.taxServiceOptOut != null) {
+            return false;
+        }
         if (createdAt != null ? createdAt.compareTo(that.createdAt) != 0 : that.createdAt != null) {
             return false;
         }
@@ -364,6 +379,7 @@ public class GiftCard extends RecurlyObject {
             liabilityGlAccountId,
             revenueGlAccountId,
             performanceObligationId,
+            taxServiceOptOut,
             createdAt,
             updatedAt,
             redeemedAt,
