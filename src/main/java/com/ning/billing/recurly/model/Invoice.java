@@ -169,6 +169,9 @@ public class Invoice extends RecurlyObject {
     @XmlElement(name = "transaction_type")
     private String transactionType;
 
+    @XmlElement(name = "vertex_transaction_type")
+    private String vertexTransactionType;
+
     @XmlElement(name = "dunning_campaign_id")
     private String dunningCampaignId;
 
@@ -561,6 +564,14 @@ public class Invoice extends RecurlyObject {
         this.transactionType = stringOrNull(transactionType);
     }
 
+    public String getVertexTransactionType() {
+        return vertexTransactionType;
+    }
+
+    public void setVertexTransactionType(final Object vertexTransactionType) {
+        this.vertexTransactionType = stringOrNull(vertexTransactionType);
+    }
+
     public String getDunningCampaignId() {
         return dunningCampaignId;
     }
@@ -624,6 +635,8 @@ public class Invoice extends RecurlyObject {
         sb.append(", address=").append(address);
         sb.append(", shippingAddress=").append(shippingAddress);
         sb.append(", surchargeInCents=").append(surchargeInCents);
+        sb.append(", transactionType=").append(transactionType);
+        sb.append(", vertexTransactionType=").append(vertexTransactionType);
         sb.append('}');
         return sb.toString();
     }
@@ -767,6 +780,9 @@ public class Invoice extends RecurlyObject {
         if (transactionType != null ? !transactionType.equals(invoice.transactionType) : invoice.transactionType != null) {
             return false;
         }
+        if (vertexTransactionType != null ? !vertexTransactionType.equals(invoice.vertexTransactionType) : invoice.vertexTransactionType != null) {
+            return false;
+        }
 
         return true;
     }
@@ -817,7 +833,8 @@ public class Invoice extends RecurlyObject {
                 address,
                 shippingAddress,
                 surchargeInCents,
-                transactionType
+                transactionType,
+                vertexTransactionType
         );
     }
 

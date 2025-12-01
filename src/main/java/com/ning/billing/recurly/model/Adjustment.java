@@ -172,6 +172,9 @@ public class Adjustment extends RecurlyObject {
     @XmlElement(name = "surcharge_in_cents")
     private Integer surchargeInCents;
 
+    @XmlElement(name = "vertex_transaction_type")
+    private String vertexTransactionType;
+
     @XmlElementWrapper(name = "custom_fields")
     @XmlElement(name = "custom_field")
     private CustomFields customFields;
@@ -559,6 +562,14 @@ public class Adjustment extends RecurlyObject {
         this.customFields = customFields;
     }
 
+    public String getVertexTransactionType() {
+        return vertexTransactionType;
+    }
+
+    public void setVertexTransactionType(final Object vertexTransactionType) {
+        this.vertexTransactionType = stringOrNull(vertexTransactionType);
+    }
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder();
@@ -609,6 +620,7 @@ public class Adjustment extends RecurlyObject {
         sb.append(", state=").append(state);
         sb.append(", prorationRate=").append(prorationRate);
         sb.append(", surchargeInCents=").append(surchargeInCents);
+        sb.append(", vertexTransactionType=").append(vertexTransactionType);
         sb.append(", customFields=").append(customFields);
         sb.append('}');
         return sb.toString();
@@ -756,6 +768,9 @@ public class Adjustment extends RecurlyObject {
         if (customFields != null ? !customFields.equals(that.customFields) : that.customFields != null) {
             return false;
         }
+        if (vertexTransactionType != null ? !vertexTransactionType.equals(that.vertexTransactionType) : that.vertexTransactionType != null) {
+            return false;
+        }
         return true;
     }
 
@@ -806,6 +821,7 @@ public class Adjustment extends RecurlyObject {
                 state,
                 prorationRate,
                 surchargeInCents,
+                vertexTransactionType,
                 customFields
         );
     }
