@@ -65,6 +65,7 @@
                "        <liability_gl_account_id>123</liability_gl_account_id>\n" +
                "        <revenue_gl_account_id>456</revenue_gl_account_id>\n" +
                "        <performance_obligation_id>789</performance_obligation_id>\n" +
+               "        <tax_service_opt_out type=\"boolean\">true</tax_service_opt_out>\n" +
                "   </gift_card>" +
                "</gift_cards>";
 
@@ -86,6 +87,7 @@
         Assert.assertEquals(giftCard.getLiabilityGlAccountId(), "123");
         Assert.assertEquals(giftCard.getRevenueGlAccountId(), "456");
         Assert.assertEquals(giftCard.getPerformanceObligationId(), "789");
+        Assert.assertEquals(giftCard.getTaxServiceOptOut(), Boolean.TRUE);
         Assert.assertNull(giftCard.getCanceledAt());
 
         final Delivery delivery = giftCard.getDelivery();
@@ -106,5 +108,56 @@
         Assert.assertEquals(address.getCountry(), "US");
         Assert.assertEquals(address.getZip(), "94110");
         Assert.assertEquals(address.getPhone(), "555-555-5555");
+     }
+
+     @Test(groups = "fast")
+     public void testSerializationWithTaxServiceOptOut() throws Exception {
+        final GiftCard giftCard = new GiftCard();
+        giftCard.setProductCode("gift_card_100");
+        giftCard.setCurrency("USD");
+        giftCard.setUnitAmountInCents(10000);
+        giftCard.setTaxServiceOptOut(true);
+
+        final String xml = xmlMapper.writeValueAsString(giftCard);
+
+        Assert.assertTrue(xml.contains("<product_code>gift_card_100</product_code>"));
+        Assert.assertTrue(xml.contains("<currency>USD</currency>"));
+        Assert.assertTrue(xml.contains("<unit_amount_in_cents>10000</unit_amount_in_cents>"));
+        Assert.assertTrue(xml.contains("<tax_service_opt_out>true</tax_service_opt_out>"));
+     }
+
+     @Test(groups = "fast")
+     public void testDeserializationWithTaxServiceOptOutFalse() throws Exception {
+        final String giftCardData =
+               "<gift_card>" +
+               "    <product_code>gift_card</product_code>\n" +
+               "    <currency>USD</currency>   \n" +
+               "    <unit_amount_in_cents type=\"integer\">2000</unit_amount_in_cents>\n" +
+               "    <tax_service_opt_out type=\"boolean\">false</tax_service_opt_out>\n" +
+               "</gift_card>";
+
+        final GiftCard giftCard = xmlMapper.readValue(giftCardData, GiftCard.class);
+
+        Assert.assertEquals(giftCard.getProductCode(), "gift_card");
+        Assert.assertEquals(giftCard.getCurrency(), "USD");
+        Assert.assertEquals(giftCard.getUnitAmountInCents(), new Integer(2000));
+        Assert.assertEquals(giftCard.getTaxServiceOptOut(), Boolean.FALSE);
+     }
+
+     @Test(groups = "fast")
+     public void testDeserializationWithoutTaxServiceOptOut() throws Exception {
+        final String giftCardData =
+               "<gift_card>" +
+               "    <product_code>gift_card</product_code>\n" +
+               "    <currency>USD</currency>   \n" +
+               "    <unit_amount_in_cents type=\"integer\">2000</unit_amount_in_cents>\n" +
+               "</gift_card>";
+
+        final GiftCard giftCard = xmlMapper.readValue(giftCardData, GiftCard.class);
+
+        Assert.assertEquals(giftCard.getProductCode(), "gift_card");
+        Assert.assertEquals(giftCard.getCurrency(), "USD");
+        Assert.assertEquals(giftCard.getUnitAmountInCents(), new Integer(2000));
+        Assert.assertNull(giftCard.getTaxServiceOptOut());
      }
  }
