@@ -23,6 +23,7 @@ import java.util.List;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotEquals;
+import static org.testng.Assert.assertNull;
 
 public class TestPurchase extends TestModelBase {
 
@@ -294,6 +295,129 @@ public class TestPurchase extends TestModelBase {
             assertEquals(deserializedPurchase.getVertexTransactionType(), value,
                 "Should correctly deserialize value: " + value);
         }
+    }
+
+    @Test(groups = "fast")
+    public void testPurchaseWithAdjustmentLevelVertexTransactionType() throws Exception {
+        // Test purchase with adjustment-level vertex_transaction_type
+        final String purchaseData = "<purchase xmlns=\"\">" +
+                "<currency>USD</currency>" +
+                "  <collection_method>automatic</collection_method>" +
+                "  <vertex_transaction_type>sale</vertex_transaction_type>" +
+                "  <account>" +
+                "    <account_code>test-account</account_code>" +
+                "  </account>" +
+                "  <adjustments>" +
+                "    <adjustment>" +
+                "      <unit_amount_in_cents type=\"integer\">1000</unit_amount_in_cents>" +
+                "      <quantity type=\"integer\">1</quantity>" +
+                "      <currency>USD</currency>" +
+                "      <product_code>product-1</product_code>" +
+                "      <vertex_transaction_type>lease</vertex_transaction_type>" +
+                "    </adjustment>" +
+                "  </adjustments>" +
+                "</purchase>";
+
+        // Deserialize and verify
+        final Purchase purchase = xmlMapper.readValue(purchaseData, Purchase.class);
+        assertEquals(purchase.getVertexTransactionType(), "sale");
+        assertEquals(purchase.getAdjustments().size(), 1);
+        assertEquals(purchase.getAdjustments().get(0).getVertexTransactionType(), "lease");
+    }
+
+    @Test(groups = "fast")
+    public void testPurchaseWithMultipleAdjustmentsWithDifferentVertexTransactionTypes() throws Exception {
+        // Test purchase with multiple adjustments having different vertex_transaction_type values
+        final String purchaseData = "<purchase xmlns=\"\">" +
+                "<currency>USD</currency>" +
+                "  <vertex_transaction_type>sale</vertex_transaction_type>" +
+                "  <account>" +
+                "    <account_code>test-account</account_code>" +
+                "  </account>" +
+                "  <adjustments>" +
+                "    <adjustment>" +
+                "      <unit_amount_in_cents type=\"integer\">5000</unit_amount_in_cents>" +
+                "      <quantity type=\"integer\">1</quantity>" +
+                "      <currency>USD</currency>" +
+                "      <product_code>product-lease</product_code>" +
+                "      <vertex_transaction_type>lease</vertex_transaction_type>" +
+                "    </adjustment>" +
+                "    <adjustment>" +
+                "      <unit_amount_in_cents type=\"integer\">3000</unit_amount_in_cents>" +
+                "      <quantity type=\"integer\">1</quantity>" +
+                "      <currency>USD</currency>" +
+                "      <product_code>product-rental</product_code>" +
+                "      <vertex_transaction_type>rental</vertex_transaction_type>" +
+                "    </adjustment>" +
+                "    <adjustment>" +
+                "      <unit_amount_in_cents type=\"integer\">2000</unit_amount_in_cents>" +
+                "      <quantity type=\"integer\">1</quantity>" +
+                "      <currency>USD</currency>" +
+                "      <product_code>product-no-vtt</product_code>" +
+                "    </adjustment>" +
+                "  </adjustments>" +
+                "</purchase>";
+
+        // Deserialize and verify
+        final Purchase purchase = xmlMapper.readValue(purchaseData, Purchase.class);
+        assertEquals(purchase.getVertexTransactionType(), "sale");
+        assertEquals(purchase.getAdjustments().size(), 3);
+        assertEquals(purchase.getAdjustments().get(0).getVertexTransactionType(), "lease");
+        assertEquals(purchase.getAdjustments().get(1).getVertexTransactionType(), "rental");
+        assertNull(purchase.getAdjustments().get(2).getVertexTransactionType());
+    }
+
+    @Test(groups = "fast")
+    public void testSerializePurchaseWithAdjustmentLevelVertexTransactionType() throws Exception {
+        // Create purchase programmatically with adjustment-level vertex_transaction_type
+        final Purchase purchase = new Purchase();
+        purchase.setCurrency("USD");
+        purchase.setCollectionMethod("automatic");
+        purchase.setVertexTransactionType("sale");
+
+        final Account account = new Account();
+        account.setAccountCode("test-account");
+        purchase.setAccount(account);
+
+        // Create adjustments with different vertex_transaction_type values
+        final Adjustments adjustments = new Adjustments();
+        
+        final Adjustment adjustment1 = new Adjustment();
+        adjustment1.setUnitAmountInCents(5000);
+        adjustment1.setQuantity(1);
+        adjustment1.setCurrency("USD");
+        adjustment1.setProductCode("product-lease");
+        adjustment1.setVertexTransactionType("lease");
+        adjustments.add(adjustment1);
+
+        final Adjustment adjustment2 = new Adjustment();
+        adjustment2.setUnitAmountInCents(3000);
+        adjustment2.setQuantity(1);
+        adjustment2.setCurrency("USD");
+        adjustment2.setProductCode("product-rental");
+        adjustment2.setVertexTransactionType("rental");
+        adjustments.add(adjustment2);
+
+        purchase.setAdjustments(adjustments);
+
+        // Serialize to XML
+        final String xml = xmlMapper.writeValueAsString(purchase);
+
+        // Verify XML contains both purchase-level and adjustment-level vertex_transaction_type
+        assert xml.contains("<purchase") : "Should contain purchase root element";
+        assert xml.contains("<vertex_transaction_type>sale</vertex_transaction_type>") : 
+            "Should contain purchase-level vertex_transaction_type";
+        assert xml.contains("<vertex_transaction_type>lease</vertex_transaction_type>") : 
+            "Should contain adjustment-level vertex_transaction_type 'lease'";
+        assert xml.contains("<vertex_transaction_type>rental</vertex_transaction_type>") : 
+            "Should contain adjustment-level vertex_transaction_type 'rental'";
+
+        // Verify round-trip serialization/deserialization
+        final Purchase deserializedPurchase = xmlMapper.readValue(xml, Purchase.class);
+        assertEquals(deserializedPurchase.getVertexTransactionType(), "sale");
+        assertEquals(deserializedPurchase.getAdjustments().size(), 2);
+        assertEquals(deserializedPurchase.getAdjustments().get(0).getVertexTransactionType(), "lease");
+        assertEquals(deserializedPurchase.getAdjustments().get(1).getVertexTransactionType(), "rental");
     }
 
     @Test(groups = "fast")
